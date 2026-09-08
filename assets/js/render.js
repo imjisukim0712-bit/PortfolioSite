@@ -159,7 +159,26 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    return '<div class="home-screen">' + hero + drawSec + '</div>';
+    var ex = h.explore || {};
+    var exItems = arr(ex.items).map(function (it) {
+      var navLabel = c.nav && c.nav[it.page];
+      var href = HREF[it.page] || 'index.html';
+      return '<a class="xcard reveal" href="' + esc(base + href) + '">' +
+        '<span class="xcard__label">' + esc(t(navLabel, lang) || '') + '</span>' +
+        '<span class="xcard__sum">' + esc(t(it.summary, lang)) + '</span>' +
+        '<span class="xcard__cta">' + esc(t(ex.cta, lang) || (lang==='en'?'See more':'자세히 보기')) + ' <span aria-hidden="true">→</span></span>' +
+        '</a>';
+    }).join('');
+    var exploreSec = exItems
+      ? '<section class="section explore"><div class="wrap">' +
+          '<header class="section__head reveal"><p class="eyebrow">EXPLORE</p>' +
+          '<h2 class="section__title">' + esc(t(ex.title, lang)) + '</h2>' +
+          (has(ex.lead, lang) ? '<p class="section__lead">' + esc(t(ex.lead, lang)) + '</p>' : '') + '</header>' +
+          '<div class="xgrid">' + exItems + '</div>' +
+        '</div></section>'
+      : '';
+
+    return '<div class="home-screen">' + hero + drawSec + '</div>' + exploreSec;
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)

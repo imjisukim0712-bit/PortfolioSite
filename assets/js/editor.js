@@ -288,6 +288,18 @@
         { key: 'player', label: '프로필 사진', type: 'group', fields: [
           { key: 'photo', label: '프로필 사진 경로', type: 'text', hint: '예: assets/img/profile.jpg — 비우면 고스트 자리표시.' },
           { key: 'photoAlt', label: '사진 대체 텍스트', type: 'i18n' }
+        ] },
+        { key: 'explore', label: '하단 개요 (자세히 보기)', type: 'group', fields: [
+          { key: 'title', label: '섹션 제목', type: 'i18n' },
+          { key: 'lead', label: '섹션 설명', type: 'i18n', area: true },
+          { key: 'cta', label: '버튼 문구', type: 'i18n', hint: '예: 자세히 보기' },
+          { key: 'items', label: '개요 카드', type: 'list',
+            itemName: function (it){ return it.page || '개요'; },
+            template: function (){ return { page:'resume', summary:i18n() }; },
+            fields: [
+              { key: 'page', label: '이동할 페이지', type: 'select', options: [ ['resume','이력서'], ['cover','자기소개서'], ['play','게임플레이'], ['projects','프로젝트'] ] },
+              { key: 'summary', label: '한두 줄 개요', type: 'i18n', area: true }
+            ] }
         ] }
       ] },
 
