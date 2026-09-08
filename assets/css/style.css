@@ -1,46 +1,46 @@
 @charset "UTF-8";
 /* ==========================================================================
    김지수 · 게임 기획자 포트폴리오
-   Style : "Phantom" (lavender · aubergine) · Pretendard · light/dark
+   Style : Claude (ivory · warm brown · clay coral) · Pretendard · light/dark
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. Tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Palette — Ivory · Ink · Deep Emerald (게임 기획자, 프리미엄) */
-  --aubergine: #17402f;   /* 강한 딥 그린 (덱 뒷면·활성 배경) */
-  --ghost-lavender: #e3ece2; /* 파스텔 세이지 (칩) */
-  --periwinkle: #2f7a5c;  /* 소프트 에메랄드 */
-  --cornflower: #3a6ea5;
-  --buttercream: #f0e6c8;
-  --blush: #f0dcd2;
-  --mint: #2e9e6e;
-  --paper: #f6f3ec;       /* 밝은 오프화이트 (어두운 면 위 텍스트/버튼 글자) */
-  --obsidian: #1f1c16;
-  --fog: #7a7366;
-  --ash: #e2dccf;
-  --bone: #eae4d7;
-  --gold: #b8935a;        /* 절제된 샴페인 포인트, 아주 소량 */
+  /* Palette — Claude: Ivory · Warm Slate · Clay Coral */
+  --aubergine: #5b4533;   /* 웜 브라운 (상단 바·덱 뒷면·활성 배경) */
+  --ghost-lavender: #f3e4db; /* 소프트 코랄 틴트 (칩) */
+  --periwinkle: #d4a27f;  /* 크래프트 탄 (어두운 면 위 고스트) */
+  --cornflower: #6e6e68;
+  --buttercream: #ebdbbc;
+  --blush: #f3e4db;
+  --mint: #c15f3c;
+  --paper: #f5f1e9;       /* 밝은 오프화이트 (어두운 면 위 텍스트/버튼 글자) */
+  --obsidian: #262625;
+  --fog: #6e6e68;
+  --ash: #dedacf;
+  --bone: #e8e5db;
+  --gold: #d4a27f;        /* 크래프트 탄 포인트, 아주 소량 */
 
   /* Semantic — LIGHT (default) */
-  --bg:          #f4f1e9;
-  --bg-elev:     #ece6d9;
-  --surface:     #fbf9f3;
-  --surface-2:   #efe9dc;
-  --border:      #e2dccf;
-  --border-2:    #d3ccbb;
-  --text:        #1f1c16;
-  --text-muted:  #7a7366;
-  --heading:     #1c1a15;
-  --accent:      #1c5c46;        /* '정면' 강조 · 링크 (딥 에메랄드) */
-  --accent-soft: #2f7a5c;
-  --cta:         #e3ece2;        /* 칩/알약 소프트 배경 */
-  --cta-text:    #1c5c46;
-  --cta-hover:   #d6e4d6;
-  --ghost-c:     #1c5c46;
-  --glow:        rgb(28 92 70 / .16);
-  --btn-primary-text: #f6f3ec;
+  --bg:          #f0eee6;
+  --bg-elev:     #e8e5db;
+  --surface:     #faf9f5;
+  --surface-2:   #e8e5db;
+  --border:      #dedacf;
+  --border-2:    #cfc9bb;
+  --text:        #262625;
+  --text-muted:  #6e6e68;
+  --heading:     #141413;
+  --accent:      #c15f3c;        /* '정면' 강조 · 링크 (클레이 코랄) */
+  --accent-soft: #d97757;
+  --cta:         #f3e4db;        /* 칩/알약 소프트 배경 */
+  --cta-text:    #a54e30;
+  --cta-hover:   #ebd6c9;
+  --ghost-c:     #c15f3c;
+  --glow:        rgb(193 95 60 / .16);
+  --btn-primary-text: #ffffff;
 
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
@@ -67,7 +67,7 @@
   --radius-lg: 32px;
 
   --shadow-sm: var(--glow) 0 0 4px 0;
-  --shadow-card: 0 1px 2px rgba(28,28,28,.04), 0 8px 24px rgba(60,49,91,.06);
+  --shadow-card: 0 1px 2px rgba(38,38,37,.04), 0 8px 24px rgba(91,69,51,.07);
 
   --nav-h: 60px;
   color-scheme: light;
@@ -78,29 +78,29 @@
 
 /* Semantic — DARK */
 :root[data-theme="dark"] {
-  --aubergine: #0f3325;
-  --ghost-lavender: #24301c;
-  --periwinkle: #7fc9a6;
-  --paper: #f3efe6;
-  --ash: #34301f;
-  --bone: #1d1b13;
-  --bg:          #14130d;
-  --bg-elev:     #1d1b13;
-  --surface:     #201d14;
-  --surface-2:   #2a2618;
-  --border:      #34301f;
-  --border-2:    #47412b;
-  --text:        #efe9db;
-  --text-muted:  #a39a86;
-  --heading:     #f3efe6;
-  --accent:      #86cfa8;         /* 어두운 배경용 밝은 에메랄드 */
-  --accent-soft: #6bbf98;
-  --cta:         #24301c;
-  --cta-text:    #a7dcc0;
-  --cta-hover:   #2e3c23;
-  --ghost-c:     #86cfa8;
-  --glow:        rgb(120 200 160 / .35);
-  --btn-primary-text: #14130d;
+  --aubergine: #1b1b1a;
+  --ghost-lavender: #3f342e;
+  --periwinkle: #d4a27f;
+  --paper: #f0eee6;
+  --ash: #47463f;
+  --bone: #30302e;
+  --bg:          #262625;
+  --bg-elev:     #30302e;
+  --surface:     #30302e;
+  --surface-2:   #3a3a37;
+  --border:      #47463f;
+  --border-2:    #5a584f;
+  --text:        #e8e6df;
+  --text-muted:  #a9a79f;
+  --heading:     #faf9f5;
+  --accent:      #d97757;         /* 어두운 배경용 밝은 코랄 */
+  --accent-soft: #e58a6b;
+  --cta:         #3f342e;
+  --cta-text:    #efa98b;
+  --cta-hover:   #4a3d35;
+  --ghost-c:     #d97757;
+  --glow:        rgb(217 119 87 / .35);
+  --btn-primary-text: #262625;
   --shadow-card: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.4);
   color-scheme: dark;
 }
@@ -263,8 +263,8 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   width: 100%; max-width: var(--page-max);
   padding: 6px 6px 6px 16px;
   border: 1px solid var(--aubergine); border-radius: var(--radius-pill);
-  background: var(--aubergine);                       /* 바 자체를 초록으로, 내부는 흰색 */
-  box-shadow: 0 8px 24px -14px rgb(23 64 47 / .55);
+  background: var(--aubergine);                       /* 바 자체를 웜 브라운으로, 내부는 크림 */
+  box-shadow: 0 8px 24px -14px rgb(91 69 51 / .5);
   transition: max-width .38s cubic-bezier(.2,.8,.3,1), padding .3s ease, box-shadow .3s ease;
 }
 
