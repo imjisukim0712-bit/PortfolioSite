@@ -124,19 +124,37 @@
     }
     box.innerHTML = cards.map(function(p, i){ return R.drawCardHtml(content, lang, base, p, i*90); }).join('');
   }
+  // 화면 폭에 맞춰 한 줄에 들어갈 카드 수 (덱 + N장). CSS 그리드 열 수와 동일한 분기.
+  function fitCount(max) {
+    var w = window.innerWidth || document.documentElement.clientWidth;
+    var n = w >= 980 ? 4 : w >= 690 ? 3 : w >= 470 ? 2 : 1;
+    return Math.max(1, Math.min(max, n));
+  }
   function initDraw() {
     var deck = $('[data-draw]');
     if (!deck) return;
     var cfg = (content.home && content.home.draw) || {};
-    var count = cfg.count || 4;
+    var max = cfg.count || 4;
+    var shown = -1;
+    function render() {
+      shown = fitCount(max);
+      dealCards(drawnIds.slice(0, shown));
+    }
     // 첫 화면에서 한 벌이 이미 펼쳐져 있도록 자동으로 한 번 뽑아 둔다
-    if (!drawnIds) { drawnIds = pickRandom(count); dealCards(drawnIds); }
+    if (!drawnIds) drawnIds = pickRandom(max);
+    render();
     deck.addEventListener('click', function () {
       deck.classList.remove('is-draw');
       void deck.offsetWidth;          // 리플로우로 애니메이션 재시작
       deck.classList.add('is-draw');
-      drawnIds = pickRandom(count);
-      dealCards(drawnIds);
+      drawnIds = pickRandom(max);
+      render();
+    });
+    // 폭이 바뀌어 들어갈 장수가 달라질 때만 다시 그린다 (뽑은 결과는 유지)
+    var t = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { if (fitCount(max) !== shown) render(); }, 150);
     });
   }
 

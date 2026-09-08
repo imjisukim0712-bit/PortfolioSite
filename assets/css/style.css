@@ -437,13 +437,14 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 
 .draw { padding-block: var(--section-pad-y); }
 /* 덱과 뽑힌 카드를 하나의 균등 그리드에 두어 크기·간격을 동일하게 (겹침 방지) */
+/* 항상 한 줄: 덱 + 뽑힌 카드. 폭이 좁아지면 main.js 가 카드 장수를 4→3→2→1 로 줄인다. */
 .draw__stage {
-  display: grid; grid-template-columns: 1fr; gap: 12px;   /* 좁으면 1개 */
+  display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px;  /* 덱 + 1장 */
   align-items: start; perspective: 1200px;
 }
-@media (min-width: 440px) { .draw__stage { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (min-width: 680px) { .draw__stage { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; } }
-@media (min-width: 1000px) { .draw__stage { grid-template-columns: repeat(5, minmax(0,1fr)); } }
+@media (min-width: 470px)  { .draw__stage { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+@media (min-width: 690px)  { .draw__stage { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; } }
+@media (min-width: 980px)  { .draw__stage { grid-template-columns: repeat(5, minmax(0,1fr)); } }
 .draw__cards { display: contents; }
 .draw__deck {
   position: relative; width: 100%; aspect-ratio: 3 / 4; padding: 0;
@@ -499,7 +500,7 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
 .draw-card__go { margin-top: 12px; font-size: var(--text-caption); color: var(--accent); }
 .draw__empty { grid-column: 2 / -1; display: grid; place-items: center; min-height: 160px; border: 1px dashed var(--border); border-radius: var(--radius-card); color: var(--text-muted); font-size: var(--text-body-sm); padding: 24px; text-align: center; }
-@media (max-width: 679px) { .draw__empty { grid-column: 1 / -1; } }
+@media (max-width: 469px) { .draw__empty { grid-column: 1 / -1; } }
 /* 덱 클릭 반응 (리플/셔플) */
 .draw__deck.is-draw .draw__deck-card:nth-child(3) { animation: deckPress .34s cubic-bezier(.2,.8,.3,1); }
 .draw__deck.is-draw .draw__deck-card:nth-child(2) { animation: deckRiffle .34s ease; }
