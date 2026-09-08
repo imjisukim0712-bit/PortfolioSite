@@ -208,7 +208,8 @@
 
     // 게임플레이 카드
     var gameItems = arr(c.play && c.play.cards).map(function (g, i) {
-      return '<div class="hp-game"><span class="hp-game__ic" aria-hidden="true">' + GHOST + '</span>' +
+      var gi = (g.icon || '').trim();
+      return '<div class="hp-game"><span class="hp-game__ic"' + (gi ? '' : ' aria-hidden="true"') + '>' + (gi ? '<img src="' + esc(base + gi) + '" alt="' + esc(t(g.name, lang)) + '" loading="lazy">' : GHOST) + '</span>' +
         '<p class="hp-game__t"' + ep('play.cards.'+i+'.name') + '>' + esc(t(g.name, lang)) + '</p>' +
         '<p class="hp-game__b">' + esc(metaJoin([ t(g.genre, lang), t(g.hours, lang) ])) + '</p></div>';
     }).join('');
@@ -429,7 +430,8 @@
   function renderPlay(c, lang, base) {
     var pl = c.play || {};
     var cards = arr(pl.cards).map(function (card, i) {
-      return '<article class="play-card reveal"><div class="play-card__top"><h3 class="play-card__name"' + ep('play.cards.'+i+'.name') + '>' + esc(t(card.name, lang)) + '</h3>' +
+      var ci = (card.icon || '').trim();
+      return '<article class="play-card reveal">' + (ci ? '<img class="play-card__icon" src="' + esc(base + ci) + '" alt="" loading="lazy">' : '') + '<div class="play-card__top"><h3 class="play-card__name"' + ep('play.cards.'+i+'.name') + '>' + esc(t(card.name, lang)) + '</h3>' +
         '<span class="play-card__hours"' + ep('play.cards.'+i+'.hours') + '>' + esc(t(card.hours, lang)) + '</span></div>' +
         '<p class="play-card__genre"' + ep('play.cards.'+i+'.genre') + '>' + esc(t(card.genre, lang)) + '</p>' +
         '<p class="play-card__note"' + ep('play.cards.'+i+'.note') + '>' + esc(t(card.note, lang)) + '</p></article>';

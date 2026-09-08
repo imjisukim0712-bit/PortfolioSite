@@ -75,6 +75,7 @@
     initProjTabs();
     // 언어 바뀌면 이미 뽑아둔 카드도 다시 그림
     if (drawnIds) dealCards(drawnIds);
+    if (window.PORTFOLIO_OVERRIDES && window.PORTFOLIO_OVERRIDES.renderBlocks) window.PORTFOLIO_OVERRIDES.renderBlocks(page, lang);
   }
 
   function updateTitle() {

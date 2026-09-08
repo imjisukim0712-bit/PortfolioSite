@@ -430,8 +430,10 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .hp-games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 520px) { .hp-games { grid-template-columns: 1fr; gap: 20px; max-width: 320px; } }
 .hp-game { min-width: 0; }
-.hp-game__ic { display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 20px; background: var(--cta); color: var(--ghost-c); margin-bottom: 14px; }
+.hp-game__ic { display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; background: var(--cta); color: var(--ghost-c); margin-bottom: 14px; }
 .hp-game__ic svg { width: 34%; height: auto; aspect-ratio: 32/36; }
+.hp-game__ic img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.play-card__icon { width: 56px; height: 56px; object-fit: cover; border-radius: 14px; margin-bottom: 14px; }
 .hp-game__t { font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); }
 .hp-game__b { margin-top: 4px; font-size: var(--text-caption); line-height: 1.5; color: var(--text-muted); }
 

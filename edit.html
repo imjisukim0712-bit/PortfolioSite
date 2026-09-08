@@ -44,6 +44,22 @@
 
   <aside class="ve-left">
     <section class="ve-sec">
+      <div class="ve-sec__h"><span>요소 추가</span><span class="ve-hint" style="text-transform:none;letter-spacing:0">선택한 것 뒤에</span></div>
+      <div class="ve-sec__b">
+        <div class="ve-add" id="veAdd">
+          <button data-add="heading">제목</button>
+          <button data-add="text">문단</button>
+          <button data-add="image">이미지</button>
+          <button data-add="button">버튼</button>
+          <button data-add="box">상자</button>
+          <button data-add="divider">구분선</button>
+          <button data-add="spacer">여백</button>
+        </div>
+        <p class="ve-hint">아무것도 선택하지 않으면 페이지 맨 아래에 추가됩니다. 추가한 뒤 드래그로 옮기세요.</p>
+      </div>
+    </section>
+
+    <section class="ve-sec">
       <div class="ve-sec__h"><span>테마 팔레트 추천</span><span class="ve-hint" style="text-transform:none;letter-spacing:0"><kbd>R</kbd></span></div>
       <div class="ve-sec__b">
         <div class="ve-pal" id="vePal"></div>
@@ -84,12 +100,14 @@
   <footer class="ve-foot">
     <span>클릭 = 선택</span><span>더블클릭 = 글자 수정</span><span>드래그 = 이동</span>
     <span>모서리 = 크기</span><span><kbd>Alt</kbd>+드래그 = 순서 바꾸기</span>
-    <span><kbd>Del</kbd> 숨기기</span><span><kbd>Esc</kbd> 선택 해제</span><span><kbd>R</kbd> 팔레트</span>
+    <span><kbd>Del</kbd> 숨기기 / 새 요소 삭제</span><span><kbd>Esc</kbd> 선택 해제</span><span><kbd>R</kbd> 팔레트</span>
   </footer>
 </div>
 
+<input type="file" id="veFile" accept="image/*" hidden>
 <script src="assets/content.js" charset="utf-8"></script>
 <script src="assets/overrides.js" charset="utf-8"></script>
+<script src="assets/js/skin.js" charset="utf-8"></script>
 <script src="assets/js/visual-editor.js" charset="utf-8"></script>
 </body>
 </html>

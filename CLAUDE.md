@@ -18,17 +18,21 @@
 
 ## 시각 편집기 (edit.html)
 
-화면을 직접 눌러 고치는 편집기입니다. 구조는 이렇게 나뉩니다:
+화면을 직접 눌러 고치는 편집기입니다. 저장 위치는 셋으로 나뉩니다:
 
-| 무엇을 | 어디에 저장 | 키 |
+| 무엇을 | 어디에 | 키 |
 |---|---|---|
 | 글자 | `assets/content.js` | `data-e` 앵커 경로 (예: `projects.items.0.title`) |
-| 색·크기·여백·위치·숨김 | `assets/overrides.js` | 편집기가 만든 CSS 선택자 |
+| 색·크기·여백·위치·숨김 | `assets/overrides.js` → `styles` / `layout` / `hidden` / `theme` | 편집기가 만든 CSS 선택자 |
+| 새로 만든 요소 (제목·문단·이미지·버튼·상자·구분선·여백) | `assets/overrides.js` → `blocks` | `data-blk` id · `after`/`before` 앵커 |
+| 올린 사진 | `assets/img/ve-*.jpg\|png` | 저장 시 data URI → 파일로 변환해 함께 업로드 |
 
-- `render.js` 의 `ep(path)` 가 `data-e` 앵커를 심습니다. 텍스트 요소를 새로 추가하면
-  가능한 한 `ep('경로')` 를 함께 붙여야 편집기에서 글자를 고칠 수 있습니다.
-- `overrides.js` 는 **편집기가 덮어쓰는 파일**입니다. 손으로 고쳐도 되지만 편집기에서
-  저장하면 통째로 교체됩니다. 데이터 뒤에 붙은 적용기 코드는 지우지 마세요.
+- 파일 역할: `overrides.js` = **순수 데이터**(편집기가 통째로 덮어씀) · `skin.js` = 그 데이터를 적용하는 코드
+  (토큰·규칙 주입 + `blocks` 렌더). 모든 페이지가 `content.js → overrides.js → skin.js → render.js → main.js` 순으로 읽습니다.
+- `render.js` 의 `ep(path)` 가 `data-e` 앵커를 심습니다. 텍스트 요소를 새로 추가하면 `ep('경로')` 를
+  함께 붙여야 편집기에서 글자를 고칠 수 있고, 목록 항목은 콜백에 인덱스(`i`)를 받아 경로에 넣습니다.
+- 사진 자리(프로필·프로젝트/활동 썸네일·게임 아이콘)는 content 의 `photo` / `thumb` / `icon` 필드입니다.
+  새 이미지 필드를 추가하면 `visual-editor.js` 의 `photoSlotFor()` 에도 매핑을 넣어 주세요.
 - `main.js` 는 편집기가 프레임을 실시간으로 다시 그릴 수 있도록 `window.PortfolioApp`
-  (`setContent` / `rerender` / `setLang` / `setTheme`) 을 노출합니다.
+  (`setContent` / `rerender` / `setLang` / `setTheme`) 을 노출하고, `render()` 끝에서 `renderBlocks()` 를 부릅니다.
 - 편집기에서 한국어를 고치면 같은 항목의 English 칸도 함께 채워야 합니다 (위 이중언어 규칙).

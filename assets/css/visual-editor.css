@@ -103,3 +103,11 @@ textarea.ve-in{min-height:62px;resize:vertical;line-height:1.5}
 .ve-status{font-size:11.5px;color:var(--ve-mut);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ve-status.is-ok{color:var(--ve-ok)} .ve-status.is-warn{color:var(--ve-warn)} .ve-status.is-error{color:var(--ve-err)}
 kbd{background:var(--ve-panel2);border:1px solid var(--ve-line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;font-size:10px;font-family:inherit}
+
+/* ---------- 요소 추가 ---------- */
+.ve-add{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ve-add button{padding:9px 4px;border-radius:8px;background:var(--ve-panel2);border:1px solid var(--ve-line);font-size:11.5px}
+.ve-add button:hover{border-color:var(--ve-accent2);color:#fff}
+.ve-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid var(--ve-line);background:var(--ve-panel2);display:block}
+.ve-danger{color:var(--ve-err);border-color:rgba(226,87,76,.4)}
+.ve-danger:hover{background:rgba(226,87,76,.12)}
