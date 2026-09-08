@@ -255,8 +255,7 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 14px;
   pointer-events: none;
   /* 떠 있는 바 위/옆으로 스크롤 내용이 비치지 않도록 상단을 배경색으로 가리고 아래로 자연스럽게 페이드 */
-  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 72%, transparent 100%);
-  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 82%, transparent 100%);
 }
 .nav {
   pointer-events: auto;
@@ -425,7 +424,7 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .hp-skill__ic svg { width: 30px; height: 30px; }
 .hp-skill__t { font-size: var(--text-body-sm); color: var(--heading); }
 .hp-skill__b { margin-top: 2px; font-size: 11px; line-height: 1.55; color: var(--text-muted); }
-.hp-more { width: fit-content; margin: 32px 0 0 auto; gap: 8px; }
+.hp-more { display: flex; width: fit-content; margin: 32px 0 0 auto; gap: 8px; }
 .hp-more span { transition: transform .2s ease; }
 .hp-more:hover span { transform: translateX(4px); }
 .hp-games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
