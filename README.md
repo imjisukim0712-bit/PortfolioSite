@@ -1,5 +1,7 @@
 # 김지수 · 게임 기획자 포트폴리오
 
+🔗 **사이트 바로가기 → https://imjisukim0712-bit.github.io/PortfolioSite/**
+
 빌드 도구 없는 정적 사이트입니다. **내용과 화면이 분리돼 있어, 글을 고칠 때 HTML을 건드릴 필요가 없습니다.**
 
 - 폰트: **Pretendard Variable** (jsDelivr CDN)
