@@ -284,6 +284,19 @@
           { key: 'label', label: '버튼 문구', type: 'i18n' },
           { key: 'hint', label: '작은 안내', type: 'i18n' },
           { key: 'count', label: '한 번에 뽑을 카드 수', type: 'text', hint: '숫자만. 예: 4' }
+        ] },
+        { key: 'player', label: '플레이어 카드', type: 'group', fields: [
+          { key: 'photo', label: '프로필 사진 경로', type: 'text', hint: '예: assets/img/profile.jpg — 비우면 고스트 자리표시.' },
+          { key: 'photoAlt', label: '사진 대체 텍스트', type: 'i18n' },
+          { key: 'class', label: '직군 (CLASS)', type: 'i18n' },
+          { key: 'meta', label: '한 줄 요약', type: 'i18n', hint: '예: 개발 경력 10년 · 출시작 7종' },
+          { key: 'specs', label: '실적 (실제 숫자)', type: 'list',
+            itemName: function (it){ return (it.value&&it.value.ko||'') + ' ' + (it.label&&it.label.ko||''); },
+            template: function (){ return { value:i18n(), label:i18n() }; },
+            fields: [
+              { key: 'value', label: '숫자', type: 'i18n', hint: '예: 30만+' },
+              { key: 'label', label: '설명', type: 'i18n', hint: '예: 누적 다운로드' }
+            ] }
         ] }
       ] },
 

@@ -124,20 +124,25 @@
   function renderHome(c, lang, base) {
     var h = c.home || {};
     var pl = h.player || {};
+    var photoSrc = (pl.photo || '').trim();
+    var photo = photoSrc
+      ? '<img class="player__photo" src="' + esc(base + photoSrc) + '" alt="' + esc(t(pl.photoAlt, lang) || t(c.meta.name, lang)) + '" loading="lazy">'
+      : '<span class="player__photo player__photo--empty" role="img" aria-label="' + esc(t(pl.photoAlt, lang) || t(c.meta.name, lang)) + '">' + GHOST + '<small>PHOTO</small></span>';
+    var specs = arr(pl.specs).map(function (s) {
+      return '<div class="pspec"><span class="pspec__n">' + esc(t(s.value, lang)) + '</span>' +
+        '<span class="pspec__l">' + esc(t(s.label, lang)) + '</span></div>';
+    }).join('');
     var playerCard =
       '<aside class="player">' +
         '<span class="player__tag">' + esc(pl.cardLabel || 'PLAYER CARD') + '</span>' +
         '<div class="player__who">' +
-          '<span class="player__av">' + GHOST + '</span>' +
-          '<span><span class="player__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
-          '<span class="player__cl">CLASS <b>' + esc(t(pl.class, lang)) + '</b> · ' + esc(t(pl.meta, lang)) + '</span></span>' +
+          photo +
+          '<span class="player__id"><span class="player__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
+          '<span class="player__cl">CLASS <b>' + esc(t(pl.class, lang)) + '</b></span>' +
+          (has(pl.meta, lang) ? '<span class="player__mt">' + esc(t(pl.meta, lang)) + '</span>' : '') +
+          '</span>' +
         '</div>' +
-        '<div class="player__stats">' + arr(pl.stats).map(function (st) {
-          var v = Math.max(0, Math.min(100, parseInt(st.value, 10) || 0));
-          return '<div class="pstat"><span class="pstat__l">' + esc(t(st.label, lang)) + '</span>' +
-            '<span class="pstat__bar"><i style="width:' + v + '%"></i></span>' +
-            '<span class="pstat__v">' + v + '</span></div>';
-        }).join('') + '</div>' +
+        (specs ? '<div class="player__specs">' + specs + '</div>' : '') +
       '</aside>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
