@@ -1,8 +1,8 @@
 /* ============================================================================
    포트폴리오 내용 파일  ·  edit.html 에서 내보낸 파일입니다.
    이 파일을 assets/content.js 에 덮어쓰면 사이트에 반영됩니다.
-   내보낸 시각: 2026. 9. 8. 오후 3:31:26
-   rev: 1788849086816
+   내보낸 시각: 2026. 9. 8. 오후 3:32:25
+   rev: 1788849145037
    ========================================================================== */
 
 window.PORTFOLIO_CONTENT = {
@@ -59,7 +59,7 @@ window.PORTFOLIO_CONTENT = {
       "en": "GAME DESIGNER · PORTFOLIO 2026"
     },
     "titleHtml": {
-      "ko": "문제를 <span class=\"accent\">정면</span><br>으로 마주하는 기획자.",
+      "ko": "문제를 <span class=\"accent\">정면</span>으로 <br> 마주하는 기획자.",
       "en": "I'm <span class=\"name\">Jisu Kim</span>,<br>a designer who walks <span class=\"accent\">straight into</span> the problem."
     },
     "sub": {
