@@ -247,201 +247,159 @@
   var i18n = function () { return { ko: '', en: '' }; };
 
   var SCHEMA = [
-    {
-      key: 'meta', label: '기본 정보',
-      desc: '이름과 연락처, 이력서 파일 위치입니다. 이메일을 비우면 연락처 버튼이 “주소 입력 예정” 상태로 표시됩니다.',
+    { key: 'meta', label: '기본 정보',
+      desc: '이름·직함·연락처·이력서 파일 위치. 이메일을 비우면 푸터 이메일 버튼이 “입력 예정” 상태가 됩니다.',
       fields: [
         { key: 'name', label: '이름', type: 'i18n' },
         { key: 'role', label: '직함', type: 'i18n' },
-        { key: 'pageTitle', label: '브라우저 탭 제목', type: 'i18n' },
-        { key: 'description', label: '검색 결과 설명', type: 'i18n', area: true },
         { key: 'resumeUrl', label: '이력서 파일 경로', type: 'text', hint: '예: assets/resume/jisu-kim-resume.pdf' },
-        { key: 'email', label: '연락 이메일', type: 'text', hint: '비우면 이메일 버튼이 자리표시 상태가 됩니다.' },
+        { key: 'email', label: '연락 이메일', type: 'text', hint: '비우면 자리표시 상태.' },
         { key: 'github', label: 'GitHub 주소', type: 'text', hint: '비우면 GitHub 버튼이 사라집니다.' }
-      ]
-    },
-    {
-      key: 'nav', label: '헤더 목차',
-      desc: '상단 메뉴와 모바일 메뉴에 쓰이는 이름입니다.',
+      ] },
+
+    { key: 'nav', label: '헤더 목차',
+      desc: '상단 메뉴에 쓰이는 페이지 이름입니다.',
       fields: [
-        { key: 'about', label: '자기소개', type: 'i18n' },
+        { key: 'home', label: '홈', type: 'i18n' },
+        { key: 'resume', label: '이력서', type: 'i18n' },
+        { key: 'cover', label: '자기소개서', type: 'i18n' },
         { key: 'projects', label: '프로젝트', type: 'i18n' },
-        { key: 'skills', label: '핵심역량', type: 'i18n' },
-        { key: 'career', label: '경력', type: 'i18n' },
-        { key: 'play', label: '플레이 경험', type: 'i18n' },
-        { key: 'contact', label: '연락처', type: 'i18n' }
-      ]
-    },
-    {
-      key: 'hero', label: '첫 화면',
-      desc: '방문자가 가장 먼저 보는 화면입니다.',
+        { key: 'play', label: '게임플레이', type: 'i18n' }
+      ] },
+
+    { key: 'hero', label: '공통 히어로',
+      desc: '홈·이력서 첫 화면의 큰 제목입니다.',
       fields: [
-        { key: 'eyebrow', label: '작은 라벨', type: 'i18n' },
         { key: 'titleHtml', label: '큰 제목', type: 'html', area: true, tall: true,
-          hint: '<span class="accent">보라색</span> · <span class="name">밑줄</span> · <br> 줄바꿈 을 쓸 수 있습니다.' },
+          hint: '<span class="accent">보라색</span> · <br> 줄바꿈 을 쓸 수 있습니다.' }
+      ] },
+
+    { key: 'home', label: '홈',
+      desc: '홈 화면. 하단 카드 뽑기는 프로젝트에서 랜덤으로 뽑아 옵니다.',
+      fields: [
         { key: 'sub', label: '설명 문장', type: 'i18n', area: true },
-        { key: 'ctaPrimary', label: '주 버튼 문구', type: 'i18n' },
-        { key: 'ctaSecondary', label: '보조 버튼 문구', type: 'i18n' },
-        { key: 'badge', label: '상태 배지', type: 'i18n' },
-        { key: 'updated', label: '업데이트 표기', type: 'i18n' }
-      ]
-    },
-    {
-      key: 'stats', label: '숫자 요약', type: 'list',
-      desc: '첫 화면 아래 네 칸의 숫자입니다. 개수는 자유롭게 늘리거나 줄일 수 있습니다.',
-      itemName: function (it) { return (it.num || '') + ' ' + (it.label && it.label.ko || ''); },
-      template: function () { return { num: '', unit: i18n(), label: i18n() }; },
+        { key: 'ctaResume', label: '이력서 버튼 문구', type: 'i18n' },
+        { key: 'ctaProjects', label: '포트폴리오 버튼 문구', type: 'i18n' },
+        { key: 'draw', label: '카드 뽑기', type: 'group', fields: [
+          { key: 'label', label: '버튼 문구', type: 'i18n' },
+          { key: 'hint', label: '작은 안내', type: 'i18n' },
+          { key: 'count', label: '한 번에 뽑을 카드 수', type: 'text', hint: '숫자만. 예: 4' }
+        ] }
+      ] },
+
+    { key: 'resume', label: '이력서 페이지',
+      desc: '히어로 아래로 숫자 요약 · 핵심역량 · 경력이 이어집니다.',
       fields: [
-        { key: 'num', label: '숫자', type: 'text', hint: '예: 300K, 7, 10' },
-        { key: 'unit', label: '단위', type: 'i18n', hint: '예: 종 / titles, +, 년 / yrs' },
-        { key: 'label', label: '설명', type: 'i18n' }
-      ]
-    },
-    {
-      key: 'about', label: '01 자기소개',
-      fields: [
-        { key: 'title', label: '섹션 제목', type: 'i18n', area: true },
-        { key: 'lead', label: '섹션 설명', type: 'i18n', area: true },
-        { key: 'cards', label: '카드', type: 'list',
-          itemName: function (it) { return it.title && it.title.ko || '카드'; },
-          template: function () { return { index: '', title: i18n(), body: i18n() }; },
+        { key: 'heroNote', label: '히어로 하단 안내', type: 'i18n' },
+        { key: 'stats', label: '숫자 요약', type: 'list',
+          itemName: function (it){ return (it.num||'') + ' ' + (it.label&&it.label.ko||''); },
+          template: function (){ return { num:'', unit:i18n(), label:i18n() }; },
           fields: [
-            { key: 'index', label: '카드 위 영문 라벨', type: 'text', hint: '예: DEFINE' },
-            { key: 'title', label: '제목', type: 'i18n' },
-            { key: 'body', label: '내용', type: 'i18n', area: true }
+            { key: 'num', label: '숫자', type: 'text' },
+            { key: 'unit', label: '단위', type: 'i18n' },
+            { key: 'label', label: '설명', type: 'i18n' }
           ] },
-        { key: 'quote', label: '인용 문구', type: 'i18n', area: true },
-        { key: 'quoteBy', label: '인용 출처', type: 'i18n' }
-      ]
-    },
-    {
-      key: 'projects', label: '02 프로젝트', type: 'list',
-      desc: '프로젝트를 추가하면 상세 페이지가 자동으로 생깁니다. id 는 주소에 쓰이므로 영문 소문자와 하이픈을 권합니다.',
-      itemName: function (it) { return it.title && it.title.ko || it.id || '프로젝트'; },
-      template: function () {
-        return {
-          id: '', title: i18n(), sub: i18n(), tags: [], kv: [], bullets: [], footNote: i18n(),
-          detail: { sub: i18n(), kv: [], problem: i18n(), approach: i18n(), results: [], retrospective: i18n(), quote: i18n() }
-        };
-      },
+        { key: 'skills', label: '핵심역량', type: 'group', fields: [
+          { key: 'title', label: '제목', type: 'i18n' },
+          { key: 'lead', label: '설명', type: 'i18n', area: true },
+          { key: 'cards', label: '역량 카드', type: 'list',
+            itemName: function (it){ return it.title&&it.title.ko||'역량'; },
+            template: function (){ return { title:i18n(), body:i18n(), tags:[] }; },
+            fields: [
+              { key: 'title', label: '제목', type: 'i18n' },
+              { key: 'body', label: '설명', type: 'i18n', area: true },
+              { key: 'tags', label: '도구 태그', type: 'i18nList' }
+            ] }
+        ] },
+        { key: 'career', label: '경력 · 활동', type: 'group', fields: [
+          { key: 'title', label: '제목', type: 'i18n' },
+          { key: 'lead', label: '설명', type: 'i18n', area: true },
+          { key: 'items', label: '경력 항목', type: 'list',
+            itemName: function (it){ return (it.date&&it.date.ko||'') + ' · ' + (it.role&&it.role.ko||''); },
+            template: function (){ return { now:false, date:i18n(), role:i18n(), org:i18n(), body:i18n(), tags:[] }; },
+            fields: [
+              { key: 'now', label: '현재 진행 중 (초록 점)', type: 'bool' },
+              { key: 'date', label: '기간', type: 'i18n' },
+              { key: 'role', label: '역할 · 제목', type: 'i18n' },
+              { key: 'org', label: '소속 · 부제', type: 'i18n' },
+              { key: 'body', label: '설명', type: 'i18n', area: true },
+              { key: 'tags', label: '태그', type: 'i18nList' }
+            ] }
+        ] }
+      ] },
+
+    { key: 'coverLetter', label: '자기소개서',
+      desc: 'blocks 를 추가하면 문단이 채워집니다. 비우면 “곧 채울 예정” 안내가 표시됩니다.',
       fields: [
-        { key: 'id', label: '주소용 id', type: 'text', hint: '예: league-of-defense (영문 소문자·하이픈)' },
-        { key: 'title', label: '프로젝트 이름', type: 'i18n' },
-        { key: 'sub', label: '한 줄 소개', type: 'i18n' },
-        { key: 'tags', label: '태그', type: 'list',
-          itemName: function (it) { return it.text && it.text.ko || '태그'; },
-          template: function () { return { text: i18n(), tone: '' }; },
+        { key: 'title', label: '제목', type: 'i18n' },
+        { key: 'lead', label: '비었을 때 안내 문구', type: 'i18n' },
+        { key: 'blocks', label: '문단', type: 'list',
+          itemName: function (it){ return it.heading&&it.heading.ko||'문단'; },
+          template: function (){ return { heading:i18n(), body:i18n() }; },
           fields: [
-            { key: 'text', label: '태그 문구', type: 'i18n' },
-            { key: 'tone', label: '색', type: 'select',
-              options: [ ['', '기본 (흰색)'], ['lavender', '라벤더'], ['butter', '연노랑'], ['blush', '연분홍'], ['cornflower', '파랑'] ] }
-          ] },
-        { key: 'kv', label: '정보 표 (목록 카드)', type: 'list',
-          itemName: function (it) { return (it.k && it.k.ko || '') + ' : ' + (it.v && it.v.ko || ''); },
-          template: function () { return { k: i18n(), v: i18n() }; },
-          fields: [ { key: 'k', label: '항목', type: 'i18n' }, { key: 'v', label: '내용', type: 'i18n' } ] },
-        { key: 'bullets', label: '요약 문장', type: 'i18nList', area: true,
-          hint: '<b>굵게</b> 를 쓸 수 있습니다.' },
-        { key: 'footNote', label: '카드 하단 한 줄', type: 'i18n' },
-        { key: 'detail', label: '상세 페이지', type: 'group',
-          fields: [
-            { key: 'sub', label: '상세 페이지 소개', type: 'i18n', area: true, hint: '비우면 위의 한 줄 소개를 씁니다.' },
-            { key: 'kv', label: '상세 정보 표', type: 'list',
-              itemName: function (it) { return (it.k && it.k.ko || '') + ' : ' + (it.v && it.v.ko || ''); },
-              template: function () { return { k: i18n(), v: i18n() }; },
-              fields: [ { key: 'k', label: '항목', type: 'i18n' }, { key: 'v', label: '내용', type: 'i18n' } ] },
-            { key: 'problem', label: '문제 정의', type: 'i18n', area: true, tall: true, hint: '비우면 “작성 예정”으로 표시됩니다. 빈 줄로 문단을 나눕니다.' },
-            { key: 'approach', label: '접근', type: 'i18n', area: true, tall: true, hint: '비우면 “작성 예정”으로 표시됩니다.' },
-            { key: 'results', label: '결과 숫자', type: 'list',
-              itemName: function (it) { return (it.num || '') + ' ' + (it.label && it.label.ko || ''); },
-              template: function () { return { num: '', unit: i18n(), label: i18n() }; },
-              fields: [
-                { key: 'num', label: '숫자', type: 'text' },
-                { key: 'unit', label: '단위', type: 'i18n' },
-                { key: 'label', label: '설명', type: 'i18n' }
-              ] },
-            { key: 'retrospective', label: '다시 한다면', type: 'i18n', area: true, tall: true, hint: '비우면 “작성 예정”으로 표시됩니다.' },
-            { key: 'quote', label: '마무리 인용', type: 'i18n', area: true, hint: '비우면 표시되지 않습니다.' }
+            { key: 'heading', label: '소제목', type: 'i18n' },
+            { key: 'body', label: '본문', type: 'i18n', area: true, tall: true, hint: '빈 줄로 문단을 나눕니다.' }
           ] }
-      ]
-    },
-    {
-      key: 'projectNotes', label: '02-1 진행 중 카드', type: 'list',
-      desc: '프로젝트 목록 아래의 작은 카드입니다. 필요 없으면 모두 삭제해도 됩니다.',
-      itemName: function (it) { return it.label && it.label.ko || '카드'; },
-      template: function () { return { label: i18n(), body: i18n() }; },
+      ] },
+
+    { key: 'projects', label: '프로젝트',
+      desc: '카테고리(게임/기획)로 탭 필터가 됩니다. 프로젝트를 추가하면 상세 페이지가 자동 생성됩니다.',
       fields: [
-        { key: 'label', label: '작은 라벨', type: 'i18n' },
-        { key: 'body', label: '내용', type: 'html', area: true, hint: '<b>굵게</b> 를 쓸 수 있습니다.' }
-      ]
-    },
-    {
-      key: 'skills', label: '03 핵심역량',
-      fields: [
-        { key: 'title', label: '섹션 제목', type: 'i18n', area: true },
-        { key: 'lead', label: '섹션 설명', type: 'i18n', area: true },
-        { key: 'cards', label: '역량 카드', type: 'list',
-          itemName: function (it) { return it.title && it.title.ko || '역량'; },
-          template: function () { return { title: i18n(), body: i18n(), tags: [] }; },
+        { key: 'title', label: '페이지 제목', type: 'i18n' },
+        { key: 'tabs', label: '탭 이름', type: 'group', fields: [
+          { key: 'all', label: '전체', type: 'i18n' },
+          { key: 'game', label: '게임', type: 'i18n' },
+          { key: 'planning', label: '기획', type: 'i18n' }
+        ] },
+        { key: 'items', label: '프로젝트', type: 'list',
+          itemName: function (it){ return it.title&&it.title.ko||it.id||'프로젝트'; },
+          template: function (){ return { id:'', category:'game', title:i18n(), period:i18n(), sub:i18n(), genres:[], headcount:i18n(), myRole:i18n(), status:i18n(), learned:[], links:{googlePlay:'',steam:''}, media:{embed:'',note:i18n()}, detailBlocks:{problem:i18n(),approach:i18n(),retrospective:i18n()} }; },
           fields: [
-            { key: 'title', label: '제목', type: 'i18n' },
-            { key: 'body', label: '설명', type: 'i18n', area: true },
-            { key: 'tags', label: '도구 태그', type: 'i18nList' }
+            { key: 'id', label: '주소용 id', type: 'text', hint: '영문 소문자·하이픈. 예: league-of-defense' },
+            { key: 'category', label: '분류', type: 'select', options: [ ['game','게임'], ['planning','기획'] ] },
+            { key: 'title', label: '이름', type: 'i18n' },
+            { key: 'period', label: '기간', type: 'i18n', hint: '예: 2025.01 ~ 2025.08' },
+            { key: 'sub', label: '한 줄 소개', type: 'i18n' },
+            { key: 'genres', label: '장르 (최대 3개 표시)', type: 'i18nList' },
+            { key: 'headcount', label: '인원', type: 'i18n' },
+            { key: 'myRole', label: '맡은 역할', type: 'i18n' },
+            { key: 'status', label: '상태', type: 'i18n' },
+            { key: 'learned', label: '무엇을 배웠는지', type: 'i18nList', area: true, hint: '<b>굵게</b> 가능.' },
+            { key: 'links', label: '스토어 링크', type: 'group', fields: [
+              { key: 'googlePlay', label: 'Google Play URL', type: 'text' },
+              { key: 'steam', label: 'Steam URL', type: 'text' }
+            ] },
+            { key: 'media', label: '상세 미디어 (우측 큰 영역)', type: 'group', fields: [
+              { key: 'embed', label: '임베드 URL', type: 'text', hint: '유튜브/영상/웹게임 임베드 주소. 비우면 안내 문구 표시.' },
+              { key: 'note', label: '비었을 때 안내', type: 'i18n' }
+            ] },
+            { key: 'detailBlocks', label: '상세 서술 (선택)', type: 'group', fields: [
+              { key: 'problem', label: '문제', type: 'i18n', area: true, tall: true, hint: '비우면 상세에 안 나옵니다.' },
+              { key: 'approach', label: '접근', type: 'i18n', area: true, tall: true },
+              { key: 'retrospective', label: '다시 한다면', type: 'i18n', area: true, tall: true }
+            ] }
           ] }
-      ]
-    },
-    {
-      key: 'career', label: '04 경력 · 활동',
+      ] },
+
+    { key: 'play', label: '게임플레이',
       fields: [
-        { key: 'heading', label: '섹션 라벨', type: 'i18n' },
-        { key: 'title', label: '섹션 제목', type: 'i18n', area: true },
-        { key: 'lead', label: '섹션 설명', type: 'i18n', area: true },
-        { key: 'items', label: '경력 항목', type: 'list',
-          itemName: function (it) { return (it.date && it.date.ko || '') + ' · ' + (it.role && it.role.ko || ''); },
-          template: function () { return { now: false, date: i18n(), role: i18n(), org: i18n(), body: i18n(), tags: [] }; },
-          fields: [
-            { key: 'now', label: '현재 진행 중 (초록 점 표시)', type: 'bool' },
-            { key: 'date', label: '기간', type: 'i18n' },
-            { key: 'role', label: '역할 · 제목', type: 'i18n' },
-            { key: 'org', label: '소속 · 부제', type: 'i18n' },
-            { key: 'body', label: '설명', type: 'i18n', area: true },
-            { key: 'tags', label: '태그', type: 'i18nList' }
-          ] }
-      ]
-    },
-    {
-      key: 'play', label: '05 플레이 경험',
-      fields: [
-        { key: 'title', label: '섹션 제목', type: 'i18n', area: true },
-        { key: 'lead', label: '섹션 설명', type: 'i18n', area: true },
+        { key: 'title', label: '제목', type: 'i18n' },
+        { key: 'lead', label: '설명', type: 'i18n', area: true },
         { key: 'cards', label: '게임 카드', type: 'list',
-          itemName: function (it) { return it.name && it.name.ko || '게임'; },
-          template: function () { return { name: i18n(), hours: i18n(), genre: i18n(), noteLabel: { ko: '기획자의 메모', en: "DESIGNER'S NOTE" }, note: i18n() }; },
+          itemName: function (it){ return it.name&&it.name.ko||'게임'; },
+          template: function (){ return { name:i18n(), hours:i18n(), genre:i18n(), note:i18n() }; },
           fields: [
             { key: 'name', label: '게임 이름', type: 'i18n' },
-            { key: 'hours', label: '플레이타임', type: 'i18n', hint: '예: 1,000h / 시리즈 전작' },
+            { key: 'hours', label: '플레이타임', type: 'i18n' },
             { key: 'genre', label: '장르 · 플랫폼', type: 'i18n' },
-            { key: 'noteLabel', label: '메모 라벨', type: 'i18n' },
-            { key: 'note', label: '메모 내용', type: 'i18n', area: true }
-          ] },
-        { key: 'tags', label: '하단 태그', type: 'list',
-          itemName: function (it) { return it.text && it.text.ko || '태그'; },
-          template: function () { return { text: i18n(), tone: '' }; },
-          fields: [
-            { key: 'text', label: '태그 문구', type: 'i18n' },
-            { key: 'tone', label: '색', type: 'select',
-              options: [ ['', '기본 (흰색)'], ['lavender', '라벤더'], ['butter', '연노랑'], ['blush', '연분홍'], ['cornflower', '파랑'] ] }
+            { key: 'note', label: '메모', type: 'i18n', area: true }
           ] }
-      ]
-    },
-    {
-      key: 'contact', label: '06 연락처',
-      desc: '버튼은 기본 정보의 이력서 경로 · 이메일 · GitHub 값에 따라 자동으로 만들어집니다.',
+      ] },
+
+    { key: 'footer', label: '푸터',
       fields: [
-        { key: 'title', label: '섹션 제목', type: 'i18n', area: true },
-        { key: 'lead', label: '섹션 설명', type: 'i18n', area: true }
-      ]
-    }
+        { key: 'tagline', label: '한 줄 문구', type: 'i18n' }
+      ] }
   ];
 
   /* ======================================================================
