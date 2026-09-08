@@ -5,8 +5,233 @@
 (function () {
   'use strict';
 
-  var DRAFT_KEY = 'portfolio:draft';
+  var DRAFT_KEY    = 'portfolio:draft';
+  var SETTINGS_KEY = 'portfolio:editor-settings';
+  var UNLOCK_KEY   = 'portfolio:editor-unlocked';
   var $  = function (s, c) { return (c || document).querySelector(s); };
+
+  /* ------------------------------------------------------------------
+     편집기 잠금
+     ------------------------------------------------------------------
+     주의: 이 사이트는 정적 호스팅(GitHub Pages)이라 서버 검사가 없습니다.
+     이 잠금은 "지나가는 사람이 못 열게" 하는 가림막이지 보안이 아닙니다.
+     실제 보호는 GitHub 토큰이 담당합니다 — 토큰 없이는 저장이 안 됩니다.
+
+     비밀번호를 바꾸려면 [저장 · 설정] 탭의 '비밀번호 바꾸기' 를 쓰세요.
+     ------------------------------------------------------------------ */
+  var LOCK_SALT   = 'portfolio-editor:';
+  var LOCK_SHA256 = 'efea977ad00f57d7aa0504b6678da901eb9ea1284dc204807c8106fe71e376c4';
+  var LOCK_WEAK   = '2ea1a9c9';   // crypto.subtle 을 쓸 수 없는 환경(file://)용
+
+  function weakHash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) h = ((h * 33) ^ str.charCodeAt(i)) >>> 0;
+    return ('0000000' + h.toString(16)).slice(-8);
+  }
+  function sha256Hex(str) {
+    if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) return Promise.resolve(null);
+    return window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))
+      .then(function (buf) {
+        return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+          return ('0' + b.toString(16)).slice(-2);
+        }).join('');
+      })
+      .catch(function () { return null; });
+  }
+  function hashesOf(pw) {
+    var salted = LOCK_SALT + pw;
+    return sha256Hex(salted).then(function (hex) { return { sha256: hex, weak: weakHash(salted) }; });
+  }
+  function checkPassword(pw) {
+    return hashesOf(pw).then(function (h) {
+      return h.sha256 ? h.sha256 === LOCK_SHA256 : h.weak === LOCK_WEAK;
+    });
+  }
+  function isUnlocked() {
+    try { return sessionStorage.getItem(UNLOCK_KEY) === '1'; } catch (e) { return false; }
+  }
+  function setUnlocked() {
+    try { sessionStorage.setItem(UNLOCK_KEY, '1'); } catch (e) {}
+  }
+
+  function renderLock(onUnlock) {
+    document.body.classList.add('is-locked-screen');
+    var wrap = el('div', 'e-lock');
+    var box  = el('form', 'e-lock__box');
+    box.appendChild(el('p', 'e-lock__icon', '🔒'));
+    box.appendChild(el('h1', 'e-lock__title', '내용 편집기'));
+    box.appendChild(el('p', 'e-lock__desc', '비밀번호를 입력하세요.'));
+
+    var input = el('input', 'e-input e-lock__input');
+    input.type = 'password';
+    input.inputMode = 'numeric';
+    input.autocomplete = 'current-password';
+    input.setAttribute('aria-label', '편집기 비밀번호');
+    box.appendChild(input);
+
+    var err = el('p', 'e-lock__error');
+    err.hidden = true;
+    box.appendChild(err);
+
+    var go = el('button', 'e-btn e-btn--dark e-lock__go', '열기');
+    go.type = 'submit';
+    box.appendChild(go);
+
+    box.appendChild(el('p', 'e-lock__note',
+      '이 잠금은 정적 사이트의 가림막입니다. 실제 저장 권한은 GitHub 토큰이 관리합니다.'));
+
+    box.addEventListener('submit', function (e) {
+      e.preventDefault();
+      go.disabled = true;
+      checkPassword(input.value).then(function (ok) {
+        go.disabled = false;
+        if (ok) { setUnlocked(); wrap.remove(); document.body.classList.remove('is-locked-screen'); onUnlock(); }
+        else {
+          err.textContent = '비밀번호가 맞지 않습니다.';
+          err.hidden = false;
+          input.value = '';
+          input.focus();
+        }
+      });
+    });
+
+    wrap.appendChild(box);
+    document.body.appendChild(wrap);
+    setTimeout(function () { input.focus(); }, 60);
+  }
+
+  /* ------------------------------------------------------------------
+     GitHub 저장 설정
+     ------------------------------------------------------------------ */
+  var REPO_DEFAULTS = { branch: 'claude/game-planner-portfolio-landing-ote57w', path: 'assets/content.js' };
+
+  function detectRepo() {
+    var owner = '', repo = '';
+    var m = String(location.hostname).match(/^([^.]+)\.github\.io$/i);
+    if (m) {
+      owner = m[1];
+      var seg = location.pathname.split('/').filter(Boolean);
+      repo = seg.length ? seg[0] : owner + '.github.io';
+    }
+    return { owner: owner, repo: repo };
+  }
+  function readSettings() {
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); } catch (e) {}
+    var det = detectRepo();
+    return {
+      owner:  saved.owner  || det.owner  || '',
+      repo:   saved.repo   || det.repo   || '',
+      branch: saved.branch || REPO_DEFAULTS.branch,
+      path:   saved.path   || REPO_DEFAULTS.path,
+      token:  saved.token  || ''
+    };
+  }
+  function writeSettings(next) {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(next)); } catch (e) {}
+  }
+
+  function toBase64(str) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = '', chunk = 0x8000;
+    for (var i = 0; i < bytes.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(bin);
+  }
+
+  var saveStatusEl = null;
+  function setSaveStatus(msg, kind) {
+    if (!saveStatusEl) return;
+    saveStatusEl.textContent = msg;
+    saveStatusEl.className = 'e-save__status' + (kind ? ' is-' + kind : '');
+  }
+
+  /* 저장된 내용이 실제 사이트에 반영됐는지 확인 */
+  function waitForLive(rev) {
+    var deadline = Date.now() + 240000;
+    return new Promise(function (resolve) {
+      (function poll() {
+        fetch('assets/content.js?cb=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.text(); })
+          .then(function (txt) {
+            if (txt.indexOf('rev: ' + rev) >= 0) return resolve(true);
+            if (Date.now() > deadline) return resolve(false);
+            setTimeout(poll, 5000);
+          })
+          .catch(function () {
+            if (Date.now() > deadline) return resolve(false);
+            setTimeout(poll, 5000);
+          });
+      })();
+    });
+  }
+
+  var saving = false;
+  function saveToGitHub() {
+    if (saving) return;
+    var cfg = readSettings();
+    if (!cfg.token || !cfg.owner || !cfg.repo) {
+      currentSection = '__settings';
+      rerender();
+      setSaveStatus(!cfg.token
+        ? 'GitHub 토큰을 먼저 입력해 주세요. 아래 안내를 참고하세요.'
+        : '저장소 정보(owner / repo)를 채워 주세요.', 'warn');
+      return;
+    }
+
+    saving = true;
+    var rev = String(Date.now());
+    var source = toSource(data, rev);
+    var api = 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' +
+              encodeURIComponent(cfg.repo) + '/contents/' +
+              cfg.path.split('/').map(encodeURIComponent).join('/');
+    var headers = {
+      'Authorization': 'Bearer ' + cfg.token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json'
+    };
+
+    setSaveStatus('현재 파일을 확인하는 중…');
+    fetch(api + '?ref=' + encodeURIComponent(cfg.branch), { headers: headers })
+      .then(function (r) {
+        if (r.status === 200) return r.json().then(function (j) { return j.sha; });
+        if (r.status === 404) return null;
+        if (r.status === 401) throw new Error('토큰이 올바르지 않습니다 (401). 토큰을 다시 확인해 주세요.');
+        if (r.status === 403) throw new Error('권한이 없습니다 (403). 토큰의 Contents 권한이 “Read and write” 인지 확인해 주세요.');
+        throw new Error('파일을 확인하지 못했습니다 (' + r.status + ').');
+      })
+      .then(function (sha) {
+        setSaveStatus('GitHub 에 저장하는 중…');
+        var body = { message: '내용 수정 (편집기)', content: toBase64(source), branch: cfg.branch };
+        if (sha) body.sha = sha;
+        return fetch(api, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
+      })
+      .then(function (r) {
+        if (r.ok) return r.json();
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (r.status === 409) throw new Error('다른 곳에서 먼저 저장돼 충돌했습니다 (409). 새로고침한 뒤 다시 시도해 주세요.');
+          if (r.status === 422) throw new Error('브랜치 이름을 확인해 주세요 (422). ' + (j.message || ''));
+          throw new Error('저장 실패 (' + r.status + ') ' + (j.message || ''));
+        });
+      })
+      .then(function () {
+        setSaveStatus('저장했습니다. 사이트에 반영되는 중… (보통 1분 내외)');
+        return waitForLive(rev);
+      })
+      .then(function (ok) {
+        saving = false;
+        setSaveStatus(ok
+          ? '반영 완료! 사이트를 새로고침하면 바뀐 내용이 보입니다.'
+          : '저장은 됐지만 반영 확인이 늦어집니다. 잠시 후 사이트를 새로고침해 보세요.',
+          ok ? 'ok' : 'warn');
+      })
+      .catch(function (e) {
+        saving = false;
+        setSaveStatus(e.message || String(e), 'error');
+      });
+  }
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
   function el(tag, cls, text) {
@@ -471,21 +696,137 @@
   }
 
   /* ======================================================================
+     3-1. 저장 · 설정 패널
+     ====================================================================== */
+  function renderSettings(panel) {
+    var cfg = readSettings();
+    function bind(key, label, hint, isPassword) {
+      var input = el('input', 'e-input');
+      input.type = isPassword ? 'password' : 'text';
+      input.value = cfg[key] || '';
+      if (isPassword) input.autocomplete = 'off';
+      input.addEventListener('input', function () {
+        cfg[key] = input.value;
+        writeSettings(cfg);
+      });
+      panel.appendChild(fieldBlock(label, input, hint));
+    }
+
+    /* 저장 버튼 + 상태 */
+    var box = el('div', 'e-save');
+    box.appendChild(el('h3', 'e-save__title', 'GitHub 에 바로 저장'));
+    box.appendChild(el('p', 'e-save__desc',
+      '토큰을 한 번 넣어 두면, 버튼 한 번으로 저장 → 자동 배포까지 진행됩니다. ' +
+      '복사해서 붙여넣을 필요가 없습니다.'));
+    var go = el('button', 'e-btn e-btn--dark e-save__go', '저장하고 사이트에 반영');
+    go.type = 'button';
+    go.addEventListener('click', saveToGitHub);
+    box.appendChild(go);
+    saveStatusEl = el('p', 'e-save__status');
+    box.appendChild(saveStatusEl);
+    panel.appendChild(box);
+
+    bind('owner', 'GitHub 사용자 이름', '주소가 github.io 면 자동으로 채워집니다.');
+    bind('repo', '저장소 이름');
+    bind('branch', '브랜치', '현재 배포 중인 브랜치 이름입니다.');
+    bind('path', '저장할 파일 경로', '보통 바꿀 일이 없습니다.');
+    bind('token', 'GitHub 토큰', '이 브라우저에만 저장됩니다. 공용 컴퓨터에서는 쓰지 마세요.', true);
+
+    var clear = el('button', 'e-btn e-btn--danger', '이 브라우저에서 토큰 지우기');
+    clear.type = 'button';
+    clear.addEventListener('click', function () {
+      cfg.token = '';
+      writeSettings(cfg);
+      rerender();
+      setSaveStatus('토큰을 지웠습니다.', 'warn');
+    });
+    panel.appendChild(fieldBlock(null, clear));
+
+    /* 토큰 만드는 법 */
+    var help = el('div', 'e-help');
+    help.appendChild(el('h3', 'e-save__title', '토큰 만드는 법 (한 번만)'));
+    var ol = el('ol', 'e-help__list');
+    [
+      'GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens',
+      '[Generate new token] 을 누릅니다.',
+      'Repository access 에서 이 저장소 하나만 선택합니다.',
+      'Permissions → Repository permissions → Contents 를 “Read and write” 로 바꿉니다.',
+      '만들어진 토큰을 위 [GitHub 토큰] 칸에 붙여넣습니다.'
+    ].forEach(function (line) { ol.appendChild(el('li', null, line)); });
+    help.appendChild(ol);
+    help.appendChild(el('p', 'e-field__hint',
+      '토큰은 비밀번호와 같습니다. 다른 사람에게 보여주지 말고, 잃어버리면 GitHub 에서 삭제한 뒤 새로 만드세요.'));
+    panel.appendChild(help);
+
+    /* 비밀번호 바꾸기 */
+    var pwBox = el('div', 'e-help');
+    pwBox.appendChild(el('h3', 'e-save__title', '편집기 비밀번호 바꾸기'));
+    pwBox.appendChild(el('p', 'e-save__desc',
+      '새 비밀번호를 넣으면 아래에 두 줄이 나옵니다. 그 두 줄을 assets/js/editor.js 의 ' +
+      'LOCK_SHA256 · LOCK_WEAK 줄과 바꿔치기하면 됩니다.'));
+    var pwIn = el('input', 'e-input');
+    pwIn.type = 'text';
+    pwIn.placeholder = '새 비밀번호';
+    pwBox.appendChild(pwIn);
+    var pwOut = el('textarea', 'e-textarea e-help__out');
+    pwOut.readOnly = true;
+    pwOut.spellcheck = false;
+    pwOut.hidden = true;
+    var pwGo = el('button', 'e-btn', '해시 만들기');
+    pwGo.type = 'button';
+    pwGo.style.marginTop = '8px';
+    pwGo.addEventListener('click', function () {
+      if (!pwIn.value) return;
+      hashesOf(pwIn.value).then(function (h) {
+        pwOut.hidden = false;
+        pwOut.value =
+          "  var LOCK_SHA256 = '" + (h.sha256 || '(이 브라우저에서 계산 불가 — https 로 열어 주세요)') + "';\n" +
+          "  var LOCK_WEAK   = '" + h.weak + "';";
+      });
+    });
+    pwBox.appendChild(pwGo);
+    pwBox.appendChild(pwOut);
+    panel.appendChild(pwBox);
+
+    /* 솔직한 안내 */
+    var warn = el('div', 'e-warn');
+    warn.appendChild(el('p', null,
+      '알아두실 점: 이 사이트는 서버가 없는 정적 사이트라, 비밀번호 검사는 브라우저 안에서만 일어납니다. ' +
+      '마음먹고 소스를 뜯어보는 사람은 편집기 화면을 열 수 있습니다. ' +
+      '다만 저장은 GitHub 토큰이 있어야만 되므로, 남이 내용을 바꿔 저장할 수는 없습니다.'));
+    panel.appendChild(warn);
+  }
+
+  /* ======================================================================
      4. 화면 그리기
      ====================================================================== */
   function rerender() {
     var side = $('#side');
     side.innerHTML = '';
-    SCHEMA.forEach(function (sec) {
-      var b = el('button', 'e-side__btn' + (sec.key === currentSection ? ' is-active' : ''), sec.label);
+    var menu = SCHEMA.concat([{ key: '__settings', label: '저장 · 설정' }]);
+    menu.forEach(function (sec) {
+      var b = el('button', 'e-side__btn' + (sec.key === currentSection ? ' is-active' : '') +
+        (sec.key === '__settings' ? ' e-side__btn--settings' : ''), sec.label);
       b.type = 'button';
       b.addEventListener('click', function () { currentSection = sec.key; rerender(); window.scrollTo(0, 0); });
       side.appendChild(b);
     });
 
-    var spec = SCHEMA.filter(function (s) { return s.key === currentSection; })[0] || SCHEMA[0];
     var panel = $('#panel');
     panel.innerHTML = '';
+    saveStatusEl = null;
+
+    if (currentSection === '__settings') {
+      var shead = el('div', 'e-panel__head');
+      shead.appendChild(el('h2', 'e-panel__title', '저장 · 설정'));
+      shead.appendChild(el('p', 'e-panel__desc',
+        'GitHub 에 바로 저장하는 설정입니다. 한 번만 맞춰 두면 이후에는 버튼 한 번으로 끝납니다.'));
+      panel.appendChild(shead);
+      renderSettings(panel);
+      return;
+    }
+
+    var spec = SCHEMA.filter(function (s) { return s.key === currentSection; })[0] || SCHEMA[0];
 
     var head = el('div', 'e-panel__head');
     head.appendChild(el('h2', 'e-panel__title', spec.label));
@@ -503,11 +844,13 @@
   /* ======================================================================
      5. 내보내기 · 되돌리기
      ====================================================================== */
-  function toSource(obj) {
+  function toSource(obj, rev) {
+    rev = rev || String(Date.now());
     return '/* ============================================================================\n' +
       '   포트폴리오 내용 파일  ·  edit.html 에서 내보낸 파일입니다.\n' +
       '   이 파일을 assets/content.js 에 덮어쓰면 사이트에 반영됩니다.\n' +
       '   내보낸 시각: ' + new Date().toLocaleString('ko-KR') + '\n' +
+      '   rev: ' + rev + '\n' +
       '   ========================================================================== */\n\n' +
       'window.PORTFOLIO_CONTENT = ' + JSON.stringify(obj, null, 2) + ';\n';
   }
@@ -575,12 +918,7 @@
   /* ======================================================================
      6. 시작
      ====================================================================== */
-  document.addEventListener('DOMContentLoaded', function () {
-    if (!window.PORTFOLIO_CONTENT) {
-      document.body.innerHTML = '<p style="padding:40px">assets/content.js 를 불러오지 못했습니다.</p>';
-      return;
-    }
-
+  function boot() {
     $('#btnPreview').addEventListener('click', function () {
       try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) {}
       window.open('index.html?preview=1', '_blank', 'noopener');
@@ -610,11 +948,28 @@
       e.target.value = '';
     });
 
+    $('#btnSave').addEventListener('click', function () {
+      if (currentSection !== '__settings') { currentSection = '__settings'; rerender(); window.scrollTo(0, 0); }
+      saveToGitHub();
+    });
+
     rerender();
-    setStatus(localStorage.getItem(DRAFT_KEY) ? '이전에 편집하던 내용을 불러왔습니다' : '준비됨', false);
+    var hadDraft = false;
+    try { hadDraft = !!localStorage.getItem(DRAFT_KEY); } catch (e) {}
+    setStatus(hadDraft ? '이전에 편집하던 내용을 불러왔습니다' : '준비됨', false);
 
     window.addEventListener('beforeunload', function () {
       try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) {}
     });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.PORTFOLIO_CONTENT) {
+      document.body.innerHTML = '<p style="padding:40px">assets/content.js 를 불러오지 못했습니다.</p>';
+      return;
+    }
+    var app = $('#app');
+    if (isUnlocked()) { app.hidden = false; boot(); }
+    else { app.hidden = true; renderLock(function () { app.hidden = false; boot(); }); }
   });
 })();
