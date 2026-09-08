@@ -364,28 +364,15 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .hero__note { margin-top: 40px; display: inline-flex; align-items: center; gap: 8px; font-size: var(--text-caption); color: var(--text-muted); letter-spacing: .04em; }
 .hero__note svg { width: 16px; height: 16px; animation: bob 2.4s ease-in-out infinite; }
 
-/* PLAYER CARD — 사진 + 실제 실적 (홈 히어로 우측) */
-.player {
-  width: min(360px, 84vw); display: flex; flex-direction: column; gap: 20px;
-  padding: 22px 22px 24px; border: 1px solid var(--border); border-radius: var(--radius-card);
-  background: var(--surface); box-shadow: var(--shadow-card); position: relative; overflow: hidden;
+/* 프로필 사진 (홈 히어로 우측) — 사진 한 장만 */
+.portrait {
+  margin: 0; width: min(300px, 78vw); aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-card);
 }
-.player::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-soft)); }
-.player__tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em; color: var(--accent-soft); }
-.player__who { display: flex; align-items: center; gap: 16px; }
-.player__photo { flex: none; width: 88px; height: 88px; border-radius: 18px; object-fit: cover; border: 1px solid var(--border); background: var(--cta); }
-.player__photo--empty { display: grid; place-items: center; align-content: center; gap: 4px; color: var(--ghost-c); }
-.player__photo--empty .ghost { width: 34px; height: auto; aspect-ratio: 32/36; }
-.player__photo--empty small { font-family: var(--font-mono); font-size: 8px; letter-spacing: .16em; color: var(--accent-soft); }
-.player__id { min-width: 0; }
-.player__nm { display: block; font-size: var(--text-heading-sm); line-height: 1.15; color: var(--heading); letter-spacing: -.02em; }
-.player__cl { display: block; margin-top: 6px; font-size: 12px; color: var(--text-muted); letter-spacing: .02em; }
-.player__cl b { color: var(--accent); font-weight: 600; }
-.player__mt { display: block; margin-top: 3px; font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-.player__specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 18px; border-top: 1px solid var(--border); }
-.pspec { display: flex; flex-direction: column; gap: 2px; text-align: center; }
-.pspec__n { font-size: var(--text-subheading); line-height: 1.1; color: var(--heading); font-variant-numeric: tabular-nums; }
-.pspec__l { font-size: 10px; color: var(--text-muted); letter-spacing: .02em; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.portrait--empty { display: grid; place-items: center; color: var(--ghost-c); background: var(--cta); }
+.portrait--empty .ghost { width: 34%; height: auto; aspect-ratio: 32/36; }
 
 /* --------------------------------------------------------------------------
    9. HOME — 카드 뽑기
@@ -404,14 +391,12 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
   /* 한 화면에 맞도록 히어로·일러스트·덱 크기 축소 */
   .home-screen .hero__title { font-size: clamp(34px, 3.4vw + 14px, 60px); }
   .home-screen .ghost-art { max-width: min(300px, 30vh); }
-  .home-screen .player { width: min(320px, 30vw); }
+  .home-screen .portrait { width: min(260px, 26vw); }
 }
 @media (min-width: 768px) and (max-height: 860px) {
   .home-screen .hero__sub { display: none; }        /* 낮은 화면에선 부제 숨겨 공간 확보 */
   .home-screen .ghost-art { max-width: min(240px, 26vh); }
-  .home-screen .player { gap: 14px; padding: 16px 18px; }
-  .home-screen .player__photo { width: 72px; height: 72px; }
-  .home-screen .player__specs { padding-top: 14px; }
+  .home-screen .portrait { width: min(200px, 22vh); }
 }
 .draw { padding-block: var(--section-pad-y); }
 /* 덱과 뽑힌 카드를 하나의 균등 그리드에 두어 크기·간격을 동일하게 (겹침 방지) */

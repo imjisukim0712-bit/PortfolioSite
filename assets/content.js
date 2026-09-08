@@ -51,19 +51,10 @@ window.PORTFOLIO_CONTENT = {
       hint:    { ko: "카드를 눌러 프로젝트로", en: "Tap a card to open it" },
       count:   4   // 한 번에 펼칠 카드 수 (프로젝트가 더 적으면 있는 만큼)
     },
-    // 플레이어 카드 (게임 기획자 = 캐릭터). 사진 + 실제 실적 수치.
+    // 홈 히어로 우측 프로필 사진 (사진 한 장). 비우면 고스트 자리표시.
     player: {
-      cardLabel: "PLAYER CARD",
-      photo:    "assets/img/profile.jpg",   // 프로필 사진 경로. 비우면 고스트 자리표시
-      photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" },
-      class:    { ko: "게임 기획자", en: "Game Designer" },
-      meta:     { ko: "개발 경력 10년 · 출시작 7종", en: "10 yrs making games · 7 shipped" },
-      // 카드 하단 실적 — 실제 숫자만. value 는 자유 문자열.
-      specs: [
-        { value: { ko: "7종",   en: "7" },     label: { ko: "출시작",       en: "Titles" } },
-        { value: { ko: "30만+", en: "300K+" }, label: { ko: "누적 다운로드", en: "Downloads" } },
-        { value: { ko: "6만+",  en: "60K+" },  label: { ko: "커뮤니티",     en: "Community" } }
-      ]
+      photo:    "assets/img/profile.jpg",   // 프로필 사진 경로
+      photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" }
     }
   },
 

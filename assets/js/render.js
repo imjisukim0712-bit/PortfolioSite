@@ -125,25 +125,10 @@
     var h = c.home || {};
     var pl = h.player || {};
     var photoSrc = (pl.photo || '').trim();
-    var photo = photoSrc
-      ? '<img class="player__photo" src="' + esc(base + photoSrc) + '" alt="' + esc(t(pl.photoAlt, lang) || t(c.meta.name, lang)) + '" loading="lazy">'
-      : '<span class="player__photo player__photo--empty" role="img" aria-label="' + esc(t(pl.photoAlt, lang) || t(c.meta.name, lang)) + '">' + GHOST + '<small>PHOTO</small></span>';
-    var specs = arr(pl.specs).map(function (s) {
-      return '<div class="pspec"><span class="pspec__n">' + esc(t(s.value, lang)) + '</span>' +
-        '<span class="pspec__l">' + esc(t(s.label, lang)) + '</span></div>';
-    }).join('');
-    var playerCard =
-      '<aside class="player">' +
-        '<span class="player__tag">' + esc(pl.cardLabel || 'PLAYER CARD') + '</span>' +
-        '<div class="player__who">' +
-          photo +
-          '<span class="player__id"><span class="player__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
-          '<span class="player__cl">CLASS <b>' + esc(t(pl.class, lang)) + '</b></span>' +
-          (has(pl.meta, lang) ? '<span class="player__mt">' + esc(t(pl.meta, lang)) + '</span>' : '') +
-          '</span>' +
-        '</div>' +
-        (specs ? '<div class="player__specs">' + specs + '</div>' : '') +
-      '</aside>';
+    var altTxt = t(pl.photoAlt, lang) || t(c.meta.name, lang);
+    var playerCard = photoSrc
+      ? '<figure class="portrait"><img src="' + esc(base + photoSrc) + '" alt="' + esc(altTxt) + '" loading="lazy"></figure>'
+      : '<figure class="portrait portrait--empty" role="img" aria-label="' + esc(altTxt) + '">' + GHOST + '</figure>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
