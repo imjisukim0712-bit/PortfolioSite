@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="ko" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>김지수 · 게임 기획자 포트폴리오</title>
+<meta name="description" content="문제를 정면으로 마주하는 게임 기획자 김지수의 포트폴리오.">
+<meta name="theme-color" content="#fdfcfe">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 36'><path fill='%23ab9ff2' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/><ellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/><ellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<style>
+@charset "UTF-8";
+/* ==========================================================================
+   김지수 · 게임 기획자 포트폴리오
+   Style : "Phantom" (lavender · aubergine) · Pretendard · light/dark
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Phantom palette */
+  --aubergine: #3c315b;
+  --ghost-lavender: #e2dffe;
+  --periwinkle: #ab9ff2;
+  --cornflower: #4a87f2;
+  --buttercream: #ffffc4;
+  --blush: #ffdadc;
+  --mint: #2ec08b;
+  --paper: #fdfcfe;
+  --obsidian: #1c1c1c;
+  --fog: #86848d;
+  --ash: #e9e8ea;
+  --bone: #f4f2f4;
+
+  /* Semantic — LIGHT (default) */
+  --bg:          #fdfcfe;
+  --bg-elev:     #f4f2f4;
+  --surface:     #fdfcfe;
+  --surface-2:   #f4f2f4;
+  --border:      #e6e4e7;
+  --border-2:    #d8d6dc;
+  --text:        #1c1c1c;
+  --text-muted:  #6a6675;
+  --heading:     #3c315b;
+  --accent:      #6c5ce0;        /* '정면' 강조 (밝은 배경용 진한 보라) */
+  --accent-soft: #ab9ff2;
+  --cta:         #e2dffe;
+  --cta-text:    #3c315b;
+  --cta-hover:   #ab9ff2;
+  --ghost-c:     #ab9ff2;
+  --glow:        rgb(226 223 254);
+
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  --font-mono: 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
+
+  --tracking: -0.025em;
+
+  --text-caption: 13px;
+  --text-body-sm: 15px;
+  --text-body: 16px;
+  --text-subheading: clamp(17px, 1.2vw + 14px, 20px);
+  --text-heading-sm: clamp(19px, 1.6vw + 15px, 24px);
+  --text-heading: clamp(23px, 2.6vw + 16px, 30px);
+  --text-heading-lg: clamp(30px, 5vw + 12px, 56px);
+  --text-display: clamp(40px, 7vw + 12px, 96px);
+
+  --gutter: 20px;
+  --section-pad-y: 64px;
+  --card-pad: 24px;
+  --page-max: 1200px;
+
+  --radius-card: 24px;
+  --radius-pill: 100px;
+  --radius-lg: 32px;
+
+  --shadow-sm: var(--glow) 0 0 4px 0;
+  --shadow-card: 0 1px 2px rgba(28,28,28,.04), 0 8px 24px rgba(60,49,91,.06);
+
+  --nav-h: 60px;
+  color-scheme: light;
+}
+
+@media (min-width: 768px) { :root { --gutter: 32px; --section-pad-y: 96px; --card-pad: 32px; } }
+@media (min-width: 1080px){ :root { --gutter: 40px; --section-pad-y: 120px; --card-pad: 40px; } }
+
+/* Semantic — DARK */
+:root[data-theme="dark"] {
+  --bg:          #16121f;
+  --bg-elev:     #1f1a2b;
+  --surface:     #221c30;
+  --surface-2:   #2a2340;
+  --border:      #37304c;
+  --border-2:    #4a4266;
+  --text:        #ece9f5;
+  --text-muted:  #9a94ac;
+  --heading:     #e2dffe;
+  --accent:      #c3b8ff;
+  --accent-soft: #ab9ff2;
+  --cta:         #ab9ff2;
+  --cta-text:    #16121f;
+  --cta-hover:   #c3b8ff;
+  --ghost-c:     #ab9ff2;
+  --glow:        rgb(120 104 200 / .5);
+  --shadow-card: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 24px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  letter-spacing: var(--tracking);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+  transition: background-color .3s ease, color .3s ease;
+}
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+h1, h2, h3, h4 { font-weight: 350; letter-spacing: var(--tracking); color: var(--heading); }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; background: none; cursor: pointer; -webkit-appearance: none; appearance: none; }
+::selection { background: var(--ghost-lavender); color: var(--aubergine); }
+:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 3px; border-radius: 4px; }
+
+.skip-link {
+  position: absolute; left: 16px; top: -100px; z-index: 200;
+  padding: 12px 24px; border-radius: var(--radius-pill);
+  background: var(--cta); color: var(--cta-text); font-size: var(--text-body-sm);
+  transition: top .2s ease;
+}
+.skip-link:focus { top: calc(env(safe-area-inset-top, 0px) + 16px); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* --------------------------------------------------------------------------
+   3. Layout primitives
+   -------------------------------------------------------------------------- */
+.wrap {
+  width: 100%; max-width: var(--page-max); margin-inline: auto;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+.section { padding-block: var(--section-pad-y); }
+.section--elev { background: var(--bg-elev); }
+
+.section__head { max-width: 46rem; margin-bottom: var(--spacing-48, 48px); }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  background: var(--cta); color: var(--cta-text);
+  font-size: var(--text-caption); line-height: 1.35; letter-spacing: .02em; white-space: nowrap;
+}
+.eyebrow__num { opacity: .55; font-variant-numeric: tabular-nums; }
+.section__title { font-size: var(--text-heading-lg); line-height: 1.14; letter-spacing: -0.03em; text-wrap: balance; }
+.section__lead { margin-top: 20px; max-width: 42rem; font-size: var(--text-subheading); line-height: 1.55; color: var(--text-muted); }
+.muted { color: var(--text-muted); }
+
+.grid { display: grid; gap: 16px; }
+@media (min-width: 700px)  { .grid--2 { grid-template-columns: repeat(2, 1fr); } .grid--3 { grid-template-columns: repeat(2, 1fr); } .grid { gap: 24px; } }
+@media (min-width: 1000px) { .grid--3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* --------------------------------------------------------------------------
+   4. Buttons, tags, badges
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 14px 28px;
+  border: 1px solid transparent; border-radius: var(--radius-pill);
+  font-size: var(--text-body); font-weight: 350; line-height: 1.2; letter-spacing: var(--tracking);
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  touch-action: manipulation;
+}
+.btn:active { transform: scale(.97); }
+.btn--primary { background: var(--cta); color: var(--cta-text); box-shadow: var(--shadow-sm); }
+.btn--primary:hover { background: var(--cta-hover); }
+.btn--outline { border-color: var(--border-2); color: var(--heading); background: var(--surface); }
+.btn--outline:hover { border-color: var(--accent-soft); }
+.btn--sm { min-height: 40px; padding: 10px 20px; font-size: var(--text-body-sm); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+.link-more {
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px;
+  border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text);
+  font-size: var(--text-body-sm); line-height: 1.2; transition: background-color .18s ease, transform .18s ease;
+}
+.link-more:hover { background: var(--cta-hover); }
+.link-more:active { transform: scale(.97); }
+.link-more .arrow { transition: transform .18s ease; }
+.link-more:hover .arrow { transform: translate(2px, -2px); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  display: inline-block; padding: 6px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius-pill); background: var(--surface);
+  font-size: var(--text-caption); line-height: 1.35; color: var(--heading);
+}
+.tag--lavender   { background: var(--ghost-lavender); border-color: transparent; color: var(--aubergine); }
+.tag--butter     { background: var(--buttercream); border-color: transparent; color: var(--obsidian); }
+.tag--blush      { background: var(--blush); border-color: transparent; color: var(--obsidian); }
+.tag--cornflower { background: var(--cornflower); border-color: transparent; color: var(--paper); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+  border-radius: var(--radius-pill); background: var(--mint); color: #fff;
+  font-size: var(--text-caption); line-height: 1.35;
+}
+.badge__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+/* --------------------------------------------------------------------------
+   5. Ghost mascot
+   -------------------------------------------------------------------------- */
+.ghost { display: inline-block; width: .78em; height: .86em; color: var(--ghost-c); vertical-align: -.08em; flex: none; }
+.ghost--float { animation: bob 3.6s ease-in-out infinite; }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8%)} }
+
+/* 큰 고스트 일러스트 (사진 자리 대체) */
+.ghost-art {
+  position: relative; width: 100%; max-width: 380px; aspect-ratio: 4 / 5;
+  border-radius: var(--radius-card); background: var(--bg-elev);
+  border: 1px solid var(--border); display: grid; place-items: center; overflow: hidden;
+}
+.ghost-art::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 70% 20%, color-mix(in srgb, var(--periwinkle) 22%, transparent), transparent 60%);
+}
+.ghost-art .ghost { width: 42%; height: auto; aspect-ratio: 32/36; position: relative; }
+
+/* --------------------------------------------------------------------------
+   6. Header (collapsed, cursor-responsive)
+   -------------------------------------------------------------------------- */
+.nav-wrap {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 10px;
+  pointer-events: none;
+}
+.nav {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; max-width: var(--page-max);
+  padding: 6px 6px 6px 16px;
+  border: 1px solid var(--border); border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(14px); backdrop-filter: saturate(180%) blur(14px);
+  transition: max-width .38s cubic-bezier(.2,.8,.3,1), padding .3s ease, box-shadow .3s ease;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .nav { background: var(--bg); } }
+
+.nav__logo { display: inline-flex; align-items: center; gap: 8px; padding-right: 8px; min-width: 0; font-size: var(--text-body-sm); color: var(--heading); white-space: nowrap; }
+.nav__logo .ghost { width: 22px; height: 24px; }
+.nav__logo-en { display: none; color: var(--text-muted); font-size: var(--text-caption); }
+@media (min-width: 560px) { .nav__logo-en { display: inline; } }
+
+.nav__menu { display: none; }
+@media (min-width: 1000px) {
+  .nav__menu { display: flex; align-items: center; gap: 2px; margin-inline: auto; }
+  .nav__link { display: inline-flex; align-items: center; gap: 5px; padding: 9px 15px; border-radius: var(--radius-pill); font-size: var(--text-body-sm); color: var(--heading); white-space: nowrap; transition: background-color .18s ease; }
+  .nav__link:hover { background: var(--surface-2); }
+  .nav__link.is-active { background: var(--cta); color: var(--cta-text); }
+  .nav__link .chev { width: 4px; height: 7px; opacity: .5; flex: none; }
+}
+.nav__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+@media (min-width: 1000px) { .nav__actions { margin-left: 0; } }
+
+/* 접힘/펼침 — 데스크톱: 좁게 접혀 있다가 hover/focus 시 펼침 */
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
+  background: var(--surface-2); color: var(--heading); transition: background-color .18s ease;
+}
+.icon-btn:hover { background: var(--ash); }
+:root[data-theme="dark"] .icon-btn:hover { background: var(--border); }
+
+.lang-toggle { display: inline-flex; padding: 3px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-2); }
+.lang-toggle__btn { padding: 7px 10px; border-radius: var(--radius-pill); font-size: var(--text-caption); color: var(--text-muted); line-height: 1; transition: background-color .18s ease, color .18s ease; }
+.lang-toggle__btn[aria-pressed="true"] { background: var(--aubergine); color: var(--paper); }
+:root[data-theme="dark"] .lang-toggle__btn[aria-pressed="true"] { background: var(--periwinkle); color: var(--aubergine); }
+
+.nav__cta { display: none; }
+@media (min-width: 620px) { .nav__cta { display: inline-flex; } }
+
+.nav__burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--heading); }
+@media (min-width: 1000px) { .nav__burger { display: none; } }
+.nav__burger-lines { display: block; width: 18px; height: 10px; position: relative; }
+.nav__burger-lines::before, .nav__burger-lines::after { content: ''; position: absolute; left: 0; right: 0; height: 1.5px; border-radius: 2px; background: currentColor; transition: transform .24s ease, top .24s ease, bottom .24s ease; }
+.nav__burger-lines::before { top: 0; } .nav__burger-lines::after { bottom: 0; }
+.nav__burger[aria-expanded="true"] .nav__burger-lines::before { top: 4px; transform: rotate(45deg); }
+.nav__burger[aria-expanded="true"] .nav__burger-lines::after { bottom: 4px; transform: rotate(-45deg); }
+
+/* 헤더 펼침 손잡이 (와이어프레임의 중앙 chevron) */
+.nav-handle {
+  position: fixed; top: calc(env(safe-area-inset-top, 0px) + var(--nav-h) + 6px);
+  left: 50%; transform: translateX(-50%); z-index: 99;
+  display: none; align-items: center; justify-content: center;
+  width: 56px; height: 26px; border-radius: 0 0 var(--radius-pill) var(--radius-pill);
+  background: var(--surface-2); color: var(--heading); border: 1px solid var(--border); border-top: 0;
+  transition: transform .3s ease, opacity .3s ease;
+}
+/* nav-handle 미사용 */ .nav-handle { display: none !important; }
+.nav-handle svg { width: 16px; height: 16px; transition: transform .3s ease; }
+
+/* Mobile sheet */
+.sheet {
+  position: fixed; inset: 0; z-index: 90; display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 12px max(var(--gutter), env(safe-area-inset-left,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(var(--gutter), env(safe-area-inset-right,0px));
+  background: color-mix(in srgb, var(--aubergine) 28%, transparent);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  opacity: 0; visibility: hidden; transition: opacity .24s ease, visibility .24s ease; overscroll-behavior: contain;
+}
+.sheet.is-open { opacity: 1; visibility: visible; }
+.sheet__panel { max-height: calc(100svh - 120px); overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 24px; border-radius: var(--radius-lg); background: var(--surface); transform: translateY(16px); transition: transform .28s cubic-bezier(.2,.8,.3,1); }
+.sheet.is-open .sheet__panel { transform: translateY(0); }
+.sheet__link { display: flex; align-items: baseline; gap: 12px; padding: 14px 8px; border-bottom: 1px solid var(--border); font-size: var(--text-heading-sm); color: var(--heading); }
+.sheet__link:last-of-type { border-bottom: 0; }
+.sheet__link.is-active { color: var(--accent); }
+.sheet__num { font-size: var(--text-caption); color: var(--accent-soft); font-variant-numeric: tabular-nums; }
+.sheet__foot { margin-top: 16px; display: grid; gap: 8px; }
+.sheet__foot .btn { width: 100%; }
+
+/* --------------------------------------------------------------------------
+   7. Page shell (fixed header offset)
+   -------------------------------------------------------------------------- */
+main { display: block; padding-top: calc(var(--nav-h) + 24px); }
+
+/* --------------------------------------------------------------------------
+   8. HERO (home / resume)
+   -------------------------------------------------------------------------- */
+.hero {
+  min-height: calc(100svh - var(--nav-h) - 24px);
+  display: flex; align-items: center; padding-block: 40px 32px;
+}
+.hero__grid { display: grid; gap: 32px; align-items: center; width: 100%; }
+@media (min-width: 900px) { .hero__grid { grid-template-columns: 1.4fr 1fr; gap: 48px; } }
+
+.hero__eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 7px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--text-caption); letter-spacing: .04em; color: var(--heading); }
+.hero__title { font-size: var(--text-display); line-height: 1.1; letter-spacing: -0.035em; color: var(--heading); text-wrap: balance; }
+.hero__title .accent { color: var(--accent); }
+.hero__title .name { color: var(--accent); }
+.hero__sub { margin-top: 24px; max-width: 34rem; font-size: var(--text-subheading); line-height: 1.6; color: var(--text-muted); }
+.hero__media { justify-self: center; }
+@media (min-width: 900px) { .hero__media { justify-self: end; } }
+.hero__note { margin-top: 40px; display: inline-flex; align-items: center; gap: 8px; font-size: var(--text-caption); color: var(--text-muted); letter-spacing: .04em; }
+.hero__note svg { width: 16px; height: 16px; animation: bob 2.4s ease-in-out infinite; }
+
+/* --------------------------------------------------------------------------
+   9. HOME — 카드 뽑기
+   -------------------------------------------------------------------------- */
+/* 홈: 히어로 + 카드 뽑기를 한 화면에 (데스크톱/태블릿) */
+[data-page="home"] main { padding-top: calc(var(--nav-h) + 12px); }
+.home-screen { display: flex; flex-direction: column; }
+@media (min-width: 768px) {
+  .home-screen {
+    min-height: calc(100svh - var(--nav-h) - 24px);
+    justify-content: center;
+    gap: clamp(16px, 3vh, 40px);
+  }
+  .home-screen .hero { min-height: 0; padding-block: 0; }
+  .home-screen .draw { padding-block: 0; }
+  /* 한 화면에 맞도록 히어로·일러스트·덱 크기 축소 */
+  .home-screen .hero__title { font-size: clamp(34px, 3.4vw + 14px, 60px); }
+  .home-screen .ghost-art { max-width: min(300px, 30vh); }
+  .home-screen .draw__deck { width: clamp(140px, 14vw, 170px); }
+}
+@media (min-width: 768px) and (max-height: 860px) {
+  .home-screen .hero__sub { display: none; }        /* 낮은 화면에선 부제 숨겨 공간 확보 */
+  .home-screen .ghost-art { max-width: min(240px, 26vh); }
+}
+.draw { padding-block: var(--section-pad-y); }
+.draw__stage {
+  display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap;
+}
+.draw__deck {
+  position: relative; flex: none; width: 180px; aspect-ratio: 3 / 4;
+  border: 0; background: none; cursor: pointer; touch-action: manipulation;
+}
+.draw__deck-card {
+  position: absolute; inset: 0; border-radius: var(--radius-card);
+  background: var(--aubergine); border: 1px solid var(--aubergine);
+  display: grid; place-items: center;
+  transition: transform .25s cubic-bezier(.2,.8,.3,1);
+}
+.draw__deck-card:nth-child(1) { transform: rotate(-6deg) translate(-6px, 4px); opacity: .5; }
+.draw__deck-card:nth-child(2) { transform: rotate(4deg) translate(4px, 2px); opacity: .75; }
+.draw__deck-card:nth-child(3) { transform: none; }
+.draw__deck:hover .draw__deck-card:nth-child(1) { transform: rotate(-10deg) translate(-12px, 2px); }
+.draw__deck:hover .draw__deck-card:nth-child(2) { transform: rotate(7deg) translate(9px, 0); }
+.draw__deck:active .draw__deck-card:nth-child(3) { transform: scale(.97); }
+.draw__deck-face { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--paper); padding: 0 14px; }
+.draw__deck-face .ghost { display: block; width: 40px; height: 44px; color: var(--periwinkle); margin: 0 0 14px; }
+.draw__deck-label { font-size: var(--text-body-sm); font-weight: 350; }
+.draw__deck-hint { margin-top: 6px; font-size: 11px; opacity: .6; line-height: 1.4; }
+
+.draw__cards { flex: 1 1 320px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; align-content: start; }
+@media (min-width: 720px) { .draw__cards { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; } }
+
+.draw__cards { perspective: 1200px; }
+.draw-card {
+  position: relative; aspect-ratio: 3 / 4; min-width: 0; text-decoration: none;
+  transition: transform .2s ease;
+}
+.draw-card__inner {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  animation: dealFlip .62s cubic-bezier(.2, .8, .3, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.draw-card__front, .draw-card__back {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  padding: 18px; border-radius: var(--radius-card);
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+.draw-card__front { border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-card); }
+.draw-card__back {
+  transform: rotateY(180deg); align-items: center; justify-content: center;
+  background: var(--aubergine); border: 1px solid var(--aubergine);
+  background-image: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--periwinkle) 22%, transparent), transparent 60%);
+}
+.draw-card__back .ghost { width: 46px; height: auto; aspect-ratio: 32/36; color: var(--periwinkle); }
+.draw-card:hover { transform: translateY(-6px); }
+.draw-card:hover .draw-card__front { border-color: var(--accent-soft); }
+@keyframes dealFlip {
+  0%   { opacity: 0; transform: translateY(30px) scale(.9) rotateY(180deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0); }
+}
+.draw-card__cat { font-size: var(--text-caption); color: var(--accent-soft); }
+.draw-card__title { margin-top: auto; font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); overflow-wrap: anywhere; }
+.draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
+.draw-card__go { margin-top: 12px; font-size: var(--text-caption); color: var(--accent); }
+.draw__empty { flex: 1 1 320px; display: grid; place-items: center; min-height: 160px; border: 1px dashed var(--border); border-radius: var(--radius-card); color: var(--text-muted); font-size: var(--text-body-sm); padding: 24px; text-align: center; }
+/* 덱 클릭 반응 (리플/셔플) */
+.draw__deck.is-draw .draw__deck-card:nth-child(3) { animation: deckPress .34s cubic-bezier(.2,.8,.3,1); }
+.draw__deck.is-draw .draw__deck-card:nth-child(2) { animation: deckRiffle .34s ease; }
+@keyframes deckPress { 0%{transform:scale(1)} 40%{transform:scale(.94) translateY(3px)} 100%{transform:none} }
+@keyframes deckRiffle { 0%{transform:rotate(4deg) translate(4px,2px)} 45%{transform:rotate(10deg) translate(16px,-4px)} 100%{transform:rotate(4deg) translate(4px,2px)} }
+.draw-card__cat { font-size: var(--text-caption); color: var(--accent-soft); }
+.draw-card__title { margin-top: auto; font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); }
+.draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
+.draw-card__go { margin-top: 12px; font-size: var(--text-caption); color: var(--accent); }
+.draw__empty { flex: 1 1 320px; display: grid; place-items: center; min-height: 160px; border: 1px dashed var(--border); border-radius: var(--radius-card); color: var(--text-muted); font-size: var(--text-body-sm); padding: 24px; text-align: center; }
+
+/* --------------------------------------------------------------------------
+   10. Cards (generic) — about/skill/stat/play
+   -------------------------------------------------------------------------- */
+.card { padding: var(--card-pad); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
+.card__index { display: inline-block; margin-bottom: 16px; font-size: var(--text-caption); color: var(--accent-soft); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+.card__title { font-size: var(--text-heading-sm); line-height: 1.3; }
+.card__body { margin-top: 12px; font-size: var(--text-body-sm); line-height: 1.65; color: var(--text-muted); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (min-width: 860px) { .stat-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+.stat { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+.stat__num { font-size: var(--text-heading); line-height: 1.1; color: var(--heading); font-variant-numeric: tabular-nums; }
+.stat__num .unit { font-size: .5em; color: var(--accent-soft); margin-left: 2px; }
+.stat__label { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.4; }
+
+/* skills */
+.skill-card { display: flex; flex-direction: column; }
+.skill-card .card__body { flex: 1 1 auto; }
+.tool-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.tool { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: 60px; }
+.tool__ic {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--heading);
+}
+.tool__ic svg { width: 24px; height: 24px; display: block; }
+.tool__nm { font-size: 10.5px; color: var(--text-muted); text-align: center; line-height: 1.25; letter-spacing: -0.01em; }
+
+/* --------------------------------------------------------------------------
+   11. Timeline (career)
+   -------------------------------------------------------------------------- */
+.timeline { position: relative; display: grid; gap: 24px; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
+.tl-item { position: relative; }
+.tl-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--bg); background: var(--accent-soft); box-shadow: 0 0 0 1px var(--border); }
+.tl-item--now::before { background: var(--mint); }
+.tl-date { font-size: var(--text-caption); color: var(--text-muted); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.tl-role { margin-top: 4px; font-size: var(--text-heading-sm); line-height: 1.3; }
+.tl-org { margin-top: 4px; font-size: var(--text-body-sm); color: var(--accent-soft); }
+.tl-body { margin-top: 12px; color: var(--text-muted); font-size: var(--text-body-sm); line-height: 1.65; }
+.tl-tags { margin-top: 16px; }
+
+/* --------------------------------------------------------------------------
+   12. PROJECTS page — tabs + grid
+   -------------------------------------------------------------------------- */
+.proj-head { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-bottom: 40px; }
+.proj-title { font-size: var(--text-heading-lg); line-height: 1.14; letter-spacing: -.03em; margin-right: auto; }
+.tabs { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { white-space: nowrap; flex: none; }
+.tabs { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-2); }
+.tab { padding: 9px 20px; border-radius: var(--radius-pill); font-size: var(--text-body-sm); color: var(--text-muted); line-height: 1; transition: background-color .18s ease, color .18s ease; }
+.tab.is-active { background: var(--aubergine); color: var(--paper); }
+:root[data-theme="dark"] .tab.is-active { background: var(--periwinkle); color: var(--aubergine); }
+
+.proj-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+@media (min-width: 700px)  { .proj-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; } }
+@media (min-width: 1000px) { .proj-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+@media (min-width: 1280px) { .proj-grid { grid-template-columns: repeat(5, minmax(0,1fr)); } }
+
+.proj-card { display: flex; flex-direction: column; min-width: 0; aspect-ratio: 3 / 4; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); transition: border-color .2s ease, transform .2s ease; }
+.proj-card:hover { border-color: var(--accent-soft); transform: translateY(-4px); }
+.proj-card__cat { font-size: var(--text-caption); color: var(--accent-soft); }
+.proj-card__title { margin-top: auto; font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); overflow-wrap: anywhere; }
+.proj-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
+.proj-card__period { margin-top: 10px; font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.proj-empty { grid-column: 1 / -1; padding: 48px 24px; border: 1px dashed var(--border); border-radius: var(--radius-card); text-align: center; color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   13. PROJECT DETAIL — left info + right media
+   -------------------------------------------------------------------------- */
+.detail { display: grid; gap: 32px; }
+@media (min-width: 960px) { .detail { grid-template-columns: minmax(280px, 380px) 1fr; gap: 48px; align-items: start; } }
+
+.detail__info { min-width: 0; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--text-body-sm); color: var(--text-muted); transition: border-color .18s ease, color .18s ease; }
+.back-link:hover { border-color: var(--accent-soft); color: var(--heading); }
+.detail__title { font-size: var(--text-heading-lg); line-height: 1.1; letter-spacing: -.03em; }
+.detail__period { margin-top: 10px; font-size: var(--text-body-sm); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.detail__genres { margin-top: 24px; }
+.detail__meta { margin-top: 24px; display: grid; gap: 14px; }
+.detail__meta-row { border-left: 2px solid var(--accent-soft); padding-left: 14px; }
+.detail__meta-k { font-size: var(--text-caption); color: var(--text-muted); }
+.detail__meta-v { margin-top: 2px; font-size: var(--text-body-sm); color: var(--text); line-height: 1.5; }
+.detail__learned { margin-top: 32px; }
+.detail__learned-title { font-size: var(--text-body-sm); color: var(--heading); margin-bottom: 12px; }
+.bullets { display: grid; gap: 10px; }
+.bullets li { position: relative; padding-left: 20px; font-size: var(--text-body-sm); line-height: 1.6; color: var(--text-muted); }
+.bullets li::before { content: ''; position: absolute; left: 3px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-soft); }
+.bullets b { font-weight: 400; color: var(--heading); }
+.detail__stores { margin-top: 32px; display: flex; gap: 12px; align-items: center; }
+.store-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--heading); transition: border-color .18s ease; }
+.store-link:hover { border-color: var(--accent-soft); }
+.store-link[aria-disabled="true"] { opacity: .35; pointer-events: none; }
+.store-link svg { width: 22px; height: 22px; }
+
+.detail__media { min-width: 0; }
+.media-box { width: 100%; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); background: var(--bg-elev); }
+.media-box--empty { aspect-ratio: 16 / 10; display: grid; place-items: center; padding: 32px; text-align: center; color: var(--text-muted); font-size: var(--text-body-sm); line-height: 1.6; }
+.media-box iframe, .media-box video, .media-box img { display: block; width: 100%; border: 0; }
+.media-box--embed { aspect-ratio: 16 / 9; }
+.media-box--embed iframe { width: 100%; height: 100%; }
+
+.detail__blocks { margin-top: 48px; display: grid; gap: 32px; }
+.block { display: grid; gap: 16px; }
+@media (min-width: 720px) { .block { grid-template-columns: 200px 1fr; gap: 32px; } }
+.block__label { font-size: var(--text-heading-sm); color: var(--heading); }
+.block__label small { display: block; margin-top: 6px; font-size: var(--text-caption); color: var(--accent-soft); letter-spacing: .06em; }
+.block__body p { font-size: var(--text-body); line-height: 1.7; color: var(--text); margin-bottom: 12px; }
+.block__body p:last-child { margin-bottom: 0; }
+
+.pager { display: grid; gap: 12px; margin-top: 48px; }
+@media (min-width: 700px) { .pager { grid-template-columns: repeat(2, 1fr); } }
+.pager__item { display: block; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); transition: border-color .2s ease; }
+.pager__item:hover { border-color: var(--accent-soft); }
+.pager__dir { font-size: var(--text-caption); color: var(--accent-soft); }
+.pager__title { margin-top: 6px; font-size: var(--text-subheading); color: var(--heading); }
+
+/* --------------------------------------------------------------------------
+   14. PLAY page
+   -------------------------------------------------------------------------- */
+.play { display: grid; gap: 16px; }
+@media (min-width: 700px)  { .play { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+@media (min-width: 1000px) { .play { grid-template-columns: repeat(3, 1fr); } }
+.play-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
+.play-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.play-card__name { font-size: var(--text-subheading); line-height: 1.3; }
+.play-card__hours { flex: none; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--surface-2); font-size: var(--text-caption); color: var(--heading); font-variant-numeric: tabular-nums; }
+.play-card__genre { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); }
+.play-card__note { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-size: var(--text-body-sm); line-height: 1.65; color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   15. COVER LETTER (empty state)
+   -------------------------------------------------------------------------- */
+.cover-empty { max-width: 34rem; margin: 40px auto; padding: 48px 32px; border: 1px dashed var(--border); border-radius: var(--radius-card); text-align: center; }
+.cover-empty .ghost { width: 48px; height: 54px; margin: 0 auto 20px; }
+.cover-empty p { color: var(--text-muted); font-size: var(--text-body-sm); line-height: 1.6; }
+.cover-block { max-width: 46rem; }
+.cover-block + .cover-block { margin-top: 40px; }
+.cover-block h3 { font-size: var(--text-heading-sm); margin-bottom: 12px; }
+.cover-block p { font-size: var(--text-body); line-height: 1.75; color: var(--text); margin-bottom: 14px; }
+
+/* --------------------------------------------------------------------------
+   16. Footer + to-top
+   -------------------------------------------------------------------------- */
+.footer { margin-top: var(--section-pad-y); padding-block: 40px calc(env(safe-area-inset-bottom,0px) + 40px); border-top: 1px solid var(--border); background: var(--bg-elev); }
+.footer__inner { display: grid; gap: 24px; }
+@media (min-width: 760px) { .footer__inner { grid-template-columns: 1fr auto; align-items: center; } }
+.footer__brand { display: flex; align-items: center; gap: 10px; font-size: var(--text-body-sm); color: var(--heading); }
+.footer__brand .ghost { width: 22px; height: 24px; }
+.footer__tagline { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); }
+.footer__links { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer__copy { margin-top: 20px; font-size: var(--text-caption); color: var(--text-muted); }
+
+.to-top { position: fixed; right: max(16px, env(safe-area-inset-right,0px)); bottom: calc(env(safe-area-inset-bottom,0px) + 16px); z-index: 80; display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--surface) 90%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--heading); opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .24s ease, transform .24s ease, visibility .24s ease; }
+.to-top.is-shown { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* --------------------------------------------------------------------------
+   17. Reveal + reduced motion
+   -------------------------------------------------------------------------- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s cubic-bezier(.2,.8,.3,1), transform .6s cubic-bezier(.2,.8,.3,1); will-change: opacity, transform; }
+.reveal.is-visible { opacity: 1; transform: none; }
+.no-js .reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  .draw-card__inner { animation: none; }
+  .draw-card__back { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   18. i18n helper + placeholder + preview banner
+   -------------------------------------------------------------------------- */
+.i18n-en { display: none; }
+html[lang="en"] .i18n-ko { display: none; }
+html[lang="en"] .i18n-en { display: inline; }
+.is-placeholder { opacity: .55; cursor: default; }
+.is-placeholder:active { transform: none; }
+
+.preview-banner { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom,0px) + 16px); transform: translateX(-50%); z-index: 120; max-width: calc(100vw - 32px); padding: 10px 20px; border-radius: var(--radius-pill); background: var(--aubergine); color: var(--paper); font-size: var(--text-caption); line-height: 1.4; text-align: center; box-shadow: var(--shadow-sm); }
+.preview-banner a { color: var(--ghost-lavender); text-decoration: underline; margin-left: 6px; }
+
+</style>
+</head>
+<body data-page="home">
+
+<a class="skip-link" href="#home">본문으로 건너뛰기</a>
+
+<div class="nav-wrap">
+  <nav class="nav" aria-label="주요 메뉴" data-slot="nav"></nav>
+</div>
+
+<div class="sheet" id="mobile-menu" data-menu aria-hidden="true">
+  <div class="sheet__panel" data-slot="sheet"></div>
+</div>
+
+<main id="main" data-slot="main"></main>
+
+<noscript><div class="wrap" style="padding:120px 20px 64px"><p style="line-height:1.6">이 페이지는 자바스크립트로 내용을 불러옵니다. 브라우저에서 자바스크립트를 켜 주세요.</p></div></noscript>
+
+<footer class="footer"><div class="wrap" data-slot="footer"></div></footer>
+
+<button type="button" class="to-top" data-to-top aria-label="맨 위로">
+  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 12V3M2.6 7.2 7 2.6l4.4 4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+/* ===== content ===== */
+/* ============================================================================
+   포트폴리오 내용 파일  ·  이 파일만 고치면 사이트 전체가 바뀝니다.
+   ----------------------------------------------------------------------------
+   · 모든 문장은 { ko: "한국어", en: "English" } 형태입니다.
+   · en 을 비워 두면 영어 화면에서도 한국어가 그대로 나옵니다.
+   · edit.html 편집기로 화면에서 고칠 수도 있습니다.
+   · 대괄호 [ ] 안의 항목은 자유롭게 추가·삭제·순서 변경할 수 있습니다.
+   ========================================================================== */
+
+window.PORTFOLIO_CONTENT = {
+
+  /* ── 기본 정보 ─────────────────────────────────────────────────────────── */
+  meta: {
+    name:       { ko: "김지수",        en: "Jisu Kim" },
+    role:       { ko: "게임 기획자",   en: "Game Designer" },
+    resumeUrl:  "assets/resume/jisu-kim-resume.pdf",
+    email:      "",
+    github:     "https://github.com/imjisukim0712-bit"
+  },
+
+  /* ── 헤더 목차 (페이지 이름) ─────────────────────────────────────────── */
+  nav: {
+    home:    { ko: "홈",         en: "Home" },
+    resume:  { ko: "이력서",     en: "Résumé" },
+    cover:   { ko: "자기소개서", en: "About Me" },
+    projects:{ ko: "프로젝트",   en: "Projects" },
+    play:    { ko: "게임플레이", en: "Play Log" }
+  },
+
+  /* ── 공통 히어로 문구 (홈 · 이력서에서 공유) ─────────────────────────── */
+  hero: {
+    // <span class="accent">보라색</span> 을 쓸 수 있습니다.
+    titleHtml: {
+      ko: '문제를 <span class="accent">정면</span>으로 <br> 마주하는 기획자.',
+      en: 'I\'m <span class="name">Jisu Kim</span>,<br>a designer who walks <span class="accent">straight into</span> the problem'
+    }
+  },
+
+  /* ── 홈 ────────────────────────────────────────────────────────────────
+     하단 카드는 개수를 자유롭게 늘리거나 줄일 수 있습니다.
+     link 예시: "resume.html", "projects.html", "play.html", "cover-letter.html"
+     ────────────────────────────────────────────────────────────────────── */
+  home: {
+    sub: { ko: "“재미없다”는 한마디를 측정 가능한 문장으로 바꾸고, 로그에서 원인을 찾고, 빌드로 증명합니다.",
+           en: "I turn “it's not fun” into a measurable sentence, find the cause in the logs, and prove it in the build." },
+    ctaResume:   { ko: "이력서", en: "Résumé" },
+    ctaProjects: { ko: "포트폴리오", en: "Portfolio" },
+    // 하단 카드 뽑기 인터랙션 — 좌측 스택 버튼을 누르면 프로젝트가 랜덤으로 펼쳐집니다.
+    draw: {
+      label:   { ko: "프로젝트 뽑기", en: "Draw projects" },
+      hint:    { ko: "카드를 눌러 프로젝트로", en: "Tap a card to open it" },
+      count:   4   // 한 번에 펼칠 카드 수 (프로젝트가 더 적으면 있는 만큼)
+    }
+  },
+
+  /* ── 이력서 페이지 ──────────────────────────────────────────────────────
+     히어로 아래로 스크롤하면 숫자 요약 · 핵심역량 · 경력이 이어집니다.
+     ────────────────────────────────────────────────────────────────────── */
+  resume: {
+    heroNote: { ko: "아래로 스크롤하면 이력서 상세가 이어집니다", en: "Scroll down for the full résumé" },
+
+    stats: [
+      { num: "300K", unit: { ko: "+",  en: "+" },      label: { ko: "출시작 누적 다운로드",   en: "Total downloads" } },
+      { num: "7",    unit: { ko: "종", en: "titles" }, label: { ko: "스토어 · 스팀 출시작",   en: "Titles released" } },
+      { num: "60K",  unit: { ko: "+",  en: "+" },      label: { ko: "운영 참여 커뮤니티 회원", en: "Community members" } },
+      { num: "10",   unit: { ko: "년", en: "yrs" },    label: { ko: "게임을 만들어 온 기간",   en: "Making games since 2016" } }
+    ],
+
+    skills: {
+      title: { ko: "핵심역량", en: "Core Skills" },
+      lead:  { ko: "실제로 무언가를 만들거나, 문서로 남기거나, 검증하는 데 쓴 도구들입니다.",
+               en: "Tools I actually used to make, document, or verify a real project." },
+      cards: [
+        { title: { ko: "문서 도구", en: "Document tools" },
+          body:  { ko: "Figma, MS Office 활용 문서 작성. 문서 도구 자격증 보유.",
+                   en: "Writing docs with Figma and MS Office. Certified in office tools." },
+          tools: ["figma","office"] },
+        { title: { ko: "Obsidian", en: "Obsidian" },
+          body:  { ko: "문서 초안 작성과 분류, 플러그인 활용. AI를 활용한 문서 분류 자동화.",
+                   en: "Drafting and organising docs with plugins; AI-assisted auto-classification." },
+          tools: ["obsidian"] },
+        { title: { ko: "AI 활용", en: "AI" },
+          body:  { ko: "AI를 활용한 게임·영상·음악 제작. 챗봇 제작, 자료조사 자동화.",
+                   en: "Making games, video and music with AI; building chatbots, automating research." },
+          tools: ["ai"] },
+        { title: { ko: "협업 도구", en: "Collaboration tools" },
+          body:  { ko: "깃허브, 노션, 지라, 스프레드시트. 일정 관리·버전 관리 등 협업에 활용.",
+                   en: "GitHub, Notion, Jira, Spreadsheets — for scheduling, versioning and teamwork." },
+          tools: ["github","notion","jira","sheets"] },
+        { title: { ko: "개발 도구", en: "Development tools" },
+          body:  { ko: "유니티, 고도, 게임 메이커, 파이어베이스. 1인 및 팀 개발과 기획 도구로 활용.",
+                   en: "Unity, Godot, GameMaker, Firebase — for solo and team development and prototyping." },
+          tools: ["unity","godot","gamemaker","firebase"] }
+      ]
+    },
+
+    career: {
+      title: { ko: "경력 · 활동", en: "Career & Activity" },
+      lead:  { ko: "교육과 커뮤니티, 사이드 작업. 쓰고, 설명하고, 출시하는 일을 연습한 자리들입니다.",
+               en: "Education, communities and side work — where I practised writing, explaining and shipping." },
+      items: [
+        { now: true,
+          date: { ko: "2026.06 – 2026.12", en: "Jun – Dec 2026" },
+          role: { ko: "게임 기획자 과정 이수", en: "Game Design course" },
+          org:  { ko: "디벨로켓", en: "Develocket" },
+          body: { ko: "기획을 팀에 효과적으로 전달하는 프로세스를 배우고 있습니다.",
+                  en: "Learning an effective process for delivering a design to a team." },
+          tags: [ { ko: "기획 프로세스", en: "Design process" }, { ko: "문서 작성", en: "Documentation" }, { ko: "커뮤니케이션", en: "Communication" } ] },
+        { now: false,
+          date: { ko: "2026", en: "2026" },
+          role: { ko: "발표 스터디 리더", en: "Study group leader" },
+          org:  { ko: "기획자 모임 · 12인", en: "Designers' group · 12 members" },
+          body: { ko: "12인 규모 모임에서 매주 1회 기획서를 작성하고 발표합니다.",
+                  en: "Leading a 12-person group that writes and presents a design doc weekly." },
+          tags: [ { ko: "주 1회 기획서", en: "Weekly docs" }, { ko: "발표", en: "Presenting" }, { ko: "리더", en: "Leading" } ] },
+        { now: false,
+          date: { ko: "2021 – 2023", en: "2021 – 2023" },
+          role: { ko: "블로그 운영 · 게임 평론", en: "Blog & game writing" },
+          org:  { ko: "하라리 랩스 · 2인", en: "Harari Labs · 2 people" },
+          body: { ko: "2인 블로그에서 게임 리뷰·공략·평론을 작성했습니다. 월 3~5,000뷰.",
+                  en: "Reviews, guides and criticism on a two-person blog, 3,000–5,000 views/month." },
+          tags: [ { ko: "리뷰", en: "Reviews" }, { ko: "공략", en: "Guides" }, { ko: "평론", en: "Criticism" } ] },
+        { now: false,
+          date: { ko: "2019 – 현재", en: "2019 – present" },
+          role: { ko: "스탭 활동", en: "Staff member" },
+          org:  { ko: "KGMC · 회원 6만+ 인디게임 개발 카페", en: "KGMC · 60K+ indie dev community" },
+          body: { ko: "회원 6만 명 이상의 인디게임 개발 커뮤니티를 관리하고, 개발·교양 강좌를 작성합니다.",
+                  en: "Helping run a 60,000-member indie dev community and writing courses for it." },
+          tags: [ { ko: "커뮤니티 관리", en: "Community ops" }, { ko: "강좌 작성", en: "Course writing" }, { ko: "60K+", en: "60K+" } ] },
+        { now: false,
+          date: { ko: "2016 – 2018", en: "2016 – 2018" },
+          role: { ko: "인디게임 1인 개발", en: "Solo indie development" },
+          org:  { ko: "플레이스토어 5종 출시 · 총 20만 다운로드", en: "5 titles on Google Play · 200K+ downloads" },
+          body: { ko: "혼자 5종을 출시하며 파이프라인 전체를 익혔습니다.",
+                  en: "Five titles shipped alone, the whole pipeline learned the hard way." },
+          tags: [ { ko: "1인 개발", en: "Solo dev" }, { ko: "스토어 출시", en: "Store release" }, { ko: "200K+", en: "200K+" } ] }
+      ]
+    }
+  },
+
+  /* ── 자기소개서 페이지 (지금은 비워둠) ───────────────────────────────────
+     blocks 에 { heading, body } 를 추가하면 문단이 채워집니다.
+     ────────────────────────────────────────────────────────────────────── */
+  coverLetter: {
+    title: { ko: "자기소개서", en: "About Me" },
+    lead:  { ko: "곧 채울 예정입니다.", en: "Coming soon." },
+    blocks: []
+  },
+
+  /* ── 프로젝트 ───────────────────────────────────────────────────────────
+     category: "game"(게임) | "planning"(기획) — 프로젝트 페이지 탭 필터에 쓰입니다.
+     id 는 상세 페이지 주소가 됩니다 (영문 소문자·하이픈 권장).
+     detail 의 problem·approach·retrospective 를 비우면 "작성 예정"으로 표시됩니다.
+     media: 상세 페이지 우측 큰 영역. embed 에 URL 을 넣으면 그대로 삽입, 비우면 안내 문구.
+     ────────────────────────────────────────────────────────────────────── */
+  projects: {
+    tabs: {
+      all:      { ko: "전체",  en: "All" },
+      game:     { ko: "게임",  en: "Game" },
+      planning: { ko: "기획",  en: "Planning" }
+    },
+    title: { ko: "게임 프로젝트", en: "Projects" },
+    items: [
+      {
+        id: "league-of-defense",
+        category: "game",
+        title: { ko: "리그 오브 디펜스", en: "League of Defense" },
+        period:{ ko: "2020.01 ~ 2021.06", en: "Jan 2020 – Jun 2021" },
+        sub:   { ko: "모바일 타워디펜스 · 10만 다운로드", en: "Mobile tower defense · 100K+ downloads" },
+        genres:[ { ko: "타워디펜스", en: "Tower defense" }, { ko: "모바일", en: "Mobile" }, { ko: "전략", en: "Strategy" } ],
+        headcount: { ko: "3인", en: "3 people" },
+        myRole:    { ko: "PD · 개발", en: "PD · Development" },
+        status:    { ko: "플레이스토어 출시", en: "Released on Google Play" },
+        learned: [
+          { ko: "말은 전달 수단이 아니라는 것 — 처음으로 명세서를 썼습니다.", en: "Talking isn't a delivery format — I wrote my first spec." },
+          { ko: "팀이 함께 볼 문서가 생기자 같은 방향을 보기 시작했습니다.", en: "Once there was one shared doc, the team looked one way." },
+          { ko: "누적 10만 다운로드로 이어졌습니다.", en: "It reached 100K+ downloads." }
+        ],
+        links: { googlePlay: "", steam: "" },
+        media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } }
+      },
+      {
+        id: "comstock",
+        category: "game",
+        title: { ko: "컴스톡", en: "Comstock" },
+        period:{ ko: "2026.07 ~ 2026.09", en: "Jul – Sep 2026" },
+        sub:   { ko: "뱀서라이크 액션 · 스팀 출시 · 5인 팀", en: "Survivors-like · Steam · 5-person team" },
+        genres:[ { ko: "뱀서라이크", en: "Survivors-like" }, { ko: "액션", en: "Action" }, { ko: "PC", en: "PC" } ],
+        headcount: { ko: "5인", en: "5 people" },
+        myRole:    { ko: "PM · 기획 · 바이브 코딩", en: "PM · Design · Vibe coding" },
+        status:    { ko: "스팀 출시", en: "Released on Steam" },
+        learned: [
+          { ko: "PM으로 고정된 3개월 일정 안에서 스팀 출시까지 마쳤습니다.", en: "As PM, shipped to Steam within a fixed 3-month window." },
+          { ko: "기획을 AI 코딩으로 직접 프로토타입해 같은 주에 검증했습니다.", en: "Prototyped my own specs with AI coding, tested the same week." }
+        ],
+        links: { googlePlay: "", steam: "" },
+        media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } }
+      },
+      {
+        id: "indie-games",
+        category: "game",
+        title: { ko: "인디게임 개발 5종", en: "Five indie releases" },
+        period:{ ko: "2016 ~ 2018", en: "2016 – 2018" },
+        sub:   { ko: "1인 개발 · 플레이스토어 · 총 20만 다운로드", en: "Solo dev · Google Play · 200K+ total" },
+        genres:[ { ko: "키우기", en: "Idle" }, { ko: "캐주얼", en: "Casual" }, { ko: "모바일", en: "Mobile" } ],
+        headcount: { ko: "1인", en: "Solo" },
+        myRole:    { ko: "전부 (기획·개발·아트)", en: "Everything (solo)" },
+        status:    { ko: "플레이스토어 5종 출시", en: "5 titles on Google Play" },
+        learned: [
+          { ko: "혼자 파이프라인 전체를 익혔습니다.", en: "Learned the whole pipeline solo." },
+          { ko: "가장 큰 실패는 시장조사 — 이후 시장을 먼저 읽는 습관이 생겼습니다.", en: "The biggest failure was market research — hence the read-first habit." }
+        ],
+        links: { googlePlay: "", steam: "" },
+        media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } }
+      }
+    ]
+  },
+
+  /* ── 게임플레이 (플레이한 게임 기록) ────────────────────────────────────── */
+  play: {
+    title: { ko: "게임플레이 경험", en: "Play Log" },
+    lead:  { ko: "재밌게 놀고, 끝나면 왜 재밌었는지 뜯어봅니다. 기획서를 바꾼 게임들입니다.",
+             en: "I play hard, then take apart why it worked. These changed a doc I wrote." },
+    cards: [
+      { name:  { ko: "스텔라리스", en: "Stellaris" },
+        hours: { ko: "1,000h", en: "1,000h" },
+        genre: { ko: "우주 전략 시뮬레이션 · PC", en: "Space grand strategy · PC" },
+        note:  { ko: "지연된 결과를 가진 결정의 연쇄. 하나의 수치가 아니라 시스템 전체를 보는 습관을 배웠습니다.",
+                 en: "A chain of decisions with delayed consequences — I learned to read a system whole." } },
+      { name:  { ko: "러스티레이크", en: "Rusty Lake" },
+        hours: { ko: "시리즈 전작", en: "All titles" },
+        genre: { ko: "공포 방탈출 퍼즐 · PC / 모바일", en: "Horror escape puzzle · PC / Mobile" },
+        note:  { ko: "퍼즐 구조만으로 서사를 전달하는 교본. 이야기가 연출이 아니라 규칙 그 자체입니다.",
+                 en: "Narrative through puzzle structure alone — the story is the mechanic." } },
+      { name:  { ko: "작성 예정", en: "Coming soon" },
+        hours: { ko: "TBD", en: "TBD" },
+        genre: { ko: "지원 직무 · 팀 관련 게임", en: "A title related to the team" },
+        note:  { ko: "지원하는 팀과 관련된 타이틀을 넣을 자리입니다.", en: "Slot for a title relevant to the team." } }
+    ]
+  },
+
+  /* ── 푸터 (모든 페이지 공통) ─────────────────────────────────────────────
+     연락처 버튼은 위 meta 의 resumeUrl · email · github 값으로 자동 생성됩니다.
+     ────────────────────────────────────────────────────────────────────── */
+  footer: {
+    tagline: { ko: "문제를 정면으로 마주하는 기획자", en: "A designer who faces the problem head-on" }
+  }
+};
+
+/* ===== render ===== */
+/* ============================================================================
+   render.js — content.js 의 내용을 각 페이지 화면으로 그립니다.
+   내용을 바꾸려면 이 파일이 아니라 assets/content.js 를 고치세요.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  function t(field, lang) {
+    if (field === null || field === undefined) return '';
+    if (typeof field === 'string') return field;
+    var v = field[lang];
+    if (v === undefined || v === null || v === '') v = field.ko;
+    return v === undefined || v === null ? '' : String(v);
+  }
+  function esc(s) {
+    return String(s === undefined || s === null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function arr(a) { return Array.isArray(a) ? a : []; }
+  function has(field, lang) { return t(field, lang).trim() !== ''; }
+  function toneClass(tone) { return ({lavender:1,butter:1,blush:1,cornflower:1}[tone]) ? ' tag--' + tone : ''; }
+
+  var GHOST = '<svg class="ghost" viewBox="0 0 32 36" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>';
+  var CHEV = '<svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg>';
+  var ARROW = '<svg class="arrow" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var SUN = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="4"/><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M16.5 3.5l-1.4 1.4M4.9 15.1l-1.4 1.4" stroke-linecap="round"/></svg>';
+  var MOON = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 11.5A6.5 6.5 0 0 1 8.5 4a6.5 6.5 0 1 0 7.5 7.5z" stroke-linejoin="round"/></svg>';
+  var PLAY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4 3.5c0-.8.9-1.3 1.6-.9l14 8.5c.7.4.7 1.4 0 1.8l-14 8.5c-.7.4-1.6-.1-1.6-.9V3.5z"/></svg>';
+  var STEAM_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.9 8.6l5.3 2.2a2.8 2.8 0 0 1 1.6-.5h.2l2.4-3.4v-.1a3.8 3.8 0 1 1 3.8 3.8h-.1l-3.4 2.4v.2a2.8 2.8 0 0 1-5.6.2l-3.8-1.6A10 10 0 1 0 12 2zM7.6 17.5a2.2 2.2 0 0 1-1.3-2.9l1.2.5a1.6 1.6 0 1 0 1.2-3l-1.3-.5a2.2 2.2 0 0 1 2.9 2.9 2.2 2.2 0 0 1-2.7 3zm8.2-6.1a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>';
+
+  /* 도구 아이콘 (단색, currentColor). label 은 화면에 함께 표기 */
+  var TOOL_ICONS = {
+    figma:{n:"Figma",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 3h3.5v6H8.5a3 3 0 1 1 0-6z"/><path d="M12 3h3.5a3 3 0 1 1 0 6H12V3z" opacity=".72"/><path d="M8.5 9H12v6H8.5a3 3 0 1 1 0-6z" opacity=".55"/><circle cx="15.5" cy="12" r="3" opacity=".85"/><path d="M8.5 15H12v3a3 3 0 1 1-3.5-3z" opacity=".4"/></svg>'},
+    office:{n:"MS Office",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3 4 6.5v11L14 21l6-1.8V4.8L14 3zm-1 3.4v11.2l-6 1.5V8L13 6.4z"/></svg>'},
+    obsidian:{n:"Obsidian",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 5 8l3 12 8 2 3-9-5-3-2-8zm-1 4 1.5 6L9 18l-1-8 3-4z" opacity=".9"/></svg>'},
+    ai:{n:"AI",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 4.8L18.5 8l-4.7 1.2L12 14l-1.8-4.8L5.5 8l4.7-1.2L12 2z"/><path d="M18 14l.9 2.3 2.3.7-2.3.9L18 20l-.9-2.1-2.3-.9 2.3-.7L18 14z" opacity=".7"/></svg>'},
+    github:{n:"GitHub",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.300-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.8-2.4 4.6-4.6 4.9.3.3.6.9.6 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>'},
+    notion:{n:"Notion",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8.5 16V9l7 7V9" stroke-linecap="round" stroke-linejoin="round"/></svg>'},
+    jira:{n:"Jira",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l7 7-7 7-3-3 4-4-4-4 3-3z"/><path d="M12 9l3 3-3 3-7-7 3-3 4 4z" opacity=".55"/></svg>'},
+    sheets:{n:"스프레드시트",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M4 14h16M10 4v16"/></svg>'},
+    unity:{n:"Unity",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l6 3.4v7.2L12 21l-6-7.4V6.4L12 3zm0 2.6L8 8v6l4 2.4L16 14V8l-4-2.4z" opacity=".9"/></svg>'},
+    godot:{n:"Godot",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 7h12v6a6 6 0 0 1-12 0V7z"/><circle cx="9.5" cy="10.5" r="1.4" fill="#fff"/><circle cx="14.5" cy="10.5" r="1.4" fill="#fff"/><path d="M7 5h3v2H7zM14 5h3v2h-3z"/></svg>'},
+    gamemaker:{n:"GameMaker",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="3"/><circle cx="8" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="13.5" r="1.1" fill="currentColor" stroke="none"/></svg>'},
+    firebase:{n:"Firebase",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 18L8 4l3 5 2-3 6 12-7 3-7-3z" opacity=".85"/><path d="M5 18l3-14 2 8-5 6z" opacity=".55"/></svg>'}
+  };
+  function toolsHtml(list, lang){
+    var arr2 = Array.isArray(list) ? list : [];
+    if (!arr2.length) return '';
+    return '<div class="tool-grid">' + arr2.map(function(key){
+      var it = TOOL_ICONS[key]; if (!it) return '';
+      return '<span class="tool" title="' + esc(it.n) + '"><span class="tool__ic">' + it.s + '</span><span class="tool__nm">' + esc(it.n) + '</span></span>';
+    }).join('') + '</div>';
+  }
+
+  var PAGES = ['home','resume','cover','projects','play'];
+  var HREF = { home:'#home', resume:'#resume', cover:'#cover', projects:'#projects', play:'#play' };
+
+  /* ---------- 공통 조각 ---------- */
+  function navHtml(c, lang, base, active) {
+    var links = PAGES.map(function (k) {
+      var isActive = (k === active) || (active === 'detail' && k === 'projects');
+      return '<li><a class="nav__link' + (isActive ? ' is-active' : '') + '" href="' + esc(base + HREF[k]) + '">' +
+        '<span>' + esc(t(c.nav[k], lang)) + '</span>' + CHEV + '</a></li>';
+    }).join('');
+    return '<a class="nav__logo" href="' + esc(base + HREF.home) + '">' + GHOST +
+        '<span>' + esc(t(c.meta.name, lang)) + '</span>' +
+        '<span class="nav__logo-en">' + esc(t(c.meta.role, lang)) + '</span></a>' +
+      '<ul class="nav__menu">' + links + '</ul>' +
+      '<div class="nav__actions">' +
+        '<div class="lang-toggle" role="group" aria-label="언어 / Language">' +
+          '<button type="button" class="lang-toggle__btn" data-lang-btn="ko" aria-pressed="' + (lang==='ko') + '">KR</button>' +
+          '<button type="button" class="lang-toggle__btn" data-lang-btn="en" aria-pressed="' + (lang==='en') + '">EN</button>' +
+        '</div>' +
+        '<button type="button" class="icon-btn" data-theme-toggle aria-label="' + (lang==='en'?'Toggle dark mode':'다크모드 전환') + '"><span data-theme-icon></span></button>' +
+        '<a class="btn btn--primary btn--sm nav__cta" href="' + esc(base + c.meta.resumeUrl) + '">' + (lang==='en'?'Résumé':'이력서') + '</a>' +
+        '<button type="button" class="nav__burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="' + (lang==='en'?'Open menu':'메뉴 열기') + '"><span class="nav__burger-lines" aria-hidden="true"></span></button>' +
+      '</div>';
+  }
+  function sheetHtml(c, lang, base, active) {
+    var links = PAGES.map(function (k, i) {
+      var isActive = (k === active) || (active === 'detail' && k === 'projects');
+      return '<a class="sheet__link' + (isActive ? ' is-active' : '') + '" href="' + esc(base + HREF[k]) + '">' +
+        '<span class="sheet__num">' + ('0'+(i+1)) + '</span><span>' + esc(t(c.nav[k], lang)) + '</span></a>';
+    }).join('');
+    return links + '<div class="sheet__foot"><a class="btn btn--primary" href="' + esc(base + c.meta.resumeUrl) + '">' +
+      (lang==='en'?'Download résumé (PDF)':'이력서 다운로드 (PDF)') + '</a></div>';
+  }
+  function footerHtml(c, lang, base) {
+    var mail = (c.meta.email||'').trim(), gh = (c.meta.github||'').trim();
+    var links = '<a class="btn btn--outline btn--sm" href="' + esc(base + c.meta.resumeUrl) + '">' + (lang==='en'?'Résumé (PDF)':'이력서 (PDF)') + '</a>' +
+      (mail ? '<a class="btn btn--outline btn--sm" href="mailto:' + esc(mail) + '">' + (lang==='en'?'Email':'이메일') + '</a>'
+            : '<span class="btn btn--outline btn--sm is-placeholder">' + (lang==='en'?'Email — TBA':'이메일 — 입력 예정') + '</span>') +
+      (gh ? '<a class="btn btn--outline btn--sm" href="' + esc(gh) + '" target="_blank" rel="noopener noreferrer">GitHub</a>' : '');
+    return '<div class="footer__inner">' +
+      '<div><div class="footer__brand">' + GHOST + '<span>' + esc(t(c.meta.name, lang)) + ' · ' + esc(t(c.meta.role, lang)) + '</span></div>' +
+        '<p class="footer__tagline">' + esc(t(c.footer && c.footer.tagline, lang)) + '</p></div>' +
+      '<div class="footer__links">' + links + '</div>' +
+      '</div><p class="footer__copy">© ' + new Date().getFullYear() + ' ' + esc(t(c.meta.name, lang)) + '</p>';
+  }
+
+  function tagsHtml(tags, lang, style) {
+    if (!arr(tags).length) return '';
+    return '<div class="tags"' + (style?' style="'+style+'"':'') + '>' + arr(tags).map(function (tag) {
+      var text = tag.text !== undefined ? tag.text : tag;
+      return '<span class="tag' + toneClass(tag.tone) + '">' + esc(t(text, lang)) + '</span>';
+    }).join('') + '</div>';
+  }
+  function statsHtml(stats, lang) {
+    return arr(stats).map(function (s) {
+      var u = t(s.unit, lang);
+      return '<div class="stat reveal"><p class="stat__num">' + esc(s.num) + (u?'<span class="unit">'+esc(u)+'</span>':'') + '</p>' +
+        '<p class="stat__label">' + esc(t(s.label, lang)) + '</p></div>';
+    }).join('');
+  }
+  function paragraphs(field, lang, cls) {
+    var todo = lang==='en' ? 'To be written.' : '작성 예정.';
+    if (!has(field, lang)) return '<p class="' + (cls||'muted') + '">' + todo + '</p>';
+    return t(field, lang).split(/\n{2,}|\n/).filter(function (s){return s.trim();}).map(function (s){return '<p>' + s + '</p>';}).join('');
+  }
+
+  /* ---------- HOME ---------- */
+  function renderHome(c, lang, base) {
+    var h = c.home || {};
+    var hero =
+      '<section class="hero"><div class="wrap"><div class="hero__grid">' +
+        '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
+          '<h1 class="hero__title">' + t(c.hero.titleHtml, lang) + '</h1>' +
+          '<p class="hero__sub">' + esc(t(h.sub, lang)) + '</p>' +
+          '<div class="btn-row">' +
+            '<a class="btn btn--primary" href="' + esc(base+HREF.resume) + '">' + esc(t(h.ctaResume, lang)) + '</a>' +
+            '<a class="btn btn--outline" href="' + esc(base+HREF.projects) + '">' + esc(t(h.ctaProjects, lang)) + '</a>' +
+          '</div></div>' +
+        '<div class="hero__media"><div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"','class="ghost ghost--float"') + '</div></div>' +
+      '</div></div></section>';
+
+    var draw = c.home && c.home.draw || {};
+    var drawSec =
+      '<section class="draw"><div class="wrap"><div class="draw__stage">' +
+        '<button type="button" class="draw__deck" data-draw aria-label="' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '">' +
+          '<span class="draw__deck-card" aria-hidden="true"></span>' +
+          '<span class="draw__deck-card" aria-hidden="true"></span>' +
+          '<span class="draw__deck-card"><span class="draw__deck-face">' + GHOST +
+            '<span class="draw__deck-label">' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '</span>' +
+            '<span class="draw__deck-hint">' + esc(t(draw.hint, lang)) + '</span></span></span>' +
+        '</button>' +
+        '<div class="draw__cards" data-draw-cards></div>' +
+      '</div></div></section>';
+
+    return '<div class="home-screen">' + hero + drawSec + '</div>';
+  }
+
+  // 카드 뽑기 결과 카드 (main.js 에서 호출)
+  function drawCardHtml(c, lang, base, p, delay) {
+    var cat = c.projects && c.projects.tabs && c.projects.tabs[p.category];
+    return '<a class="draw-card" href="' + esc('#project=' + encodeURIComponent(p.id)) + '" style="--d:' + (delay||0) + 'ms">' +
+      '<span class="draw-card__inner">' +
+        '<span class="draw-card__back" aria-hidden="true">' + GHOST + '</span>' +
+        '<span class="draw-card__front">' +
+          '<span class="draw-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
+          '<span class="draw-card__title">' + esc(t(p.title, lang)) + '</span>' +
+          '<span class="draw-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
+          '<span class="draw-card__go">' + (lang==='en'?'Open →':'열기 →') + '</span>' +
+        '</span>' +
+      '</span></a>';
+  }
+
+  /* ---------- RESUME ---------- */
+  function renderResume(c, lang, base) {
+    var r = c.resume || {};
+    var hero =
+      '<section class="hero"><div class="wrap"><div class="hero__grid">' +
+        '<div><p class="hero__eyebrow">' + (lang==='en'?'RÉSUMÉ':'이력서') + '</p>' +
+          '<h1 class="hero__title">' + t(c.hero.titleHtml, lang) + '</h1>' +
+          '<p class="hero__note"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M7 2v9M3 7.2 7 11l4-3.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' + esc(t(r.heroNote, lang)) + '</p></div>' +
+        '<div class="hero__media"><div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"','class="ghost ghost--float"') + '</div></div>' +
+      '</div></div></section>';
+
+    var stats = arr(r.stats).length ? '<section class="section section--elev"><div class="wrap"><div class="stat-grid">' + statsHtml(r.stats, lang) + '</div></div></section>' : '';
+
+    var sk = r.skills || {};
+    var skillCards = arr(sk.cards).map(function (card) {
+      return '<article class="card skill-card reveal"><h3 class="card__title">' + esc(t(card.title, lang)) + '</h3>' +
+        '<p class="card__body">' + esc(t(card.body, lang)) + '</p>' + toolsHtml(card.tools, lang) + '</article>';
+    }).join('');
+    var skills = '<section class="section"><div class="wrap"><header class="section__head reveal">' +
+      '<p class="eyebrow">' + (lang==='en'?'CORE SKILLS':'핵심역량') + '</p>' +
+      '<h2 class="section__title">' + esc(t(sk.title, lang)) + '</h2>' +
+      '<p class="section__lead">' + esc(t(sk.lead, lang)) + '</p></header>' +
+      '<div class="grid grid--3">' + skillCards + '</div></div></section>';
+
+    var ca = r.career || {};
+    var careerItems = arr(ca.items).map(function (it) {
+      return '<li class="tl-item' + (it.now?' tl-item--now':'') + ' reveal">' +
+        '<p class="tl-date">' + esc(t(it.date, lang)) + '</p>' +
+        '<h3 class="tl-role">' + esc(t(it.role, lang)) + '</h3>' +
+        '<p class="tl-org">' + esc(t(it.org, lang)) + '</p>' +
+        '<p class="tl-body">' + esc(t(it.body, lang)) + '</p>' +
+        tagsHtml(it.tags, lang).replace('class="tags"','class="tags tl-tags"') + '</li>';
+    }).join('');
+    var career = '<section class="section section--elev"><div class="wrap"><header class="section__head reveal">' +
+      '<p class="eyebrow">' + (lang==='en'?'CAREER':'경력') + '</p>' +
+      '<h2 class="section__title">' + esc(t(ca.title, lang)) + '</h2>' +
+      '<p class="section__lead">' + esc(t(ca.lead, lang)) + '</p></header>' +
+      '<ol class="timeline">' + careerItems + '</ol></div></section>';
+
+    return hero + stats + skills + career;
+  }
+
+  /* ---------- COVER LETTER ---------- */
+  function renderCover(c, lang, base) {
+    var cl = c.coverLetter || {};
+    var blocks = arr(cl.blocks);
+    var body;
+    if (!blocks.length) {
+      body = '<div class="cover-empty">' + GHOST + '<p>' + esc(t(cl.lead, lang) || (lang==='en'?'Coming soon.':'곧 채울 예정입니다.')) + '</p></div>';
+    } else {
+      body = blocks.map(function (b) {
+        return '<div class="cover-block reveal">' + (has(b.heading, lang) ? '<h3>' + esc(t(b.heading, lang)) + '</h3>' : '') + paragraphs(b.body, lang) + '</div>';
+      }).join('');
+    }
+    return '<section class="section"><div class="wrap"><header class="section__head reveal">' +
+      '<p class="eyebrow">' + (lang==='en'?'ABOUT ME':'자기소개서') + '</p>' +
+      '<h2 class="section__title">' + esc(t(cl.title, lang)) + '</h2></header>' + body + '</div></section>';
+  }
+
+  /* ---------- PROJECTS ---------- */
+  function renderProjects(c, lang, base) {
+    var pr = c.projects || {};
+    var tabs = pr.tabs || {};
+    var tabsHtmlStr = ['all','game','planning'].filter(function (k){return tabs[k];}).map(function (k, i) {
+      return '<button type="button" class="tab' + (i===0?' is-active':'') + '" data-proj-tab="' + k + '">' + esc(t(tabs[k], lang)) + '</button>';
+    }).join('');
+    var head = '<div class="proj-head reveal"><h1 class="proj-title">' + esc(t(pr.title, lang)) + '</h1>' +
+      '<div class="tabs" role="tablist">' + tabsHtmlStr + '</div></div>';
+    var grid = '<div class="proj-grid" data-proj-grid>' + arr(pr.items).map(function (p) { return projCardHtml(c, lang, base, p); }).join('') + '</div>';
+    return '<section class="section"><div class="wrap">' + head + grid +
+      '<div class="proj-empty" data-proj-empty hidden>' + (lang==='en'?'No projects in this category yet.':'이 분류에는 아직 프로젝트가 없습니다.') + '</div>' +
+      '</div></section>';
+  }
+  function projCardHtml(c, lang, base, p) {
+    var cat = c.projects.tabs && c.projects.tabs[p.category];
+    return '<a class="proj-card reveal" data-cat="' + esc(p.category||'') + '" href="' + esc('#project=' + encodeURIComponent(p.id)) + '">' +
+      '<span class="proj-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
+      '<span class="proj-card__title">' + esc(t(p.title, lang)) + '</span>' +
+      '<span class="proj-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
+      '<span class="proj-card__period">' + esc(t(p.period, lang)) + '</span></a>';
+  }
+
+  /* ---------- PROJECT DETAIL ---------- */
+  function renderDetail(c, lang, base, id) {
+    var items = arr(c.projects && c.projects.items);
+    var idx = -1; items.forEach(function (p,i){ if (p.id===id) idx=i; });
+    if (idx < 0) {
+      return '<section class="section"><div class="wrap"><a class="back-link" href="' + esc('#projects') + '"><span>' + (lang==='en'?'← Projects':'← 프로젝트') + '</span></a>' +
+        '<h1 class="section__title">' + (lang==='en'?'Project not found':'프로젝트를 찾을 수 없습니다') + '</h1></div></section>';
+    }
+    var p = items[idx];
+    var m = p.media || {};
+    var media;
+    if ((m.embed||'').trim()) {
+      media = '<div class="media-box media-box--embed"><iframe src="' + esc(m.embed) + '" title="' + esc(t(p.title, lang)) + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
+    } else {
+      media = '<div class="media-box media-box--empty">' + esc(t(m.note, lang) || (lang==='en'?'Space for gameplay video and images.':'게임 영상·이미지가 들어갈 자리입니다.')) + '</div>';
+    }
+    var genres = arr(p.genres).slice(0,3);
+    var learned = arr(p.learned);
+    var links = p.links || {};
+    var stores = '<div class="detail__stores">' +
+      '<a class="store-link" ' + ((links.googlePlay||'').trim() ? 'href="'+esc(links.googlePlay)+'" target="_blank" rel="noopener noreferrer"' : 'aria-disabled="true" href="#"') + ' aria-label="Google Play">' + PLAY_ICON + '</a>' +
+      '<a class="store-link" ' + ((links.steam||'').trim() ? 'href="'+esc(links.steam)+'" target="_blank" rel="noopener noreferrer"' : 'aria-disabled="true" href="#"') + ' aria-label="Steam">' + STEAM_ICON + '</a>' +
+      '</div>';
+
+    var info = '<div class="detail__info">' +
+      '<a class="back-link" href="' + esc('#projects') + '"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + (lang==='en'?'Projects':'프로젝트 목록') + '</span></a>' +
+      '<h1 class="detail__title">' + esc(t(p.title, lang)) + '</h1>' +
+      '<p class="detail__period">' + esc(t(p.period, lang)) + '</p>' +
+      (genres.length ? '<div class="detail__genres">' + tagsHtml(genres.map(function(g){return {text:g,tone:'lavender'};}), lang) + '</div>' : '') +
+      '<div class="detail__meta">' +
+        metaRow(lang==='en'?'Headcount':'인원', t(p.headcount, lang)) +
+        metaRow(lang==='en'?'My role':'맡은 역할', t(p.myRole, lang)) +
+        metaRow(lang==='en'?'Status':'상태', t(p.status, lang)) +
+      '</div>' +
+      (learned.length ? '<div class="detail__learned"><p class="detail__learned-title">' + (lang==='en'?'What I learned':'무엇을 배웠는지') + '</p><ul class="bullets">' + learned.map(function (b){return '<li>' + t(b, lang) + '</li>';}).join('') + '</ul></div>' : '') +
+      stores + '</div>';
+
+    var mediaCol = '<div class="detail__media">' + media + '</div>';
+
+    // 선택 상세 블록 (있을 때만)
+    var d = p.detailBlocks || {};
+    var blocks = '';
+    if (has(d.problem, lang) || has(d.approach, lang) || has(d.retrospective, lang)) {
+      blocks = '<div class="detail__blocks">' +
+        block(lang, '문제', 'The problem', 'PROBLEM', d.problem) +
+        block(lang, '접근', 'The approach', 'APPROACH', d.approach) +
+        block(lang, '다시 한다면', 'Retrospective', 'RETROSPECTIVE', d.retrospective) +
+      '</div>';
+    }
+
+    var prev = idx>0 ? items[idx-1] : null, next = idx<items.length-1 ? items[idx+1] : null;
+    var pager = '<nav class="pager" aria-label="프로젝트 이동">' +
+      (prev ? pagerItem('#project='+encodeURIComponent(prev.id), lang==='en'?'← Previous':'← 이전', t(prev.title, lang)) : pagerItem('#projects', lang==='en'?'← Projects':'← 목록', lang==='en'?'All projects':'전체 보기')) +
+      (next ? pagerItem('#project='+encodeURIComponent(next.id), lang==='en'?'Next →':'다음 →', t(next.title, lang), 1) : pagerItem('#play', lang==='en'?'Play log →':'게임플레이 →', t(c.play&&c.play.title, lang), 1)) +
+    '</nav>';
+
+    return '<section class="section"><div class="wrap"><div class="detail">' + info + mediaCol + '</div>' + blocks + pager + '</div></section>';
+  }
+  function metaRow(k, v) {
+    if (!v) return '';
+    return '<div class="detail__meta-row"><p class="detail__meta-k">' + esc(k) + '</p><p class="detail__meta-v">' + esc(v) + '</p></div>';
+  }
+  function block(lang, ko, en, small, field) {
+    var todo = lang==='en'?'To be written.':'작성 예정.';
+    var body = has(field, lang) ? t(field, lang).split(/\n{2,}|\n/).filter(function(s){return s.trim();}).map(function(s){return '<p>'+s+'</p>';}).join('') : '<p class="muted">'+todo+'</p>';
+    return '<div class="block reveal"><div class="block__label">' + (lang==='en'?en:ko) + '<small>' + small + '</small></div><div class="block__body">' + body + '</div></div>';
+  }
+  function pagerItem(href, dir, title, right) {
+    return '<a class="pager__item" href="' + esc(href) + '"' + (right?' style="text-align:right"':'') + '><p class="pager__dir">' + dir + '</p><p class="pager__title">' + esc(title) + '</p></a>';
+  }
+
+  /* ---------- PLAY ---------- */
+  function renderPlay(c, lang, base) {
+    var pl = c.play || {};
+    var cards = arr(pl.cards).map(function (card) {
+      return '<article class="play-card reveal"><div class="play-card__top"><h3 class="play-card__name">' + esc(t(card.name, lang)) + '</h3>' +
+        '<span class="play-card__hours">' + esc(t(card.hours, lang)) + '</span></div>' +
+        '<p class="play-card__genre">' + esc(t(card.genre, lang)) + '</p>' +
+        '<p class="play-card__note">' + esc(t(card.note, lang)) + '</p></article>';
+    }).join('');
+    return '<section class="section"><div class="wrap"><header class="section__head reveal">' +
+      '<p class="eyebrow">' + (lang==='en'?'PLAY LOG':'게임플레이') + '</p>' +
+      '<h2 class="section__title">' + esc(t(pl.title, lang)) + '</h2>' +
+      '<p class="section__lead">' + esc(t(pl.lead, lang)) + '</p></header>' +
+      '<div class="play">' + cards + '</div></div></section>';
+  }
+
+  global.PortfolioRender = {
+    t: t, esc: esc, HREF: HREF,
+    navHtml: navHtml, sheetHtml: sheetHtml, footerHtml: footerHtml,
+    renderHome: renderHome, renderResume: renderResume, renderCover: renderCover,
+    renderProjects: renderProjects, renderDetail: renderDetail, renderPlay: renderPlay,
+    drawCardHtml: drawCardHtml
+  };
+})(window);
+
+/* ===== main ===== */
+/* ============================================================================
+   main.js — 페이지 조립과 동작
+   내용은 assets/content.js · 화면 구성은 assets/js/render.js
+   ========================================================================== */
+(function () {
+  'use strict';
+  var R = window.PortfolioRender;
+  var LANG_KEY = 'portfolio:lang', THEME_KEY = 'portfolio:theme', DRAFT_KEY = 'portfolio:draft';
+
+  document.documentElement.classList.remove('no-js');
+  var $  = function (s,c){ return (c||document).querySelector(s); };
+  var $$ = function (s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+
+  /* ---------- 내용 (편집기 미리보기 지원) ---------- */
+  function loadContent() {
+    var params = new URLSearchParams(location.search);
+    if (params.get('preview') === '1') {
+      try { var raw = localStorage.getItem(DRAFT_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+    }
+    return window.PORTFOLIO_CONTENT;
+  }
+  var content = loadContent();
+  if (!content || !R) {
+    document.body.innerHTML = '<p style="padding:40px;font:16px system-ui">content.js / render.js 를 불러오지 못했습니다.</p>';
+    return;
+  }
+
+  var base = '';
+  var lang = readLang();
+  var page = 'home';
+  var projectId = '';
+  function parseRoute() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (h.indexOf('project=') === 0) { page = 'detail'; projectId = decodeURIComponent(h.slice(8)); }
+    else { page = ['home','resume','cover','projects','play'].indexOf(h) >= 0 ? h : 'home'; projectId = ''; }
+  }
+  parseRoute();
+
+  function readLang(){ try{ var v=localStorage.getItem(LANG_KEY); if(v==='ko'||v==='en') return v; }catch(e){} return 'ko'; }
+  function saveLang(v){ try{ localStorage.setItem(LANG_KEY,v); }catch(e){} }
+
+  /* ---------- 테마 ---------- */
+  function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+  function applyThemeIcon(){
+    var span = $('[data-theme-icon]');
+    if (!span) return;
+    // 다크면 해(밝게 전환), 라이트면 달(어둡게 전환)
+    span.innerHTML = currentTheme()==='dark'
+      ? '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="4"/><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M16.5 3.5l-1.4 1.4M4.9 15.1l-1.4 1.4" stroke-linecap="round"/></svg>'
+      : '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 11.5A6.5 6.5 0 0 1 8.5 4a6.5 6.5 0 1 0 7.5 7.5z" stroke-linejoin="round"/></svg>';
+  }
+  function toggleTheme(){
+    var next = currentTheme()==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem(THEME_KEY, next); } catch(e){}
+    applyThemeIcon();
+    var meta = $('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', next==='dark' ? '#16121f' : '#fdfcfe');
+  }
+
+  /* ---------- 렌더 ---------- */
+  function render() {
+    parseRoute();
+    document.body.setAttribute('data-page', page);
+    var slots = { nav:'[data-slot="nav"]', sheet:'[data-slot="sheet"]', main:'[data-slot="main"]', footer:'[data-slot="footer"]' };
+    var navEl = $(slots.nav), sheetEl = $(slots.sheet), mainEl = $(slots.main), footEl = $(slots.footer);
+    if (navEl)  navEl.innerHTML  = R.navHtml(content, lang, base, page);
+    if (sheetEl) sheetEl.innerHTML = R.sheetHtml(content, lang, base, page);
+    if (footEl) footEl.innerHTML = R.footerHtml(content, lang, base);
+    if (mainEl) {
+      mainEl.innerHTML =
+        page==='home'     ? R.renderHome(content, lang, base) :
+        page==='resume'   ? R.renderResume(content, lang, base) :
+        page==='cover'    ? R.renderCover(content, lang, base) :
+        page==='projects' ? R.renderProjects(content, lang, base) :
+        page==='detail'   ? R.renderDetail(content, lang, base, projectId) :
+        page==='play'     ? R.renderPlay(content, lang, base) : '';
+    }
+    document.documentElement.setAttribute('lang', lang);
+    applyThemeIcon();
+    updateTitle();
+    initObservers();
+    initProjTabs();
+    initDraw();
+    // 언어 바뀌면 이미 뽑아둔 카드도 다시 그림
+    if (drawnIds) dealCards(drawnIds);
+  }
+
+  function updateTitle() {
+    var name = R.t(content.meta.name, lang);
+    var map = {
+      home:   R.t(content.meta.role, lang) + ' 포트폴리오',
+      resume: R.t(content.nav.resume, lang),
+      cover:  R.t(content.nav.cover, lang),
+      projects: R.t(content.nav.projects, lang),
+      play:   R.t(content.nav.play, lang)
+    };
+    var title;
+    if (page==='detail') {
+      var items = (content.projects && content.projects.items) || [];
+      var p = items.filter(function(x){return x.id===projectId;})[0];
+      title = (p ? R.t(p.title, lang) : R.t(content.nav.projects, lang)) + ' · ' + name;
+    } else {
+      title = name + ' · ' + (map[page] || '');
+    }
+    document.title = title;
+  }
+
+  /* ---------- 접이식 헤더 ---------- */
+  function initHeader() {
+    // 헤더는 항상 펼쳐진 상태 — 접힘 동작 제거.
+    var handle = $('[data-nav-handle]');
+    if (handle) handle.remove();
+  }
+
+  /* ---------- 카드 뽑기 ---------- */
+  var drawnIds = null;
+  function pickRandom(n) {
+    var items = (content.projects && content.projects.items) || [];
+    var pool = items.slice();
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+    return pool.slice(0, Math.min(n, pool.length)).map(function(p){ return p.id; });
+  }
+  function dealCards(ids) {
+    var box = $('[data-draw-cards]');
+    if (!box) return;
+    var items = (content.projects && content.projects.items) || [];
+    var byId = {}; items.forEach(function(p){ byId[p.id]=p; });
+    var cards = ids.map(function(id){ return byId[id]; }).filter(Boolean);
+    if (!cards.length) {
+      box.innerHTML = '<div class="draw__empty">' + (lang==='en'?'Add projects in the editor to draw them here.':'편집기에서 프로젝트를 추가하면 여기에 나옵니다.') + '</div>';
+      return;
+    }
+    box.innerHTML = cards.map(function(p, i){ return R.drawCardHtml(content, lang, base, p, i*90); }).join('');
+  }
+  function initDraw() {
+    var deck = $('[data-draw]');
+    if (!deck) return;
+    var cfg = (content.home && content.home.draw) || {};
+    var count = cfg.count || 4;
+    // 첫 화면에서 한 벌이 이미 펼쳐져 있도록 자동으로 한 번 뽑아 둔다
+    if (!drawnIds) { drawnIds = pickRandom(count); dealCards(drawnIds); }
+    deck.addEventListener('click', function () {
+      deck.classList.remove('is-draw');
+      void deck.offsetWidth;          // 리플로우로 애니메이션 재시작
+      deck.classList.add('is-draw');
+      drawnIds = pickRandom(count);
+      dealCards(drawnIds);
+    });
+  }
+
+  /* ---------- 프로젝트 탭 ---------- */
+  function initProjTabs() {
+    var tabs = $$('[data-proj-tab]');
+    if (!tabs.length) return;
+    var grid = $('[data-proj-grid]'), empty = $('[data-proj-empty]');
+    function apply(cat) {
+      var shown = 0;
+      $$('.proj-card', grid).forEach(function (card) {
+        var ok = cat==='all' || card.getAttribute('data-cat')===cat;
+        card.hidden = !ok;
+        if (ok) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+    }
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function(t){ t.classList.toggle('is-active', t===tab); });
+        apply(tab.getAttribute('data-proj-tab'));
+      });
+    });
+  }
+
+  /* ---------- 관찰자 (리빌) ---------- */
+  var revObs = null;
+  function initObservers() {
+    if (revObs) revObs.disconnect();
+    var els = $$('.reveal');
+    if ('IntersectionObserver' in window && els.length) {
+      revObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); revObs.unobserve(e.target); } });
+      }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+      els.forEach(function (el){ revObs.observe(el); });
+    } else { els.forEach(function (el){ el.classList.add('is-visible'); }); }
+  }
+
+  /* ---------- 모바일 메뉴 ---------- */
+  var sheet = null, scrollY = 0;
+  function setMenu(open) {
+    sheet = sheet || $('[data-menu]');
+    if (!sheet) return;
+    sheet.classList.toggle('is-open', open);
+    sheet.setAttribute('aria-hidden', String(!open));
+    var burger = $('[data-menu-toggle]');
+    if (burger) burger.setAttribute('aria-expanded', String(open));
+    if (open) {
+      scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      document.body.style.top = (-scrollY)+'px'; document.body.style.position='fixed'; document.body.style.width='100%';
+      document.body.classList.add('is-locked');
+    } else {
+      document.body.classList.remove('is-locked');
+      document.body.style.position=''; document.body.style.top=''; document.body.style.width='';
+      window.scrollTo(0, scrollY);
+    }
+  }
+
+  /* ---------- 부드러운 스크롤 폴백 ---------- */
+  var supportsSmooth = 'scrollBehavior' in document.documentElement.style;
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function animateTo(top) {
+    var start = window.pageYOffset, delta = top - start, dur = Math.min(700, Math.max(300, Math.abs(delta)*0.4)), t0 = null;
+    function step(now){ if(t0===null)t0=now; var p=Math.min(1,(now-t0)/dur); var e=p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2; window.scrollTo(0,start+delta*e); if(p<1)requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  function scrollToTop(top){ if(reduced)window.scrollTo(0,top); else if(supportsSmooth)window.scrollTo({top:top,behavior:'smooth'}); else animateTo(top); }
+  function navOffset(){ var n=$('.nav'); return (n?n.getBoundingClientRect().height:60)+24; }
+
+  /* ---------- 이벤트 위임 ---------- */
+  document.addEventListener('click', function (e) {
+    var langBtn = e.target.closest('[data-lang-btn]');
+    if (langBtn) { lang = langBtn.getAttribute('data-lang-btn')==='en'?'en':'ko'; saveLang(lang); var y=window.pageYOffset; render(); window.scrollTo(0,y); return; }
+    if (e.target.closest('[data-theme-toggle]')) { toggleTheme(); return; }
+    if (e.target.closest('[data-menu-toggle]')) { sheet = sheet || $('[data-menu]'); setMenu(!sheet.classList.contains('is-open')); return; }
+    if (e.target.closest('[data-to-top]')) { scrollToTop(0); return; }
+    sheet = sheet || $('[data-menu]');
+    if (sheet && sheet.classList.contains('is-open') && e.target === sheet) { setMenu(false); return; }
+    var link = e.target.closest('a[href^="#"]');
+    if (link) { sheet = sheet || $('[data-menu]'); if (sheet && sheet.classList.contains('is-open')) setMenu(false); return; }
+  });
+  document.addEventListener('keydown', function (e){ if(e.key==='Escape'){ sheet=sheet||$('[data-menu]'); if(sheet&&sheet.classList.contains('is-open'))setMenu(false); } });
+  window.addEventListener('resize', function (){ sheet=sheet||$('[data-menu]'); if(window.innerWidth>=1000&&sheet&&sheet.classList.contains('is-open'))setMenu(false); });
+
+  /* ---------- 맨 위로 ---------- */
+  function initToTop() {
+    var btn = $('[data-to-top]'); if (!btn) return;
+    var ticking = false;
+    var onScroll = function(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){ btn.classList.toggle('is-shown', window.pageYOffset>window.innerHeight*0.9); ticking=false; }); };
+    window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+
+  /* ---------- 시작 ---------- */
+  render();
+  initHeader();
+  initToTop();
+  window.addEventListener('hashchange', function () {
+    sheet = sheet || $('[data-menu]');
+    if (sheet && sheet.classList.contains('is-open')) setMenu(false);
+    render();
+    window.scrollTo(0, 0);
+  });
+
+  if (new URLSearchParams(location.search).get('preview')==='1') {
+    var b = document.createElement('div'); b.className='preview-banner';
+    b.innerHTML = (lang==='en'?'Editor preview — unsaved. ':'편집기 미리보기 — 저장 안 됨. ') + '<a href="'+base+'edit.html">'+(lang==='en'?'Back to editor':'편집기로')+'</a>';
+    document.body.appendChild(b);
+  }
+})();
+
+</script>
+</body>
+</html>
