@@ -54,7 +54,7 @@ window.PORTFOLIO_CONTENT = {
     // 플레이어 카드 (게임 기획자 = 캐릭터). 사진 + 실제 실적 수치.
     player: {
       cardLabel: "PLAYER CARD",
-      photo:    "",   // 프로필 사진 경로. 예: assets/img/profile.jpg — 비우면 고스트 자리표시
+      photo:    "assets/img/profile.jpg",   // 프로필 사진 경로. 비우면 고스트 자리표시
       photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" },
       class:    { ko: "게임 기획자", en: "Game Designer" },
       meta:     { ko: "개발 경력 10년 · 출시작 7종", en: "10 yrs making games · 7 shipped" },
