@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>김지수 · 게임 기획자 포트폴리오</title>
+<meta name="description" content="문제를 정면으로 마주하는 게임 기획자 김지수의 포트폴리오. 인디 게임 5종 개발부터 팀 프로젝트 명세 작성, 시장 분석과 AI 자동화까지 정리했습니다.">
+<meta name="theme-color" content="#3c315b">
+<meta name="color-scheme" content="light">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="김지수 · 게임 기획자 포트폴리오">
+<meta property="og:description" content="저는 문제를 정면으로 마주하는 기획자, 김지수입니다.">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 36'><path fill='%23ab9ff2' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/><ellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/><ellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/></svg>">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-en="Skip to content">본문으로 건너뛰기</a>
+
+<!-- ============================ 헤더 · 목차 ============================ -->
+<div class="nav-wrap">
+  <nav class="nav" aria-label="주요 메뉴">
+    <a class="nav__logo" href="#top">
+      <svg class="ghost" viewBox="0 0 32 36" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>
+      <span data-en="Jisu Kim">김지수</span>
+      <span class="nav__logo-en" data-en="Game Designer">Game Designer</span>
+    </a>
+
+    <ul class="nav__menu">
+      <li><a class="nav__link" href="#about" data-spy="about"><span data-en="About">자기소개</span><svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></a></li>
+      <li><a class="nav__link" href="#projects" data-spy="projects"><span data-en="Projects">프로젝트</span><svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></a></li>
+      <li><a class="nav__link" href="#skills" data-spy="skills"><span data-en="Core Skills">핵심역량</span><svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></a></li>
+      <li><a class="nav__link" href="#career" data-spy="career"><span data-en="Career">경력</span><svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></a></li>
+      <li><a class="nav__link" href="#play" data-spy="play"><span data-en="Play Log">플레이 경험</span><svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></a></li>
+    </ul>
+
+    <div class="nav__actions">
+      <div class="lang-toggle" role="group" aria-label="언어 선택 / Language">
+        <button type="button" class="lang-toggle__btn" data-lang-btn="ko" aria-pressed="true">KR</button>
+        <button type="button" class="lang-toggle__btn" data-lang-btn="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn--primary btn--sm nav__cta" href="assets/resume/jisu-kim-resume.pdf" data-en="Résumé">이력서</a>
+      <button type="button" class="nav__burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="메뉴 열기" data-en-aria="Open menu">
+        <span class="nav__burger-lines" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- 모바일 메뉴 시트 -->
+<div class="sheet" id="mobile-menu" data-menu aria-hidden="true">
+  <div class="sheet__panel">
+    <a class="sheet__link" href="#about"><span class="sheet__num">01</span><span data-en="About">자기소개</span></a>
+    <a class="sheet__link" href="#projects"><span class="sheet__num">02</span><span data-en="Projects">프로젝트</span></a>
+    <a class="sheet__link" href="#skills"><span class="sheet__num">03</span><span data-en="Core Skills">핵심역량</span></a>
+    <a class="sheet__link" href="#career"><span class="sheet__num">04</span><span data-en="Career &amp; Activity">경력 · 활동</span></a>
+    <a class="sheet__link" href="#play"><span class="sheet__num">05</span><span data-en="Play Log">게임 플레이 경험</span></a>
+    <a class="sheet__link" href="#contact"><span class="sheet__num">06</span><span data-en="Contact">연락처</span></a>
+    <div class="sheet__foot">
+      <a class="btn btn--primary" href="assets/resume/jisu-kim-resume.pdf" data-en="Download résumé (PDF)">이력서 다운로드 (PDF)</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============================ 히어로 ============================ -->
+<section class="hero" id="top">
+  <div class="wrap hero__inner">
+    <p class="hero__eyebrow">
+      <svg class="ghost" viewBox="0 0 32 36" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>
+      <span data-en="GAME DESIGNER · PORTFOLIO 2026">GAME DESIGNER · 게임 기획 직군 지원</span>
+    </p>
+
+    <h1 class="hero__title">
+      <span class="i18n-ko">저는 문제를 <span class="accent">정면</span>으로 마주하는 기획자,<br><span class="name">김지수</span>입니다.</span><span class="i18n-en">I'm <span class="name">Jisu Kim</span>,<br>a designer who walks <span class="accent">straight into</span> the problem.</span>
+    </h1>
+
+    <p class="hero__sub" data-en="I believe the most important attitude for a designer is to define a problem well and face it head-on. Ten years of making games — from Flash games as a kid to store releases — taught me that the hard way.">기획자에게 가장 중요한 태도는 문제를 잘 정의하고 정면으로 마주하는 자세라고 생각합니다. 플래시 게임부터 스토어 출시까지 10년간 만들고 부딪히며 배운 결론입니다.</p>
+
+    <div class="btn-row">
+      <a class="btn btn--primary" href="#projects" data-en="See the projects">프로젝트 보러가기</a>
+      <a class="btn btn--on-dark" href="assets/resume/jisu-kim-resume.pdf" data-en="Download résumé">이력서 다운로드</a>
+    </div>
+
+    <p class="hero__meta">
+      <span class="badge"><span class="badge__dot" aria-hidden="true"></span><span data-en="Open to work">게임 기획 직군 지원 중</span></span>
+      <span class="hero__meta-text" data-en="Last updated Sep 2026">최종 업데이트 2026.09</span>
+    </p>
+  </div>
+
+  <span class="hero__cue" aria-hidden="true">
+    <span class="hero__cue-line"></span>SCROLL
+  </span>
+</section>
+
+<!-- ============================ 숫자 요약 ============================ -->
+<section class="stat-strip">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat reveal"><p class="stat__num">300K<span class="unit">+</span></p><p class="stat__label" data-en="Total downloads across released titles">출시작 누적 다운로드</p></div>
+      <div class="stat reveal"><p class="stat__num">7<span class="unit" data-en="titles">종</span></p><p class="stat__label" data-en="Titles released on stores">스토어 · 스팀 출시작</p></div>
+      <div class="stat reveal"><p class="stat__num">60K<span class="unit">+</span></p><p class="stat__label" data-en="Members of the community I help run">운영 참여 커뮤니티 회원</p></div>
+      <div class="stat reveal"><p class="stat__num">10<span class="unit" data-en="yrs">년</span></p><p class="stat__label" data-en="Making games since 2016">게임을 만들어 온 기간</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 01 자기소개 ============================ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="eyebrow__num">01</span><span data-en="ABOUT">자기소개</span></p>
+      <h2 class="section__title" data-en="I like problems. Games hand you one every few seconds.">저는 문제 해결을 좋아합니다. 게임은 몇 초마다 문제를 줍니다.</h2>
+      <p class="section__lead" data-en="Games always hand the player a task, and they always answer fast. That loop of a clear problem and a fast, certain reward is what pulled me in — and it is also how I want to work.">게임은 항상 과제를 주고, 항상 빠르고 확실하게 답을 돌려줍니다. 명확한 문제와 빠른 보상이라는 이 구조가 제가 게임에 끌린 이유이자, 제가 일하고 싶은 방식이기도 합니다.</p>
+    </header>
+
+    <div class="grid grid--3">
+      <article class="card reveal">
+        <span class="card__index">DEFINE</span>
+        <h3 class="card__title" data-en="Facing it beats avoiding it">피하지 않고 마주합니다</h3>
+        <p class="card__body" data-en="Name the situation, define the problem, and deal with it in the open — instead of hoping it resolves itself.">상황을 있는 그대로 보고, 문제를 정의하고, 저절로 풀리기를 기대하는 대신 드러내놓고 다룹니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="card__index">DOCUMENT</span>
+        <h3 class="card__title" data-en="I write it down until we agree">합의될 때까지 문서로 씁니다</h3>
+        <p class="card__body" data-en="A team doesn't align by talking more — it aligns once there is one document to point at. My first team project taught me that.">팀은 더 많이 말해서 정렬되지 않고, 함께 가리킬 문서가 생겼을 때 정렬됩니다. 첫 팀 프로젝트에서 배운 것입니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="card__index">VERIFY</span>
+        <h3 class="card__title" data-en="I check the market, not my taste">취향 대신 시장을 확인합니다</h3>
+        <p class="card__body" data-en="I read the platform's character before deciding what to build, and automated a daily top-chart tracking routine with AI.">무엇을 만들지 정하기 전에 플랫폼 성격부터 확인하고, 매일 인기 순위 변화를 기록하는 AI 프로세스를 만들어 씁니다.</p>
+      </article>
+    </div>
+
+    <blockquote class="quote reveal">
+      <p data-en="&ldquo;The most important attitude for a designer is to define the problem well and face it head-on.&rdquo;">&ldquo;기획자에게 있어서 가장 중요한 태도는, 문제를 잘 정의하고 정면으로 마주하는 자세라고 생각합니다.&rdquo;</p>
+      <cite data-en="— Jisu Kim">— 김지수</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============================ 02 프로젝트 ============================ -->
+<section class="section section--bone" id="projects">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="eyebrow__num">02</span><span data-en="PROJECTS">프로젝트</span></p>
+      <h2 class="section__title" data-en="Made it, released it, learned from it">만들고, 출시하고, 배운 것들</h2>
+      <p class="section__lead" data-en="Three releases I can talk about in detail. Each one is written the same way: problem &rarr; approach &rarr; result &rarr; what I'd redo.">자세히 말할 수 있는 세 개를 골랐습니다. 모두 같은 순서로 정리했습니다. 문제 &rarr; 접근 &rarr; 결과 &rarr; 다시 한다면.</p>
+    </header>
+
+    <div class="projects">
+
+      <!-- Project 01 -->
+      <article class="project reveal">
+        <div class="project__top">
+          <span class="project__no">PROJECT 01</span>
+          <span class="tag tag--lavender" data-en="Tower defense">타워디펜스</span>
+          <span class="tag tag--butter" data-en="Google Play">플레이스토어 출시</span>
+          <span class="tag tag--blush">100K+</span>
+        </div>
+        <h3 class="project__title" data-en="League of Defense">리그 오브 디펜스</h3>
+        <p class="project__sub" data-en="Mobile tower defense · Google Play · 100K+ downloads">모바일 타워디펜스 · 플레이스토어 출시 · 10만 다운로드</p>
+
+        <div class="project__grid">
+          <div class="kv">
+            <div class="kv__row"><span class="kv__k" data-en="Role">역할</span><span class="kv__v" data-en="PD · Development">PD · 개발</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Period">기간</span><span class="kv__v">2020 – 2021</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Team">팀</span><span class="kv__v" data-en="3 people">3인</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Platform">플랫폼</span><span class="kv__v" data-en="Android (Google Play)">Android (플레이스토어)</span></div>
+          </div>
+          <ul class="bullets">
+            <li data-en-html="My first real team project, and the one where I learned that <b>talking is not a delivery format</b>.">처음 경험한 팀 프로젝트이자, <b>말은 전달 수단이 아니라는 것</b>을 배운 프로젝트입니다.</li>
+            <li data-en-html="Repeated friction with the artist pushed me to write my <b>first proper specification document</b>.">디자이너와의 반복된 마찰 끝에 <b>처음으로 제대로 된 명세서</b>를 작성했습니다.</li>
+            <li data-en-html="Once the team shared one document, we shared one direction &mdash; and shipped to <b>100K+ downloads</b>.">팀이 하나의 문서를 공유하자 방향도 하나가 됐고, <b>10만 다운로드</b>라는 결과로 이어졌습니다.</li>
+          </ul>
+        </div>
+
+        <div class="project__foot">
+          <span class="muted" style="font-size:13px" data-en="Spec writing · Team communication · PD">명세 작성 · 팀 커뮤니케이션 · PD</span>
+          <a class="link-more" href="projects/league-of-defense.html">
+            <span data-en="Full breakdown">자세히 보기</span>
+            <svg class="arrow" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Project 02 -->
+      <article class="project reveal">
+        <div class="project__top">
+          <span class="project__no">PROJECT 02</span>
+          <span class="tag tag--lavender" data-en="Survivors-like">뱀서라이크</span>
+          <span class="tag tag--butter" data-en="Steam release">스팀 출시</span>
+          <span class="tag tag--cornflower" data-en="Vibe coding">바이브 코딩</span>
+        </div>
+        <h3 class="project__title" data-en="Comstock">컴스톡</h3>
+        <p class="project__sub" data-en="Survivors-like action · Steam · 5-person team">뱀서라이크 액션 · 스팀 출시 · 5인 팀</p>
+
+        <div class="project__grid">
+          <div class="kv">
+            <div class="kv__row"><span class="kv__k" data-en="Role">역할</span><span class="kv__v" data-en="PM · Game Design · Vibe coding">PM · 기획 · 바이브 코딩</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Period">기간</span><span class="kv__v">2026.07 – 2026.09</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Team">팀</span><span class="kv__v" data-en="5 people">5인</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Platform">플랫폼</span><span class="kv__v">PC (Steam)</span></div>
+          </div>
+          <ul class="bullets">
+            <li data-en-html="Ran the schedule as PM for a 5-person team and shipped to Steam in <b>3 months</b>.">5인 팀의 PM으로 일정을 운영해 <b>3개월</b> 만에 스팀 출시까지 마쳤습니다.</li>
+            <li data-en-html="Wrote the design and prototyped it myself with <b>AI-assisted coding</b>, so specs could be tested the same week.">기획과 함께 <b>AI 기반 코딩</b>으로 직접 프로토타입을 만들어, 기획을 같은 주에 검증할 수 있게 했습니다.</li>
+            <li data-en-html="A short, dense cycle: the release date was fixed first, and scope was decided around it.">출시일을 먼저 고정하고 스코프를 그에 맞춰 결정한, 짧고 밀도 높은 사이클이었습니다.</li>
+          </ul>
+        </div>
+
+        <div class="project__foot">
+          <span class="muted" style="font-size:13px" data-en="PM · Design · AI-assisted prototyping">PM · 기획 · AI 프로토타이핑</span>
+          <a class="link-more" href="projects/comstock.html">
+            <span data-en="Full breakdown">자세히 보기</span>
+            <svg class="arrow" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Project 03 -->
+      <article class="project reveal">
+        <div class="project__top">
+          <span class="project__no">PROJECT 03</span>
+          <span class="tag tag--lavender" data-en="Solo development">1인 개발</span>
+          <span class="tag tag--butter" data-en="5 titles">5종 출시</span>
+          <span class="tag tag--blush">200K+</span>
+        </div>
+        <h3 class="project__title" data-en="Five indie releases">인디게임 개발 5종</h3>
+        <p class="project__sub" data-en="Solo development · Google Play · 200K+ downloads total">1인 개발 · 플레이스토어 출시 · 총 20만 다운로드</p>
+
+        <div class="project__grid">
+          <div class="kv">
+            <div class="kv__row"><span class="kv__k" data-en="Role">역할</span><span class="kv__v" data-en="Everything (solo)">전부 (1인)</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Period">기간</span><span class="kv__v">2016 – 2018</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Genre">장르</span><span class="kv__v" data-en="Idle / clicker and others">키우기 등</span></div>
+            <div class="kv__row"><span class="kv__k" data-en="Platform">플랫폼</span><span class="kv__v" data-en="Android (Google Play)">Android (플레이스토어)</span></div>
+          </div>
+          <ul class="bullets">
+            <li data-en-html="Five titles shipped alone, <b>200K+ downloads</b> in total &mdash; and a very uneven set of outcomes.">혼자 5종을 출시해 <b>총 20만 다운로드</b>를 기록했지만, 성과의 편차는 컸습니다.</li>
+            <li data-en-html="Looking back, the biggest failure was <b>market research</b>: I read the trend too late, every time.">돌아보면 가장 큰 실패 요인은 <b>시장조사</b>였습니다. 매번 트렌드를 뒤늦게 읽었습니다.</li>
+            <li data-en-html="That is why I now check the platform's character first &mdash; and automated a <b>daily top-chart tracking routine</b> with AI.">그래서 지금은 플랫폼 성격부터 확인하고, <b>인기 순위 변화를 매일 기록하는 AI 프로세스</b>를 만들어 씁니다.</li>
+          </ul>
+        </div>
+
+        <div class="project__foot">
+          <span class="muted" style="font-size:13px" data-en="Solo dev · Store release · Market analysis">1인 개발 · 스토어 출시 · 시장 분석</span>
+          <a class="link-more" href="projects/indie-games.html">
+            <span data-en="Full breakdown">자세히 보기</span>
+            <svg class="arrow" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- 진행 중 / 작성 예정 -->
+    <div class="mini-grid reveal">
+      <div class="mini">
+        <p class="mini__label" data-en="IN PROGRESS · 2026">진행 중 · 2026</p>
+        <div class="mini__list">
+          <p data-en-html="<b>Industry-partnership project</b> · 5 people &mdash; write-up coming soon"><b>기업협약 프로젝트</b> · 5인 &mdash; 내용 작성 예정</p>
+        </div>
+      </div>
+      <div class="mini">
+        <p class="mini__label" data-en="IN PROGRESS · 2026">진행 중 · 2026</p>
+        <div class="mini__list">
+          <p data-en-html="<b>Personal project</b> &mdash; write-up coming soon"><b>개인 프로젝트</b> &mdash; 내용 작성 예정</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 03 핵심역량 ============================ -->
+<section class="section section--dark" id="skills">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="eyebrow__num">03</span><span data-en="CORE SKILLS">핵심역량</span></p>
+      <h2 class="section__title" data-en="Tools I actually shipped something with">실제로 무언가를 출시해 본 도구들</h2>
+      <p class="section__lead" data-en="Not a certificate list. Everything here is something I used to make, document, or verify a real project.">자격증 목록이 아닙니다. 여기 있는 것들은 전부 실제 프로젝트를 만들거나, 문서로 남기거나, 검증하는 데 쓴 도구입니다.</p>
+    </header>
+
+    <div class="grid grid--3">
+      <article class="card reveal">
+        <h3 class="card__title" data-en="Documents &amp; specs">문서 · 명세</h3>
+        <p class="card__body" data-en="Writing the document that makes a team look in one direction.">팀이 한 방향을 보게 만드는 문서를 씁니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag">Figma</span><span class="tag">MS Office</span><span class="tag" data-en="Document certification">문서 도구 자격증</span></div>
+      </article>
+      <article class="card reveal">
+        <h3 class="card__title" data-en="Knowledge management">지식 관리 · 옵시디언</h3>
+        <p class="card__body" data-en="Drafting and classifying documents in Obsidian, with plugins and AI-assisted filing.">옵시디언으로 문서 초안을 작성하고 분류합니다. 플러그인과 AI 자동 분류를 붙여 운용합니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag">Obsidian</span><span class="tag" data-en="Plugins">플러그인</span><span class="tag" data-en="AI classification">AI 문서 분류</span></div>
+      </article>
+      <article class="card reveal">
+        <h3 class="card__title" data-en="AI utilisation">AI 활용</h3>
+        <p class="card__body" data-en="Making games, video and music with AI, building chatbots, and automating research.">AI로 게임 · 영상 · 음악을 만들고, 챗봇을 제작하고, 자료조사를 자동화합니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag" data-en="Content generation">콘텐츠 제작</span><span class="tag" data-en="Chatbots">챗봇 제작</span><span class="tag" data-en="Research automation">자료조사 자동화</span></div>
+      </article>
+      <article class="card reveal">
+        <h3 class="card__title" data-en="Collaboration tools">협업 도구</h3>
+        <p class="card__body" data-en="Schedule and version management for small teams with fixed release dates.">출시일이 고정된 소규모 팀의 일정 관리와 버전 관리에 사용합니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag">GitHub</span><span class="tag">Notion</span><span class="tag">Jira</span><span class="tag" data-en="Spreadsheets">스프레드시트</span></div>
+      </article>
+      <article class="card reveal">
+        <h3 class="card__title" data-en="Development tools">개발 도구</h3>
+        <p class="card__body" data-en="I prototype my own designs, so a spec can be tested the same week it is written.">제 기획은 직접 프로토타입으로 만듭니다. 쓴 그 주에 검증할 수 있다는 뜻입니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag">Unity</span><span class="tag">Godot</span><span class="tag">GameMaker</span><span class="tag">Firebase</span></div>
+      </article>
+      <article class="card reveal">
+        <h3 class="card__title" data-en="Market analysis">시장 분석</h3>
+        <p class="card__body" data-en="Reading what a platform rewards before deciding what to build.">무엇을 만들지 정하기 전에 그 플랫폼이 무엇을 보상하는지 먼저 읽습니다.</p>
+        <div class="tags" style="margin-top:16px"><span class="tag" data-en="Trend tracking">트렌드 추적</span><span class="tag" data-en="Platform analysis">플랫폼 분석</span><span class="tag" data-en="Daily chart logging">순위 기록 자동화</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 04 경력 · 활동 ============================ -->
+<section class="section" id="career">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="eyebrow__num">04</span><span data-en="CAREER &amp; ACTIVITY">경력 · 활동</span></p>
+      <h2 class="section__title" data-en="Where I've been since 2016">2016년부터 지나온 경로</h2>
+      <p class="section__lead" data-en="Education, communities and side work — the places where I practised writing, explaining and shipping.">교육과 커뮤니티, 그리고 사이드 작업. 쓰고, 설명하고, 출시하는 일을 연습한 자리들입니다.</p>
+    </header>
+
+    <ol class="timeline">
+      <li class="tl-item tl-item--now reveal">
+        <p class="tl-date">2026.06 – 2026.12</p>
+        <h3 class="tl-role" data-en="Game Design course">게임 기획자 과정 이수</h3>
+        <p class="tl-org" data-en="Develocket">디벨로켓</p>
+        <p class="card__body tl-body" data-en="Learning an effective process for delivering a design to a team.">기획을 팀에 효과적으로 전달하는 프로세스를 배우고 있습니다.</p>
+        <div class="tags tl-tags"><span class="tag" data-en="Design process">기획 프로세스</span><span class="tag" data-en="Documentation">문서 작성</span><span class="tag" data-en="Communication">커뮤니케이션</span></div>
+      </li>
+      <li class="tl-item reveal">
+        <p class="tl-date">2026</p>
+        <h3 class="tl-role" data-en="Study group leader">발표 스터디 리더</h3>
+        <p class="tl-org" data-en="Game designers' study group · 12 members">기획자 모임 · 12인</p>
+        <p class="card__body tl-body" data-en="Leading a 12-person group that writes and presents a design document every week.">12인 규모 모임에서 매주 1회 기획서를 작성하고 발표합니다.</p>
+        <div class="tags tl-tags"><span class="tag" data-en="Weekly design docs">주 1회 기획서</span><span class="tag" data-en="Presenting">발표</span><span class="tag" data-en="Leading">리더</span></div>
+      </li>
+      <li class="tl-item reveal">
+        <p class="tl-date">2021 – 2023</p>
+        <h3 class="tl-role" data-en="Blog operation &amp; game writing">블로그 운영 · 게임 평론</h3>
+        <p class="tl-org" data-en="Harari Labs · 2 people">하라리 랩스 · 2인</p>
+        <p class="card__body tl-body" data-en="Game reviews, guides and criticism on a two-person blog reaching 3,000–5,000 views a month.">2인 블로그에서 게임 리뷰 · 공략 · 평론을 작성했습니다. 월 3~5,000뷰.</p>
+        <div class="tags tl-tags"><span class="tag" data-en="Reviews">리뷰</span><span class="tag" data-en="Guides">공략</span><span class="tag" data-en="Criticism">평론</span><span class="tag">3–5K views / month</span></div>
+      </li>
+      <li class="tl-item reveal">
+        <p class="tl-date">2019 – <span data-en="present">현재</span></p>
+        <h3 class="tl-role" data-en="Staff member">스탭 활동</h3>
+        <p class="tl-org" data-en="KGMC · indie game dev community, 60K+ members">KGMC · 회원 6만+ 인디게임 개발 카페</p>
+        <p class="card__body tl-body" data-en="Helping run a 60,000-member indie development community and writing courses for it.">회원 6만 명 이상의 인디게임 개발 커뮤니티를 관리하고, 개발 · 교양 강좌를 작성합니다.</p>
+        <div class="tags tl-tags"><span class="tag" data-en="Community ops">커뮤니티 관리</span><span class="tag" data-en="Course writing">강좌 작성</span><span class="tag">60K+</span></div>
+      </li>
+      <li class="tl-item reveal">
+        <p class="tl-date">2016 – 2018</p>
+        <h3 class="tl-role" data-en="Solo indie development">인디게임 1인 개발</h3>
+        <p class="tl-org" data-en="5 titles on Google Play · 200K+ downloads">플레이스토어 5종 출시 · 총 20만 다운로드</p>
+        <p class="card__body tl-body" data-en="Where it started — five titles shipped alone, and the whole pipeline learned the hard way.">모든 것이 시작된 자리입니다. 혼자 5종을 출시하며 파이프라인 전체를 익혔습니다.</p>
+        <div class="tags tl-tags"><span class="tag" data-en="Solo dev">1인 개발</span><span class="tag" data-en="Store release">스토어 출시</span><span class="tag">200K+</span></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ 05 게임 플레이 경험 ============================ -->
+<section class="section section--bone" id="play">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow"><span class="eyebrow__num">05</span><span data-en="PLAY LOG">게임 플레이 경험</span></p>
+      <h2 class="section__title" data-en="Playing isn't a hobby. It's fieldwork.">플레이는 취미가 아니라 레퍼런스입니다</h2>
+      <p class="section__lead" data-en="Games give you something other cultural media can't: interaction, and the immersion that comes with it. I play on PC, mobile and console — as a player and as someone who has to build these things.">게임은 다른 문화 콘텐츠가 주지 못하는 것을 줍니다. 직접적인 상호작용, 그리고 거기서 오는 몰입입니다. PC · 모바일 · 콘솔을 유저로서, 또 이걸 만들어야 하는 사람으로서 플레이합니다.</p>
+    </header>
+
+    <div class="play">
+      <article class="play-card reveal">
+        <div class="play-card__top"><h3 class="play-card__name" data-en="Stellaris">스텔라리스</h3><span class="play-card__hours">1,000h</span></div>
+        <p class="play-card__genre" data-en="Space grand strategy · PC">우주 전략 시뮬레이션 · PC</p>
+        <p class="play-card__note"><span class="play-card__note-label" data-en="DESIGNER'S NOTE">기획자의 메모</span><span data-en="1,000 hours in a game of decisions with delayed consequences — where I learned to read a system whole.">지연된 결과를 가진 결정의 연쇄에서 1,000시간. 하나의 수치가 아니라 시스템 전체를 보는 습관을 배웠습니다.</span></p>
+      </article>
+      <article class="play-card reveal">
+        <div class="play-card__top"><h3 class="play-card__name" data-en="Rusty Lake">러스티레이크</h3><span class="play-card__hours" data-en="All titles">시리즈 전작</span></div>
+        <p class="play-card__genre" data-en="Horror escape puzzle · PC / Mobile">공포 방탈출 퍼즐 · PC / 모바일</p>
+        <p class="play-card__note"><span class="play-card__note-label" data-en="DESIGNER'S NOTE">기획자의 메모</span><span data-en="Cleared every title. Narrative delivered through puzzle structure alone — the story is the mechanic.">시리즈 전작 클리어. 퍼즐 구조만으로 서사를 전달하는 교본입니다.</span></p>
+      </article>
+      <article class="play-card reveal">
+        <div class="play-card__top"><h3 class="play-card__name" data-en="Coming soon">작성 예정</h3><span class="play-card__hours">TBD</span></div>
+        <p class="play-card__genre" data-en="A title related to the team I'm applying to">지원 직무 · 팀 관련 게임</p>
+        <p class="play-card__note"><span class="play-card__note-label" data-en="TO FILL IN">채워 넣을 자리</span><span data-en="Slot reserved for a title relevant to the team being applied to — game name, playtime, and one line on what it taught me as a designer.">지원하는 팀과 관련된 타이틀을 넣을 자리입니다. 게임명 · 플레이타임 · 기획자로서 배운 점 한 줄.</span></p>
+      </article>
+    </div>
+
+    <div class="tags" style="margin-top:32px">
+      <span class="tag tag--lavender">PC</span>
+      <span class="tag tag--butter" data-en="Mobile">모바일</span>
+      <span class="tag tag--blush" data-en="Console">콘솔</span>
+      <span class="tag" data-en="Grand strategy">전략 시뮬레이션</span>
+      <span class="tag" data-en="Puzzle">퍼즐</span>
+      <span class="tag" data-en="Tower defense">타워디펜스</span>
+      <span class="tag" data-en="Survivors-like">뱀서라이크</span>
+      <span class="tag" data-en="Idle / clicker">키우기</span>
+      <span class="tag" data-en="Indie">인디</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 06 연락처 ============================ -->
+<section class="section section--dark contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow reveal"><span class="eyebrow__num">06</span><span data-en="CONTACT">연락처</span></p>
+    <h2 class="section__title reveal" data-en="I want to become a great PD.">훌륭한 PD가 되고 싶습니다.</h2>
+    <p class="section__lead reveal" data-en="A great PD isn't the person with the best idea — it's the person who holds a big goal and keeps solving the small problems underneath it. Today I take one more step toward that, as a designer who faces problems head-on.">훌륭한 PD는 좋은 아이디어를 가진 사람이 아니라, 큰 목표를 두고 그 아래 작은 문제부터 잘 풀어내는 사람이라고 생각합니다. 오늘도 문제를 정면으로 마주하는 기획자로서 한 걸음 더 내딛겠습니다.</p>
+
+    <div class="btn-row reveal">
+      <a class="btn btn--primary" href="assets/resume/jisu-kim-resume.pdf" data-en="Download résumé (PDF)">이력서 다운로드 (PDF)</a>
+      <!-- TODO: 공개할 연락 이메일을 정하신 뒤 아래 span 을 아래 형태의 링크로 바꿔 주세요.
+           <a class="btn btn--on-dark" href="mailto:주소@example.com" data-en="Send an email">이메일 보내기</a>
+           개인정보 보호를 위해 실제 주소는 비워 두었습니다. -->
+      <span class="btn btn--on-dark is-placeholder" data-en="Email — address to be added">이메일 — 주소 입력 예정</span>
+      <a class="btn btn--on-dark" href="https://github.com/imjisukim0712-bit" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>&copy; <span data-year>2026</span> <span data-en="Jisu Kim · Game Designer">김지수 · Game Designer</span></p>
+    <p><a href="#top" data-en="Back to top">맨 위로 돌아가기</a></p>
+  </div>
+</footer>
+
+<button type="button" class="to-top" data-to-top aria-label="맨 위로" data-en-aria="Back to top">
+  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 12V3M2.6 7.2 7 2.6l4.4 4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
