@@ -252,8 +252,11 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
 .nav-wrap {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; justify-content: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 14px;
   pointer-events: none;
+  /* 떠 있는 바 위/옆으로 스크롤 내용이 비치지 않도록 상단을 배경색으로 가리고 아래로 자연스럽게 페이드 */
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 72%, transparent 100%);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
 }
 .nav {
   pointer-events: auto;
