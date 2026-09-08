@@ -57,21 +57,16 @@ window.PORTFOLIO_CONTENT = {
       photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" }
     },
 
-    // 홈 하단 — 이력서·자기소개서·게임플레이 개요. page 는 이동할 페이지 키(resume/cover/play).
+    // 홈 하단 — 이력서·자기소개서·게임플레이 개요. 각 페이지의 실제 내용(핵심역량·경력·플레이 기록 등)이
+    // 자동으로 요약되어 표시됩니다. page 는 이동할 페이지 키(resume/cover/play). summary 는 선택(짧은 소개).
     explore: {
       title: { ko: "더 살펴보기", en: "Explore" },
-      lead:  { ko: "각 페이지를 간단히 소개합니다.", en: "A quick look at each page." },
+      lead:  { ko: "각 페이지에 무엇이 있는지 간단히 정리했습니다.", en: "A quick look at what's on each page." },
       cta:   { ko: "자세히 보기", en: "See more" },
       items: [
-        { page: "resume",
-          summary: { ko: "출시작 7종 · 누적 30만+ 다운로드 · 개발 경력 10년. 핵심역량과 경력을 한눈에 정리했습니다.",
-                     en: "7 titles · 300K+ downloads · 10 years. Core skills and career at a glance." } },
-        { page: "cover",
-          summary: { ko: "문제를 대하는 방식과 기획자로서의 관점을 담은 자기소개서입니다.",
-                     en: "How I approach problems and see my role as a designer." } },
-        { page: "play",
-          summary: { ko: "1,000시간 스텔라리스부터 러스티레이크까지 — 기획을 바꾼 게임 경험입니다.",
-                     en: "From 1,000 hours in Stellaris to Rusty Lake — play that shaped my design." } }
+        { page: "resume", summary: { ko: "", en: "" } },
+        { page: "cover",  summary: { ko: "", en: "" } },
+        { page: "play",   summary: { ko: "", en: "" } }
       ]
     }
   },
