@@ -99,18 +99,9 @@
 
   /* ---------- 접이식 헤더 ---------- */
   function initHeader() {
-    var wrap = $('.nav-wrap');
-    if (!wrap) return;
-    // 데스크톱에서만 접힘 적용 (모바일은 항상 알약)
-    if (window.matchMedia('(min-width: 1000px)').matches) wrap.classList.add('is-collapsed');
+    // 헤더는 항상 펼쳐진 상태 — 접힘 동작 제거.
     var handle = $('[data-nav-handle]');
-    if (handle) handle.addEventListener('click', function () {
-      wrap.classList.toggle('is-collapsed');
-    });
-    window.addEventListener('resize', function () {
-      if (!window.matchMedia('(min-width: 1000px)').matches) wrap.classList.remove('is-collapsed');
-      else if (!wrap.classList.contains('is-pinned')) wrap.classList.add('is-collapsed');
-    });
+    if (handle) handle.remove();
   }
 
   /* ---------- 카드 뽑기 ---------- */

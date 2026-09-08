@@ -275,18 +275,6 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
 @media (min-width: 1000px) { .nav__actions { margin-left: 0; } }
 
 /* 접힘/펼침 — 데스크톱: 좁게 접혀 있다가 hover/focus 시 펼침 */
-@media (min-width: 1000px) {
-  /* 접힘: 메뉴를 폭 0 으로 접어 로고·액션만 보이는 좁은 알약 */
-  .nav-wrap.is-collapsed .nav { max-width: 480px; }
-  .nav-wrap.is-collapsed .nav__menu {
-    max-width: 0; margin-inline: 0; opacity: 0; overflow: hidden; pointer-events: none;
-    transition: max-width .38s cubic-bezier(.2,.8,.3,1), opacity .22s ease, margin .3s ease;
-  }
-  .nav-wrap.is-collapsed:hover .nav,
-  .nav-wrap.is-collapsed:focus-within .nav { max-width: var(--page-max); }
-  .nav-wrap.is-collapsed:hover .nav__menu,
-  .nav-wrap.is-collapsed:focus-within .nav__menu { max-width: 900px; margin-inline: auto; opacity: 1; pointer-events: auto; }
-}
 
 .icon-btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -321,7 +309,7 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   background: var(--surface-2); color: var(--heading); border: 1px solid var(--border); border-top: 0;
   transition: transform .3s ease, opacity .3s ease;
 }
-@media (min-width: 1000px) { .nav-wrap.is-collapsed + .nav-handle { display: inline-flex; } }
+/* nav-handle 미사용 */ .nav-handle { display: none !important; }
 .nav-handle svg { width: 16px; height: 16px; transition: transform .3s ease; }
 
 /* Mobile sheet */
@@ -370,6 +358,26 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 /* --------------------------------------------------------------------------
    9. HOME — 카드 뽑기
    -------------------------------------------------------------------------- */
+/* 홈: 히어로 + 카드 뽑기를 한 화면에 (데스크톱/태블릿) */
+[data-page="home"] main { padding-top: calc(var(--nav-h) + 12px); }
+.home-screen { display: flex; flex-direction: column; }
+@media (min-width: 768px) {
+  .home-screen {
+    min-height: calc(100svh - var(--nav-h) - 24px);
+    justify-content: center;
+    gap: clamp(16px, 3vh, 40px);
+  }
+  .home-screen .hero { min-height: 0; padding-block: 0; }
+  .home-screen .draw { padding-block: 0; }
+  /* 한 화면에 맞도록 히어로·일러스트·덱 크기 축소 */
+  .home-screen .hero__title { font-size: clamp(34px, 3.4vw + 14px, 60px); }
+  .home-screen .ghost-art { max-width: min(300px, 30vh); }
+  .home-screen .draw__deck { width: clamp(140px, 14vw, 170px); }
+}
+@media (min-width: 768px) and (max-height: 860px) {
+  .home-screen .hero__sub { display: none; }        /* 낮은 화면에선 부제 숨겨 공간 확보 */
+  .home-screen .ghost-art { max-width: min(240px, 26vh); }
+}
 .draw { padding-block: var(--section-pad-y); }
 .draw__stage {
   display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap;

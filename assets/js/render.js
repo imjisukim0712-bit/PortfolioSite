@@ -123,7 +123,7 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    return hero + drawSec;
+    return '<div class="home-screen">' + hero + drawSec + '</div>';
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
