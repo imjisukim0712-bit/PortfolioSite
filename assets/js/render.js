@@ -126,9 +126,14 @@
     var pl = h.player || {};
     var photoSrc = (pl.photo || '').trim();
     var altTxt = t(pl.photoAlt, lang) || t(c.meta.name, lang);
-    var playerCard = photoSrc
+    var frame = photoSrc
       ? '<figure class="portrait"><img src="' + esc(base + photoSrc) + '" alt="' + esc(altTxt) + '" loading="lazy"></figure>'
       : '<figure class="portrait portrait--empty" role="img" aria-label="' + esc(altTxt) + '">' + GHOST + '</figure>';
+    var playerCard =
+      '<div class="hero__portrait">' + frame +
+        '<p class="portrait__cap"><span class="portrait__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
+        '<span class="portrait__role">' + esc(t(c.meta.role, lang)) + '</span></p>' +
+      '</div>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
