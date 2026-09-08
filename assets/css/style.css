@@ -277,7 +277,8 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   .nav__menu { display: flex; align-items: center; gap: 2px; margin-inline: auto; }
   .nav__link { display: inline-flex; align-items: center; gap: 5px; padding: 9px 15px; border-radius: var(--radius-pill); font-size: var(--text-body-sm); color: var(--heading); white-space: nowrap; transition: background-color .18s ease; }
   .nav__link:hover { background: var(--surface-2); }
-  .nav__link.is-active { background: var(--cta); color: var(--cta-text); }
+  .nav__link.is-active { background: var(--aubergine); color: var(--paper); }
+  :root[data-theme="dark"] .nav__link.is-active { background: var(--periwinkle); color: var(--aubergine); }
   .nav__link .chev { width: 4px; height: 7px; opacity: .5; flex: none; }
 }
 .nav__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
@@ -298,8 +299,6 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
 .lang-toggle__btn[aria-pressed="true"] { background: var(--aubergine); color: var(--paper); }
 :root[data-theme="dark"] .lang-toggle__btn[aria-pressed="true"] { background: var(--periwinkle); color: var(--aubergine); }
 
-.nav__cta { display: none; }
-@media (min-width: 620px) { .nav__cta { display: inline-flex; } }
 
 .nav__burger { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--heading); }
 @media (min-width: 1000px) { .nav__burger { display: none; } }
@@ -402,27 +401,16 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
   .home-screen .ghost-art { max-width: min(240px, 26vh); }
   .home-screen .portrait { width: min(200px, 22vh); }
 }
-/* 홈 하단 — 이력서·자기소개서·게임플레이 개요 (세로로 하나씩, 간단하게) */
-.explore .xlist { display: flex; flex-direction: column; }
-.xrow { display: block; padding: 28px 0; border-top: 1px solid var(--border); text-decoration: none; }
-.xrow:last-child { border-bottom: 1px solid var(--border); }
-.xrow__title { font-size: var(--text-heading-sm); line-height: 1.2; color: var(--heading); transition: color .18s ease; }
-.xrow:hover .xrow__title { color: var(--accent); }
-.xrow__sum { margin-top: 10px; max-width: 60ch; font-size: var(--text-body-sm); line-height: 1.7; color: var(--text-muted); }
-.xrow .tool-grid { margin-top: 16px; gap: 16px; }
-.xchips { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
-.xchip { padding: 6px 14px; border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text); font-size: var(--text-caption); line-height: 1; }
-.xrow__more { margin-top: 18px; display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-body-sm); color: var(--accent); }
-.xrow__more span { transition: transform .2s ease; }
-.xrow:hover .xrow__more span { transform: translateX(4px); }
 
 .draw { padding-block: var(--section-pad-y); }
 /* 덱과 뽑힌 카드를 하나의 균등 그리드에 두어 크기·간격을 동일하게 (겹침 방지) */
 .draw__stage {
-  display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px;
+  display: grid; grid-template-columns: 1fr; gap: 12px;   /* 좁으면 1개 */
   align-items: start; perspective: 1200px;
 }
-@media (min-width: 720px) { .draw__stage { grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px; } }
+@media (min-width: 440px) { .draw__stage { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width: 680px) { .draw__stage { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; } }
+@media (min-width: 1000px) { .draw__stage { grid-template-columns: repeat(5, minmax(0,1fr)); } }
 .draw__cards { display: contents; }
 .draw__deck {
   position: relative; width: 100%; aspect-ratio: 3 / 4; padding: 0;
@@ -478,7 +466,7 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
 .draw-card__go { margin-top: 12px; font-size: var(--text-caption); color: var(--accent); }
 .draw__empty { grid-column: 2 / -1; display: grid; place-items: center; min-height: 160px; border: 1px dashed var(--border); border-radius: var(--radius-card); color: var(--text-muted); font-size: var(--text-body-sm); padding: 24px; text-align: center; }
-@media (max-width: 719px) { .draw__empty { grid-column: 1 / -1; } }
+@media (max-width: 679px) { .draw__empty { grid-column: 1 / -1; } }
 /* 덱 클릭 반응 (리플/셔플) */
 .draw__deck.is-draw .draw__deck-card:nth-child(3) { animation: deckPress .34s cubic-bezier(.2,.8,.3,1); }
 .draw__deck.is-draw .draw__deck-card:nth-child(2) { animation: deckRiffle .34s ease; }

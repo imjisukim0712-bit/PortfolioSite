@@ -55,19 +55,6 @@ window.PORTFOLIO_CONTENT = {
     player: {
       photo:    "assets/img/profile.jpg",   // 프로필 사진 경로
       photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" }
-    },
-
-    // 홈 하단 — 이력서·자기소개서·게임플레이 개요. 각 페이지의 실제 내용(핵심역량·경력·플레이 기록 등)이
-    // 자동으로 요약되어 표시됩니다. page 는 이동할 페이지 키(resume/cover/play). summary 는 선택(짧은 소개).
-    explore: {
-      title: { ko: "더 살펴보기", en: "Explore" },
-      lead:  { ko: "각 페이지에 무엇이 있는지 간단히 정리했습니다.", en: "A quick look at what's on each page." },
-      cta:   { ko: "자세히 보기", en: "See more" },
-      items: [
-        { page: "resume", summary: { ko: "", en: "" } },
-        { page: "cover",  summary: { ko: "", en: "" } },
-        { page: "play",   summary: { ko: "", en: "" } }
-      ]
     }
   },
 

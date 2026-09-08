@@ -74,7 +74,6 @@
           '<button type="button" class="lang-toggle__btn" data-lang-btn="en" aria-pressed="' + (lang==='en') + '">EN</button>' +
         '</div>' +
         '<button type="button" class="icon-btn" data-theme-toggle aria-label="' + (lang==='en'?'Toggle dark mode':'다크모드 전환') + '"><span data-theme-icon></span></button>' +
-        '<a class="btn btn--primary btn--sm nav__cta" href="' + esc(base + c.meta.resumeUrl) + '">' + (lang==='en'?'Résumé':'이력서') + '</a>' +
         '<button type="button" class="nav__burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="' + (lang==='en'?'Open menu':'메뉴 열기') + '"><span class="nav__burger-lines" aria-hidden="true"></span></button>' +
       '</div>';
   }
@@ -84,12 +83,11 @@
       return '<a class="sheet__link' + (isActive ? ' is-active' : '') + '" href="' + esc(base + HREF[k]) + '">' +
         '<span class="sheet__num">' + ('0'+(i+1)) + '</span><span>' + esc(t(c.nav[k], lang)) + '</span></a>';
     }).join('');
-    return links + '<div class="sheet__foot"><a class="btn btn--primary" href="' + esc(base + c.meta.resumeUrl) + '">' +
-      (lang==='en'?'Download résumé (PDF)':'이력서 다운로드 (PDF)') + '</a></div>';
+    return links;
   }
   function footerHtml(c, lang, base) {
     var mail = (c.meta.email||'').trim(), gh = (c.meta.github||'').trim();
-    var links = '<a class="btn btn--outline btn--sm" href="' + esc(base + c.meta.resumeUrl) + '">' + (lang==='en'?'Résumé (PDF)':'이력서 (PDF)') + '</a>' +
+    var links = '' +
       (mail ? '<a class="btn btn--outline btn--sm" href="mailto:' + esc(mail) + '">' + (lang==='en'?'Email':'이메일') + '</a>'
             : '<span class="btn btn--outline btn--sm is-placeholder">' + (lang==='en'?'Email — TBA':'이메일 — 입력 예정') + '</span>') +
       (gh ? '<a class="btn btn--outline btn--sm" href="' + esc(gh) + '" target="_blank" rel="noopener noreferrer">GitHub</a>' : '');
@@ -118,31 +116,6 @@
     var todo = lang==='en' ? 'To be written.' : '작성 예정.';
     if (!has(field, lang)) return '<p class="' + (cls||'muted') + '">' + todo + '</p>';
     return t(field, lang).split(/\n{2,}|\n/).filter(function (s){return s.trim();}).map(function (s){return '<p>' + s + '</p>';}).join('');
-  }
-
-  // 홈 개요 — 줄글 대신 아이콘/칩으로 "뭐가 있는지" 간단히.
-  function chipRow(items) {
-    var a = arr(items).filter(Boolean);
-    if (!a.length) return '';
-    return '<div class="xchips">' + a.map(function (x) { return '<span class="xchip">' + esc(x) + '</span>'; }).join('') + '</div>';
-  }
-  function explorePreview(c, page, lang) {
-    if (page === 'resume') {
-      var seen = {}, tools = [];
-      arr(c.resume && c.resume.skills && c.resume.skills.cards).forEach(function (card) {
-        arr(card.tools).forEach(function (k) { if (!seen[k]) { seen[k] = 1; tools.push(k); } });
-      });
-      return toolsHtml(tools, lang);
-    }
-    if (page === 'play') {
-      return chipRow(arr(c.play && c.play.cards).map(function (g) { return t(g.name, lang); }));
-    }
-    if (page === 'cover') {
-      var cl = c.coverLetter || {};
-      var hs = arr(cl.blocks).map(function (b) { return t(b.heading, lang); }).filter(Boolean);
-      return chipRow(hs.length ? hs : [ t(cl.lead, lang) || (lang==='en'?'Coming soon':'작성 예정') ]);
-    }
-    return '';
   }
 
   /* ---------- HOME ---------- */
@@ -184,28 +157,7 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    var ex = h.explore || {};
-    var moreTxt = t(ex.cta, lang) || (lang==='en'?'See more':'자세히 보기');
-    var exItems = arr(ex.items).map(function (it) {
-      var navLabel = c.nav && c.nav[it.page];
-      var href = HREF[it.page] || 'index.html';
-      return '<a class="xrow reveal" href="' + esc(base + href) + '">' +
-        '<h3 class="xrow__title">' + esc(t(navLabel, lang) || '') + '</h3>' +
-        (has(it.summary, lang) ? '<p class="xrow__sum">' + esc(t(it.summary, lang)) + '</p>' : '') +
-        explorePreview(c, it.page, lang) +
-        '<span class="xrow__more">' + esc(moreTxt) + ' <span aria-hidden="true">→</span></span>' +
-        '</a>';
-    }).join('');
-    var exploreSec = exItems
-      ? '<section class="section explore"><div class="wrap">' +
-          '<header class="section__head reveal"><p class="eyebrow">EXPLORE</p>' +
-          '<h2 class="section__title">' + esc(t(ex.title, lang)) + '</h2>' +
-          (has(ex.lead, lang) ? '<p class="section__lead">' + esc(t(ex.lead, lang)) + '</p>' : '') + '</header>' +
-          '<div class="xlist">' + exItems + '</div>' +
-        '</div></section>'
-      : '';
-
-    return '<div class="home-screen">' + hero + drawSec + '</div>' + exploreSec;
+    return '<div class="home-screen">' + hero + drawSec + '</div>';
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
