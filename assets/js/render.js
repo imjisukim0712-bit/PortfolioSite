@@ -168,22 +168,30 @@
       return '<a class="hp-more' + (cls || '') + '" href="' + esc(base + (HREF[page] || 'index.html')) + '">' +
         esc(label) + ' <span aria-hidden="true">→</span></a>';
     }
+    function thumb(src, alt) {
+      src = (src || '').trim();
+      return src
+        ? '<span class="hp-thumb"><img src="' + esc(base + src) + '" alt="' + esc(alt || '') + '" loading="lazy"></span>'
+        : '<span class="hp-thumb hp-thumb--empty" aria-hidden="true">' + GHOST + '</span>';
+    }
     var L = function (ko, en) { return lang === 'en' ? en : ko; };
 
-    // 프로젝트 경험
-    var projRows = arr(c.projects && c.projects.items).map(function (p) {
-      var meta = metaJoin([ t(p.headcount, lang), t(p.myRole, lang), t(p.status, lang), t(p.sub, lang) ]);
+    // 프로젝트 경험 — 2개만
+    var projRows = arr(c.projects && c.projects.items).slice(0, 2).map(function (p) {
+      var meta = metaJoin([ t(p.myRole, lang), t(p.sub, lang) ]);
       return '<a class="hpl-row" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
-        '<span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(p.title, lang)) + '</span>' +
+        thumb(p.thumb, t(p.title, lang)) +
+        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(p.title, lang)) + '</span>' +
         '<span class="hpl-row__d">' + esc(t(p.period, lang)) + '</span></span>' +
-        (meta ? '<span class="hpl-row__m">' + esc(meta) + '</span>' : '') + '</a>';
+        (meta ? '<span class="hpl-row__m">' + esc(meta) + '</span>' : '') + '</span></a>';
     }).join('');
 
-    // 대외 활동 (경력 항목)
-    var actRows = arr(c.resume && c.resume.career && c.resume.career.items).map(function (it) {
-      return '<div class="hpl-row"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(it.role, lang)) + '</span>' +
+    // 대외 활동 (경력 항목) — 2개만
+    var actRows = arr(c.resume && c.resume.career && c.resume.career.items).slice(0, 2).map(function (it) {
+      return '<div class="hpl-row">' + thumb(it.thumb, t(it.role, lang)) +
+        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(it.role, lang)) + '</span>' +
         '<span class="hpl-row__d">' + esc(t(it.date, lang)) + '</span></span>' +
-        '<span class="hpl-row__m">' + esc(metaJoin([ t(it.org, lang), t(it.body, lang) ])) + '</span></div>';
+        '<span class="hpl-row__m">' + esc(metaJoin([ t(it.org, lang), t(it.body, lang) ])) + '</span></span></div>';
     }).join('');
 
     // 보유 기술 (아이콘 + 설명)
@@ -209,7 +217,7 @@
       moreLink('resume', ' reveal') +
       '</div></section>';
 
-    var coverSec = '<section class="section hp hp--sep"><div class="wrap">' + moreLink('cover', ' hp-more--lg reveal') + '</div></section>';
+    var coverSec = '<section class="section hp hp--sep"><div class="wrap">' + moreLink('cover', ' reveal') + '</div></section>';
 
     var playSec = '<section class="section hp hp--sep"><div class="wrap">' +
       (gameItems ? '<div class="hp-games reveal">' + gameItems + '</div>' : '') +

@@ -330,9 +330,10 @@
           { key: 'lead', label: '설명', type: 'i18n', area: true },
           { key: 'items', label: '경력 항목', type: 'list',
             itemName: function (it){ return (it.date&&it.date.ko||'') + ' · ' + (it.role&&it.role.ko||''); },
-            template: function (){ return { now:false, date:i18n(), role:i18n(), org:i18n(), body:i18n(), tags:[] }; },
+            template: function (){ return { now:false, date:i18n(), role:i18n(), org:i18n(), body:i18n(), tags:[], thumb:'' }; },
             fields: [
               { key: 'now', label: '현재 진행 중 (초록 점)', type: 'bool' },
+              { key: 'thumb', label: '대표 사진 경로', type: 'text', hint: '예: assets/img/xxx.jpg — 홈 개요 썸네일(비우면 고스트).' },
               { key: 'date', label: '기간', type: 'i18n' },
               { key: 'role', label: '역할 · 제목', type: 'i18n' },
               { key: 'org', label: '소속 · 부제', type: 'i18n' },
@@ -367,9 +368,10 @@
         ] },
         { key: 'items', label: '프로젝트', type: 'list',
           itemName: function (it){ return it.title&&it.title.ko||it.id||'프로젝트'; },
-          template: function (){ return { id:'', category:'game', title:i18n(), period:i18n(), sub:i18n(), quest:{goal:i18n(),result:i18n(),cleared:true}, genres:[], headcount:i18n(), myRole:i18n(), status:i18n(), learned:[], links:{googlePlay:'',steam:''}, media:{embed:'',note:i18n()}, detailBlocks:{problem:i18n(),approach:i18n(),retrospective:i18n()} }; },
+          template: function (){ return { id:'', category:'game', title:i18n(), period:i18n(), sub:i18n(), thumb:'', quest:{goal:i18n(),result:i18n(),cleared:true}, genres:[], headcount:i18n(), myRole:i18n(), status:i18n(), learned:[], links:{googlePlay:'',steam:''}, media:{embed:'',note:i18n()}, detailBlocks:{problem:i18n(),approach:i18n(),retrospective:i18n()} }; },
           fields: [
             { key: 'id', label: '주소용 id', type: 'text', hint: '영문 소문자·하이픈. 예: league-of-defense' },
+            { key: 'thumb', label: '대표 사진 경로', type: 'text', hint: '예: assets/img/xxx.jpg — 홈 개요 썸네일(비우면 고스트).' },
             { key: 'category', label: '분류', type: 'select', options: [ ['game','게임'], ['planning','기획'] ] },
             { key: 'title', label: '이름', type: 'i18n' },
             { key: 'period', label: '기간', type: 'i18n', hint: '예: 2025.01 ~ 2025.08' },

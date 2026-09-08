@@ -32,7 +32,7 @@ window.PORTFOLIO_CONTENT = {
     // <span class="accent">보라색</span> 을 쓸 수 있습니다.
     titleHtml: {
       ko: '문제를 <span class="accent">정면</span>으로 <br> 마주하는 기획자.',
-      en: 'I\'m <span class="name">Jisu Kim</span>,<br>a designer who walks <span class="accent">straight into</span> the problem'
+      en: 'A designer who faces <br> the problem <span class="accent">head-on</span>.'
     }
   },
 
