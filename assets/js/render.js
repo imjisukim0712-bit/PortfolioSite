@@ -157,7 +157,66 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    return '<div class="home-screen">' + hero + drawSec + '</div>';
+    return '<div class="home-screen">' + hero + drawSec + '</div>' + homePreview(c, lang, base);
+  }
+
+  // 홈 아래 랜딩형 개요 — 이력서·자기소개서·게임플레이 미리보기 (실제 데이터에서).
+  function homePreview(c, lang, base) {
+    function metaJoin(parts) { return parts.map(function (x) { return (x || '').toString().trim(); }).filter(Boolean).join(' · '); }
+    function moreLink(page, cls) {
+      var label = t(c.nav && c.nav[page], lang) || page;
+      return '<a class="hp-more' + (cls || '') + '" href="' + esc(base + (HREF[page] || 'index.html')) + '">' +
+        esc(label) + ' <span aria-hidden="true">→</span></a>';
+    }
+    var L = function (ko, en) { return lang === 'en' ? en : ko; };
+
+    // 프로젝트 경험
+    var projRows = arr(c.projects && c.projects.items).map(function (p) {
+      var meta = metaJoin([ t(p.headcount, lang), t(p.myRole, lang), t(p.status, lang), t(p.sub, lang) ]);
+      return '<a class="hpl-row" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
+        '<span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(p.title, lang)) + '</span>' +
+        '<span class="hpl-row__d">' + esc(t(p.period, lang)) + '</span></span>' +
+        (meta ? '<span class="hpl-row__m">' + esc(meta) + '</span>' : '') + '</a>';
+    }).join('');
+
+    // 대외 활동 (경력 항목)
+    var actRows = arr(c.resume && c.resume.career && c.resume.career.items).map(function (it) {
+      return '<div class="hpl-row"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(it.role, lang)) + '</span>' +
+        '<span class="hpl-row__d">' + esc(t(it.date, lang)) + '</span></span>' +
+        '<span class="hpl-row__m">' + esc(metaJoin([ t(it.org, lang), t(it.body, lang) ])) + '</span></div>';
+    }).join('');
+
+    // 보유 기술 (아이콘 + 설명)
+    var skillItems = arr(c.resume && c.resume.skills && c.resume.skills.cards).map(function (card) {
+      var first = arr(card.tools)[0];
+      var icon = (first && TOOL_ICONS[first]) ? TOOL_ICONS[first].s : GHOST;
+      return '<div class="hp-skill"><span class="hp-skill__ic">' + icon + '</span>' +
+        '<div><p class="hp-skill__t">' + esc(t(card.title, lang)) + '</p>' +
+        '<p class="hp-skill__b">' + esc(t(card.body, lang)) + '</p></div></div>';
+    }).join('');
+
+    // 게임플레이 카드
+    var gameItems = arr(c.play && c.play.cards).map(function (g) {
+      return '<div class="hp-game"><span class="hp-game__ic" aria-hidden="true">' + GHOST + '</span>' +
+        '<p class="hp-game__t">' + esc(t(g.name, lang)) + '</p>' +
+        '<p class="hp-game__b">' + esc(metaJoin([ t(g.genre, lang), t(g.hours, lang) ])) + '</p></div>';
+    }).join('');
+
+    var resumeSec = '<section class="section hp"><div class="wrap">' +
+      (projRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('프로젝트 경험','Project experience') + '</h2><div class="hpl">' + projRows + '</div></div>' : '') +
+      (actRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('대외 활동','Activities') + '</h2><div class="hpl">' + actRows + '</div></div>' : '') +
+      (skillItems ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('보유 기술','Skills') + '</h2><div class="hp-skills">' + skillItems + '</div></div>' : '') +
+      moreLink('resume', ' reveal') +
+      '</div></section>';
+
+    var coverSec = '<section class="section hp hp--sep"><div class="wrap">' + moreLink('cover', ' hp-more--lg reveal') + '</div></section>';
+
+    var playSec = '<section class="section hp hp--sep"><div class="wrap">' +
+      (gameItems ? '<div class="hp-games reveal">' + gameItems + '</div>' : '') +
+      moreLink('play', ' reveal') +
+      '</div></section>';
+
+    return resumeSec + coverSec + playSec;
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)

@@ -402,6 +402,39 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
   .home-screen .portrait { width: min(200px, 22vh); }
 }
 
+/* 홈 아래 랜딩형 개요 — 이력서·자기소개서·게임플레이 미리보기 */
+.hp { padding-block: clamp(44px, 6vh, 76px); }
+.hp--sep { border-top: 1px solid var(--border); }
+.hp-block { margin-bottom: 40px; }
+.hp-h { font-size: var(--text-heading); line-height: 1.2; letter-spacing: -.02em; color: var(--heading); margin-bottom: 20px; }
+.hpl { display: grid; gap: 20px; }
+.hpl-row { display: block; text-decoration: none; }
+.hpl-row__top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.hpl-row__t { font-size: var(--text-subheading); line-height: 1.3; color: var(--heading); }
+.hpl-row__d { flex: none; font-size: var(--text-caption); color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hpl-row__m { display: block; margin-top: 4px; font-size: var(--text-body-sm); line-height: 1.6; color: var(--text-muted); }
+a.hpl-row:hover .hpl-row__t { color: var(--accent); }
+.hp-skills { display: grid; grid-template-columns: 1fr; gap: 22px; }
+@media (min-width: 620px) { .hp-skills { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .hp-skills { grid-template-columns: repeat(3, 1fr); } }
+.hp-skill { display: flex; align-items: flex-start; gap: 14px; }
+.hp-skill__ic { flex: none; width: 46px; height: 46px; border-radius: 13px; background: var(--cta); color: var(--accent); display: grid; place-items: center; }
+.hp-skill__ic svg { width: 24px; height: 24px; }
+.hp-skill__t { font-size: var(--text-body); color: var(--heading); }
+.hp-skill__b { margin-top: 4px; font-size: var(--text-caption); line-height: 1.6; color: var(--text-muted); }
+.hp-more { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 32px; font-size: var(--text-heading-sm); color: var(--heading); text-decoration: none; }
+.hp-more--lg { font-size: var(--text-heading); }
+.hp-more span { color: var(--accent); transition: transform .2s ease; }
+.hp-more:hover { color: var(--accent); }
+.hp-more:hover span { transform: translateX(5px); }
+.hp-games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 520px) { .hp-games { grid-template-columns: 1fr; gap: 20px; max-width: 320px; } }
+.hp-game { min-width: 0; }
+.hp-game__ic { display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 20px; background: var(--cta); color: var(--ghost-c); margin-bottom: 14px; }
+.hp-game__ic svg { width: 34%; height: auto; aspect-ratio: 32/36; }
+.hp-game__t { font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); }
+.hp-game__b { margin-top: 4px; font-size: var(--text-caption); line-height: 1.5; color: var(--text-muted); }
+
 .draw { padding-block: var(--section-pad-y); }
 /* 덱과 뽑힌 카드를 하나의 균등 그리드에 두어 크기·간격을 동일하게 (겹침 방지) */
 .draw__stage {
