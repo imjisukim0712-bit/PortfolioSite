@@ -440,6 +440,14 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 /* skills */
 .skill-card { display: flex; flex-direction: column; }
 .skill-card .card__body { flex: 1 1 auto; }
+.tool-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.tool { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: 60px; }
+.tool__ic {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--heading);
+}
+.tool__ic svg { width: 24px; height: 24px; display: block; }
+.tool__nm { font-size: 10.5px; color: var(--text-muted); text-align: center; line-height: 1.25; letter-spacing: -0.01em; }
 
 /* --------------------------------------------------------------------------
    11. Timeline (career)

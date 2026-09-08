@@ -307,8 +307,7 @@
             template: function (){ return { title:i18n(), body:i18n(), tags:[] }; },
             fields: [
               { key: 'title', label: '제목', type: 'i18n' },
-              { key: 'body', label: '설명', type: 'i18n', area: true },
-              { key: 'tags', label: '도구 태그', type: 'i18nList' }
+              { key: 'body', label: '설명 (이력서 원문)', type: 'i18n', area: true, hint: '도구 아이콘은 content.js 의 tools 배열에서 관리합니다 (예: figma, office, github …).' }
             ] }
         ] },
         { key: 'career', label: '경력 · 활동', type: 'group', fields: [
