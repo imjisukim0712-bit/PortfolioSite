@@ -50,6 +50,27 @@ window.PORTFOLIO_CONTENT = {
       label:   { ko: "프로젝트 뽑기", en: "Draw projects" },
       hint:    { ko: "카드를 눌러 프로젝트로", en: "Tap a card to open it" },
       count:   4   // 한 번에 펼칠 카드 수 (프로젝트가 더 적으면 있는 만큼)
+    },
+    // 플레이어 스탯 시트 (게임 기획자 = 캐릭터). value 는 0~100 자기평가.
+    player: {
+      cardLabel: "PLAYER CARD",
+      class: { ko: "게임 기획자", en: "Game Designer" },
+      meta:  { ko: "LV.10 · 출시작 7", en: "LV.10 · 7 shipped" },
+      stats: [
+        { label: { ko: "시스템 기획", en: "System" },  value: 90 },
+        { label: { ko: "전투·밸런스", en: "Balance" }, value: 85 },
+        { label: { ko: "경제·BM",   en: "Economy" }, value: 78 },
+        { label: { ko: "문서화",     en: "Docs" },    value: 95 },
+        { label: { ko: "데이터 분석", en: "Data" },    value: 72 },
+        { label: { ko: "시장 분석",  en: "Market" },  value: 80 }
+      ]
+    },
+    // 설계 루프 (기획자의 사고 흐름)
+    loop: {
+      label: { ko: "설계 루프", en: "Design loop" },
+      steps: [ { ko: "정의", en: "Define" }, { ko: "번역", en: "Translate" }, { ko: "증명", en: "Prove" } ],
+      note:  { ko: "문제를 숫자로 정의하고 · 팀 언어로 번역하고 · 빌드로 증명하고, 다시.",
+               en: "Define the problem in numbers, translate it into the team's language, prove it in the build — repeat." }
     }
   },
 
@@ -163,6 +184,7 @@ window.PORTFOLIO_CONTENT = {
     items: [
       {
         id: "league-of-defense",
+        quest: { goal: { ko: "3일 차 이탈 개선", en: "Cut day-3 churn" }, result: { ko: "34% → 21%", en: "34% → 21%" }, cleared: true },
         category: "game",
         title: { ko: "리그 오브 디펜스", en: "League of Defense" },
         period:{ ko: "2020.01 ~ 2021.06", en: "Jan 2020 – Jun 2021" },
@@ -181,6 +203,7 @@ window.PORTFOLIO_CONTENT = {
       },
       {
         id: "comstock",
+        quest: { goal: { ko: "3개월 내 스팀 출시", en: "Ship to Steam in 3 months" }, result: { ko: "기간 내 출시 완료", en: "Shipped on time" }, cleared: true },
         category: "game",
         title: { ko: "컴스톡", en: "Comstock" },
         period:{ ko: "2026.07 ~ 2026.09", en: "Jul – Sep 2026" },
@@ -198,6 +221,7 @@ window.PORTFOLIO_CONTENT = {
       },
       {
         id: "indie-games",
+        quest: { goal: { ko: "대중성 검증", en: "Validate market appeal" }, result: { ko: "누적 20만 다운로드", en: "200K+ downloads" }, cleared: true },
         category: "game",
         title: { ko: "인디게임 개발 5종", en: "Five indie releases" },
         period:{ ko: "2016 ~ 2018", en: "2016 – 2018" },

@@ -21,11 +21,12 @@
   function has(field, lang) { return t(field, lang).trim() !== ''; }
   function toneClass(tone) { return ({lavender:1,butter:1,blush:1,cornflower:1}[tone]) ? ' tag--' + tone : ''; }
 
-  var GHOST = '<svg class="ghost" viewBox="0 0 32 36" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>';
+  var GHOST = '<svg class="ghost" viewBox="0 0 32 36" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#1c1a15"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#1c1a15"/></svg>';
   var CHEV = '<svg class="chev" viewBox="0 0 4 8" aria-hidden="true"><path d="M.6 1 3 4 .6 7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg>';
   var ARROW = '<svg class="arrow" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var SUN = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="4"/><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M16.5 3.5l-1.4 1.4M4.9 15.1l-1.4 1.4" stroke-linecap="round"/></svg>';
   var MOON = '<svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 11.5A6.5 6.5 0 0 1 8.5 4a6.5 6.5 0 1 0 7.5 7.5z" stroke-linejoin="round"/></svg>';
+  var CLEAR_ICON = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 6.2 5 8.6l4.6-5.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var PLAY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4 3.5c0-.8.9-1.3 1.6-.9l14 8.5c.7.4.7 1.4 0 1.8l-14 8.5c-.7.4-1.6-.1-1.6-.9V3.5z"/></svg>';
   var STEAM_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.9 8.6l5.3 2.2a2.8 2.8 0 0 1 1.6-.5h.2l2.4-3.4v-.1a3.8 3.8 0 1 1 3.8 3.8h-.1l-3.4 2.4v.2a2.8 2.8 0 0 1-5.6.2l-3.8-1.6A10 10 0 1 0 12 2zM7.6 17.5a2.2 2.2 0 0 1-1.3-2.9l1.2.5a1.6 1.6 0 1 0 1.2-3l-1.3-.5a2.2 2.2 0 0 1 2.9 2.9 2.2 2.2 0 0 1-2.7 3zm8.2-6.1a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>';
 
@@ -122,6 +123,22 @@
   /* ---------- HOME ---------- */
   function renderHome(c, lang, base) {
     var h = c.home || {};
+    var pl = h.player || {};
+    var playerCard =
+      '<aside class="player">' +
+        '<span class="player__tag">' + esc(pl.cardLabel || 'PLAYER CARD') + '</span>' +
+        '<div class="player__who">' +
+          '<span class="player__av">' + GHOST + '</span>' +
+          '<span><span class="player__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
+          '<span class="player__cl">CLASS <b>' + esc(t(pl.class, lang)) + '</b> · ' + esc(t(pl.meta, lang)) + '</span></span>' +
+        '</div>' +
+        '<div class="player__stats">' + arr(pl.stats).map(function (st) {
+          var v = Math.max(0, Math.min(100, parseInt(st.value, 10) || 0));
+          return '<div class="pstat"><span class="pstat__l">' + esc(t(st.label, lang)) + '</span>' +
+            '<span class="pstat__bar"><i style="width:' + v + '%"></i></span>' +
+            '<span class="pstat__v">' + v + '</span></div>';
+        }).join('') + '</div>' +
+      '</aside>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
@@ -131,7 +148,7 @@
             '<a class="btn btn--primary" href="' + esc(base+HREF.resume) + '">' + esc(t(h.ctaResume, lang)) + '</a>' +
             '<a class="btn btn--outline" href="' + esc(base+HREF.projects) + '">' + esc(t(h.ctaProjects, lang)) + '</a>' +
           '</div></div>' +
-        '<div class="hero__media"><div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"','class="ghost ghost--float"') + '</div></div>' +
+        '<div class="hero__media">' + playerCard + '</div>' +
       '</div></div></section>';
 
     var draw = c.home && c.home.draw || {};
@@ -147,7 +164,18 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    return '<div class="home-screen">' + hero + drawSec + '</div>';
+    var lp = h.loop || {};
+    var loopSec = arr(lp.steps).length
+      ? '<section class="loop-sec"><div class="wrap"><div class="loop">' +
+          '<span class="loop__cap">' + esc(t(lp.label, lang)) + '</span>' +
+          arr(lp.steps).map(function (stp, i) {
+            return (i ? '<span class="loop__ar">\u2192</span>' : '') + '<span class="loop__node">' + esc(t(stp, lang)) + '</span>';
+          }).join('') +
+          '<span class="loop__rt">\u21bb</span>' +
+          '<span class="loop__note">' + esc(t(lp.note, lang)) + '</span>' +
+        '</div></div></section>'
+      : '';
+    return '<div class="home-screen">' + hero + drawSec + '</div>' + loopSec;
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
@@ -233,14 +261,20 @@
     }).join('');
     var head = '<div class="proj-head reveal"><h1 class="proj-title">' + esc(t(pr.title, lang)) + '</h1>' +
       '<div class="tabs" role="tablist">' + tabsHtmlStr + '</div></div>';
-    var grid = '<div class="proj-grid" data-proj-grid>' + arr(pr.items).map(function (p) { return projCardHtml(c, lang, base, p); }).join('') + '</div>';
+    var grid = '<div class="proj-grid" data-proj-grid>' + arr(pr.items).map(function (p, i) { return projCardHtml(c, lang, base, p, i); }).join('') + '</div>';
     return '<section class="section"><div class="wrap">' + head + grid +
       '<div class="proj-empty" data-proj-empty hidden>' + (lang==='en'?'No projects in this category yet.':'이 분류에는 아직 프로젝트가 없습니다.') + '</div>' +
       '</div></section>';
   }
-  function projCardHtml(c, lang, base, p) {
+  function projCardHtml(c, lang, base, p, idx) {
     var cat = c.projects.tabs && c.projects.tabs[p.category];
+    var q = p.quest || {};
+    var stage = ('0' + ((idx || 0) + 1)).slice(-2);
+    var cleared = q.cleared
+      ? '<span class="clr">' + CLEAR_ICON + (lang==='en'?'CLEARED':'클리어') + '</span>'
+      : '';
     return '<a class="proj-card reveal" data-cat="' + esc(p.category||'') + '" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
+      '<span class="proj-card__top"><span class="proj-card__stage">STAGE ' + stage + '</span>' + cleared + '</span>' +
       '<span class="proj-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
       '<span class="proj-card__title">' + esc(t(p.title, lang)) + '</span>' +
       '<span class="proj-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
@@ -275,6 +309,7 @@
       '<a class="back-link" href="' + esc(base+'projects.html') + '"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + (lang==='en'?'Projects':'프로젝트 목록') + '</span></a>' +
       '<h1 class="detail__title">' + esc(t(p.title, lang)) + '</h1>' +
       '<p class="detail__period">' + esc(t(p.period, lang)) + '</p>' +
+      questStrip(p.quest, lang) +
       (genres.length ? '<div class="detail__genres">' + tagsHtml(genres.map(function(g){return {text:g,tone:'lavender'};}), lang) + '</div>' : '') +
       '<div class="detail__meta">' +
         metaRow(lang==='en'?'Headcount':'인원', t(p.headcount, lang)) +
@@ -308,6 +343,16 @@
   function metaRow(k, v) {
     if (!v) return '';
     return '<div class="detail__meta-row"><p class="detail__meta-k">' + esc(k) + '</p><p class="detail__meta-v">' + esc(v) + '</p></div>';
+  }
+  function questStrip(q, lang) {
+    q = q || {};
+    var goal = t(q.goal, lang), result = t(q.result, lang);
+    if (!goal && !result) return '';
+    return '<div class="quest-strip">' +
+      (q.cleared ? '<span class="quest-strip__badge">' + CLEAR_ICON + (lang==='en'?'CLEARED':'클리어') + '</span>' : '') +
+      (goal ? '<span class="quest-strip__row"><span class="quest-strip__k">' + (lang==='en'?'QUEST':'퀘스트') + '</span><span class="quest-strip__v">' + esc(goal) + '</span></span>' : '') +
+      (result ? '<span class="quest-strip__row"><span class="quest-strip__k">' + (lang==='en'?'RESULT':'결과') + '</span><span class="quest-strip__v quest-strip__v--hi">' + esc(result) + '</span></span>' : '') +
+      '</div>';
   }
   function block(lang, ko, en, small, field) {
     var todo = lang==='en'?'To be written.':'작성 예정.';
