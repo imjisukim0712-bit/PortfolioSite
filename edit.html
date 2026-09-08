@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>내용 편집기 · 김지수 포트폴리오</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f4f2f4">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 36'><path fill='%23ab9ff2' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/><ellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/><ellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/></svg>">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/editor.css">
+</head>
+<body class="editor">
+
+<header class="e-top">
+  <span class="e-top__brand">
+    <svg class="ghost" viewBox="0 0 32 36" aria-hidden="true"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>
+    내용 편집기
+  </span>
+  <span class="e-status" id="status">준비됨</span>
+  <button type="button" class="e-btn" id="btnReset">원본으로</button>
+  <label class="e-btn" for="fileImport" style="cursor:pointer">파일 불러오기
+    <input type="file" id="fileImport" accept=".js,text/javascript" hidden>
+  </label>
+  <button type="button" class="e-btn" id="btnPreview">미리보기</button>
+  <button type="button" class="e-btn e-btn--dark" id="btnExport">content.js 내보내기</button>
+</header>
+
+<div class="e-layout">
+  <nav class="e-side" id="side" aria-label="편집할 부분 선택"></nav>
+  <section class="e-panel" id="panel"></section>
+</div>
+
+<div class="e-modal" id="exportModal" hidden>
+  <div class="e-modal__box" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+    <h2 class="e-modal__title" id="exportTitle">content.js 내보내기</h2>
+    <p class="e-modal__desc">
+      아래 내용을 <b>assets/content.js</b> 파일에 통째로 덮어쓰면 사이트에 반영됩니다.<br>
+      GitHub 웹에서 바로 고치려면 <b>복사</b> 후 저장소의 <code>assets/content.js</code> 를 열어 연필 아이콘을 누르고 전체를 붙여넣은 뒤 커밋하세요.
+    </p>
+    <textarea class="e-modal__code" id="exportCode" readonly spellcheck="false"></textarea>
+    <div class="e-modal__foot">
+      <button type="button" class="e-btn e-btn--primary" id="btnCopy">복사하기</button>
+      <button type="button" class="e-btn" id="btnDownload">파일로 내려받기</button>
+      <button type="button" class="e-btn" id="btnCloseModal" style="margin-left:auto">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/content.js" charset="utf-8"></script>
+<script src="assets/js/editor.js" charset="utf-8"></script>
+</body>
+</html>

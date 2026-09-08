@@ -1,249 +1,244 @@
-/* ==========================================================================
-   김지수 · 게임 기획자 포트폴리오 — main.js
-   - 한/영 전환 (localStorage 유지)
-   - 모바일 메뉴 시트
-   - 스크롤 스파이 / 스크롤 리빌 / 맨 위로
-   - iOS Safari 대응: smooth scroll 폴백, 시트 오픈 시 배경 스크롤 잠금
+/* ============================================================================
+   main.js — 페이지 조립과 동작
+   · 내용은 assets/content.js  · 화면 구성은 assets/js/render.js
    ========================================================================== */
 (function () {
   'use strict';
 
+  var R = window.PortfolioRender;
+  var LANG_KEY  = 'portfolio:lang';
+  var DRAFT_KEY = 'portfolio:draft';
+
   document.documentElement.classList.remove('no-js');
 
-  var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
-  var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
-  /* ----------------------------------------------------------------------
-     1. 언어 전환 (KO / EN)
-     ---------------------------------------------------------------------- */
-  var STORAGE_KEY = 'jisu-portfolio-lang';
-  var langButtons = $$('[data-lang-btn]');
-  var currentLang = 'ko';
-
-  function readStoredLang() {
-    try { return window.localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-  }
-  function storeLang(lang) {
-    try { window.localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* Safari 시크릿 모드 */ }
+  /* ---------- 내용 결정: ?preview=1 이면 편집기 임시 저장본을 사용 ---------- */
+  function loadContent() {
+    var params = new URLSearchParams(location.search);
+    if (params.get('preview') === '1') {
+      try {
+        var raw = localStorage.getItem(DRAFT_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) { /* 손상된 임시본은 무시하고 원본 사용 */ }
+    }
+    return window.PORTFOLIO_CONTENT;
   }
 
-  // 최초 1회: 마크업에 들어있는 한국어 원본을 data-ko / data-ko-html 로 보관
-  function cacheKorean() {
-    $$('[data-en]').forEach(function (el) {
-      if (!el.hasAttribute('data-ko')) { el.setAttribute('data-ko', el.textContent); }
-    });
-    $$('[data-en-html]').forEach(function (el) {
-      if (!el.hasAttribute('data-ko-html')) { el.setAttribute('data-ko-html', el.innerHTML); }
-    });
-    $$('[data-en-aria]').forEach(function (el) {
-      if (!el.hasAttribute('data-ko-aria')) { el.setAttribute('data-ko-aria', el.getAttribute('aria-label') || ''); }
-    });
+  var content = loadContent();
+  if (!content || !R) {
+    document.body.innerHTML = '<p style="padding:40px;font:16px system-ui">' +
+      'content.js 또는 render.js 를 불러오지 못했습니다. 파일 경로를 확인해 주세요.</p>';
+    return;
   }
 
-  function applyLang(lang) {
-    currentLang = lang === 'en' ? 'en' : 'ko';
+  /* ---------- 언어 ---------- */
+  function readLang() {
+    try { var v = localStorage.getItem(LANG_KEY); if (v === 'ko' || v === 'en') return v; } catch (e) {}
+    return 'ko';
+  }
+  function saveLang(v) { try { localStorage.setItem(LANG_KEY, v); } catch (e) {} }
 
-    $$('[data-en]').forEach(function (el) {
-      var next = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ko');
-      if (next !== null) { el.textContent = next; }
-    });
-    $$('[data-en-html]').forEach(function (el) {
-      var next = currentLang === 'en' ? el.getAttribute('data-en-html') : el.getAttribute('data-ko-html');
-      if (next !== null) { el.innerHTML = next; }
-    });
-    $$('[data-en-aria]').forEach(function (el) {
-      var next = currentLang === 'en' ? el.getAttribute('data-en-aria') : el.getAttribute('data-ko-aria');
-      if (next) { el.setAttribute('aria-label', next); }
-    });
+  var lang = readLang();
+  var page = document.body.getAttribute('data-page') || 'index';
+  var base = page === 'detail' ? '../' : '';
+  var projectId = new URLSearchParams(location.search).get('p') || '';
 
-    document.documentElement.setAttribute('lang', currentLang === 'en' ? 'en' : 'ko');
-    langButtons.forEach(function (btn) {
-      btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang-btn') === currentLang));
-    });
-    storeLang(currentLang);
+  /* ---------- 렌더 ---------- */
+  function render() {
+    var navEl    = $('[data-slot="nav"]');
+    var sheetEl  = $('[data-slot="sheet"]');
+    var mainEl   = $('[data-slot="main"]');
+    var footerEl = $('[data-slot="footer"]');
+    var opts = { detail: page === 'detail', active: page === 'detail' ? 'projects' : null };
+
+    if (navEl)    navEl.innerHTML    = R.navHtml(content, lang, base, opts);
+    if (sheetEl)  sheetEl.innerHTML  = R.sheetHtml(content, lang, base, opts);
+    if (footerEl) footerEl.innerHTML = R.footerHtml(content, lang, base, opts);
+    if (mainEl) {
+      mainEl.innerHTML = page === 'detail'
+        ? R.renderDetail(content, lang, base, projectId)
+        : R.renderIndex(content, lang, base);
+    }
+
+    document.documentElement.setAttribute('lang', lang);
+    var title = R.t(content.meta.pageTitle, lang);
+    if (page === 'detail') {
+      var p = (content.projects || []).filter(function (x) { return x.id === projectId; })[0];
+      if (p) title = R.t(p.title, lang) + ' · ' + R.t(content.meta.name, lang);
+    }
+    document.title = title;
+    var desc = $('meta[name="description"]');
+    if (desc) desc.setAttribute('content', R.t(content.meta.description, lang));
+
+    initObservers();
   }
 
-  cacheKorean();
-  langButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () { applyLang(btn.getAttribute('data-lang-btn')); });
-  });
+  /* ---------- 스크롤 리빌 · 스크롤 스파이 ---------- */
+  var revealObserver = null, spyObserver = null;
 
-  var stored = readStoredLang();
-  if (stored === 'en' || stored === 'ko') {
-    applyLang(stored);
-  } else {
-    applyLang('ko');
+  function initObservers() {
+    if (revealObserver) revealObserver.disconnect();
+    if (spyObserver) spyObserver.disconnect();
+
+    var revealables = $$('.reveal');
+    if ('IntersectionObserver' in window && revealables.length) {
+      revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); revealObserver.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      revealables.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+      revealables.forEach(function (el) { el.classList.add('is-visible'); });
+    }
+
+    var links = $$('[data-spy]');
+    var sections = links.map(function (l) { return document.getElementById(l.getAttribute('data-spy')); }).filter(Boolean);
+    if ('IntersectionObserver' in window && sections.length) {
+      var ratios = {};
+      spyObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { ratios[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+        var best = null, top = 0;
+        Object.keys(ratios).forEach(function (id) { if (ratios[id] > top) { top = ratios[id]; best = id; } });
+        if (best) links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('data-spy') === best); });
+      }, { rootMargin: '-30% 0px -50% 0px', threshold: [0, 0.15, 0.4, 0.75, 1] });
+      sections.forEach(function (s) { spyObserver.observe(s); });
+    }
   }
 
-  /* ----------------------------------------------------------------------
-     2. 모바일 메뉴 시트
-     ---------------------------------------------------------------------- */
-  var burger = $('[data-menu-toggle]');
-  var sheet  = $('[data-menu]');
+  /* ---------- 모바일 메뉴 ---------- */
+  var sheet = $('[data-menu]');
   var scrollY = 0;
 
-  function lockScroll() {
-    scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    document.body.style.top = (-scrollY) + 'px';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    document.body.classList.add('is-locked');
-  }
-  function unlockScroll() {
-    document.body.classList.remove('is-locked');
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    window.scrollTo(0, scrollY);
-  }
-
   function setMenu(open) {
-    if (!sheet || !burger) { return; }
+    if (!sheet) return;
     sheet.classList.toggle('is-open', open);
     sheet.setAttribute('aria-hidden', String(!open));
-    burger.setAttribute('aria-expanded', String(open));
-    if (open) { lockScroll(); } else { unlockScroll(); }
+    var burger = $('[data-menu-toggle]');
+    if (burger) burger.setAttribute('aria-expanded', String(open));
+    if (open) {
+      scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      document.body.style.top = (-scrollY) + 'px';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.classList.add('is-locked');
+    } else {
+      document.body.classList.remove('is-locked');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
+    }
   }
 
-  if (burger && sheet) {
-    burger.addEventListener('click', function () {
-      setMenu(burger.getAttribute('aria-expanded') !== 'true');
-    });
-    sheet.addEventListener('click', function (e) {
-      if (e.target === sheet || e.target.closest('a')) { setMenu(false); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && sheet.classList.contains('is-open')) { setMenu(false); }
-    });
-    window.addEventListener('resize', function () {
-      if (window.innerWidth >= 1000 && sheet.classList.contains('is-open')) { setMenu(false); }
-    });
-  }
-
-  /* ----------------------------------------------------------------------
-     3. 부드러운 스크롤 — scroll-behavior 미지원 Safari 폴백
-     ---------------------------------------------------------------------- */
+  /* ---------- 부드러운 스크롤 (Safari 폴백 포함) ---------- */
   var supportsSmooth = 'scrollBehavior' in document.documentElement.style;
-  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function animateTo(top) {
+    var start = window.pageYOffset;
+    var delta = top - start;
+    var dur = Math.min(700, Math.max(300, Math.abs(delta) * 0.4));
+    var t0 = null;
+    function step(now) {
+      if (t0 === null) t0 = now;
+      var p = Math.min(1, (now - t0) / dur);
+      var eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      window.scrollTo(0, start + delta * eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  function scrollToTop(top) {
+    if (reduced) { window.scrollTo(0, top); }
+    else if (supportsSmooth) { window.scrollTo({ top: top, behavior: 'smooth' }); }
+    else { animateTo(top); }
+  }
   function navOffset() {
     var nav = $('.nav');
     return (nav ? nav.getBoundingClientRect().height : 64) + 24;
   }
 
-  function animateScrollTo(top) {
-    var start = window.pageYOffset;
-    var delta = top - start;
-    var dur = Math.min(700, Math.max(300, Math.abs(delta) * 0.4));
-    var t0 = null;
-    function step(ts) {
-      if (t0 === null) { t0 = ts; }
-      var p = Math.min(1, (ts - t0) / dur);
-      var eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      window.scrollTo(0, start + delta * eased);
-      if (p < 1) { window.requestAnimationFrame(step); }
+  /* ---------- 이벤트 위임 (다시 렌더해도 계속 동작) ---------- */
+  document.addEventListener('click', function (e) {
+    var langBtn = e.target.closest('[data-lang-btn]');
+    if (langBtn) {
+      lang = langBtn.getAttribute('data-lang-btn') === 'en' ? 'en' : 'ko';
+      saveLang(lang);
+      var y = window.pageYOffset;
+      render();
+      window.scrollTo(0, y);
+      return;
     }
-    window.requestAnimationFrame(step);
-  }
 
-  $$('a[href^="#"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
+    if (e.target.closest('[data-menu-toggle]')) {
+      setMenu(!sheet.classList.contains('is-open'));
+      return;
+    }
+
+    if (e.target.closest('[data-to-top]')) { scrollToTop(0); return; }
+
+    if (sheet && sheet.classList.contains('is-open') && e.target === sheet) { setMenu(false); return; }
+
+    var link = e.target.closest('a[href^="#"]');
+    if (link) {
       var id = link.getAttribute('href');
-      if (!id || id === '#') { return; }
+      if (!id || id === '#') return;
       var target = document.getElementById(id.slice(1));
-      if (!target) { return; }
+      if (!target) return;
       e.preventDefault();
-
       var run = function () {
-        var top = target.getBoundingClientRect().top + window.pageYOffset - navOffset();
-        if (top < 0) { top = 0; }
-        if (prefersReduced || !supportsSmooth) {
-          if (prefersReduced) { window.scrollTo(0, top); } else { animateScrollTo(top); }
-        } else {
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }
-        if (history.replaceState) { history.replaceState(null, '', id); }
+        var top = Math.max(0, target.getBoundingClientRect().top + window.pageYOffset - navOffset());
+        scrollToTop(top);
+        if (history.replaceState) history.replaceState(null, '', id);
       };
-
-      // 메뉴가 열려 있으면 잠금 해제 후 스크롤 (iOS 위치 튐 방지)
-      if (sheet && sheet.classList.contains('is-open')) {
-        setMenu(false);
-        window.setTimeout(run, 60);
-      } else {
-        run();
-      }
-    });
+      if (sheet && sheet.classList.contains('is-open')) { setMenu(false); setTimeout(run, 60); }
+      else { run(); }
+    }
   });
 
-  /* ----------------------------------------------------------------------
-     4. 스크롤 리빌
-     ---------------------------------------------------------------------- */
-  var revealables = $$('.reveal');
-  if ('IntersectionObserver' in window && revealables.length) {
-    var revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    revealables.forEach(function (el) { revealObserver.observe(el); });
-  } else {
-    revealables.forEach(function (el) { el.classList.add('is-visible'); });
-  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sheet && sheet.classList.contains('is-open')) setMenu(false);
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 1000 && sheet && sheet.classList.contains('is-open')) setMenu(false);
+  });
 
-  /* ----------------------------------------------------------------------
-     5. 스크롤 스파이 (헤더 목차 활성화)
-     ---------------------------------------------------------------------- */
-  var navLinks = $$('[data-spy]');
-  var sections = navLinks
-    .map(function (l) { return document.getElementById(l.getAttribute('data-spy')); })
-    .filter(Boolean);
-
-  function markActive(id) {
-    navLinks.forEach(function (l) {
-      l.classList.toggle('is-active', l.getAttribute('data-spy') === id);
-    });
-  }
-
-  if ('IntersectionObserver' in window && sections.length) {
-    var visible = {};
-    var spyObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) { visible[entry.target.id] = entry.isIntersecting ? entry.intersectionRatio : 0; });
-      var best = null, bestRatio = 0;
-      Object.keys(visible).forEach(function (id) {
-        if (visible[id] > bestRatio) { bestRatio = visible[id]; best = id; }
-      });
-      if (best) { markActive(best); }
-    }, { rootMargin: '-30% 0px -50% 0px', threshold: [0, 0.15, 0.4, 0.75, 1] });
-    sections.forEach(function (s) { spyObserver.observe(s); });
-  }
-
-  /* ----------------------------------------------------------------------
-     6. 맨 위로 버튼
-     ---------------------------------------------------------------------- */
+  /* ---------- 맨 위로 버튼 ---------- */
   var toTop = $('[data-to-top]');
   if (toTop) {
     var ticking = false;
     var onScroll = function () {
-      if (ticking) { return; }
+      if (ticking) return;
       ticking = true;
-      window.requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
         toTop.classList.toggle('is-shown', window.pageYOffset > window.innerHeight * 0.9);
         ticking = false;
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    toTop.addEventListener('click', function () {
-      if (prefersReduced || !supportsSmooth) { animateScrollTo(0); }
-      else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    });
   }
 
-  /* ----------------------------------------------------------------------
-     7. 연도 자동 표기
-     ---------------------------------------------------------------------- */
-  $$('[data-year]').forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
+  /* ---------- 시작 ---------- */
+  render();
+
+  // 편집기 미리보기 배너
+  if (new URLSearchParams(location.search).get('preview') === '1') {
+    var banner = document.createElement('div');
+    banner.className = 'preview-banner';
+    banner.innerHTML = '편집기 미리보기 — 저장하지 않은 임시 내용입니다. ' +
+      '<a href="' + base + 'edit.html">편집기로 돌아가기</a>';
+    document.body.appendChild(banner);
+  }
+
+  // 첫 진입 시 해시가 있으면 헤더 높이만큼 보정
+  if (location.hash && page !== 'detail') {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el) setTimeout(function () {
+      window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - navOffset()));
+    }, 80);
+  }
 })();

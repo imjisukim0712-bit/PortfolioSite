@@ -1,90 +1,115 @@
 # 김지수 · 게임 기획자 포트폴리오
 
-정적 HTML로 만든 게임 기획자 포트폴리오 랜딩 페이지입니다. 빌드 도구 없이 그대로 GitHub Pages에 올라갑니다.
+빌드 도구 없는 정적 사이트입니다. **내용과 화면이 분리돼 있어, 글을 고칠 때 HTML을 건드릴 필요가 없습니다.**
 
-- 폰트: **Pretendard Variable** (jsDelivr CDN, 동적 서브셋)
-- 디자인 시스템: 첨부하신 **Phantom** 스타일 가이드(라벤더/오베르진 팔레트, 100px 알약 지오메트리, weight 350, -0.025em 자간)
+- 폰트: **Pretendard Variable** (jsDelivr CDN)
+- 디자인: 첨부한 **Phantom** 스타일 가이드 (라벤더/오베르진, 100px 알약, weight 350, -0.025em)
 - 반응형: 모바일 우선, 320px까지 가로 스크롤 없음
-- iOS / Safari 대응: `viewport-fit=cover` + `env(safe-area-inset-*)`, `100svh`, `-webkit-backdrop-filter`, `-webkit-overflow-scrolling`, `scroll-behavior` 미지원 시 JS 폴백, 메뉴 오픈 시 배경 스크롤 잠금
+- iOS / Safari: `viewport-fit=cover` + `env(safe-area-inset-*)`, `100svh`, `-webkit-backdrop-filter`, `scroll-behavior` 폴백, 메뉴 오픈 시 배경 스크롤 잠금
+
+---
+
+## 내용 고치는 방법
+
+### 방법 A — 편집기 화면에서 (권장)
+
+**`edit.html` 을 열면** 폼으로 모든 내용을 고칠 수 있습니다.
+
+1. 왼쪽에서 고칠 부분을 고릅니다 (기본 정보 / 첫 화면 / 프로젝트 / 경력 …)
+2. 칸에 바로 입력합니다. 한국어(`한`)와 영어(`EN`)를 나란히 적습니다. **EN을 비우면 영어 화면에서도 한국어가 그대로 나옵니다.**
+3. `+ 추가` 로 항목을 늘리고, `↑ ↓` 로 순서를 바꾸고, `✕` 로 지웁니다
+4. **미리보기** 로 실제 화면을 확인합니다
+5. **content.js 내보내기 → 복사하기**
+6. GitHub 저장소에서 `assets/content.js` 를 열고 연필 아이콘 → 전체 선택 후 붙여넣기 → Commit
+
+고치던 내용은 브라우저에 자동 임시 저장되므로, 창을 닫았다 열어도 이어서 작업할 수 있습니다.
+잘못 건드렸으면 **원본으로** 버튼으로 되돌리면 됩니다.
+
+> 편집기는 배포된 사이트에서도 그대로 열립니다. 파일을 자동으로 저장하지는 않고, 내보낸 내용을 커밋해야 반영됩니다.
+
+### 방법 B — 파일을 직접 고치기
+
+`assets/content.js` 하나만 고치면 됩니다. 형식은 이렇습니다.
+
+```js
+sub: { ko: "한국어 문장", en: "English sentence" },
+```
+
+대괄호 `[ ]` 안의 항목은 자유롭게 복사·추가·삭제할 수 있습니다. 쉼표와 따옴표만 지우지 않으면 됩니다.
+
+### 프로젝트를 추가하면
+
+`projects` 배열에 항목을 하나 더 넣으면 **상세 페이지가 자동으로 생깁니다.** 새 HTML 파일을 만들 필요가 없습니다.
+주소는 `projects/detail.html?p=<id>` 형태이고, `id` 는 영문 소문자와 하이픈을 권합니다.
+
+상세 페이지의 `문제 정의 / 접근 / 다시 한다면` 을 비워 두면 화면에 **“작성 예정”** 으로 표시됩니다.
+
+---
 
 ## 구조
 
 ```
-index.html                       랜딩 (히어로 + 6개 섹션)
-projects/
-  league-of-defense.html         PROJECT 01 리그 오브 디펜스
-  comstock.html                  PROJECT 02 컴스톡
-  indie-games.html               PROJECT 03 인디게임 개발 5종
+index.html                    랜딩 (껍데기, 내용은 JS가 채웁니다)
+edit.html                     내용 편집기
+projects/detail.html          프로젝트 상세 (?p=<id> 로 어떤 프로젝트인지 결정)
 assets/
-  css/style.css                  디자인 토큰 + 전체 스타일
-  js/main.js                     한/영 전환, 모바일 메뉴, 스크롤 스파이/리빌
-  resume/jisu-kim-resume.pdf     ★ 자리 표시용 PDF — 교체 필요
-.nojekyll                        GitHub Pages Jekyll 처리 비활성화
+  content.js                  ★ 모든 글이 여기 있습니다
+  css/style.css               디자인 토큰 + 사이트 스타일
+  css/editor.css              편집기 전용 스타일
+  js/render.js                content.js 를 화면으로 그리는 부분
+  js/main.js                  언어 전환 · 모바일 메뉴 · 스크롤 동작
+  js/editor.js                편집기 동작
+  resume/jisu-kim-resume.pdf  ★ 자리 표시용 PDF — 교체 필요
+.github/workflows/deploy-pages.yml   GitHub Pages 자동 배포
 ```
-
-목차(헤더) 구성: 자기소개 · 프로젝트 · 핵심역량 · 경력 · 게임 플레이 경험 + 언어(KR/EN) · 이력서
 
 ## 로컬에서 보기
 
 ```bash
 python3 -m http.server 8000
-# http://localhost:8000
+# http://localhost:8000        사이트
+# http://localhost:8000/edit.html   편집기
 ```
 
-## GitHub Pages 배포
+`index.html` 을 파일로 바로 열어도 동작하지만, 서버로 여는 쪽이 확실합니다.
 
-저장소 **Settings → Pages → Source: Deploy from a branch** 에서 이 브랜치와 `/ (root)` 를 선택하면 됩니다.
-`.nojekyll` 이 있어 `assets/` 같은 폴더가 그대로 서빙됩니다.
+## 배포
 
-## 지금 직접 채워야 하는 곳
+`.github/workflows/deploy-pages.yml` 이 브랜치에 푸시될 때마다 자동 배포합니다.
+저장소 **Settings → Pages → Source** 가 **GitHub Actions** 로 되어 있어야 합니다.
+
+기본 브랜치를 `main` 으로 바꾸면 워크플로가 그대로 동작하고, 다른 이름을 쓰면
+`deploy-pages.yml` 의 `branches:` 목록에 그 이름을 추가하세요.
+
+---
+
+## 아직 채워야 하는 곳
 
 | 위치 | 내용 |
 |---|---|
-| `assets/resume/jisu-kim-resume.pdf` | 자리 표시용 PDF입니다. **공개용 이력서로 교체하세요.** 원본 PDF에는 전화번호·이메일·생년월일·거주지·병역·희망연봉·학력 이력이 들어 있어 그대로 올리지 않았습니다. |
-| `index.html` 연락처 섹션 | 이메일 버튼이 자리 표시 상태입니다. 주석에 적힌 형태로 `<a href="mailto:...">` 로 바꾸면 활성화됩니다. |
-| `projects/*.html` 의 `작성 예정` 블록 | 문제 정의 / 접근 / 회고 서술 자리입니다. |
-| `index.html` 프로젝트 섹션 하단 | 기업협약 프로젝트, 개인 프로젝트 (내용 미정) |
-| `index.html` 플레이 경험 3번째 카드 | 지원 직무·팀 관련 게임 자리 |
+| `assets/resume/jisu-kim-resume.pdf` | 자리 표시용 더미입니다. **공개용 이력서로 교체하세요.** 원본 PDF에는 전화번호·이메일·생년월일·거주지·병역·희망연봉·학력 이력이 있어 그대로 올리지 않았습니다. |
+| 편집기 → 기본 정보 → 연락 이메일 | 비어 있어 연락처 버튼이 자리표시 상태입니다. |
+| 편집기 → 프로젝트 → 상세 페이지 | 문제 정의 / 접근 / 다시 한다면 |
+| 편집기 → 진행 중 카드 | 기업협약 프로젝트, 개인 프로젝트 |
+| 편집기 → 플레이 경험 3번째 카드 | 지원 직무 관련 게임 |
 
 ## 반영하지 않은 개인정보
 
-공개 웹페이지 특성상 아래 항목은 의도적으로 제외했습니다.
-
+공개 웹페이지라 아래 항목은 의도적으로 제외했습니다.
 전화번호 · 이메일 주소 · 생년월일 · 거주지 · 병역 사항 · 희망 연봉 · 입사 희망일 · 학력 이력 및 개인적 서사
 
-## 내용 수정 방법
+## 색·간격 바꾸기
 
-### 텍스트
-한국어가 기본값이고, 영어는 속성으로 붙어 있습니다.
-
-```html
-<!-- 단순 텍스트 -->
-<p data-en="English text">한국어 텍스트</p>
-
-<!-- <b> 등 태그가 섞인 문장 -->
-<li data-en-html="A <b>bold</b> line.">굵은 <b>강조</b>가 있는 문장.</li>
-
-<!-- 아이콘 등 마크업이 통째로 다른 경우 -->
-<span class="i18n-ko">한국어 블록</span><span class="i18n-en">English block</span>
-```
-
-JS가 없어도 한국어는 정상 표시됩니다. 선택한 언어는 `localStorage` 에 저장돼 페이지를 옮겨도 유지됩니다.
-
-> 주의: `data-en` 이 붙은 요소의 텍스트는 통째로 교체되므로, **자식 태그(아이콘 SVG 등)가 있는 요소에는 `data-en` 을 붙이면 안 됩니다.** 안쪽 `<span>` 에 붙이거나 `data-en-html` 을 쓰세요.
-
-### 색·간격·타이포
-`assets/css/style.css` 최상단 `:root` 의 토큰만 바꾸면 전체에 반영됩니다.
+`assets/css/style.css` 맨 위 `:root` 의 토큰만 바꾸면 전체에 반영됩니다.
 
 ## 디자인 가이드와 다르게 적용한 부분
 
 | 항목 | 가이드 | 실제 | 이유 |
 |---|---|---|---|
-| 본문 `line-height` | 1.4 이하 | 1.6 | 한글은 1.4에서 가독성이 떨어져 "가독성 좋게" 요건을 우선했습니다. |
+| 본문 `line-height` | 1.4 이하 | 1.6 | 한글은 1.4에서 가독성이 떨어집니다. |
 | 디스플레이 `line-height` | 1.0–1.1 | 1.12–1.14 | 한글 받침이 잘리지 않는 최소값입니다. |
-| 다크 섹션 카드 배경 | Aubergine | `rgba(253,252,254,.05)` | 같은 색이면 카드 경계가 사라져 미세한 명도 차만 줬습니다. |
-
-그 외 100px 알약 반경, weight 350, -0.025em 자간, 밝은/어두운 섹션 교차, 팔레트는 가이드를 그대로 따랐습니다.
+| 다크 섹션 카드 배경 | Aubergine | `rgba(253,252,254,.05)` | 같은 색이면 카드 경계가 사라집니다. |
 
 ## 브라우저 지원
 
-Safari(iOS 포함) 14 이상, Chrome / Edge / Firefox 최신. `text-wrap: balance` 등 일부 최신 속성은 미지원 브라우저에서 자연스럽게 무시됩니다.
+Safari(iOS 포함) 14 이상, Chrome / Edge / Firefox 최신.

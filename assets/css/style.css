@@ -1003,3 +1003,24 @@ html[lang="en"] .i18n-en { display: inline; }
 /* 아직 값이 채워지지 않은 자리 표시 요소 */
 .is-placeholder { opacity: .55; cursor: default; }
 .is-placeholder:active { transform: none; }
+
+/* --------------------------------------------------------------------------
+   18. 편집기 미리보기 배너 (edit.html 에서 ?preview=1 로 열었을 때)
+   -------------------------------------------------------------------------- */
+.preview-banner {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  transform: translateX(-50%);
+  z-index: 120;
+  max-width: calc(100vw - 32px);
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-aubergine);
+  color: var(--color-paper-white);
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.preview-banner a { color: var(--color-ghost-lavender); text-decoration: underline; margin-left: 6px; }
