@@ -422,11 +422,9 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .hp-skill__ic svg { width: 30px; height: 30px; }
 .hp-skill__t { font-size: var(--text-body-sm); color: var(--heading); }
 .hp-skill__b { margin-top: 2px; font-size: 11px; line-height: 1.55; color: var(--text-muted); }
-.hp-more { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 32px; font-size: var(--text-heading-sm); color: var(--heading); text-decoration: none; }
-.hp-more--lg { font-size: var(--text-heading); }
-.hp-more span { color: var(--accent); transition: transform .2s ease; }
-.hp-more:hover { color: var(--accent); }
-.hp-more:hover span { transform: translateX(5px); }
+.hp-more { width: fit-content; margin: 32px 0 0 auto; gap: 8px; }
+.hp-more span { transition: transform .2s ease; }
+.hp-more:hover span { transform: translateX(4px); }
 .hp-games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 520px) { .hp-games { grid-template-columns: 1fr; gap: 20px; max-width: 320px; } }
 .hp-game { min-width: 0; }

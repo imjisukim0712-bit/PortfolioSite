@@ -165,7 +165,7 @@
     function metaJoin(parts) { return parts.map(function (x) { return (x || '').toString().trim(); }).filter(Boolean).join(' · '); }
     function moreLink(page, cls) {
       var label = t(c.nav && c.nav[page], lang) || page;
-      return '<a class="hp-more' + (cls || '') + '" href="' + esc(base + (HREF[page] || 'index.html')) + '">' +
+      return '<a class="btn btn--primary hp-more' + (cls || '') + '" href="' + esc(base + (HREF[page] || 'index.html')) + '">' +
         esc(label) + ' <span aria-hidden="true">→</span></a>';
     }
     function thumb(src, alt) {
