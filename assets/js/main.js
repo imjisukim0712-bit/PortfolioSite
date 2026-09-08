@@ -129,7 +129,12 @@
     if (!deck) return;
     var cfg = (content.home && content.home.draw) || {};
     var count = cfg.count || 4;
+    // 첫 화면에서 한 벌이 이미 펼쳐져 있도록 자동으로 한 번 뽑아 둔다
+    if (!drawnIds) { drawnIds = pickRandom(count); dealCards(drawnIds); }
     deck.addEventListener('click', function () {
+      deck.classList.remove('is-draw');
+      void deck.offsetWidth;          // 리플로우로 애니메이션 재시작
+      deck.classList.add('is-draw');
       drawnIds = pickRandom(count);
       dealCards(drawnIds);
     });

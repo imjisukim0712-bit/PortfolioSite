@@ -153,11 +153,16 @@
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
   function drawCardHtml(c, lang, base, p, delay) {
     var cat = c.projects && c.projects.tabs && c.projects.tabs[p.category];
-    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="animation-delay:' + (delay||0) + 'ms">' +
-      '<span class="draw-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
-      '<span class="draw-card__title">' + esc(t(p.title, lang)) + '</span>' +
-      '<span class="draw-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
-      '<span class="draw-card__go">' + (lang==='en'?'Open →':'열기 →') + '</span></a>';
+    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="--d:' + (delay||0) + 'ms">' +
+      '<span class="draw-card__inner">' +
+        '<span class="draw-card__back" aria-hidden="true">' + GHOST + '</span>' +
+        '<span class="draw-card__front">' +
+          '<span class="draw-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
+          '<span class="draw-card__title">' + esc(t(p.title, lang)) + '</span>' +
+          '<span class="draw-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
+          '<span class="draw-card__go">' + (lang==='en'?'Open →':'열기 →') + '</span>' +
+        '</span>' +
+      '</span></a>';
   }
 
   /* ---------- RESUME ---------- */

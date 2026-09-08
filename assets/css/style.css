@@ -406,16 +406,45 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .draw__cards { flex: 1 1 320px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; align-content: start; }
 @media (min-width: 720px) { .draw__cards { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; } }
 
+.draw__cards { perspective: 1200px; }
 .draw-card {
-  display: flex; flex-direction: column; min-width: 0; aspect-ratio: 3 / 4; padding: 18px;
-  border: 1px solid var(--border); border-radius: var(--radius-card);
-  background: var(--surface); box-shadow: var(--shadow-card);
-  opacity: 0; transform: translateY(14px) scale(.96);
-  animation: dealIn .42s cubic-bezier(.2,.8,.3,1) forwards;
-  transition: border-color .2s ease, transform .2s ease;
+  position: relative; aspect-ratio: 3 / 4; min-width: 0; text-decoration: none;
+  transition: transform .2s ease;
 }
-.draw-card:hover { border-color: var(--accent-soft); transform: translateY(-4px); }
-@keyframes dealIn { to { opacity: 1; transform: none; } }
+.draw-card__inner {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  animation: dealFlip .62s cubic-bezier(.2, .8, .3, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.draw-card__front, .draw-card__back {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  padding: 18px; border-radius: var(--radius-card);
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+.draw-card__front { border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-card); }
+.draw-card__back {
+  transform: rotateY(180deg); align-items: center; justify-content: center;
+  background: var(--aubergine); border: 1px solid var(--aubergine);
+  background-image: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--periwinkle) 22%, transparent), transparent 60%);
+}
+.draw-card__back .ghost { width: 46px; height: auto; aspect-ratio: 32/36; color: var(--periwinkle); }
+.draw-card:hover { transform: translateY(-6px); }
+.draw-card:hover .draw-card__front { border-color: var(--accent-soft); }
+@keyframes dealFlip {
+  0%   { opacity: 0; transform: translateY(30px) scale(.9) rotateY(180deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0); }
+}
+.draw-card__cat { font-size: var(--text-caption); color: var(--accent-soft); }
+.draw-card__title { margin-top: auto; font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); overflow-wrap: anywhere; }
+.draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
+.draw-card__go { margin-top: 12px; font-size: var(--text-caption); color: var(--accent); }
+.draw__empty { flex: 1 1 320px; display: grid; place-items: center; min-height: 160px; border: 1px dashed var(--border); border-radius: var(--radius-card); color: var(--text-muted); font-size: var(--text-body-sm); padding: 24px; text-align: center; }
+/* 덱 클릭 반응 (리플/셔플) */
+.draw__deck.is-draw .draw__deck-card:nth-child(3) { animation: deckPress .34s cubic-bezier(.2,.8,.3,1); }
+.draw__deck.is-draw .draw__deck-card:nth-child(2) { animation: deckRiffle .34s ease; }
+@keyframes deckPress { 0%{transform:scale(1)} 40%{transform:scale(.94) translateY(3px)} 100%{transform:none} }
+@keyframes deckRiffle { 0%{transform:rotate(4deg) translate(4px,2px)} 45%{transform:rotate(10deg) translate(16px,-4px)} 100%{transform:rotate(4deg) translate(4px,2px)} }
 .draw-card__cat { font-size: var(--text-caption); color: var(--accent-soft); }
 .draw-card__title { margin-top: auto; font-size: var(--text-subheading); line-height: 1.25; color: var(--heading); }
 .draw-card__sub { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.5; }
@@ -589,6 +618,8 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .reveal { opacity: 1; transform: none; }
+  .draw-card__inner { animation: none; }
+  .draw-card__back { display: none; }
 }
 
 /* --------------------------------------------------------------------------
