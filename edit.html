@@ -3,59 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>내용 편집기 · 김지수 포트폴리오</title>
+<title>시각 편집기 · 김지수 포트폴리오</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#f4f2f4">
-<meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 36'><path fill='%23ab9ff2' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/><ellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/><ellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%233c315b'/></svg>">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 36'><path fill='%23d97757' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/><ellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%23262625'/><ellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%23262625'/></svg>">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/editor.css">
+<link rel="stylesheet" href="assets/css/visual-editor.css">
 </head>
-<body class="editor">
+<body class="ve">
 
-<div id="app" hidden>
-
-<header class="e-top">
-  <span class="e-top__brand">
-    <svg class="ghost" viewBox="0 0 32 36" aria-hidden="true"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/><ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/><ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#3c315b"/></svg>
-    내용 편집기
-  </span>
-  <span class="e-status" id="status">준비됨</span>
-  <button type="button" class="e-btn" id="btnReset">원본으로</button>
-  <label class="e-btn" for="fileImport" style="cursor:pointer">파일 불러오기
-    <input type="file" id="fileImport" accept=".js,text/javascript" hidden>
-  </label>
-  <button type="button" class="e-btn" id="btnPreview">미리보기</button>
-  <button type="button" class="e-btn" id="btnExport">content.js 내보내기</button>
-  <button type="button" class="e-btn e-btn--dark" id="btnSave">저장하고 반영</button>
-</header>
-
-<div class="e-layout">
-  <nav class="e-side" id="side" aria-label="편집할 부분 선택"></nav>
-  <section class="e-panel" id="panel"></section>
+<!-- 잠금 -->
+<div class="ve-lock" id="veLock">
+  <form class="ve-lock__box" id="veLockForm">
+    <div class="ve-lock__t">시각 편집기</div>
+    <div class="ve-lock__d">화면을 직접 눌러 글·색·크기·위치를 바꿉니다.<br>비밀번호를 입력해 주세요.</div>
+    <input type="password" id="vePw" inputmode="numeric" autocomplete="current-password" placeholder="••••" autofocus>
+    <div class="ve-lock__err" id="veErr"></div>
+    <button type="submit" class="ve-btn ve-btn--go" style="width:100%">열기</button>
+  </form>
 </div>
 
-<div class="e-modal" id="exportModal" hidden>
-  <div class="e-modal__box" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
-    <h2 class="e-modal__title" id="exportTitle">content.js 내보내기</h2>
-    <p class="e-modal__desc">
-      아래 내용을 <b>assets/content.js</b> 파일에 통째로 덮어쓰면 사이트에 반영됩니다.<br>
-      GitHub 웹에서 바로 고치려면 <b>복사</b> 후 저장소의 <code>assets/content.js</code> 를 열어 연필 아이콘을 누르고 전체를 붙여넣은 뒤 커밋하세요.
-    </p>
-    <textarea class="e-modal__code" id="exportCode" readonly spellcheck="false"></textarea>
-    <div class="e-modal__foot">
-      <button type="button" class="e-btn e-btn--primary" id="btnCopy">복사하기</button>
-      <button type="button" class="e-btn" id="btnDownload">파일로 내려받기</button>
-      <button type="button" class="e-btn" id="btnCloseModal" style="margin-left:auto">닫기</button>
-    </div>
-  </div>
-</div>
+<div class="ve-app" id="veApp" hidden>
 
-</div><!-- /#app -->
+  <header class="ve-top">
+    <span class="ve-brand">
+      <svg viewBox="0 0 32 36" aria-hidden="true"><path fill="currentColor" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/></svg>
+      시각 편집기
+    </span>
+    <div class="ve-seg" id="vePages"></div>
+    <div class="ve-seg" id="veDevice"></div>
+    <div class="ve-seg" id="veTheme"></div>
+    <span class="ve-sp"></span>
+    <span class="ve-status" id="veStatus">준비됨</span>
+    <button class="ve-btn" id="veUndo" title="실행 취소 (Ctrl+Z)">↶</button>
+    <button class="ve-btn" id="veRedo" title="다시 실행 (Ctrl+Shift+Z)">↷</button>
+    <button class="ve-btn" id="veExport">내보내기</button>
+    <button class="ve-btn ve-btn--go" id="veSave">저장하고 반영</button>
+  </header>
+
+  <aside class="ve-left">
+    <section class="ve-sec">
+      <div class="ve-sec__h"><span>테마 팔레트 추천</span><span class="ve-hint" style="text-transform:none;letter-spacing:0"><kbd>R</kbd></span></div>
+      <div class="ve-sec__b">
+        <div class="ve-pal" id="vePal"></div>
+        <div class="ve-palbar">
+          <button class="ve-btn" id="vePalShuffle">새로 추천</button>
+          <button class="ve-btn ve-btn--go" id="vePalApply">이 색 적용</button>
+        </div>
+        <div class="ve-row"><label>조합</label><select class="ve-sel" id="vePalMode">
+          <option value="auto">자동 (섞어서)</option>
+          <option value="analogous">유사색</option>
+          <option value="complement">보색</option>
+          <option value="triad">삼색</option>
+          <option value="mono">단색 톤</option>
+          <option value="warm">따뜻한 계열</option>
+          <option value="cool">차가운 계열</option>
+        </select></div>
+        <p class="ve-hint">색을 눌러 <b>잠그면</b> 다음 추천에서 그 색은 유지됩니다.</p>
+      </div>
+    </section>
+
+    <section class="ve-sec">
+      <div class="ve-sec__h"><span>색 토큰</span><button class="ve-btn" id="veThemeReset" style="padding:3px 8px;font-size:11px">초기화</button></div>
+      <div class="ve-sec__b" id="veTokens"></div>
+    </section>
+
+    <section class="ve-sec">
+      <div class="ve-sec__h"><span>이 페이지 구성</span></div>
+      <div class="ve-sec__b"><div class="ve-tree" id="veTree"></div></div>
+    </section>
+  </aside>
+
+  <main class="ve-canvas" id="veCanvas">
+    <div class="ve-frame-wrap" id="veWrap"><iframe id="veFrame" title="사이트 미리보기"></iframe></div>
+  </main>
+
+  <aside class="ve-right" id="veInspector"></aside>
+
+  <footer class="ve-foot">
+    <span>클릭 = 선택</span><span>더블클릭 = 글자 수정</span><span>드래그 = 이동</span>
+    <span>모서리 = 크기</span><span><kbd>Alt</kbd>+드래그 = 순서 바꾸기</span>
+    <span><kbd>Del</kbd> 숨기기</span><span><kbd>Esc</kbd> 선택 해제</span><span><kbd>R</kbd> 팔레트</span>
+  </footer>
+</div>
 
 <script src="assets/content.js" charset="utf-8"></script>
-<script src="assets/js/editor.js" charset="utf-8"></script>
+<script src="assets/overrides.js" charset="utf-8"></script>
+<script src="assets/js/visual-editor.js" charset="utf-8"></script>
 </body>
 </html>

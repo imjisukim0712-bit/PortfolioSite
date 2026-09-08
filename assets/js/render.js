@@ -31,6 +31,9 @@
   var STEAM_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.9 8.6l5.3 2.2a2.8 2.8 0 0 1 1.6-.5h.2l2.4-3.4v-.1a3.8 3.8 0 1 1 3.8 3.8h-.1l-3.4 2.4v.2a2.8 2.8 0 0 1-5.6.2l-3.8-1.6A10 10 0 1 0 12 2zM7.6 17.5a2.2 2.2 0 0 1-1.3-2.9l1.2.5a1.6 1.6 0 1 0 1.2-3l-1.3-.5a2.2 2.2 0 0 1 2.9 2.9 2.2 2.2 0 0 1-2.7 3zm8.2-6.1a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>';
 
   /* 도구 아이콘 (단색, currentColor). label 은 화면에 함께 표기 */
+  // 시각 편집기용 앵커 — 이 경로로 content.js 값을 되돌려 씁니다.
+  function ep(path) { return ' data-e="' + path + '"'; }
+
   var TOOL_ICONS = {
     figma:{n:"Figma",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 3h3.5v6H8.5a3 3 0 1 1 0-6z"/><path d="M12 3h3.5a3 3 0 1 1 0 6H12V3z" opacity=".72"/><path d="M8.5 9H12v6H8.5a3 3 0 1 1 0-6z" opacity=".55"/><circle cx="15.5" cy="12" r="3" opacity=".85"/><path d="M8.5 15H12v3a3 3 0 1 1-3.5-3z" opacity=".4"/></svg>'},
     office:{n:"MS Office",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3 4 6.5v11L14 21l6-1.8V4.8L14 3zm-1 3.4v11.2l-6 1.5V8L13 6.4z"/></svg>'},
@@ -93,7 +96,7 @@
       (gh ? '<a class="btn btn--outline btn--sm" href="' + esc(gh) + '" target="_blank" rel="noopener noreferrer">GitHub</a>' : '');
     return '<div class="footer__inner">' +
       '<div><div class="footer__brand">' + GHOST + '<span>' + esc(t(c.meta.name, lang)) + ' · ' + esc(t(c.meta.role, lang)) + '</span></div>' +
-        '<p class="footer__tagline">' + esc(t(c.footer && c.footer.tagline, lang)) + '</p></div>' +
+        '<p class="footer__tagline"' + ep('footer.tagline') + '>' + esc(t(c.footer && c.footer.tagline, lang)) + '</p></div>' +
       '<div class="footer__links">' + links + '</div>' +
       '</div><p class="footer__copy">© ' + new Date().getFullYear() + ' ' + esc(t(c.meta.name, lang)) + '</p>';
   }
@@ -129,17 +132,17 @@
       : '<figure class="portrait portrait--empty" role="img" aria-label="' + esc(altTxt) + '">' + GHOST + '</figure>';
     var playerCard =
       '<div class="hero__portrait">' + frame +
-        '<p class="portrait__cap"><span class="portrait__nm">' + esc(t(c.meta.name, lang)) + '</span>' +
-        '<span class="portrait__role">' + esc(t(c.meta.role, lang)) + '</span></p>' +
+        '<p class="portrait__cap"><span class="portrait__nm"' + ep('meta.name') + '>' + esc(t(c.meta.name, lang)) + '</span>' +
+        '<span class="portrait__role"' + ep('meta.role') + '>' + esc(t(c.meta.role, lang)) + '</span></p>' +
       '</div>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
-          '<h1 class="hero__title">' + t(c.hero.titleHtml, lang) + '</h1>' +
-          '<p class="hero__sub">' + esc(t(h.sub, lang)) + '</p>' +
+          '<h1 class="hero__title"' + ep('hero.titleHtml') + '>' + t(c.hero.titleHtml, lang) + '</h1>' +
+          '<p class="hero__sub"' + ep('home.sub') + '>' + esc(t(h.sub, lang)) + '</p>' +
           '<div class="btn-row">' +
-            '<a class="btn btn--primary" href="' + esc(base+HREF.resume) + '">' + esc(t(h.ctaResume, lang)) + '</a>' +
-            '<a class="btn btn--outline" href="' + esc(base+HREF.projects) + '">' + esc(t(h.ctaProjects, lang)) + '</a>' +
+            '<a class="btn btn--primary" href="' + esc(base+HREF.resume) + '"' + ep('home.ctaResume') + '>' + esc(t(h.ctaResume, lang)) + '</a>' +
+            '<a class="btn btn--outline" href="' + esc(base+HREF.projects) + '"' + ep('home.ctaProjects') + '>' + esc(t(h.ctaProjects, lang)) + '</a>' +
           '</div></div>' +
         '<div class="hero__media">' + playerCard + '</div>' +
       '</div></div></section>';
@@ -151,8 +154,8 @@
           '<span class="draw__deck-card" aria-hidden="true"></span>' +
           '<span class="draw__deck-card" aria-hidden="true"></span>' +
           '<span class="draw__deck-card"><span class="draw__deck-face">' + GHOST +
-            '<span class="draw__deck-label">' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '</span>' +
-            '<span class="draw__deck-hint">' + esc(t(draw.hint, lang)) + '</span></span></span>' +
+            '<span class="draw__deck-label"' + ep('home.draw.label') + '>' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '</span>' +
+            '<span class="draw__deck-hint"' + ep('home.draw.hint') + '>' + esc(t(draw.hint, lang)) + '</span></span></span>' +
         '</button>' +
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
@@ -177,36 +180,36 @@
     var L = function (ko, en) { return lang === 'en' ? en : ko; };
 
     // 프로젝트 경험 — 2개만
-    var projRows = arr(c.projects && c.projects.items).slice(0, 2).map(function (p) {
+    var projRows = arr(c.projects && c.projects.items).slice(0, 2).map(function (p, i) {
       var meta = metaJoin([ t(p.myRole, lang), t(p.sub, lang) ]);
       return '<a class="hpl-row" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
         thumb(p.thumb, t(p.title, lang)) +
-        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(p.title, lang)) + '</span>' +
-        '<span class="hpl-row__d">' + esc(t(p.period, lang)) + '</span></span>' +
+        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t"' + ep('projects.items.'+i+'.title') + '>' + esc(t(p.title, lang)) + '</span>' +
+        '<span class="hpl-row__d"' + ep('projects.items.'+i+'.period') + '>' + esc(t(p.period, lang)) + '</span></span>' +
         (meta ? '<span class="hpl-row__m">' + esc(meta) + '</span>' : '') + '</span></a>';
     }).join('');
 
     // 대외 활동 (경력 항목) — 2개만
-    var actRows = arr(c.resume && c.resume.career && c.resume.career.items).slice(0, 2).map(function (it) {
+    var actRows = arr(c.resume && c.resume.career && c.resume.career.items).slice(0, 2).map(function (it, i) {
       return '<div class="hpl-row">' + thumb(it.thumb, t(it.role, lang)) +
-        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t">' + esc(t(it.role, lang)) + '</span>' +
-        '<span class="hpl-row__d">' + esc(t(it.date, lang)) + '</span></span>' +
+        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t"' + ep('resume.career.items.'+i+'.role') + '>' + esc(t(it.role, lang)) + '</span>' +
+        '<span class="hpl-row__d"' + ep('resume.career.items.'+i+'.date') + '>' + esc(t(it.date, lang)) + '</span></span>' +
         '<span class="hpl-row__m">' + esc(metaJoin([ t(it.org, lang), t(it.body, lang) ])) + '</span></span></div>';
     }).join('');
 
     // 보유 기술 (아이콘 + 설명)
-    var skillItems = arr(c.resume && c.resume.skills && c.resume.skills.cards).map(function (card) {
+    var skillItems = arr(c.resume && c.resume.skills && c.resume.skills.cards).map(function (card, i) {
       var first = arr(card.tools)[0];
       var icon = (first && TOOL_ICONS[first]) ? TOOL_ICONS[first].s : GHOST;
       return '<div class="hp-skill"><span class="hp-skill__ic">' + icon + '</span>' +
-        '<div><p class="hp-skill__t">' + esc(t(card.title, lang)) + '</p>' +
-        '<p class="hp-skill__b">' + esc(t(card.body, lang)) + '</p></div></div>';
+        '<div><p class="hp-skill__t"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</p>' +
+        '<p class="hp-skill__b"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p></div></div>';
     }).join('');
 
     // 게임플레이 카드
-    var gameItems = arr(c.play && c.play.cards).map(function (g) {
+    var gameItems = arr(c.play && c.play.cards).map(function (g, i) {
       return '<div class="hp-game"><span class="hp-game__ic" aria-hidden="true">' + GHOST + '</span>' +
-        '<p class="hp-game__t">' + esc(t(g.name, lang)) + '</p>' +
+        '<p class="hp-game__t"' + ep('play.cards.'+i+'.name') + '>' + esc(t(g.name, lang)) + '</p>' +
         '<p class="hp-game__b">' + esc(metaJoin([ t(g.genre, lang), t(g.hours, lang) ])) + '</p></div>';
     }).join('');
 
@@ -248,8 +251,8 @@
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + (lang==='en'?'RÉSUMÉ':'이력서') + '</p>' +
-          '<h1 class="hero__title">' + t(c.hero.titleHtml, lang) + '</h1>' +
-          '<p class="hero__note"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M7 2v9M3 7.2 7 11l4-3.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' + esc(t(r.heroNote, lang)) + '</p></div>' +
+          '<h1 class="hero__title"' + ep('hero.titleHtml') + '>' + t(c.hero.titleHtml, lang) + '</h1>' +
+          '<p class="hero__note"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M7 2v9M3 7.2 7 11l4-3.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span' + ep('resume.heroNote') + '>' + esc(t(r.heroNote, lang)) + '</span></p></div>' +
         '<div class="hero__media"><div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"','class="ghost ghost--float"') + '</div></div>' +
       '</div></div></section>';
 
@@ -258,37 +261,37 @@
     var pf = r.profile || {};
     var profile = arr(pf.items).length ? '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'PROFILE':'인적사항') + '</p>' +
-      '<h2 class="section__title">' + esc(t(pf.title, lang)) + '</h2>' +
+      '<h2 class="section__title"' + ep('resume.profile.title') + '>' + esc(t(pf.title, lang)) + '</h2>' +
       (has(pf.note, lang) ? '<p class="section__lead">' + esc(t(pf.note, lang)) + '</p>' : '') + '</header>' +
-      '<dl class="profile reveal">' + arr(pf.items).map(function (it) {
-        return '<div class="profile__row"><dt class="profile__k">' + esc(t(it.label, lang)) + '</dt>' +
-          '<dd class="profile__v">' + esc(t(it.value, lang)) + '</dd></div>';
+      '<dl class="profile reveal">' + arr(pf.items).map(function (it, i) {
+        return '<div class="profile__row"><dt class="profile__k"' + ep('resume.profile.items.'+i+'.label') + '>' + esc(t(it.label, lang)) + '</dt>' +
+          '<dd class="profile__v"' + ep('resume.profile.items.'+i+'.value') + '>' + esc(t(it.value, lang)) + '</dd></div>';
       }).join('') + '</dl></div></section>' : '';
 
     var sk = r.skills || {};
-    var skillCards = arr(sk.cards).map(function (card) {
-      return '<article class="card skill-card reveal"><h3 class="card__title">' + esc(t(card.title, lang)) + '</h3>' +
-        '<p class="card__body">' + esc(t(card.body, lang)) + '</p>' + toolsHtml(card.tools, lang) + '</article>';
+    var skillCards = arr(sk.cards).map(function (card, i) {
+      return '<article class="card skill-card reveal"><h3 class="card__title"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</h3>' +
+        '<p class="card__body"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p>' + toolsHtml(card.tools, lang) + '</article>';
     }).join('');
     var skills = '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'CORE SKILLS':'핵심역량') + '</p>' +
-      '<h2 class="section__title">' + esc(t(sk.title, lang)) + '</h2>' +
-      '<p class="section__lead">' + esc(t(sk.lead, lang)) + '</p></header>' +
+      '<h2 class="section__title"' + ep('resume.skills.title') + '>' + esc(t(sk.title, lang)) + '</h2>' +
+      '<p class="section__lead"' + ep('resume.skills.lead') + '>' + esc(t(sk.lead, lang)) + '</p></header>' +
       '<div class="grid grid--3">' + skillCards + '</div></div></section>';
 
     var ca = r.career || {};
-    var careerItems = arr(ca.items).map(function (it) {
+    var careerItems = arr(ca.items).map(function (it, i) {
       return '<li class="tl-item' + (it.now?' tl-item--now':'') + ' reveal">' +
-        '<p class="tl-date">' + esc(t(it.date, lang)) + '</p>' +
-        '<h3 class="tl-role">' + esc(t(it.role, lang)) + '</h3>' +
-        '<p class="tl-org">' + esc(t(it.org, lang)) + '</p>' +
-        '<p class="tl-body">' + esc(t(it.body, lang)) + '</p>' +
+        '<p class="tl-date"' + ep('resume.career.items.'+i+'.date') + '>' + esc(t(it.date, lang)) + '</p>' +
+        '<h3 class="tl-role"' + ep('resume.career.items.'+i+'.role') + '>' + esc(t(it.role, lang)) + '</h3>' +
+        '<p class="tl-org"' + ep('resume.career.items.'+i+'.org') + '>' + esc(t(it.org, lang)) + '</p>' +
+        '<p class="tl-body"' + ep('resume.career.items.'+i+'.body') + '>' + esc(t(it.body, lang)) + '</p>' +
         tagsHtml(it.tags, lang).replace('class="tags"','class="tags tl-tags"') + '</li>';
     }).join('');
     var career = '<section class="section section--elev"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'CAREER':'경력') + '</p>' +
-      '<h2 class="section__title">' + esc(t(ca.title, lang)) + '</h2>' +
-      '<p class="section__lead">' + esc(t(ca.lead, lang)) + '</p></header>' +
+      '<h2 class="section__title"' + ep('resume.career.title') + '>' + esc(t(ca.title, lang)) + '</h2>' +
+      '<p class="section__lead"' + ep('resume.career.lead') + '>' + esc(t(ca.lead, lang)) + '</p></header>' +
       '<ol class="timeline">' + careerItems + '</ol></div></section>';
 
     return hero + stats + profile + skills + career;
@@ -302,13 +305,13 @@
     if (!blocks.length) {
       body = '<div class="cover-empty">' + GHOST + '<p>' + esc(t(cl.lead, lang) || (lang==='en'?'Coming soon.':'곧 채울 예정입니다.')) + '</p></div>';
     } else {
-      body = blocks.map(function (b) {
-        return '<div class="cover-block reveal">' + (has(b.heading, lang) ? '<h3>' + esc(t(b.heading, lang)) + '</h3>' : '') + paragraphs(b.body, lang) + '</div>';
+      body = blocks.map(function (b, i) {
+        return '<div class="cover-block reveal">' + (has(b.heading, lang) ? '<h3' + ep('coverLetter.blocks.'+i+'.heading') + '>' + esc(t(b.heading, lang)) + '</h3>' : '') + paragraphs(b.body, lang) + '</div>';
       }).join('');
     }
     return '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'ABOUT ME':'자기소개서') + '</p>' +
-      '<h2 class="section__title">' + esc(t(cl.title, lang)) + '</h2></header>' + body + '</div></section>';
+      '<h2 class="section__title"' + ep('coverLetter.title') + '>' + esc(t(cl.title, lang)) + '</h2></header>' + body + '</div></section>';
   }
 
   /* ---------- PROJECTS ---------- */
@@ -318,7 +321,7 @@
     var tabsHtmlStr = ['all','game','planning'].filter(function (k){return tabs[k];}).map(function (k, i) {
       return '<button type="button" class="tab' + (i===0?' is-active':'') + '" data-proj-tab="' + k + '">' + esc(t(tabs[k], lang)) + '</button>';
     }).join('');
-    var head = '<div class="proj-head reveal"><h1 class="proj-title">' + esc(t(pr.title, lang)) + '</h1>' +
+    var head = '<div class="proj-head reveal"><h1 class="proj-title"' + ep('projects.title') + '>' + esc(t(pr.title, lang)) + '</h1>' +
       '<div class="tabs" role="tablist">' + tabsHtmlStr + '</div></div>';
     var grid = '<div class="proj-grid" data-proj-grid>' + arr(pr.items).map(function (p, i) { return projCardHtml(c, lang, base, p, i); }).join('') + '</div>';
     return '<section class="section"><div class="wrap">' + head + grid +
@@ -335,9 +338,9 @@
     return '<a class="proj-card reveal" data-cat="' + esc(p.category||'') + '" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
       '<span class="proj-card__top"><span class="proj-card__stage">STAGE ' + stage + '</span>' + cleared + '</span>' +
       '<span class="proj-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
-      '<span class="proj-card__title">' + esc(t(p.title, lang)) + '</span>' +
-      '<span class="proj-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
-      '<span class="proj-card__period">' + esc(t(p.period, lang)) + '</span></a>';
+      '<span class="proj-card__title"' + ep('projects.items.'+idx+'.title') + '>' + esc(t(p.title, lang)) + '</span>' +
+      '<span class="proj-card__sub"' + ep('projects.items.'+idx+'.sub') + '>' + esc(t(p.sub, lang)) + '</span>' +
+      '<span class="proj-card__period"' + ep('projects.items.'+idx+'.period') + '>' + esc(t(p.period, lang)) + '</span></a>';
   }
 
   /* ---------- PROJECT DETAIL ---------- */
@@ -366,8 +369,8 @@
 
     var info = '<div class="detail__info">' +
       '<a class="back-link" href="' + esc(base+'projects.html') + '"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>' + (lang==='en'?'Projects':'프로젝트 목록') + '</span></a>' +
-      '<h1 class="detail__title">' + esc(t(p.title, lang)) + '</h1>' +
-      '<p class="detail__period">' + esc(t(p.period, lang)) + '</p>' +
+      '<h1 class="detail__title"' + ep('projects.items.'+idx+'.title') + '>' + esc(t(p.title, lang)) + '</h1>' +
+      '<p class="detail__period"' + ep('projects.items.'+idx+'.period') + '>' + esc(t(p.period, lang)) + '</p>' +
       questStrip(p.quest, lang) +
       (genres.length ? '<div class="detail__genres">' + tagsHtml(genres.map(function(g){return {text:g,tone:'lavender'};}), lang) + '</div>' : '') +
       '<div class="detail__meta">' +
@@ -425,16 +428,16 @@
   /* ---------- PLAY ---------- */
   function renderPlay(c, lang, base) {
     var pl = c.play || {};
-    var cards = arr(pl.cards).map(function (card) {
-      return '<article class="play-card reveal"><div class="play-card__top"><h3 class="play-card__name">' + esc(t(card.name, lang)) + '</h3>' +
-        '<span class="play-card__hours">' + esc(t(card.hours, lang)) + '</span></div>' +
-        '<p class="play-card__genre">' + esc(t(card.genre, lang)) + '</p>' +
-        '<p class="play-card__note">' + esc(t(card.note, lang)) + '</p></article>';
+    var cards = arr(pl.cards).map(function (card, i) {
+      return '<article class="play-card reveal"><div class="play-card__top"><h3 class="play-card__name"' + ep('play.cards.'+i+'.name') + '>' + esc(t(card.name, lang)) + '</h3>' +
+        '<span class="play-card__hours"' + ep('play.cards.'+i+'.hours') + '>' + esc(t(card.hours, lang)) + '</span></div>' +
+        '<p class="play-card__genre"' + ep('play.cards.'+i+'.genre') + '>' + esc(t(card.genre, lang)) + '</p>' +
+        '<p class="play-card__note"' + ep('play.cards.'+i+'.note') + '>' + esc(t(card.note, lang)) + '</p></article>';
     }).join('');
     return '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'PLAY LOG':'게임플레이') + '</p>' +
-      '<h2 class="section__title">' + esc(t(pl.title, lang)) + '</h2>' +
-      '<p class="section__lead">' + esc(t(pl.lead, lang)) + '</p></header>' +
+      '<h2 class="section__title"' + ep('play.title') + '>' + esc(t(pl.title, lang)) + '</h2>' +
+      '<p class="section__lead"' + ep('play.lead') + '>' + esc(t(pl.lead, lang)) + '</p></header>' +
       '<div class="play">' + cards + '</div></div></section>';
   }
 

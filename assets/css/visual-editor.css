@@ -1,0 +1,105 @@
+/* ==========================================================================
+   visual-editor.css — 화면에서 바로 고치는 시각 편집기 (edit.html)
+   ========================================================================== */
+:root{
+  --ve-bg:#16171a; --ve-panel:#1d1f23; --ve-panel2:#25282d; --ve-line:#33373d;
+  --ve-txt:#e8eaed; --ve-mut:#9aa0a8; --ve-accent:#c15f3c; --ve-accent2:#d97757;
+  --ve-sel:#3b82f6; --ve-ok:#3fbf7f; --ve-warn:#e0a94f; --ve-err:#e2574c;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}   /* display 를 지정한 요소도 hidden 이 먹도록 */
+html,body{height:100%}
+body.ve{margin:0;background:var(--ve-bg);color:var(--ve-txt);
+  font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,'Apple SD Gothic Neo',sans-serif;
+  font-size:13px;letter-spacing:-.01em;overflow:hidden}
+button,input,select,textarea{font:inherit;letter-spacing:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+
+/* ---------- 레이아웃 ---------- */
+.ve-app{display:grid;grid-template-rows:48px 1fr 26px;grid-template-columns:288px 1fr 312px;
+  grid-template-areas:"top top top" "left canvas right" "foot foot foot";height:100vh}
+.ve-top{grid-area:top;display:flex;align-items:center;gap:8px;padding:0 12px;background:var(--ve-panel);border-bottom:1px solid var(--ve-line)}
+.ve-left{grid-area:left;background:var(--ve-panel);border-right:1px solid var(--ve-line);overflow:auto}
+.ve-right{grid-area:right;background:var(--ve-panel);border-left:1px solid var(--ve-line);overflow:auto}
+.ve-canvas{grid-area:canvas;position:relative;overflow:auto;background:
+  repeating-conic-gradient(#1a1c1f 0% 25%, #1e2024 0% 50%) 50%/18px 18px;display:flex;justify-content:center;padding:18px}
+.ve-foot{grid-area:foot;display:flex;align-items:center;gap:14px;padding:0 12px;background:var(--ve-panel);
+  border-top:1px solid var(--ve-line);color:var(--ve-mut);font-size:11px;overflow:hidden;white-space:nowrap}
+
+/* ---------- 상단바 ---------- */
+.ve-brand{display:flex;align-items:center;gap:7px;font-weight:600;padding-right:6px}
+.ve-brand svg{width:18px;height:20px;color:var(--ve-accent2)}
+.ve-seg{display:flex;background:var(--ve-panel2);border:1px solid var(--ve-line);border-radius:8px;padding:2px;gap:2px}
+.ve-seg button{padding:5px 10px;border-radius:6px;color:var(--ve-mut);font-size:12px;white-space:nowrap}
+.ve-seg button:hover{color:var(--ve-txt)}
+.ve-seg button.on{background:var(--ve-accent);color:#fff}
+.ve-sp{flex:1}
+.ve-btn{padding:7px 12px;border-radius:8px;background:var(--ve-panel2);border:1px solid var(--ve-line);font-size:12px}
+.ve-btn:hover{background:#2e3238}
+.ve-btn:disabled{opacity:.4;cursor:default}
+.ve-btn--go{background:var(--ve-accent);border-color:var(--ve-accent);color:#fff;font-weight:600}
+.ve-btn--go:hover{background:var(--ve-accent2)}
+
+/* ---------- 패널 공통 ---------- */
+.ve-sec{border-bottom:1px solid var(--ve-line)}
+.ve-sec__h{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:10px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ve-mut);text-transform:uppercase}
+.ve-sec__b{padding:0 12px 14px;display:grid;gap:10px}
+.ve-row{display:grid;grid-template-columns:74px 1fr;align-items:center;gap:8px}
+.ve-row>label{color:var(--ve-mut);font-size:11.5px}
+.ve-row--wide{grid-template-columns:1fr}
+.ve-in,.ve-sel{width:100%;padding:6px 8px;background:var(--ve-panel2);border:1px solid var(--ve-line);
+  border-radius:7px;font-size:12px;min-width:0}
+.ve-in:focus,.ve-sel:focus{outline:1px solid var(--ve-sel);border-color:var(--ve-sel)}
+textarea.ve-in{min-height:62px;resize:vertical;line-height:1.5}
+.ve-2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ve-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.ve-color{display:flex;gap:6px;align-items:center}
+.ve-color input[type=color]{width:30px;height:28px;padding:0;border:1px solid var(--ve-line);border-radius:6px;background:none;cursor:pointer}
+.ve-hint{color:var(--ve-mut);font-size:11px;line-height:1.5}
+.ve-chips{display:flex;flex-wrap:wrap;gap:5px}
+.ve-chip{padding:5px 9px;border-radius:999px;background:var(--ve-panel2);border:1px solid var(--ve-line);font-size:11.5px}
+.ve-chip:hover{border-color:var(--ve-accent2)}
+.ve-chip.on{background:var(--ve-accent);border-color:var(--ve-accent);color:#fff}
+
+/* ---------- 팔레트 생성기 (Pigment 식) ---------- */
+.ve-pal{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--ve-line)}
+.ve-pal__c{position:relative;height:76px;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.ve-pal__c span{font-size:9.5px;font-family:ui-monospace,Menlo,monospace;background:rgba(0,0,0,.45);color:#fff;
+  padding:2px 5px;border-radius:4px;opacity:0;transition:opacity .15s}
+.ve-pal__c:hover span{opacity:1}
+.ve-pal__c::after{content:"";position:absolute;top:6px;right:6px;width:14px;height:14px;border-radius:4px;
+  background:rgba(0,0,0,.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm3 8H9V6a3 3 0 1 1 6 0v3z'/%3E%3C/svg%3E") center/9px no-repeat;
+  opacity:0;transition:opacity .15s}
+.ve-pal__c.lock::after{opacity:1}
+.ve-pal__c:hover::after{opacity:.65}
+.ve-pal__c.lock:hover::after{opacity:1}
+.ve-palbar{display:flex;gap:6px}
+.ve-palbar .ve-btn{flex:1;text-align:center}
+
+/* ---------- 아웃라인 ---------- */
+.ve-tree{display:grid;gap:1px}
+.ve-tree button{display:block;width:100%;text-align:left;padding:6px 10px;border-radius:6px;color:var(--ve-mut);font-size:12px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ve-tree button:hover{background:var(--ve-panel2);color:var(--ve-txt)}
+.ve-tree button.on{background:var(--ve-panel2);color:var(--ve-txt)}
+
+/* ---------- 캔버스 ---------- */
+.ve-frame-wrap{position:relative;background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);align-self:flex-start;transition:width .2s ease}
+#veFrame{display:block;width:100%;height:100%;border:0}
+.ve-empty{color:var(--ve-mut);align-self:center}
+
+/* ---------- 잠금 화면 ---------- */
+.ve-lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--ve-bg);z-index:50}
+.ve-lock__box{width:min(340px,92vw);background:var(--ve-panel);border:1px solid var(--ve-line);border-radius:14px;padding:26px;text-align:center}
+.ve-lock__t{font-size:15px;font-weight:600;margin-bottom:6px}
+.ve-lock__d{color:var(--ve-mut);font-size:12px;margin-bottom:16px;line-height:1.6}
+.ve-lock input{width:100%;text-align:center;letter-spacing:.4em;font-size:18px;padding:10px;margin-bottom:10px;
+  background:var(--ve-panel2);border:1px solid var(--ve-line);border-radius:9px}
+.ve-lock__err{color:var(--ve-err);font-size:12px;min-height:16px}
+
+/* ---------- 상태 ---------- */
+.ve-status{font-size:11.5px;color:var(--ve-mut);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ve-status.is-ok{color:var(--ve-ok)} .ve-status.is-warn{color:var(--ve-warn)} .ve-status.is-error{color:var(--ve-err)}
+kbd{background:var(--ve-panel2);border:1px solid var(--ve-line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;font-size:10px;font-family:inherit}

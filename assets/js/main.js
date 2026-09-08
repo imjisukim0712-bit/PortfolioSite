@@ -105,7 +105,7 @@
   }
 
   /* ---------- 카드 뽑기 ---------- */
-  var drawnIds = null;
+  var drawnIds = null, drawResize = null, drawResizeBound = false;
   function pickRandom(n) {
     var items = (content.projects && content.projects.items) || [];
     var pool = items.slice();
@@ -151,11 +151,15 @@
       render();
     });
     // 폭이 바뀌어 들어갈 장수가 달라질 때만 다시 그린다 (뽑은 결과는 유지)
-    var t = null;
-    window.addEventListener('resize', function () {
-      clearTimeout(t);
-      t = setTimeout(function () { if (fitCount(max) !== shown) render(); }, 150);
-    });
+    drawResize = function () { if (fitCount(max) !== shown) render(); };
+    if (!drawResizeBound) {
+      drawResizeBound = true;
+      var t = null;
+      window.addEventListener('resize', function () {
+        clearTimeout(t);
+        t = setTimeout(function () { if (drawResize) drawResize(); }, 150);
+      });
+    }
   }
 
   /* ---------- 프로젝트 탭 ---------- */
@@ -258,6 +262,19 @@
   initHeader();
   initDraw();
   initToTop();
+
+  /* ---------- 시각 편집기(edit.html) 연동 훅 ---------- */
+  window.PortfolioApp = {
+    page: page,
+    getLang: function () { return lang; },
+    setLang: function (v) { lang = (v === 'en' ? 'en' : 'ko'); saveLang(lang); },
+    setTheme: function (v) {
+      document.documentElement.setAttribute('data-theme', v === 'dark' ? 'dark' : 'light');
+      applyThemeIcon();
+    },
+    setContent: function (next) { if (next) content = next; },
+    rerender: function () { render(); initHeader(); initDraw(); initToTop(); }
+  };
 
   if (new URLSearchParams(location.search).get('preview')==='1') {
     var b = document.createElement('div'); b.className='preview-banner';
