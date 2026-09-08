@@ -291,6 +291,17 @@
       desc: '히어로 아래로 숫자 요약 · 핵심역량 · 경력이 이어집니다.',
       fields: [
         { key: 'heroNote', label: '히어로 하단 안내', type: 'i18n' },
+        { key: 'profile', label: '인적사항', type: 'group', fields: [
+          { key: 'title', label: '제목', type: 'i18n' },
+          { key: 'note', label: '안내 문구', type: 'i18n', area: true },
+          { key: 'items', label: '항목', type: 'list',
+            itemName: function (it){ return (it.label&&it.label.ko||'항목') + ' · ' + (it.value&&it.value.ko||''); },
+            template: function (){ return { label:i18n(), value:i18n() }; },
+            fields: [
+              { key: 'label', label: '항목 이름', type: 'i18n', hint: '예: 연락처' },
+              { key: 'value', label: '값', type: 'i18n', hint: '민감한 정보는 x 로 가려 두세요. 예: 010-xxxx-xxxx' }
+            ] }
+        ] },
         { key: 'stats', label: '숫자 요약', type: 'list',
           itemName: function (it){ return (it.num||'') + ' ' + (it.label&&it.label.ko||''); },
           template: function (){ return { num:'', unit:i18n(), label:i18n() }; },
@@ -352,13 +363,18 @@
         ] },
         { key: 'items', label: '프로젝트', type: 'list',
           itemName: function (it){ return it.title&&it.title.ko||it.id||'프로젝트'; },
-          template: function (){ return { id:'', category:'game', title:i18n(), period:i18n(), sub:i18n(), genres:[], headcount:i18n(), myRole:i18n(), status:i18n(), learned:[], links:{googlePlay:'',steam:''}, media:{embed:'',note:i18n()}, detailBlocks:{problem:i18n(),approach:i18n(),retrospective:i18n()} }; },
+          template: function (){ return { id:'', category:'game', title:i18n(), period:i18n(), sub:i18n(), quest:{goal:i18n(),result:i18n(),cleared:true}, genres:[], headcount:i18n(), myRole:i18n(), status:i18n(), learned:[], links:{googlePlay:'',steam:''}, media:{embed:'',note:i18n()}, detailBlocks:{problem:i18n(),approach:i18n(),retrospective:i18n()} }; },
           fields: [
             { key: 'id', label: '주소용 id', type: 'text', hint: '영문 소문자·하이픈. 예: league-of-defense' },
             { key: 'category', label: '분류', type: 'select', options: [ ['game','게임'], ['planning','기획'] ] },
             { key: 'title', label: '이름', type: 'i18n' },
             { key: 'period', label: '기간', type: 'i18n', hint: '예: 2025.01 ~ 2025.08' },
             { key: 'sub', label: '한 줄 소개', type: 'i18n' },
+            { key: 'quest', label: '퀘스트 (목표 → 결과)', type: 'group', fields: [
+              { key: 'goal', label: '목표', type: 'i18n', hint: '예: 3일 차 이탈 개선' },
+              { key: 'result', label: '결과', type: 'i18n', hint: '예: 34% → 21%' },
+              { key: 'cleared', label: '클리어 배지 표시', type: 'bool' }
+            ] },
             { key: 'genres', label: '장르 (최대 3개 표시)', type: 'i18nList' },
             { key: 'headcount', label: '인원', type: 'i18n' },
             { key: 'myRole', label: '맡은 역할', type: 'i18n' },

@@ -164,18 +164,7 @@
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
 
-    var lp = h.loop || {};
-    var loopSec = arr(lp.steps).length
-      ? '<section class="loop-sec"><div class="wrap"><div class="loop">' +
-          '<span class="loop__cap">' + esc(t(lp.label, lang)) + '</span>' +
-          arr(lp.steps).map(function (stp, i) {
-            return (i ? '<span class="loop__ar">\u2192</span>' : '') + '<span class="loop__node">' + esc(t(stp, lang)) + '</span>';
-          }).join('') +
-          '<span class="loop__rt">\u21bb</span>' +
-          '<span class="loop__note">' + esc(t(lp.note, lang)) + '</span>' +
-        '</div></div></section>'
-      : '';
-    return '<div class="home-screen">' + hero + drawSec + '</div>' + loopSec;
+    return '<div class="home-screen">' + hero + drawSec + '</div>';
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
@@ -206,6 +195,16 @@
 
     var stats = arr(r.stats).length ? '<section class="section section--elev"><div class="wrap"><div class="stat-grid">' + statsHtml(r.stats, lang) + '</div></div></section>' : '';
 
+    var pf = r.profile || {};
+    var profile = arr(pf.items).length ? '<section class="section"><div class="wrap"><header class="section__head reveal">' +
+      '<p class="eyebrow">' + (lang==='en'?'PROFILE':'인적사항') + '</p>' +
+      '<h2 class="section__title">' + esc(t(pf.title, lang)) + '</h2>' +
+      (has(pf.note, lang) ? '<p class="section__lead">' + esc(t(pf.note, lang)) + '</p>' : '') + '</header>' +
+      '<dl class="profile reveal">' + arr(pf.items).map(function (it) {
+        return '<div class="profile__row"><dt class="profile__k">' + esc(t(it.label, lang)) + '</dt>' +
+          '<dd class="profile__v">' + esc(t(it.value, lang)) + '</dd></div>';
+      }).join('') + '</dl></div></section>' : '';
+
     var sk = r.skills || {};
     var skillCards = arr(sk.cards).map(function (card) {
       return '<article class="card skill-card reveal"><h3 class="card__title">' + esc(t(card.title, lang)) + '</h3>' +
@@ -232,7 +231,7 @@
       '<p class="section__lead">' + esc(t(ca.lead, lang)) + '</p></header>' +
       '<ol class="timeline">' + careerItems + '</ol></div></section>';
 
-    return hero + stats + skills + career;
+    return hero + stats + profile + skills + career;
   }
 
   /* ---------- COVER LETTER ---------- */

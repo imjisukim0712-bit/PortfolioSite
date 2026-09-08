@@ -64,13 +64,6 @@ window.PORTFOLIO_CONTENT = {
         { label: { ko: "데이터 분석", en: "Data" },    value: 72 },
         { label: { ko: "시장 분석",  en: "Market" },  value: 80 }
       ]
-    },
-    // 설계 루프 (기획자의 사고 흐름)
-    loop: {
-      label: { ko: "설계 루프", en: "Design loop" },
-      steps: [ { ko: "정의", en: "Define" }, { ko: "번역", en: "Translate" }, { ko: "증명", en: "Prove" } ],
-      note:  { ko: "문제를 숫자로 정의하고 · 팀 언어로 번역하고 · 빌드로 증명하고, 다시.",
-               en: "Define the problem in numbers, translate it into the team's language, prove it in the build — repeat." }
     }
   },
 
@@ -79,6 +72,24 @@ window.PORTFOLIO_CONTENT = {
      ────────────────────────────────────────────────────────────────────── */
   resume: {
     heroNote: { ko: "아래로 스크롤하면 이력서 상세가 이어집니다", en: "Scroll down for the full résumé" },
+
+    /* ── 인적사항 ──────────────────────────────────────────────────────────
+       민감한 개인정보는 x 로 가려 둔 자리입니다. 편집기에서 실제 값으로 바꾸세요.
+       ────────────────────────────────────────────────────────────────────── */
+    profile: {
+      title: { ko: "인적사항", en: "Profile" },
+      note:  { ko: "민감한 정보는 x 로 가려 두었습니다. 실제 값으로 채워 넣으세요.",
+               en: "Sensitive fields are masked with x — replace them with real values." },
+      items: [
+        { label: { ko: "이름",     en: "Name" },           value: { ko: "김지수",          en: "Jisu Kim" } },
+        { label: { ko: "생년월일", en: "Date of birth" },   value: { ko: "xxxx.xx.xx",      en: "xxxx.xx.xx" } },
+        { label: { ko: "연락처",   en: "Phone" },           value: { ko: "010-xxxx-xxxx",   en: "010-xxxx-xxxx" } },
+        { label: { ko: "이메일",   en: "Email" },           value: { ko: "xxxxxx@xxxx.xxx", en: "xxxxxx@xxxx.xxx" } },
+        { label: { ko: "거주지",   en: "Location" },        value: { ko: "서울특별시 xxx구", en: "xxx-gu, Seoul" } },
+        { label: { ko: "병역",     en: "Military service" }, value: { ko: "xxxx",            en: "xxxx" } },
+        { label: { ko: "희망연봉", en: "Desired salary" },   value: { ko: "x,xxx만 원",      en: "xx,xxx" } }
+      ]
+    },
 
     stats: [
       { num: "300K", unit: { ko: "+",  en: "+" },      label: { ko: "출시작 누적 다운로드",   en: "Total downloads" } },
@@ -236,6 +247,52 @@ window.PORTFOLIO_CONTENT = {
         ],
         links: { googlePlay: "", steam: "" },
         media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } }
+      },
+
+      /* ── 기획서 (임시 샘플) — 실제 문서로 교체 예정 ─────────────────────── */
+      {
+        id: "sample-combat-doc",
+        quest: { goal: { ko: "전투 손맛 수치화", en: "Quantify combat feel" }, result: { ko: "샘플 기획서 (작성 예정)", en: "Sample doc (draft)" }, cleared: false },
+        category: "planning",
+        title: { ko: "로그라이크 전투 시스템 기획서", en: "Roguelike combat system doc" },
+        period:{ ko: "샘플 문서", en: "Sample doc" },
+        sub:   { ko: "전투 · 밸런스 · 성장 루프 기획 (임시)", en: "Combat · balance · growth loop (placeholder)" },
+        genres:[ { ko: "시스템", en: "System" }, { ko: "전투", en: "Combat" }, { ko: "밸런스", en: "Balance" } ],
+        headcount: { ko: "개인 기획", en: "Solo design" },
+        myRole:    { ko: "기획 · 문서", en: "Design · Documentation" },
+        status:    { ko: "샘플 기획서", en: "Sample document" },
+        learned: [
+          { ko: "임시로 넣어 둔 샘플 기획서입니다. 실제 문서로 교체할 자리입니다.", en: "Placeholder sample doc — to be replaced with the real one." }
+        ],
+        detailBlocks: {
+          problem:       { ko: "(임시) 해결하려는 문제를 여기에 적습니다.", en: "(Placeholder) State the problem here." },
+          approach:      { ko: "(임시) 어떤 시스템·수치로 접근했는지 적습니다.", en: "(Placeholder) Describe the system and numbers used." },
+          retrospective: { ko: "(임시) 다시 한다면 무엇을 바꿀지 적습니다.", en: "(Placeholder) What you'd change next time." }
+        },
+        links: { googlePlay: "", steam: "" },
+        media: { embed: "", note: { ko: "기획서 문서·다이어그램이 들어갈 자리입니다.", en: "Space for the design document and diagrams." } }
+      },
+      {
+        id: "sample-economy-doc",
+        quest: { goal: { ko: "재화 순환 설계", en: "Design the currency loop" }, result: { ko: "샘플 기획서 (작성 예정)", en: "Sample doc (draft)" }, cleared: false },
+        category: "planning",
+        title: { ko: "라이브 이벤트 · BM 기획서", en: "Live-event & BM doc" },
+        period:{ ko: "샘플 문서", en: "Sample doc" },
+        sub:   { ko: "경제 · 재화 순환 · 상점 구조 기획 (임시)", en: "Economy · currency loop · shop structure (placeholder)" },
+        genres:[ { ko: "경제", en: "Economy" }, { ko: "BM", en: "Monetization" }, { ko: "라이브", en: "Live ops" } ],
+        headcount: { ko: "개인 기획", en: "Solo design" },
+        myRole:    { ko: "기획 · 문서", en: "Design · Documentation" },
+        status:    { ko: "샘플 기획서", en: "Sample document" },
+        learned: [
+          { ko: "임시로 넣어 둔 샘플 기획서입니다. 실제 문서로 교체할 자리입니다.", en: "Placeholder sample doc — to be replaced with the real one." }
+        ],
+        detailBlocks: {
+          problem:       { ko: "(임시) 해결하려는 문제를 여기에 적습니다.", en: "(Placeholder) State the problem here." },
+          approach:      { ko: "(임시) 재화 순환·상점 구조를 어떻게 설계했는지 적습니다.", en: "(Placeholder) Describe the currency loop and shop design." },
+          retrospective: { ko: "(임시) 다시 한다면 무엇을 바꿀지 적습니다.", en: "(Placeholder) What you'd change next time." }
+        },
+        links: { googlePlay: "", steam: "" },
+        media: { embed: "", note: { ko: "기획서 문서·다이어그램이 들어갈 자리입니다.", en: "Space for the design document and diagrams." } }
       }
     ]
   },

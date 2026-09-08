@@ -385,21 +385,6 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .pstat__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent-soft), var(--accent)); }
 .pstat__v { font-family: var(--font-mono); font-size: 11px; color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
 
-/* 설계 루프 — 정의 → 번역 → 증명 ↻ */
-.loop-sec { padding-block: 0 var(--section-pad-y); }
-@media (min-width: 768px) { .home-screen + .loop-sec { padding-top: 0; } }
-.loop {
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
-  padding: 16px 20px; border: 1px solid var(--border); border-radius: var(--radius-pill);
-  background: var(--surface-2);
-}
-.loop__cap { font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; color: var(--accent-soft); margin-right: 4px; }
-.loop__node { padding: 6px 14px; border-radius: var(--radius-pill); background: var(--surface); border: 1px solid var(--border); font-size: var(--text-body-sm); color: var(--heading); }
-.loop__ar { color: var(--accent-soft); font-size: 14px; }
-.loop__rt { color: var(--accent); font-size: 16px; margin-left: 2px; }
-.loop__note { flex-basis: 100%; text-align: center; margin-top: 8px; font-size: var(--text-caption); color: var(--text-muted); }
-@media (min-width: 640px) { .loop__note { flex-basis: auto; margin-top: 0; margin-left: 8px; text-align: left; } }
-
 /* --------------------------------------------------------------------------
    9. HOME — 카드 뽑기
    -------------------------------------------------------------------------- */
@@ -514,6 +499,15 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .stat__num .unit { font-size: .5em; color: var(--accent-soft); margin-left: 2px; }
 .stat__label { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); line-height: 1.4; }
 
+/* 인적사항 */
+.profile { display: grid; gap: 0; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); overflow: hidden; }
+@media (min-width: 720px) { .profile { grid-template-columns: 1fr 1fr; } }
+.profile__row { display: grid; grid-template-columns: 7.5em 1fr; align-items: baseline; gap: 14px; padding: 14px 20px; border-top: 1px solid var(--border); }
+.profile__row:first-child { border-top: 0; }
+@media (min-width: 720px) { .profile__row:nth-child(2) { border-top: 0; } .profile__row:nth-child(even) { border-left: 1px solid var(--border); } }
+.profile__k { font-size: var(--text-caption); color: var(--text-muted); }
+.profile__v { font-size: var(--text-body-sm); color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+
 /* skills */
 .skill-card { display: flex; flex-direction: column; }
 .skill-card .card__body { flex: 1 1 auto; }
@@ -560,6 +554,7 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 
 .proj-card { display: flex; flex-direction: column; min-width: 0; aspect-ratio: 3 / 4; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); transition: border-color .2s ease, transform .2s ease; }
 .proj-card:hover { border-color: var(--accent-soft); transform: translateY(-4px); }
+.proj-card[hidden] { display: none; }
 .proj-card__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .proj-card__stage { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .clr { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text); font-size: 10px; font-weight: 600; letter-spacing: .08em; }
