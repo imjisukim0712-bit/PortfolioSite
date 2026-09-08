@@ -402,21 +402,16 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
   .home-screen .ghost-art { max-width: min(240px, 26vh); }
   .home-screen .portrait { width: min(200px, 22vh); }
 }
-/* 홈 하단 — 이력서·자기소개서·게임플레이 개요 */
-.explore .xgrid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media (min-width: 760px) { .explore .xgrid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
-.xcard {
-  display: flex; flex-direction: column; gap: 10px; min-height: 0;
-  padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-card);
-  background: var(--surface); box-shadow: var(--shadow-card);
-  text-decoration: none; transition: border-color .2s ease, transform .2s ease;
-}
-.xcard:hover { border-color: var(--accent-soft); transform: translateY(-4px); }
-.xcard__label { font-size: var(--text-heading-sm); line-height: 1.2; color: var(--heading); }
-.xcard__sum { flex: 1 1 auto; font-size: var(--text-body-sm); line-height: 1.6; color: var(--text-muted); }
-.xcard__cta { margin-top: 4px; display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-body-sm); color: var(--accent); }
-.xcard:hover .xcard__cta span { transform: translateX(3px); }
-.xcard__cta span { transition: transform .2s ease; }
+/* 홈 하단 — 이력서·자기소개서·게임플레이 개요 (세로로 하나씩, 간단하게) */
+.explore .xlist { display: flex; flex-direction: column; }
+.xrow { display: block; padding: 28px 0; border-top: 1px solid var(--border); text-decoration: none; }
+.xrow:last-child { border-bottom: 1px solid var(--border); }
+.xrow__title { font-size: var(--text-heading-sm); line-height: 1.2; color: var(--heading); transition: color .18s ease; }
+.xrow:hover .xrow__title { color: var(--accent); }
+.xrow__sum { margin-top: 10px; max-width: 60ch; font-size: var(--text-body-sm); line-height: 1.7; color: var(--text-muted); }
+.xrow__more { margin-top: 14px; display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-body-sm); color: var(--accent); }
+.xrow__more span { transition: transform .2s ease; }
+.xrow:hover .xrow__more span { transform: translateX(4px); }
 
 .draw { padding-block: var(--section-pad-y); }
 /* 덱과 뽑힌 카드를 하나의 균등 그리드에 두어 크기·간격을 동일하게 (겹침 방지) */

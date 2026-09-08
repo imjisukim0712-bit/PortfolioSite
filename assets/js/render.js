@@ -160,13 +160,14 @@
       '</div></div></section>';
 
     var ex = h.explore || {};
+    var moreTxt = t(ex.cta, lang) || (lang==='en'?'See more':'자세히 보기');
     var exItems = arr(ex.items).map(function (it) {
       var navLabel = c.nav && c.nav[it.page];
       var href = HREF[it.page] || 'index.html';
-      return '<a class="xcard reveal" href="' + esc(base + href) + '">' +
-        '<span class="xcard__label">' + esc(t(navLabel, lang) || '') + '</span>' +
-        '<span class="xcard__sum">' + esc(t(it.summary, lang)) + '</span>' +
-        '<span class="xcard__cta">' + esc(t(ex.cta, lang) || (lang==='en'?'See more':'자세히 보기')) + ' <span aria-hidden="true">→</span></span>' +
+      return '<a class="xrow reveal" href="' + esc(base + href) + '">' +
+        '<h3 class="xrow__title">' + esc(t(navLabel, lang) || '') + '</h3>' +
+        '<p class="xrow__sum">' + esc(t(it.summary, lang)) + '</p>' +
+        '<span class="xrow__more">' + esc(moreTxt) + ' <span aria-hidden="true">→</span></span>' +
         '</a>';
     }).join('');
     var exploreSec = exItems
@@ -174,7 +175,7 @@
           '<header class="section__head reveal"><p class="eyebrow">EXPLORE</p>' +
           '<h2 class="section__title">' + esc(t(ex.title, lang)) + '</h2>' +
           (has(ex.lead, lang) ? '<p class="section__lead">' + esc(t(ex.lead, lang)) + '</p>' : '') + '</header>' +
-          '<div class="xgrid">' + exItems + '</div>' +
+          '<div class="xlist">' + exItems + '</div>' +
         '</div></section>'
       : '';
 
