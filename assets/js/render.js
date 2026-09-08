@@ -120,38 +120,29 @@
     return t(field, lang).split(/\n{2,}|\n/).filter(function (s){return s.trim();}).map(function (s){return '<p>' + s + '</p>';}).join('');
   }
 
-  // 홈 개요 — 각 페이지에 실제로 무엇이 들어있는지 데이터에서 뽑아 목록으로.
-  function joinBy(list, key, lang, sep, max) {
-    var a = arr(list).map(function (it) { return t(it[key], lang); }).filter(Boolean);
-    if (max && a.length > max) { a = a.slice(0, max); a.push('…'); }
-    return a.join(sep || ', ');
+  // 홈 개요 — 줄글 대신 아이콘/칩으로 "뭐가 있는지" 간단히.
+  function chipRow(items) {
+    var a = arr(items).filter(Boolean);
+    if (!a.length) return '';
+    return '<div class="xchips">' + a.map(function (x) { return '<span class="xchip">' + esc(x) + '</span>'; }).join('') + '</div>';
   }
-  function pagePreview(c, page, lang) {
+  function explorePreview(c, page, lang) {
     if (page === 'resume') {
-      var r = c.resume || {};
-      var stats = arr(r.stats).map(function (s) { return (s.num || '') + (t(s.unit, lang) || '') + ' ' + t(s.label, lang); }).filter(function(x){return x.trim();});
-      return [
-        { k: lang==='en'?'Highlights':'요약', v: stats.join(' · ') },
-        { k: lang==='en'?'Core skills':'핵심역량', v: joinBy(r.skills && r.skills.cards, 'title', lang, ' · ') },
-        { k: lang==='en'?'Career':'경력', v: joinBy(r.career && r.career.items, 'role', lang, ', ', 5) }
-      ];
+      var seen = {}, tools = [];
+      arr(c.resume && c.resume.skills && c.resume.skills.cards).forEach(function (card) {
+        arr(card.tools).forEach(function (k) { if (!seen[k]) { seen[k] = 1; tools.push(k); } });
+      });
+      return toolsHtml(tools, lang);
+    }
+    if (page === 'play') {
+      return chipRow(arr(c.play && c.play.cards).map(function (g) { return t(g.name, lang); }));
     }
     if (page === 'cover') {
       var cl = c.coverLetter || {};
       var hs = arr(cl.blocks).map(function (b) { return t(b.heading, lang); }).filter(Boolean);
-      return [ { k: lang==='en'?'Sections':'구성', v: hs.length ? hs.join(' · ') : (t(cl.lead, lang) || (lang==='en'?'Coming soon':'작성 예정')) } ];
+      return chipRow(hs.length ? hs : [ t(cl.lead, lang) || (lang==='en'?'Coming soon':'작성 예정') ]);
     }
-    if (page === 'play') {
-      var py = c.play || {};
-      return [ { k: lang==='en'?'Titles':'플레이 기록', v: joinBy(py.cards, 'name', lang, ' · ') } ];
-    }
-    return [];
-  }
-  function previewHtml(rows) {
-    var body = rows.filter(function (r) { return r.v; }).map(function (r) {
-      return '<div class="xrow__mrow"><dt class="xrow__mk">' + esc(r.k) + '</dt><dd class="xrow__mv">' + esc(r.v) + '</dd></div>';
-    }).join('');
-    return body ? '<dl class="xrow__meta">' + body + '</dl>' : '';
+    return '';
   }
 
   /* ---------- HOME ---------- */
@@ -201,7 +192,7 @@
       return '<a class="xrow reveal" href="' + esc(base + href) + '">' +
         '<h3 class="xrow__title">' + esc(t(navLabel, lang) || '') + '</h3>' +
         (has(it.summary, lang) ? '<p class="xrow__sum">' + esc(t(it.summary, lang)) + '</p>' : '') +
-        previewHtml(pagePreview(c, it.page, lang)) +
+        explorePreview(c, it.page, lang) +
         '<span class="xrow__more">' + esc(moreTxt) + ' <span aria-hidden="true">→</span></span>' +
         '</a>';
     }).join('');
