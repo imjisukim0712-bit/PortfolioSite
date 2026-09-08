@@ -360,6 +360,7 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .hero__eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 7px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: var(--text-caption); letter-spacing: .04em; color: var(--heading); }
 .hero__title { font-size: var(--text-display); line-height: 1.1; letter-spacing: -0.035em; color: var(--heading); text-wrap: balance; }
 .hero__title .accent { color: var(--accent); }
+.hero__title .name { color: var(--accent); }
 .hero__sub { margin-top: 24px; max-width: 34rem; font-size: var(--text-subheading); line-height: 1.6; color: var(--text-muted); }
 .hero__media { justify-self: center; }
 @media (min-width: 900px) { .hero__media { justify-self: end; } }
