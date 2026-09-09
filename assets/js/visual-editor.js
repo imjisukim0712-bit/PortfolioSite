@@ -513,6 +513,11 @@
     }
     var game = node.closest('.hp-game');
     if (game) { var ge = game.querySelector('[data-e]'); var gi = ge && arrayInfo(ge.getAttribute('data-e')); if (gi) return { kind: 'content', path: gi.arr + '.' + gi.idx + '.icon', label: '게임 아이콘' }; }
+    var gc = node.closest('.gcard');
+    if (gc) {
+      var ce = gc.querySelector('[data-e]'); var ci = ce && arrayInfo(ce.getAttribute('data-e'));
+      if (ci) return { kind: 'content', path: ci.arr + '.' + ci.idx + '.thumb', label: '카드 그림' };
+    }
     var pc = node.closest('.play-card');
     if (pc) { var pe = pc.querySelector('[data-e]'); var pi = pe && arrayInfo(pe.getAttribute('data-e')); if (pi) return { kind: 'content', path: pi.arr + '.' + pi.idx + '.icon', label: '게임 아이콘' }; }
     return null;

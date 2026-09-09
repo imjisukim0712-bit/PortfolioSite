@@ -34,6 +34,75 @@
   // 시각 편집기용 앵커 — 이 경로로 content.js 값을 되돌려 씁니다.
   function ep(path) { return ' data-e="' + path + '"'; }
 
+  /* ── 게임 카드 (홈 뽑기 · 프로젝트 목록 공용) ──────────────────────────
+     구성: 이름 / 분류·대표 태그·등급 / 그림(없으면 자동 생성) / 개요
+     등급 SSR·SR·R·A 에 따라 테두리가 홀로그램·금박·은박·기본으로 바뀝니다.
+     ──────────────────────────────────────────────────────────────────── */
+  var GRADES = { SSR:1, SR:1, R:1, A:1 };
+  function gradeOf(p) {
+    var g = String((p && p.grade) || 'A').toUpperCase().trim();
+    return GRADES[g] ? g : 'A';
+  }
+  function seedOf(str) {
+    var h = 5381, i;
+    str = String(str || '');
+    for (i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+  /* 사진이 없을 때 id 로부터 매번 같은 그림을 만듭니다(무작위처럼 보이되 고정). */
+  function genArt(h) {
+    var kind = h % 4, g = '', i, x, y;
+    if (kind === 0) {
+      for (i = 0; i < 5; i++)
+        g += '<circle cx="50" cy="50" r="' + (13 + i * 13) + '" fill="none" stroke="currentColor" stroke-width="1.1" opacity="' + (0.32 - i * 0.05).toFixed(2) + '"/>';
+    } else if (kind === 1) {
+      for (i = 0; i < 10; i++)
+        g += '<rect x="' + (-46 + i * 17) + '" y="-40" width="6" height="190" fill="currentColor" opacity="' + (i % 2 ? 0.09 : 0.17) + '"/>';
+      g = '<g transform="rotate(' + (18 + (h >> 3) % 30) + ' 50 50)">' + g + '</g>';
+    } else if (kind === 2) {
+      for (y = 0; y < 7; y++) for (x = 0; x < 7; x++)
+        g += '<circle cx="' + (8 + x * 14).toFixed(1) + '" cy="' + (8 + y * 14).toFixed(1) + '" r="' + (1.5 + ((x + y + h) % 3) * 0.8).toFixed(1) + '" fill="currentColor" opacity="0.17"/>';
+    } else {
+      for (i = 0; i < 4; i++)
+        g += '<path d="M50 ' + (5 + i * 11) + 'L' + (95 - i * 11) + ' 50L50 ' + (95 - i * 11) + 'L' + (5 + i * 11) + ' 50Z" fill="none" stroke="currentColor" stroke-width="1.1" opacity="' + (0.30 - i * 0.055).toFixed(2) + '"/>';
+    }
+    return g;
+  }
+  function cardArt(p, lang) {
+    if (has(p.thumb, lang))
+      return '<img class="gcard__img" src="' + esc(t(p.thumb, lang)) + '" alt="' + esc(t(p.title, lang)) + '" loading="lazy" decoding="async">';
+    var h = seedOf(p.id || t(p.title, lang));
+    return '<span class="gcard__gen gcard__gen--' + (h % 3) + '" aria-hidden="true">' +
+        '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" focusable="false">' + genArt(h) + '</svg>' +
+        '<span class="gcard__mark">' + GHOST + '</span>' +
+      '</span>';
+  }
+  /* 카드 앞면 내용 (테두리·바탕은 바깥 .gcard 가 담당) */
+  function gcardFace(c, lang, p, idx, footHtml) {
+    var cat = c.projects && c.projects.tabs && c.projects.tabs[p.category];
+    var pth = 'projects.items.' + idx;
+    return '<span class="gcard__frame">' +
+        '<span class="gcard__name"' + ep(pth + '.title') + '>' + esc(t(p.title, lang)) + '</span>' +
+        '<span class="gcard__meta">' +
+          '<span class="gcard__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
+          '<span class="gcard__tag"' + ep(pth + '.tag') + '>' + esc(t(p.tag, lang)) + '</span>' +
+          '<span class="gcard__grade">' + esc(gradeOf(p)) + '</span>' +
+        '</span>' +
+        '<span class="gcard__art">' + cardArt(p, lang) + '</span>' +
+        '<span class="gcard__desc"' + ep(pth + '.sub') + '>' + esc(t(p.sub, lang)) + '</span>' +
+        (footHtml || '') +
+      '</span>';
+  }
+  /* 카드 뒷면 (덱 · 뒤집기 공용) */
+  function cardBackFace(inner) {
+    return '<span class="card-back__seal">' + GHOST + '</span>' + (inner || '');
+  }
+  function indexOfProject(c, p) {
+    var items = arr(c.projects && c.projects.items), i;
+    for (i = 0; i < items.length; i++) if (items[i] === p || (p.id && items[i].id === p.id)) return i;
+    return 0;
+  }
+
   var TOOL_ICONS = {
     figma:{n:"Figma",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 3h3.5v6H8.5a3 3 0 1 1 0-6z"/><path d="M12 3h3.5a3 3 0 1 1 0 6H12V3z" opacity=".72"/><path d="M8.5 9H12v6H8.5a3 3 0 1 1 0-6z" opacity=".55"/><circle cx="15.5" cy="12" r="3" opacity=".85"/><path d="M8.5 15H12v3a3 3 0 1 1-3.5-3z" opacity=".4"/></svg>'},
     office:{n:"MS Office",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3 4 6.5v11L14 21l6-1.8V4.8L14 3zm-1 3.4v11.2l-6 1.5V8L13 6.4z"/></svg>'},
@@ -151,11 +220,11 @@
     var drawSec =
       '<section class="draw"><div class="wrap"><div class="draw__stage">' +
         '<button type="button" class="draw__deck" data-draw aria-label="' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '">' +
-          '<span class="draw__deck-card" aria-hidden="true"></span>' +
-          '<span class="draw__deck-card" aria-hidden="true"></span>' +
-          '<span class="draw__deck-card"><span class="draw__deck-face">' + GHOST +
+          '<span class="draw__deck-card card-back" aria-hidden="true"></span>' +
+          '<span class="draw__deck-card card-back" aria-hidden="true"></span>' +
+          '<span class="draw__deck-card card-back"><span class="draw__deck-face">' + cardBackFace(
             '<span class="draw__deck-label"' + ep('home.draw.label') + '>' + esc(t(draw.label, lang) || '프로젝트 뽑기') + '</span>' +
-            '<span class="draw__deck-hint"' + ep('home.draw.hint') + '>' + esc(t(draw.hint, lang)) + '</span></span></span>' +
+            '<span class="draw__deck-hint"' + ep('home.draw.hint') + '>' + esc(t(draw.hint, lang)) + '</span>') + '</span></span>' +
         '</button>' +
         '<div class="draw__cards" data-draw-cards></div>' +
       '</div></div></section>';
@@ -233,16 +302,12 @@
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
   function drawCardHtml(c, lang, base, p, delay) {
-    var cat = c.projects && c.projects.tabs && c.projects.tabs[p.category];
-    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="--d:' + (delay||0) + 'ms">' +
+    var idx = indexOfProject(c, p);
+    var foot = '<span class="gcard__go">' + (lang === 'en' ? 'Open →' : '열기 →') + '</span>';
+    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="--d:' + (delay || 0) + 'ms">' +
       '<span class="draw-card__inner">' +
-        '<span class="draw-card__back" aria-hidden="true">' + GHOST + '</span>' +
-        '<span class="draw-card__front">' +
-          '<span class="draw-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
-          '<span class="draw-card__title">' + esc(t(p.title, lang)) + '</span>' +
-          '<span class="draw-card__sub">' + esc(t(p.sub, lang)) + '</span>' +
-          '<span class="draw-card__go">' + (lang==='en'?'Open →':'열기 →') + '</span>' +
-        '</span>' +
+        '<span class="draw-card__back card-back" aria-hidden="true">' + cardBackFace('') + '</span>' +
+        '<span class="draw-card__front gcard" data-grade="' + gradeOf(p) + '">' + gcardFace(c, lang, p, idx, foot) + '</span>' +
       '</span></a>';
   }
 
@@ -330,18 +395,10 @@
       '</div></section>';
   }
   function projCardHtml(c, lang, base, p, idx) {
-    var cat = c.projects.tabs && c.projects.tabs[p.category];
-    var q = p.quest || {};
-    var stage = ('0' + ((idx || 0) + 1)).slice(-2);
-    var cleared = q.cleared
-      ? '<span class="clr">' + CLEAR_ICON + (lang==='en'?'CLEARED':'클리어') + '</span>'
-      : '';
-    return '<a class="proj-card reveal" data-cat="' + esc(p.category||'') + '" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
-      '<span class="proj-card__top"><span class="proj-card__stage">STAGE ' + stage + '</span>' + cleared + '</span>' +
-      '<span class="proj-card__cat">' + esc(cat ? t(cat, lang) : '') + '</span>' +
-      '<span class="proj-card__title"' + ep('projects.items.'+idx+'.title') + '>' + esc(t(p.title, lang)) + '</span>' +
-      '<span class="proj-card__sub"' + ep('projects.items.'+idx+'.sub') + '>' + esc(t(p.sub, lang)) + '</span>' +
-      '<span class="proj-card__period"' + ep('projects.items.'+idx+'.period') + '>' + esc(t(p.period, lang)) + '</span></a>';
+    var foot = '<span class="gcard__period"' + ep('projects.items.' + idx + '.period') + '>' + esc(t(p.period, lang)) + '</span>';
+    return '<a class="proj-card gcard reveal" data-cat="' + esc(p.category || '') + '" data-grade="' + gradeOf(p) + '"' +
+      ' href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
+      gcardFace(c, lang, p, idx, foot) + '</a>';
   }
 
   /* ---------- PROJECT DETAIL ---------- */

@@ -188,6 +188,9 @@ window.PORTFOLIO_CONTENT = {
         id: "league-of-defense",
         quest: { goal: { ko: "3일 차 이탈 개선", en: "Cut day-3 churn" }, result: { ko: "34% → 21%", en: "34% → 21%" }, cleared: true },
         category: "game",
+        grade: "SSR",                       // 카드 등급 SSR·SR·R·A (테두리: 홀로그램·금박·은박·기본)
+        tag:   { ko: "타워디펜스", en: "Tower defense" },   // 카드에 크게 보이는 대표 태그
+        thumb: "",                            // 카드 그림 (비우면 자동 생성 아트)
         title: { ko: "리그 오브 디펜스", en: "League of Defense" },
         period:{ ko: "2020.01 ~ 2021.06", en: "Jan 2020 – Jun 2021" },
         sub:   { ko: "모바일 타워디펜스 · 10만 다운로드", en: "Mobile tower defense · 100K+ downloads" },
@@ -207,6 +210,9 @@ window.PORTFOLIO_CONTENT = {
         id: "comstock",
         quest: { goal: { ko: "3개월 내 스팀 출시", en: "Ship to Steam in 3 months" }, result: { ko: "기간 내 출시 완료", en: "Shipped on time" }, cleared: true },
         category: "game",
+        grade: "SSR",                       // 카드 등급 SSR·SR·R·A (테두리: 홀로그램·금박·은박·기본)
+        tag:   { ko: "뱀서라이크", en: "Survivors-like" },   // 카드에 크게 보이는 대표 태그
+        thumb: "",                            // 카드 그림 (비우면 자동 생성 아트)
         title: { ko: "컴스톡", en: "Comstock" },
         period:{ ko: "2026.07 ~ 2026.09", en: "Jul – Sep 2026" },
         sub:   { ko: "뱀서라이크 액션 · 스팀 출시 · 5인 팀", en: "Survivors-like · Steam · 5-person team" },
@@ -225,6 +231,9 @@ window.PORTFOLIO_CONTENT = {
         id: "indie-games",
         quest: { goal: { ko: "대중성 검증", en: "Validate market appeal" }, result: { ko: "누적 20만 다운로드", en: "200K+ downloads" }, cleared: true },
         category: "game",
+        grade: "SR",                       // 카드 등급 SSR·SR·R·A (테두리: 홀로그램·금박·은박·기본)
+        tag:   { ko: "캐주얼", en: "Casual" },   // 카드에 크게 보이는 대표 태그
+        thumb: "",                            // 카드 그림 (비우면 자동 생성 아트)
         title: { ko: "인디게임 개발 5종", en: "Five indie releases" },
         period:{ ko: "2016 ~ 2018", en: "2016 – 2018" },
         sub:   { ko: "1인 개발 · 플레이스토어 · 총 20만 다운로드", en: "Solo dev · Google Play · 200K+ total" },
@@ -245,6 +254,9 @@ window.PORTFOLIO_CONTENT = {
         id: "sample-combat-doc",
         quest: { goal: { ko: "전투 손맛 수치화", en: "Quantify combat feel" }, result: { ko: "샘플 기획서 (작성 예정)", en: "Sample doc (draft)" }, cleared: false },
         category: "planning",
+        grade: "R",                       // 카드 등급 SSR·SR·R·A (테두리: 홀로그램·금박·은박·기본)
+        tag:   { ko: "전투 밸런스", en: "Combat balance" },   // 카드에 크게 보이는 대표 태그
+        thumb: "",                            // 카드 그림 (비우면 자동 생성 아트)
         title: { ko: "로그라이크 전투 시스템 기획서", en: "Roguelike combat system doc" },
         period:{ ko: "샘플 문서", en: "Sample doc" },
         sub:   { ko: "전투 · 밸런스 · 성장 루프 기획 (임시)", en: "Combat · balance · growth loop (placeholder)" },
@@ -267,6 +279,9 @@ window.PORTFOLIO_CONTENT = {
         id: "sample-economy-doc",
         quest: { goal: { ko: "재화 순환 설계", en: "Design the currency loop" }, result: { ko: "샘플 기획서 (작성 예정)", en: "Sample doc (draft)" }, cleared: false },
         category: "planning",
+        grade: "R",                       // 카드 등급 SSR·SR·R·A (테두리: 홀로그램·금박·은박·기본)
+        tag:   { ko: "재화 순환", en: "Currency loop" },   // 카드에 크게 보이는 대표 태그
+        thumb: "",                            // 카드 그림 (비우면 자동 생성 아트)
         title: { ko: "라이브 이벤트 · BM 기획서", en: "Live-event & BM doc" },
         period:{ ko: "샘플 문서", en: "Sample doc" },
         sub:   { ko: "경제 · 재화 순환 · 상점 구조 기획 (임시)", en: "Economy · currency loop · shop structure (placeholder)" },

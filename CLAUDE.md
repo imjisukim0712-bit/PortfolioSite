@@ -36,3 +36,25 @@
 - `main.js` 는 편집기가 프레임을 실시간으로 다시 그릴 수 있도록 `window.PortfolioApp`
   (`setContent` / `rerender` / `setLang` / `setTheme`) 을 노출하고, `render()` 끝에서 `renderBlocks()` 를 부릅니다.
 - 편집기에서 한국어를 고치면 같은 항목의 English 칸도 함께 채워야 합니다 (위 이중언어 규칙).
+
+## 프로젝트 카드 (홈 뽑기 · 프로젝트 목록 공용)
+
+카드 한 장은 `assets/content.js` 의 `projects.items[]` 한 항목입니다. 구성은
+**이름 / 분류·대표 태그·등급 / 그림 / 개요** 이고, 앞면은 `gcardFace()`,
+뒷면(덱·뒤집기)은 `cardBackFace()` 가 그립니다(`assets/js/render.js`).
+
+| 필드 | 뜻 | 비고 |
+|---|---|---|
+| `title` | 카드 이름 | 두 줄까지 표시 |
+| `category` | 분류 (`game` / `planning`) | 왼쪽 칩. 이름은 `projects.tabs` 에서 가져옵니다 |
+| `tag` | 대표 태그 `{ ko, en }` | 가운데. 한 줄, 길면 말줄임 |
+| `grade` | 등급 `SSR` `SR` `R` `A` | 테두리: 홀로그램 · 금박 · 은박 · 기본 |
+| `thumb` | 카드 그림 경로 | **비우면 `id` 로 자동 생성 아트**(패턴 4종 × 색 3종, 항상 같은 그림) |
+| `sub` | 개요 한 줄 | 두 줄까지 표시 |
+
+- 등급 테두리는 CSS 의 `.gcard[data-grade="…"]` 가 `--frame` 을 바꿔서 만듭니다.
+  새 등급을 추가하려면 `render.js` 의 `GRADES` 와 style.css 의 `[data-grade]` 규칙을 함께 늘리세요.
+- 카드 안쪽 글씨·여백은 **화면 폭이 아니라 카드 자체 폭**(`@container gcard`)에 반응합니다.
+  좁은 카드에서 그림 칸이 눌리지 않도록 하기 위함이니 미디어 쿼리로 바꾸지 마세요.
+- 시각 편집기에서 카드 그림을 누르면 `projects.items.<i>.thumb` 슬롯으로 연결됩니다
+  (`visual-editor.js` 의 `photoSlotFor()`).
