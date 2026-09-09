@@ -76,8 +76,11 @@
     sel: null, selKey: null, selPath: null,
     hist: [], future: [], dirty: false
   };
+  var ORIG = { content: clone(window.PORTFOLIO_CONTENT || {}), ov: null };
   (function initOv() {
     var base = window.PORTFOLIO_OVERRIDES || {};
+    ORIG.ov = { theme: clone(base.theme || { light:{}, dark:{} }), styles: clone(base.styles || {}),
+                layout: clone(base.layout || {}), hidden: clone(base.hidden || []), blocks: clone(base.blocks || []) };
     S.ov = { theme: clone(base.theme || { light:{}, dark:{} }), styles: clone(base.styles || {}),
              layout: clone(base.layout || {}), hidden: clone(base.hidden || []), blocks: clone(base.blocks || []) };
     try {
@@ -171,7 +174,13 @@
     '.ve-drop{outline:2px dashed #e0a94f!important;outline-offset:2px!important}' +
     '#ve-handle{position:absolute;width:14px;height:14px;background:#3b82f6;border:2px solid #fff;border-radius:3px;' +
       'z-index:2147483647;cursor:nwse-resize;box-shadow:0 1px 4px rgba(0,0,0,.4);display:none}' +
-    'html.ve-on{scroll-behavior:auto!important}';
+    'html.ve-on{scroll-behavior:auto!important}' +
+    'html.ve-on *{-webkit-user-drag:none!important}' +
+    'html.ve-on img,html.ve-on a{-webkit-user-drag:none!important;user-select:none!important}' +
+    '.ve-selected{cursor:move!important}' +
+    'html.ve-dragging,html.ve-dragging *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}' +
+    'html.ve-dragging .ve-hover{outline:none!important}' +
+    '#ve-handle{width:16px;height:16px}';
 
   function injectRuntime() {
     if (!fdoc) return;
@@ -186,6 +195,8 @@
     fdoc.documentElement.classList.add('ve-on');
     if (fdoc.__veBound) return;
     fdoc.__veBound = true;
+    fdoc.addEventListener('dragstart', function (e) { e.preventDefault(); }, true);
+    fdoc.addEventListener('selectstart', function (e) { if (drag || rez) e.preventDefault(); }, true);
     fdoc.addEventListener('mouseover', onOver, true);
     fdoc.addEventListener('mouseout',  onOut,  true);
     fdoc.addEventListener('click',     onClick, true);
@@ -202,7 +213,7 @@
     return node;
   }
   var hoverEl = null;
-  function onOver(e) { var n = editable(e.target); if (!n || n === hoverEl) return; if (hoverEl) hoverEl.classList.remove('ve-hover'); hoverEl = n; n.classList.add('ve-hover'); }
+  function onOver(e) { if (drag || rez) return; var n = editable(e.target); if (!n || n === hoverEl) return; if (hoverEl) hoverEl.classList.remove('ve-hover'); hoverEl = n; n.classList.add('ve-hover'); }
   function onOut(e) { if (hoverEl) { hoverEl.classList.remove('ve-hover'); hoverEl = null; } }
 
   function onClick(e) {
@@ -303,6 +314,8 @@
     var n = editable(e.target); if (!n) return;
     if (e.target.id === 've-handle') return;
     var alt = e.altKey;
+    e.preventDefault();                       // 링크 포커스·네이티브 드래그 방지
+    if (n !== S.sel) select(n);
     drag = { n: n, x0: e.clientX, y0: e.clientY, alt: alt, moved: false,
              base: (S.ov.layout[keyFor(n)] || { x:0, y:0 }) };
     fdoc.addEventListener('mousemove', onMove, true);
@@ -312,6 +325,7 @@
     if (!drag) return;
     var dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
     if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+    if (!drag.moved) { fdoc.documentElement.classList.add('ve-dragging'); if (hoverEl) { hoverEl.classList.remove('ve-hover'); hoverEl = null; } }
     drag.moved = true;
     e.preventDefault();
     if (drag.alt) {
@@ -329,15 +343,17 @@
     fdoc.removeEventListener('mouseup', onUp, true);
     if (!drag) return;
     var d = drag; drag = null;
+    fdoc.documentElement.classList.remove('ve-dragging');
     if (d.dropEl) d.dropEl.classList.remove('ve-drop');
     if (!d.moved) return;
     if (d.alt) { if (d.dropEl) { if (d.n.hasAttribute('data-blk')) placeBlockAfter(d.n.getAttribute('data-blk'), d.dropEl); else reorder(d.n, d.dropEl); } return; }
     var dx = e.clientX - d.x0, dy = e.clientY - d.y0;
     var key = keyFor(d.n);
-    d.n.style.transform = '';
     snapshot();
     S.ov.layout[key] = { x: Math.round(d.base.x + dx), y: Math.round(d.base.y + dy) };
-    saveDraft(); pushToFrame(false); buildInspector();
+    saveDraft(); pushToFrame(false);
+    d.n.style.transform = '';
+    placeHandle(); buildInspector();
     status('위치를 옮겼습니다 (' + S.ov.layout[key].x + ', ' + S.ov.layout[key].y + ')', 'ok');
   }
   /* data-e 경로가 같은 배열 안이면 순서 바꾸기 */
@@ -364,6 +380,7 @@
     e.preventDefault(); e.stopPropagation();
     var r = S.sel.getBoundingClientRect();
     rez = { x0: e.clientX, y0: e.clientY, w: r.width, h: r.height };
+    fdoc.documentElement.classList.add('ve-dragging');
     fdoc.addEventListener('mousemove', onRez, true);
     fdoc.addEventListener('mouseup', endRez, true);
   }
@@ -377,6 +394,7 @@
   function endRez() {
     fdoc.removeEventListener('mousemove', onRez, true);
     fdoc.removeEventListener('mouseup', endRez, true);
+    fdoc.documentElement.classList.remove('ve-dragging');
     if (!rez || !S.sel) { rez = null; return; }
     var w = S.sel.style.width, h = S.sel.style.height;
     S.sel.style.width = ''; S.sel.style.height = '';
@@ -1036,6 +1054,15 @@
     $('#veThemeReset').addEventListener('click', function () {
       snapshot(); S.ov.theme[S.theme] = {}; saveDraft(); pushToFrame(false); buildTokens();
       status('색 토큰을 원래대로 되돌렸습니다.', 'ok');
+    });
+    $('#veResetAll').addEventListener('click', function () {
+      if (!confirm('모든 편집(글자·색·위치·새 요소·사진)을 지우고 현재 배포된 상태로 되돌릴까요?\n실행 취소(Ctrl+Z)로 다시 돌아올 수 있습니다.')) return;
+      snapshot();
+      S.content = clone(ORIG.content); S.ov = clone(ORIG.ov);
+      try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+      S.dirty = false;
+      clearSel(); pushToFrame(true); buildTokens();
+      status('처음 상태로 되돌렸습니다.', 'ok');
     });
     $('#veUndo').addEventListener('click', undo);
     $('#veRedo').addEventListener('click', redo);
