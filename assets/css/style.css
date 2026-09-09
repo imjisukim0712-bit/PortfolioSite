@@ -78,7 +78,7 @@
 
 /* Semantic — DARK */
 :root[data-theme="dark"] {
-  --aubergine: #1e2a24;   /* 다크: 아주 짙은 세이지 */
+  --aubergine: #3c5a4b;   /* 다크: 배경보다 밝은 세이지 (바가 또렷하게 보이도록) */
   --ghost-lavender: #3f342e;
   --periwinkle: #d4a27f;
   --paper: #f0eee6;
@@ -114,6 +114,13 @@ html {
   -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 24px);
+  /* 페이지마다 스크롤바가 생기고 사라지면 가운데 정렬(상단 바 등)이 좌우로 흔들리므로
+     항상 스크롤바 자리를 확보해 둔다. */
+  scrollbar-gutter: stable;
+}
+@supports not (scrollbar-gutter: stable) {
+  html { overflow-y: scroll; }
+  html:has(body.is-locked) { overflow: hidden; }   /* 폴백에서도 시트 열릴 때 스크롤 잠금 유지 */
 }
 
 body {
@@ -264,7 +271,7 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   padding: 6px 6px 6px 16px;
   border: 1px solid var(--aubergine); border-radius: var(--radius-pill);
   background: var(--aubergine);                       /* 바 자체를 딥 세이지 그린으로, 내부는 크림 */
-  box-shadow: 0 8px 24px -14px rgb(91 69 51 / .5);
+  box-shadow: 0 8px 24px -14px rgb(52 75 64 / .5);
   transition: max-width .38s cubic-bezier(.2,.8,.3,1), padding .3s ease, box-shadow .3s ease;
 }
 
