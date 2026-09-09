@@ -123,7 +123,20 @@
       box.innerHTML = '<div class="draw__empty">' + (lang==='en'?'Add projects in the editor to draw them here.':'편집기에서 프로젝트를 추가하면 여기에 나옵니다.') + '</div>';
       return;
     }
-    box.innerHTML = cards.map(function(p, i){ return R.drawCardHtml(content, lang, base, p, i*90); }).join('');
+    /* 덱에서 한 장씩 뒷면으로 날아온 뒤, 순서대로 뒤집히는 연출.
+       카드가 덱 자리에서 출발하도록 두 위치의 차이를 재서 --dx/--dy 로 넘긴다. */
+    box.classList.remove('is-dealing');
+    box.innerHTML = cards.map(function(p, i){ return R.drawCardHtml(content, lang, base, p, i); }).join('');
+    var deckEl = $('[data-draw]');
+    if (deckEl) {
+      $$('.draw-card', box).forEach(function (el, i) {
+        el.style.setProperty('--dx', (deckEl.offsetLeft - el.offsetLeft) + 'px');
+        el.style.setProperty('--dy', (deckEl.offsetTop - el.offsetTop) + 'px');
+        el.style.setProperty('--dr', (-10 + (i % 3) * 5) + 'deg');
+      });
+    }
+    void box.offsetWidth;              // 리플로우 후에 애니메이션 시작
+    box.classList.add('is-dealing');
   }
   // 화면 폭에 맞춰 한 줄에 들어갈 카드 수 (덱 + N장). CSS 그리드 열 수와 동일한 분기.
   function fitCount(max) {

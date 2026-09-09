@@ -476,14 +476,35 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .draw__deck-label { font-size: var(--text-body-sm); font-weight: 350; }
 .draw__deck-hint { margin-top: 6px; font-size: 11px; opacity: .6; line-height: 1.4; }
 
+/* ── 카드 뽑기 연출 ────────────────────────────────────────────────────
+   ① 덱에서 한 장씩(순번 --i) 뒷면인 채로 날아와 자리에 앉고
+   ② 다 놓인 뒤 순서대로 한 장씩 뒤집힙니다.
+   출발 좌표 --dx/--dy 는 main.js 가 덱 위치를 재서 넣어 줍니다. */
 .draw-card {
   position: relative; aspect-ratio: 3 / 4; min-width: 0; text-decoration: none;
   container: gcard / inline-size;
+  perspective: 900px;
+  opacity: 0;
+  animation: dealSlide .38s cubic-bezier(.2,.8,.3,1) calc(var(--i, 0) * 115ms) both paused;
 }
 .draw-card__inner {
   position: absolute; inset: 0; transform-style: preserve-3d;
-  animation: dealFlip .62s cubic-bezier(.2, .8, .3, 1) both;
-  animation-delay: var(--d, 0ms);
+  animation: flipOver .46s cubic-bezier(.35,.85,.3,1) calc(760ms + var(--i, 0) * 140ms) both paused;
+}
+.draw__cards.is-dealing .draw-card,
+.draw__cards.is-dealing .draw-card__inner { animation-play-state: running; }
+@keyframes dealSlide {
+  0%   { opacity: 0; transform: translate3d(var(--dx, -110px), var(--dy, 0px), 0) scale(.84) rotate(var(--dr, -8deg)); }
+  22%  { opacity: 1; }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+}
+@keyframes flipOver {
+  0%   { transform: rotateY(180deg); }
+  100% { transform: rotateY(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw-card { opacity: 1; animation: none; }
+  .draw-card__inner { animation: none; }
 }
 .draw-card__front, .draw-card__back {
   position: absolute; inset: 0; display: flex; flex-direction: column;
@@ -492,11 +513,6 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 }
 .draw-card__front { padding: 0; }
 .draw-card__back { transform: rotateY(180deg); align-items: center; justify-content: center; }
-@keyframes dealFlip {
-  0%   { opacity: 0; transform: translateY(30px) scale(.9) rotateY(180deg); }
-  55%  { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0); }
-}
 
 /* --------------------------------------------------------------------------
    게임 카드 (홈 뽑기 · 프로젝트 목록 공용)

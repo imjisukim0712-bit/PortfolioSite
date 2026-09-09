@@ -301,10 +301,10 @@
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
-  function drawCardHtml(c, lang, base, p, delay) {
+  function drawCardHtml(c, lang, base, p, order) {
     var idx = indexOfProject(c, p);
     var foot = '<span class="gcard__go">' + (lang === 'en' ? 'Open →' : '열기 →') + '</span>';
-    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="--d:' + (delay || 0) + 'ms">' +
+    return '<a class="draw-card" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '" style="--i:' + (order || 0) + '">' +
       '<span class="draw-card__inner">' +
         '<span class="draw-card__back card-back" aria-hidden="true">' + cardBackFace('') + '</span>' +
         '<span class="draw-card__front gcard" data-grade="' + gradeOf(p) + '">' + gcardFace(c, lang, p, idx, foot) + '</span>' +
