@@ -263,6 +263,59 @@
   initHeader();
   initDraw();
   initToTop();
+  initTilt();
+
+  /* ---------- 카드 기울기 + 빛 반사 ----------
+     커서를 올리면 그 방향으로 살짝 기울고, 테두리의 금속·홀로그램 반사와
+     표면의 하이라이트가 커서를 따라 움직입니다. (한 번만 등록 · 다시 그려도 유지) */
+  function initTilt() {
+    if (initTilt.done) return; initTilt.done = true;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (new URLSearchParams(location.search).get('ve') === '1') return;   /* 시각 편집기 안에서는 끔 */
+    var cur = null, box = null, raf = 0, pend = null;
+    function reset() {
+      if (cur) {
+        cur.classList.remove('is-tilt');
+        cur.style.removeProperty('--rx'); cur.style.removeProperty('--ry');
+        cur.style.removeProperty('--px'); cur.style.removeProperty('--py');
+      }
+      cur = null; box = null;
+    }
+    function apply() {
+      raf = 0;
+      if (!pend || !cur || !box) return;
+      var x = (pend.x - box.left) / box.width, y = (pend.y - box.top) / box.height;
+      x = x < 0 ? 0 : x > 1 ? 1 : x;
+      y = y < 0 ? 0 : y > 1 ? 1 : y;
+      cur.style.setProperty('--ry', ((x - .5) * 13).toFixed(2) + 'deg');
+      cur.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg');
+      cur.style.setProperty('--px', (x * 100).toFixed(1) + '%');
+      cur.style.setProperty('--py', (y * 100).toFixed(1) + '%');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      /* 기울어진 카드 위에서는 히트 판정이 흔들리므로, 들어올 때 잰 사각형을 계속 씁니다. */
+      if (cur && box &&
+          e.clientX >= box.left && e.clientX <= box.right &&
+          e.clientY >= box.top  && e.clientY <= box.bottom) {
+        pend = { x: e.clientX, y: e.clientY };
+        if (!raf) raf = requestAnimationFrame(apply);
+        return;
+      }
+      var host = e.target.closest ? e.target.closest('.draw-card, .gcard') : null;
+      var el = host ? (host.classList.contains('gcard') ? host : host.querySelector('.gcard')) : null;
+      if (el !== cur) reset();
+      if (!el) return;
+      cur = el; box = host.getBoundingClientRect();
+      cur.classList.add('is-tilt');
+      pend = { x: e.clientX, y: e.clientY };
+      if (!raf) raf = requestAnimationFrame(apply);
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', reset);
+    window.addEventListener('blur', reset);
+    window.addEventListener('scroll', reset, { passive: true });
+    window.addEventListener('resize', reset);
+  }
 
   /* ---------- 시각 편집기(edit.html) 연동 훅 ---------- */
   window.PortfolioApp = {
@@ -274,7 +327,7 @@
       applyThemeIcon();
     },
     setContent: function (next) { if (next) content = next; },
-    rerender: function () { render(); initHeader(); initDraw(); initToTop(); }
+    rerender: function () { render(); initHeader(); initDraw(); initToTop(); initTilt(); }
   };
 
   if (new URLSearchParams(location.search).get('preview')==='1') {
