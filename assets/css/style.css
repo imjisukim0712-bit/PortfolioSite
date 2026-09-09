@@ -1,15 +1,15 @@
 @charset "UTF-8";
 /* ==========================================================================
    김지수 · 게임 기획자 포트폴리오
-   Style : Claude (ivory · warm brown · clay coral) · Pretendard · light/dark
+   Style : Claude (ivory · deep sage green · clay coral) · Pretendard · light/dark
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. Tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Palette — Claude: Ivory · Warm Slate · Clay Coral */
-  --aubergine: #5b4533;   /* 웜 브라운 (상단 바·덱 뒷면·활성 배경) */
+  /* Palette — Claude: Ivory · Deep Sage · Clay Coral */
+  --aubergine: #344b40;   /* 딥 세이지 그린 (상단 바·덱 뒷면·활성 배경) */
   --ghost-lavender: #f3e4db; /* 소프트 코랄 틴트 (칩) */
   --periwinkle: #d4a27f;  /* 크래프트 탄 (어두운 면 위 고스트) */
   --cornflower: #6e6e68;
@@ -67,7 +67,7 @@
   --radius-lg: 32px;
 
   --shadow-sm: var(--glow) 0 0 4px 0;
-  --shadow-card: 0 1px 2px rgba(38,38,37,.04), 0 8px 24px rgba(91,69,51,.07);
+  --shadow-card: 0 1px 2px rgba(38,38,37,.04), 0 8px 24px rgba(52,75,64,.08);
 
   --nav-h: 60px;
   color-scheme: light;
@@ -78,7 +78,7 @@
 
 /* Semantic — DARK */
 :root[data-theme="dark"] {
-  --aubergine: #1b1b1a;
+  --aubergine: #1e2a24;   /* 다크: 아주 짙은 세이지 */
   --ghost-lavender: #3f342e;
   --periwinkle: #d4a27f;
   --paper: #f0eee6;
@@ -263,7 +263,7 @@ button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; back
   width: 100%; max-width: var(--page-max);
   padding: 6px 6px 6px 16px;
   border: 1px solid var(--aubergine); border-radius: var(--radius-pill);
-  background: var(--aubergine);                       /* 바 자체를 웜 브라운으로, 내부는 크림 */
+  background: var(--aubergine);                       /* 바 자체를 딥 세이지 그린으로, 내부는 크림 */
   box-shadow: 0 8px 24px -14px rgb(91 69 51 / .5);
   transition: max-width .38s cubic-bezier(.2,.8,.3,1), padding .3s ease, box-shadow .3s ease;
 }
