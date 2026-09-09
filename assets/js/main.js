@@ -278,6 +278,7 @@
         cur.classList.remove('is-tilt');
         cur.style.removeProperty('--rx'); cur.style.removeProperty('--ry');
         cur.style.removeProperty('--px'); cur.style.removeProperty('--py');
+        cur.style.removeProperty('--sx'); cur.style.removeProperty('--sy');
       }
       cur = null; box = null;
     }
@@ -287,10 +288,12 @@
       var x = (pend.x - box.left) / box.width, y = (pend.y - box.top) / box.height;
       x = x < 0 ? 0 : x > 1 ? 1 : x;
       y = y < 0 ? 0 : y > 1 ? 1 : y;
-      cur.style.setProperty('--ry', ((x - .5) * 13).toFixed(2) + 'deg');
-      cur.style.setProperty('--rx', ((.5 - y) * 10).toFixed(2) + 'deg');
+      cur.style.setProperty('--ry', ((x - .5) * 20).toFixed(2) + 'deg');
+      cur.style.setProperty('--rx', ((.5 - y) * 15).toFixed(2) + 'deg');
       cur.style.setProperty('--px', (x * 100).toFixed(1) + '%');
       cur.style.setProperty('--py', (y * 100).toFixed(1) + '%');
+      cur.style.setProperty('--sx', ((.5 - x) * 26).toFixed(1) + 'px');
+      cur.style.setProperty('--sy', ((.5 - y) * 20 + 16).toFixed(1) + 'px');
     }
     document.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;

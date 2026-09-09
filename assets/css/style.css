@@ -492,7 +492,6 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 }
 .draw-card__front { padding: 0; }
 .draw-card__back { transform: rotateY(180deg); align-items: center; justify-content: center; }
-.draw-card:hover .draw-card__front { transform: none; }
 @keyframes dealFlip {
   0%   { opacity: 0; transform: translateY(30px) scale(.9) rotateY(180deg); }
   55%  { opacity: 1; }
@@ -511,8 +510,9 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
   --badge-bg: var(--surface-2);
   --badge-fg: var(--text-muted);
   --frame-glow: transparent;
-  --rx: 0deg; --ry: 0deg; --lift: 0px;      /* 커서 위치에 따라 main.js 가 채웁니다 */
-  --px: 50%; --py: 50%;                     /* 빛이 반사되는 지점 */
+  --rx: 0deg; --ry: 0deg; --lift: 0px; --sc: 1;   /* 커서 위치에 따라 main.js 가 채웁니다 */
+  --px: 50%; --py: 50%;                           /* 빛이 반사되는 지점 */
+  --sx: 0px; --sy: 0px;                           /* 기울기 반대쪽으로 지는 그림자 */
   display: block; min-width: 0; padding: var(--frame-w);
   container: gcard / inline-size;
   border-radius: var(--radius-card);
@@ -521,16 +521,18 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
   background-position: var(--px) var(--py);
   box-shadow: var(--shadow-card), 0 0 0 0 var(--frame-glow);
   text-decoration: none;
-  transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0, var(--lift), 0);
+  transform: perspective(680px) rotateX(var(--rx)) rotateY(var(--ry))
+             translate3d(0, var(--lift), 0) scale(var(--sc, 1));
   transition: transform .38s cubic-bezier(.2,.8,.3,1), box-shadow .3s ease;
 }
-.gcard.is-tilt { transition: transform .08s linear, box-shadow .3s ease; }
+.gcard.is-tilt { transition: transform .06s linear, box-shadow .12s linear; }
 /* 등장 애니메이션(.reveal)이 기울기 transform 을 덮어쓰지 않도록 특이도를 맞춰 둡니다 */
 .gcard.reveal.is-visible {
-  transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0, var(--lift), 0);
+  transform: perspective(680px) rotateX(var(--rx)) rotateY(var(--ry))
+             translate3d(0, var(--lift), 0) scale(var(--sc, 1));
   transition: transform .38s cubic-bezier(.2,.8,.3,1), box-shadow .3s ease;
 }
-.gcard.reveal.is-visible.is-tilt { transition: transform .08s linear, box-shadow .3s ease; }
+.gcard.reveal.is-visible.is-tilt { transition: transform .06s linear, box-shadow .12s linear; }
 /* 테두리·표면을 스치는 빛 — 커서를 따라 움직입니다 */
 .gcard::after {
   content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
@@ -539,7 +541,14 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
     rgba(255,255,255,.55), rgba(255,255,255,.14) 46%, transparent 72%);
   mix-blend-mode: soft-light; opacity: 0; transition: opacity .3s ease;
 }
-.gcard:hover { --lift: -6px; }
+.gcard:hover { --lift: -8px; --sc: 1.035; }
+.gcard.is-tilt {
+  box-shadow: var(--shadow-card),
+              var(--sx) var(--sy) 34px -14px rgb(38 38 37 / .38);
+}
+:root[data-theme="dark"] .gcard.is-tilt {
+  box-shadow: var(--shadow-card), var(--sx) var(--sy) 34px -12px rgb(0 0 0 / .6);
+}
 .gcard:hover::after { opacity: 1; }
 :root[data-theme="dark"] .gcard::after { mix-blend-mode: screen; }
 @media (prefers-reduced-motion: reduce) {
