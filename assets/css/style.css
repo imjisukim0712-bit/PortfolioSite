@@ -374,7 +374,48 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .portrait--empty { display: grid; place-items: center; color: var(--ghost-c); background: var(--cta); }
 .portrait--empty .ghost { width: 34%; height: auto; aspect-ratio: 32/36; }
-.hero__portrait { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.hero__portrait {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px;
+  /* 자세: 테마가 --pose-rest(쉴 때 기울기)를 주고, '한 마디 더'가 --pose-d/--pose-y 를 더합니다 */
+  transform: rotate(calc(var(--pose-rest, 0deg) + var(--pose-d, 0deg))) translateY(var(--pose-y, 0px));
+  transition: transform .32s cubic-bezier(.2, .8, .3, 1);
+}
+
+/* ── 히어로 색면(판) — 테마가 --hero-slab 을 주면 첫 화면 뒤에 큰 판이 깔립니다.
+   판 위 글자색·버튼은 테마가 정합니다. 기본 디자인은 판이 없습니다. ── */
+.hero { position: relative; isolation: isolate; }
+.hero::before {
+  content: ''; position: absolute; z-index: -1; top: 0; bottom: 0;
+  /* 화면이 넓어도 판은 본문 폭(+20px)까지만 — 빈 판이 넓게 남지 않게 */
+  left: max(0px, calc(50% - var(--page-max) / 2 - 20px));
+  right: max(0px, calc(50% - var(--page-max) / 2 - 20px));
+  background: var(--hero-slab, transparent);
+  border-radius: var(--hero-slab-r, 0);
+  pointer-events: none;
+}
+
+/* ── 사진 옆 말풍선 '한마디' + '한 마디 더' 버튼 ── */
+.quip {
+  position: absolute; z-index: 2; top: 0; right: -10px; width: max-content; max-width: 15rem; margin: 0;
+  padding: 10px 15px; border: 1px solid var(--border); border-radius: 18px 18px 18px 5px;
+  background: var(--surface); color: var(--heading); box-shadow: var(--shadow-card);
+  font-size: var(--text-body-sm); font-weight: 600; line-height: 1.4; text-wrap: balance;
+  transform: translateY(-72%) rotate(3deg); transform-origin: 0 100%;
+}
+.quip::after {
+  content: ''; position: absolute; left: 14px; bottom: -7px; width: 12px; height: 12px;
+  background: inherit; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  transform: skewX(-18deg) rotate(45deg);
+}
+.quip.is-pop { animation: quipPop .38s cubic-bezier(.2,.8,.3,1); }
+@keyframes quipPop { 0% { transform: translateY(-72%) rotate(3deg) scale(.86); } 60% { transform: translateY(-72%) rotate(3deg) scale(1.06); } 100% { transform: translateY(-72%) rotate(3deg) scale(1); } }
+.quip__more {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; padding: 7px 13px;
+  border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); color: var(--text);
+  font: inherit; font-size: var(--text-caption); font-weight: 600; cursor: pointer; transition: border-color .18s ease, color .18s ease, transform .18s ease;
+}
+.quip__more:hover { border-color: var(--accent); color: var(--accent); transform: rotate(-2deg); }
+@media (prefers-reduced-motion: reduce) { .quip.is-pop { animation: none; } .quip__more:hover { transform: none; } }
 .portrait__cap { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
 .portrait__nm { font-size: var(--text-subheading); line-height: 1.2; color: var(--heading); letter-spacing: -.01em; }
 .portrait__role { font-size: var(--text-caption); color: var(--text-muted); }
@@ -455,22 +496,39 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 @media (min-width: 690px)  { .draw__stage { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; } }
 @media (min-width: 980px)  { .draw__stage { grid-template-columns: repeat(5, minmax(0,1fr)); } }
 .draw__cards { display: contents; }
+/* 덱은 세 장의 각·자리를 변수로 들고 있습니다.
+   쉴 때는 아주 살짝 어긋나 있고, 커서를 올리면 그 각이 조금 더 벌어집니다.
+   테마는 :root[data-skin-theme] 에서 쉬는 자리(--d1-x 등)만 바꾸면 됩니다. */
 .draw__deck {
-  position: relative; width: 100%; aspect-ratio: 3 / 4; padding: 0;
+  position: relative; z-index: 1; width: 100%; aspect-ratio: 3 / 4; padding: 0;
   container: gcard / inline-size;
   border: 0; background: none; cursor: pointer; touch-action: manipulation;
+  --d1-rot: -2.6deg; --d1-x: -6px; --d1-y: 3px; --d1-op: 1;
+  --d2-rot: 1.8deg;  --d2-x: 5px;  --d2-y: 1px; --d2-op: 1;
+  --d3-y: 0px; --d3-sc: 1;
 }
 .draw__deck-card {
   position: absolute; inset: 0;
   display: grid; place-items: center;
-  transition: transform .25s cubic-bezier(.2,.8,.3,1);
+  transform-origin: 50% 94%;                 /* 아래쪽을 축으로 — 손에 쥔 패처럼 */
+  /* 뒤 두 장도 온전한 카드입니다 — 비쳐 보이게 두지 말고 그림자로 층을 나눕니다 */
+  box-shadow: var(--deck-shadow, 0 4px 12px -6px rgb(0 0 0 / .4));
+  transition: transform .34s cubic-bezier(.2,.8,.3,1), opacity .34s ease;
 }
-.draw__deck-card:nth-child(1) { transform: rotate(-3deg) translate(-3px, 3px); opacity: .5; }
-.draw__deck-card:nth-child(2) { transform: rotate(2deg) translate(3px, 2px); opacity: .75; }
-.draw__deck-card:nth-child(3) { transform: none; }
-.draw__deck:hover .draw__deck-card:nth-child(1) { transform: rotate(-5deg) translate(-5px, 1px); }
-.draw__deck:hover .draw__deck-card:nth-child(2) { transform: rotate(4deg) translate(5px, 0); }
-.draw__deck:active .draw__deck-card:nth-child(3) { transform: scale(.97); }
+.draw__deck-card:nth-child(1) { transform: rotate(var(--d1-rot)) translate(var(--d1-x), var(--d1-y)); opacity: var(--d1-op); }
+.draw__deck-card:nth-child(2) { transform: rotate(var(--d2-rot)) translate(var(--d2-x), var(--d2-y)); opacity: var(--d2-op); }
+.draw__deck-card:nth-child(3) { transform: translateY(var(--d3-y)) scale(var(--d3-sc)); }
+/* 커서를 올리면 각이 조금 더 벌어집니다 (활짝이 아니라 살짝) */
+.draw__deck:hover, .draw__deck:focus-visible {
+  z-index: 3;
+  --d1-rot: -7deg;                 /* 자리(--d1-x/y)는 건드리지 않습니다 — 각만 */
+  --d2-rot: 5deg;
+}
+.draw__deck:active { --d3-sc: .97; }
+@media (prefers-reduced-motion: reduce) {
+  .draw__deck-card { transition: opacity .2s ease; }
+  .draw__deck:hover, .draw__deck:focus-visible { --d1-rot: -2.6deg; --d2-rot: 1.8deg; }
+}
 .draw__deck-face { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--paper); padding: 0 14px; }
 .draw__deck-face .card-back__seal { margin-bottom: 7cqw; }
 .draw__deck-label { font-size: var(--text-body-sm); font-weight: 350; }
@@ -558,12 +616,14 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
   mix-blend-mode: soft-light; opacity: 0; transition: opacity .3s ease;
 }
 .gcard:hover { --lift: -8px; --sc: 1.035; }
+/* 그림자는 카드를 따라다니지 않습니다 — 바닥에 넓게 퍼지게만 둡니다.
+   (box-shadow 는 카드와 함께 기울어지므로, 진하고 좁으면 '뒷장'처럼 보입니다) */
 .gcard.is-tilt {
   box-shadow: var(--shadow-card),
-              var(--sx) var(--sy) 34px -14px rgb(38 38 37 / .38);
+              0 22px 52px -30px rgb(38 38 37 / .34);
 }
 :root[data-theme="dark"] .gcard.is-tilt {
-  box-shadow: var(--shadow-card), var(--sx) var(--sy) 34px -12px rgb(0 0 0 / .6);
+  box-shadow: var(--shadow-card), 0 22px 52px -30px rgb(0 0 0 / .6);
 }
 .gcard:hover::after { opacity: 1; }
 :root[data-theme="dark"] .gcard::after { mix-blend-mode: screen; }
@@ -861,6 +921,17 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .cover-empty { max-width: 34rem; margin: 40px auto; padding: 48px 32px; border: 1px dashed var(--border); border-radius: var(--radius-card); text-align: center; }
 .cover-empty .ghost { width: 48px; height: 54px; margin: 0 auto 20px; }
 .cover-empty p { color: var(--text-muted); font-size: var(--text-body-sm); line-height: 1.6; }
+/* 자기소개서 요약 — '함께 일하면, 이런 기획자입니다.' 강점 세 장 */
+.hp--summary .strengths { margin-top: 4px; }
+.hp--summary .hp-more { margin-top: 24px; }
+.cl-summary { margin: -8px 0 56px; padding: 28px 0 36px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cl-summary__t { font-size: var(--text-heading-sm); letter-spacing: -.02em; margin-bottom: 22px; }
+.strengths { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 720px) { .strengths { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
+.strength { padding: 22px 22px 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
+.strength__tag { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--text-muted); }
+.strength__t { font-size: var(--text-heading-sm); line-height: 1.3; letter-spacing: -.02em; margin: 12px 0 8px; }
+.strength__b { font-size: var(--text-body-sm); line-height: 1.7; color: var(--text-muted); }
 .cover-block { max-width: 46rem; }
 .cover-block + .cover-block { margin-top: 40px; }
 .cover-block h3 { font-size: var(--text-heading-sm); margin-bottom: 12px; }

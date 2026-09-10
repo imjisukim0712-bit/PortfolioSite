@@ -243,7 +243,24 @@
   function navOffset(){ var n=$('.nav'); return (n?n.getBoundingClientRect().height:60)+24; }
 
   /* ---------- 이벤트 위임 ---------- */
+  /* '한 마디 더' — 말풍선 문장을 다음으로 넘깁니다 (다시 그리지 않고 글자만 바꿈) */
+  function cycleQuip(dir) {   /* dir: 1 = 다음(기본), -1 = 이전 */
+    var el = $('[data-quip]'); if (!el) return;
+    var qs = (content.home && content.home.quips || []).map(function (q, i) { return { q: q, i: i }; })
+      .filter(function (o) { var v = o.q && (typeof o.q === 'string' ? o.q : (o.q[lang] || o.q.ko)); return !!(v && String(v).trim()); });
+    if (qs.length < 2) return;
+    R.quip.i = (R.quip.i + (dir === -1 ? -1 : 1) + qs.length) % qs.length;
+    var cur = qs[R.quip.i], v = typeof cur.q === 'string' ? cur.q : (cur.q[lang] || cur.q.ko);
+    var span = document.createElement('span'); span.setAttribute('data-e', 'home.quips.' + cur.i); span.textContent = v;
+    el.innerHTML = ''; el.appendChild(span);
+    el.classList.remove('is-pop'); void el.offsetWidth; el.classList.add('is-pop');
+    // 사진 카드도 한 번씩 자세를 바꿉니다 (기울기·높이) — 기본 CSS 의 --pose-d / --pose-y
+    var card = $('.hero__portrait');
+    if (card) { var poses = [[-5, 0], [3, -6], [1.5, -2]], pz = poses[R.quip.i % poses.length]; card.style.setProperty('--pose-d', pz[0] + 'deg'); card.style.setProperty('--pose-y', pz[1] + 'px'); }
+  }
+
   document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-quip-more]')) { cycleQuip(); return; }
     var langBtn = e.target.closest('[data-lang-btn]');
     if (langBtn) { lang = langBtn.getAttribute('data-lang-btn')==='en'?'en':'ko'; saveLang(lang); var y=window.pageYOffset; render(); window.scrollTo(0,y); return; }
     if (e.target.closest('[data-theme-toggle]')) { toggleTheme(); return; }
@@ -343,6 +360,7 @@
       applyThemeIcon();
     },
     setContent: function (next) { if (next) content = next; },
+    cycleQuip: cycleQuip,   /* 테마 스크립트가 '한마디'를 넘길 때 (예: 패미컴 SELECT ◀ ▶) */
     rerender: function () { render(); initHeader(); initDraw(); initToTop(); initTilt(); }
   };
 

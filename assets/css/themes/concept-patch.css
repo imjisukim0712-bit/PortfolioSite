@@ -1,0 +1,145 @@
+@charset "UTF-8";
+/* 컨셉 무대 · 시안 B — 패치 노트 (라이브 게임)
+   사이트가 라이브 서비스 중인 게임의 패치 노트입니다. 상단에 LIVE 표시등과 버전,
+   경력은 NEW·BUFF·FIX 태그가 붙은 변경 이력, 수치는 서버 지표처럼.
+   카드 뽑기는 '이번 시즌 픽업 배너 · 확률 UP'. 라이브 이벤트와 BM 을 기획하는 사람의 어법.
+   다크 = 기본 · 라이트 = 밝은 패널 */
+:root[data-skin="concept-patch"] {
+  --font-sans: 'Inter', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --display-weight: 800;
+  --tracking: -0.03em;
+  --radius-card: 8px; --radius-lg: 10px; --radius-chip: 4px; --radius-pill: 4px;
+
+  --bg: #f3f5f8; --bg-elev: #eaedf2; --surface: #ffffff; --surface-2: #eef1f5;
+  --border: #d6dbe3; --border-2: #aab3c0;
+  --text: #2f3541; --text-muted: #667084; --heading: #0f1115;
+  --accent: #0f9d58; --accent-soft: #0b7d46;
+  --cta: #dff6e9; --cta-text: #0b6b3c; --cta-hover: #c9efdb;
+  --ghost-c: #0f9d58; --glow: transparent; --btn-primary-text: #ffffff;
+  --aubergine: #0f1115; --paper: #ffffff; --periwinkle: #0f9d58;
+  --ghost-lavender: #dff6e9; --buttercream: #fff1d6; --blush: #fde3e3; --cornflower: #2f6feb; --mint: #0f9d58;
+  --nav-bg: rgb(243 245 248 / .9);
+  --gen0: #0f9d58; --gen1: #c77700; --gen2: #2f6feb;
+  --grade-r: #aab3c0; --grade-r-bg: #eef1f5; --grade-r-fg: #667084;
+  --grade-sr: #c77700; --grade-sr-bg: #fff1d6; --grade-sr-fg: #7a4900;
+  --grade-ssr: #0f9d58; --grade-ssr-bg: #0f9d58; --grade-ssr-fg: #ffffff;
+  --shadow-card: 0 1px 2px rgb(15 17 21 / .06), 0 8px 20px -14px rgb(15 17 21 / .18);
+  --shadow-lift: 0 2px 4px rgb(15 17 21 / .06), 0 22px 44px -22px rgb(15 17 21 / .3);
+  --hero-slab: #ffffff; --hero-slab-r: 12px;
+  --live: #0f9d58; --warn: #c77700; --nerf: #d23b3b; --buff: #2f6feb;
+  color-scheme: light;
+}
+:root[data-skin="concept-patch"][data-theme="dark"] {
+  --bg: #0f1115; --bg-elev: #13161b; --surface: #171a20; --surface-2: #1f232b;
+  --border: #2a2f39; --border-2: #3c4350;
+  --text: #c9cfd9; --text-muted: #8b93a1; --heading: #f3f5f8;
+  --accent: #5cf2a4; --accent-soft: #8bf7bf;
+  --cta: #123324; --cta-text: #8bf7bf; --cta-hover: #17422e;
+  --ghost-c: #5cf2a4; --btn-primary-text: #07130c;
+  --aubergine: #f3f5f8; --paper: #0f1115; --periwinkle: #5cf2a4;
+  --ghost-lavender: #123324; --buttercream: #3a2a0a; --blush: #3a1717; --cornflower: #7aa2ff; --mint: #5cf2a4;
+  --nav-bg: rgb(15 17 21 / .86);
+  --gen0: #5cf2a4; --gen1: #ffab40; --gen2: #7aa2ff;
+  --grade-r: #6b7484; --grade-r-bg: #1f232b; --grade-r-fg: #c9cfd9;
+  --grade-sr: #ffab40; --grade-sr-bg: #3a2a0a; --grade-sr-fg: #ffd28a;
+  --grade-ssr: #5cf2a4; --grade-ssr-bg: #5cf2a4; --grade-ssr-fg: #07130c;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / .5), 0 10px 24px -16px rgb(0 0 0 / .8);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / .5), 0 26px 52px -24px rgb(0 0 0 / .9);
+  --hero-slab: #171a20; --hero-slab-r: 12px;
+  --live: #5cf2a4; --warn: #ffab40; --nerf: #ff6b6b; --buff: #7aa2ff;
+  color-scheme: dark;
+}
+
+/* ── 상단: LIVE 표시등 · 버전 ─────────────────────────────────────────── */
+[data-skin="concept-patch"] .hero::before { border: 1px solid var(--border); }
+[data-skin="concept-patch"] .hero__eyebrow { border: 0; padding: 0; background: none; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+[data-skin="concept-patch"] .hero__eyebrow .ghost { display: none; }
+[data-skin="concept-patch"] .hero__eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 28%, transparent); animation: livePulse 1.6s ease-in-out infinite; }
+[data-skin="concept-patch"] .hero__eyebrow::after { content: 'LIVE  ·  v2026.09.1'; color: var(--live); font-weight: 700; order: -1; margin-right: 10px; }
+[data-skin="concept-patch"] .hero__eyebrow span { order: 1; }
+@keyframes livePulse { 0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 28%, transparent); } 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--live) 8%, transparent); } }
+[data-skin="concept-patch"] .hero__title { font-weight: 800; letter-spacing: -.045em; line-height: 1.06; }
+[data-skin="concept-patch"] .hero__title .accent { color: var(--accent); }
+[data-skin="concept-patch"] .home-screen .hero { padding-block: 40px 34px; }
+[data-skin="concept-patch"] .nav { border-bottom: 1px solid var(--border); }
+[data-skin="concept-patch"] .nav__link { border-radius: 4px; font-size: 13.5px; }
+[data-skin="concept-patch"] .nav__link.is-active { background: var(--cta); color: var(--cta-text); }
+[data-skin="concept-patch"] .icon-btn, [data-skin="concept-patch"] .nav__burger, [data-skin="concept-patch"] .lang-toggle, [data-skin="concept-patch"] .lang-toggle__btn { border-radius: 4px; }
+
+/* ── 변경 이력: NEW · BUFF · FIX 태그 ─────────────────────────────────── */
+[data-skin="concept-patch"] .eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; color: var(--text-muted); }
+[data-skin="concept-patch"] .eyebrow::before { content: '[ '; } [data-skin="concept-patch"] .eyebrow::after { content: ' ]'; }
+[data-skin="concept-patch"] .tl-date { display: inline-block; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0; color: var(--accent); background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+[data-skin="concept-patch"] .tl-role::before { display: inline-block; margin-right: 8px; padding: 2px 7px; border-radius: 3px; font: 800 10.5px/1.4 var(--font-mono); letter-spacing: .08em; vertical-align: .12em; }
+[data-skin="concept-patch"] .tl-item:nth-child(3n+1) .tl-role::before { content: 'NEW'; background: var(--live); color: #07130c; }
+[data-skin="concept-patch"] .tl-item:nth-child(3n+2) .tl-role::before { content: 'BUFF'; background: var(--buff); color: #fff; }
+[data-skin="concept-patch"] .tl-item:nth-child(3n) .tl-role::before { content: 'FIX'; background: var(--warn); color: #1b1200; }
+[data-skin="concept-patch"] .tl-item::before { width: 8px; height: 8px; border-radius: 2px; transform: rotate(45deg); background: var(--accent); box-shadow: 0 0 0 3px var(--bg); }
+[data-skin="concept-patch"] .tl-item--now::before { background: var(--warn); }
+[data-skin="concept-patch"] .timeline::before { background: var(--border-2); }
+[data-skin="concept-patch"] .hp-h::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 12px; border-radius: 50%; background: var(--live); vertical-align: .18em; box-shadow: 0 0 10px 1px var(--live); }
+[data-skin="concept-patch"] .section__title, [data-skin="concept-patch"] .proj-title, [data-skin="concept-patch"] .detail__title { font-weight: 800; letter-spacing: -.04em; }
+
+/* ── 수치는 서버 지표처럼 ─────────────────────────────────────────────── */
+[data-skin="concept-patch"] .stat { border: 1px solid var(--border); background: var(--surface); box-shadow: none; }
+[data-skin="concept-patch"] .stat__num { font-family: var(--font-mono); font-weight: 700; color: var(--accent); letter-spacing: -.03em; }
+[data-skin="concept-patch"] .stat__label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .02em; }
+[data-skin="concept-patch"] .stat__label::before { content: '▲ '; color: var(--live); }
+
+/* ── 버튼 · 칩 ───────────────────────────────────────────────────────── */
+[data-skin="concept-patch"] .btn { border-radius: 4px; min-height: 44px; padding: 11px 20px; font-weight: 700; font-size: 13.5px; letter-spacing: .04em; text-transform: uppercase; }
+[data-skin="concept-patch"] .btn--primary { background: var(--accent); color: var(--btn-primary-text); box-shadow: 0 0 0 0 transparent; }
+[data-skin="concept-patch"] .btn--primary:hover { background: var(--accent-soft); box-shadow: 0 0 22px -6px var(--accent); transform: none; }
+[data-skin="concept-patch"] .btn--outline { border: 1px solid var(--border-2); color: var(--heading); }
+[data-skin="concept-patch"] .btn--outline:hover { border-color: var(--accent); color: var(--accent); background: var(--surface-2); }
+[data-skin="concept-patch"] .link-more, [data-skin="concept-patch"] .hp-more { border-radius: 4px; border-color: var(--border-2); font-weight: 700; font-size: 13.5px; letter-spacing: .04em; text-transform: uppercase; }
+[data-skin="concept-patch"] .tag, [data-skin="concept-patch"] .badge, [data-skin="concept-patch"] .gcard__cat, [data-skin="concept-patch"] .gcard__grade, [data-skin="concept-patch"] .quest-strip__badge, [data-skin="concept-patch"] .play-card__hours { border-radius: 3px; font-family: var(--font-mono); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+[data-skin="concept-patch"] .gcard__cat { background: var(--cta); color: var(--cta-text); }
+
+/* ── 카드: 패널, SSR 은 NEW 리본 ──────────────────────────────────────── */
+[data-skin="concept-patch"] .gcard { --frame: var(--border); --frame-w: 1px; box-shadow: none; }
+[data-skin="concept-patch"] .gcard__frame { border-radius: 7px; padding: 4.4cqw; }
+[data-skin="concept-patch"] .gcard__art { border-radius: 4px; }
+[data-skin="concept-patch"] .gcard__name { font-weight: 700; }
+[data-skin="concept-patch"] .gcard:hover { box-shadow: 0 0 0 1px var(--accent), 0 18px 34px -18px rgb(0 0 0 / .6); }
+:root[data-skin="concept-patch"] .gcard[data-grade="SSR"] .gcard__grade::after { content: ' · NEW'; }
+:root[data-skin="concept-patch"] .gcard[data-grade="SSR"] { --frame: var(--accent); --frame-w: 1.5px; }
+:root[data-skin="concept-patch"] .gcard[data-grade="SR"] { --frame: var(--grade-sr); --frame-w: 1.5px; }
+[data-skin="concept-patch"] .card, [data-skin="concept-patch"] .play-card, [data-skin="concept-patch"] .pager__item, [data-skin="concept-patch"] .profile,
+[data-skin="concept-patch"] .quest-strip, [data-skin="concept-patch"] .media-box { border: 1px solid var(--border); box-shadow: none; background: var(--surface); }
+[data-skin="concept-patch"] .quest-strip { border-left: 3px solid var(--live); }
+[data-skin="concept-patch"] .quest-strip__badge { background: var(--live); color: #07130c; }
+[data-skin="concept-patch"] .quest-strip__v--hi { color: var(--accent); font-weight: 700; }
+
+/* ── 이번 시즌 픽업 배너: 카드 뽑기 ─────────────────────────────────── */
+[data-skin="concept-patch"] .draw > .wrap::before { content: '이번 시즌 픽업 배너  ·  확률 UP  ·  덱을 눌러 다시 뽑기'; display: block; margin-bottom: 14px; font: 700 11.5px/1.5 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--live); }
+[data-skin="concept-patch"] .card-back { background: var(--surface-2); background-image: linear-gradient(135deg, transparent 0 60%, color-mix(in srgb, var(--live) 18%, transparent)); border: 1px solid var(--border-2); border-radius: 8px; }
+[data-skin="concept-patch"] .card-back::before { display: none; }
+[data-skin="concept-patch"] .card-back::after { content: 'PICK UP'; position: absolute; top: 7%; left: 50%; transform: translateX(-50%) rotate(-6deg); padding: .2em .6em; border: 1.5px solid var(--live); border-radius: 3px; font: 800 clamp(9px, 5cqw, 15px)/1.3 var(--font-mono); letter-spacing: .1em; color: var(--live); }
+[data-skin="concept-patch"] .card-back__seal .ghost { color: var(--accent); }
+[data-skin="concept-patch"] .draw__deck-face { color: var(--heading); }
+[data-skin="concept-patch"] .draw__deck-label { font-weight: 800; }
+[data-skin="concept-patch"] .draw__deck-hint { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+/* ── 사진: 접속 중인 플레이어 · 말풍선은 채팅 로그 ───────────────────── */
+[data-skin="concept-patch"] .hero__portrait { --pose-rest: 0deg; padding: 10px 10px 12px; border-radius: 10px; border: 1px solid var(--border-2); background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin="concept-patch"] .hero__portrait .portrait { border-radius: 6px; }
+[data-skin="concept-patch"] .portrait__role::before { content: '● '; color: var(--live); }
+[data-skin="concept-patch"] .quip { border: 1px solid var(--border-2); border-radius: 6px; background: var(--surface-2); color: var(--heading); box-shadow: var(--shadow-card); font-family: var(--font-mono); font-size: 12px; font-weight: 500; }
+[data-skin="concept-patch"] .quip::before { content: '> '; color: var(--live); font-weight: 700; }
+[data-skin="concept-patch"] .quip::after { border-right: 1px solid var(--border-2); border-bottom: 1px solid var(--border-2); background: var(--surface-2); }
+[data-skin="concept-patch"] .quip__more { border-radius: 4px; border-color: var(--border-2); background: var(--surface); font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+[data-skin="concept-patch"] .quip__more:hover { border-color: var(--accent); color: var(--accent); transform: none; }
+
+/* ── 강점 요약: 릴리스 노트 항목 ─────────────────────────────────────── */
+[data-skin="concept-patch"] .strength { border: 1px solid var(--border); border-left: 3px solid var(--live); border-radius: 6px; background: var(--surface); box-shadow: none; }
+[data-skin="concept-patch"] .strength__tag { color: var(--live); font-weight: 700; }
+[data-skin="concept-patch"] .strength__t { font-weight: 700; }
+[data-skin="concept-patch"] .cl-summary { border-color: var(--border); }
+[data-skin="concept-patch"] .tab { border-radius: 4px; font-family: var(--font-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em; }
+[data-skin="concept-patch"] .tab.is-active { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin="concept-patch"] .tabs, [data-skin="concept-patch"] .back-link, [data-skin="concept-patch"] .store-link { border-radius: 4px; }
+[data-skin="concept-patch"] .footer { border-top: 1px solid var(--border); }
+@media (prefers-reduced-motion: reduce) { [data-skin="concept-patch"] .hero__eyebrow::before { animation: none; } }

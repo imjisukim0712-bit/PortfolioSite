@@ -1,0 +1,153 @@
+@charset "UTF-8";
+/* 네오 브루탈리즘 · 시안 C — 뉴스프린트 (신문지 회백 · 고정폭 글꼴 · 검정 괘선 · 망점)
+   그림자 대신 얇은 괘선과 이중선. 본문까지 고정폭(나눔고딕코딩). */
+:root[data-skin="brutal-newsprint"] {
+  --font-sans: 'IBM Plex Sans KR', 'Pretendard Variable', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-display: 'Archivo Black', 'Black Han Sans', 'Apple SD Gothic Neo', sans-serif;
+  --font-mono: 'Nanum Gothic Coding', 'IBM Plex Mono', monospace;
+  --display-weight: 400;
+  --tracking: -0.005em;
+  --text-body: 16px; --text-body-sm: 15px;
+  --bw: 2px;
+  --ink: #1a1a1a; --sh-c: transparent;
+  --sh: none; --sh-lg: none; --sh-sm: none; --sh-hover: none;
+  --bg: #ecebe4; --bg-elev: #e3e2d9; --surface: #f4f3ee; --surface-2: #e3e2d9;
+  --border: #1a1a1a; --border-2: #1a1a1a;
+  --text: #1a1a1a; --text-muted: #5b5b5b; --heading: #1a1a1a;
+  --accent: #c8102e; --accent-soft: #e0323f; --accent-2: #1a1a1a;
+  --cta: #e3e2d9; --cta-text: #1a1a1a; --cta-hover: #d8d7cc;
+  --ghost-c: #c8102e; --glow: transparent; --btn-primary-text: #f4f3ee;
+  --aubergine: #1a1a1a; --paper: #ecebe4; --periwinkle: #c8102e;
+  --ghost-lavender: #e3e2d9; --buttercream: #e3e2d9; --blush: #f3d9dc; --cornflower: #1a1a1a; --mint: #c8102e;
+  --mark: #c8102e;
+  --gen0: #c8102e; --gen1: #1a1a1a; --gen2: #8a8a82;
+  --grade-r: #8a8a82; --grade-sr: #1a1a1a; --grade-ssr-a: #c8102e; --grade-ssr-b: #1a1a1a;
+  --paper-grid: radial-gradient(rgb(26 26 26 / .07) .6px, transparent .9px);
+  --text-display: clamp(40px, 6.6vw + 10px, 96px);
+  color-scheme: light;
+}
+:root[data-skin="brutal-newsprint"][data-theme="dark"] {
+  --ink: #e6e5dc;
+  --bg: #1b1b19; --bg-elev: #242422; --surface: #202020; --surface-2: #2c2c2a;
+  --border: #e6e5dc; --border-2: #e6e5dc;
+  --text: #e6e5dc; --text-muted: #a5a49b; --heading: #ffffff;
+  --accent: #ff3b52; --accent-soft: #ff6b7c;
+  --cta: #2c2c2a; --cta-text: #e6e5dc; --cta-hover: #383836;
+  --ghost-c: #ff3b52; --btn-primary-text: #1b1b19;
+  --aubergine: #e6e5dc; --paper: #1b1b19; --periwinkle: #ff3b52;
+  --ghost-lavender: #2c2c2a; --buttercream: #2c2c2a; --blush: #3a1f24; --cornflower: #e6e5dc; --mint: #ff3b52;
+  --mark: #ff3b52;
+  --gen0: #ff3b52; --gen1: #e6e5dc; --gen2: #7c7c74;
+  --grade-r: #7c7c74; --grade-sr: #e6e5dc; --grade-ssr-a: #ff3b52; --grade-ssr-b: #e6e5dc;
+  --paper-grid: radial-gradient(rgb(255 255 255 / .035) .6px, transparent .9px);
+  --shadow-card: none;
+  color-scheme: dark;
+}
+[data-skin="brutal-newsprint"] body { background-size: 6px 6px; line-height: 1.7; }
+[data-skin="brutal-newsprint"] .hero__title .accent { background: none; color: var(--accent); padding: 0; text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .12em; }
+[data-skin="brutal-newsprint"] .btn--primary { background: var(--ink); color: var(--bg); }
+[data-skin="brutal-newsprint"] .btn--outline:hover, [data-skin="brutal-newsprint"] .link-more:hover, [data-skin="brutal-newsprint"] .back-link:hover, [data-skin="brutal-newsprint"] .store-link:hover { background: var(--ink); color: var(--bg); }
+[data-skin="brutal-newsprint"] .icon-btn, [data-skin="brutal-newsprint"] .nav__burger, [data-skin="brutal-newsprint"] .lang-toggle { box-shadow: none; }
+[data-skin="brutal-newsprint"] .nav { border-bottom: 4px double var(--ink); }
+[data-skin="brutal-newsprint"] .nav__link { border: 0; }
+[data-skin="brutal-newsprint"] .nav__link:hover { text-decoration: underline; }
+[data-skin="brutal-newsprint"] .hero__eyebrow, [data-skin="brutal-newsprint"] .eyebrow, [data-skin="brutal-newsprint"] .portrait__cap { box-shadow: none; }
+[data-skin="brutal-newsprint"] .hero__eyebrow { border: 0; border-top: 1px solid var(--ink); border-bottom: 4px double var(--ink); padding: 6px 0; }
+[data-skin="brutal-newsprint"] .hero__sub { font-size: var(--text-body); }
+[data-skin="brutal-newsprint"] .portrait { box-shadow: none; padding: 6px; }
+[data-skin="brutal-newsprint"] .portrait { position: relative; }
+[data-skin="brutal-newsprint"] .portrait__cap { border: 0; border-bottom: 1px solid var(--ink); padding: 0 0 8px; }
+[data-skin="brutal-newsprint"] .hp-h { border-bottom: 4px double var(--ink); }
+[data-skin="brutal-newsprint"] .section--elev { border-top: 4px double var(--ink); border-bottom: 4px double var(--ink); }
+[data-skin="brutal-newsprint"] .stat { border: 0; border-top: 1px solid var(--ink); border-bottom: 4px double var(--ink); background: transparent; padding: 18px 0; }
+[data-skin="brutal-newsprint"] .stat__num { color: var(--ink); }
+[data-skin="brutal-newsprint"] .card, [data-skin="brutal-newsprint"] .play-card, [data-skin="brutal-newsprint"] .pager__item, [data-skin="brutal-newsprint"] .quest-strip { border-width: 1px; box-shadow: none; }
+[data-skin="brutal-newsprint"] .card { border-top: 4px double var(--ink); }
+[data-skin="brutal-newsprint"] .card-back { background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgb(236 235 228 / .18) 3px 4px); }
+[data-skin="brutal-newsprint"] .card-back::before { border: 1px solid var(--bg); inset: 10%; background: none; }
+[data-skin="brutal-newsprint"] .gcard { --frame-w: 1.5px; }
+:root[data-skin="brutal-newsprint"] .gcard[data-grade="SR"] { --frame-w: 2px; }
+:root[data-skin="brutal-newsprint"] .gcard[data-grade="SSR"] { --frame-w: 4px; }
+[data-skin="brutal-newsprint"] .gcard__cat { background: var(--accent); color: #fff; }
+[data-skin="brutal-newsprint"] .gcard:hover .gcard__frame { background: var(--bg-elev); }
+[data-skin="brutal-newsprint"] .media-box { box-shadow: none; background-image: radial-gradient(rgb(26 26 26 / .10) .7px, transparent 1px); background-size: 5px 5px; }
+[data-skin="brutal-newsprint"] .tabs { box-shadow: none; }
+[data-skin="brutal-newsprint"] .badge { background: var(--accent); }
+[data-skin="brutal-newsprint"] .hp-skill__ic, [data-skin="brutal-newsprint"] .hp-game__ic { box-shadow: none; }
+[data-skin="brutal-newsprint"] .footer { background: var(--bg); color: var(--text); border-top: 4px double var(--ink); }
+[data-skin="brutal-newsprint"] .footer__brand { color: var(--heading); }
+[data-skin="brutal-newsprint"] .footer__brand .ghost { color: var(--accent); }
+[data-skin="brutal-newsprint"] .footer__tagline, [data-skin="brutal-newsprint"] .footer__copy { color: var(--text-muted); opacity: 1; }
+[data-skin="brutal-newsprint"] .footer .btn--outline { color: var(--ink); border-color: var(--ink); box-shadow: none; }
+/* 눈 피로 완화: 라벨·메타만 고정폭, 본문은 산세리프 */
+[data-skin="brutal-newsprint"] .hero__sub, [data-skin="brutal-newsprint"] .section__lead, [data-skin="brutal-newsprint"] .card__body, [data-skin="brutal-newsprint"] .tl-body, [data-skin="brutal-newsprint"] .play-card__note, [data-skin="brutal-newsprint"] .bullets li, [data-skin="brutal-newsprint"] .block__body, [data-skin="brutal-newsprint"] .gcard__desc, [data-skin="brutal-newsprint"] .hp-skill__b, [data-skin="brutal-newsprint"] .hpl-row__m { font-family: var(--font-sans); line-height: 1.7; }
+[data-skin="brutal-newsprint"] .hero__sub { font-size: var(--text-subheading); color: var(--text); }
+[data-skin="brutal-newsprint"] .tag, [data-skin="brutal-newsprint"] .hpl-row__d, [data-skin="brutal-newsprint"] .tl-date, [data-skin="brutal-newsprint"] .gcard__meta, [data-skin="brutal-newsprint"] .play-card__genre { font-family: var(--font-mono); }
+
+/* ── 아이덴티티: '게임 기획 로그'라는 이름의 지면 ────────────────────────
+   측정한 숫자(결과)를 기사 제목처럼 크게, 발행 정보를 제호로. */
+[data-skin="brutal-newsprint"] main::before {
+  content: 'KIM JISU  ·  GAME DESIGN LOG  ·  SEOUL  ·  EST. 2016';
+  display: block; margin-bottom: 4px;
+  padding: 9px max(var(--gutter), env(safe-area-inset-left, 0px));
+  border-top: 1px solid var(--ink); border-bottom: 4px double var(--ink);
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+  letter-spacing: .2em; text-align: center; color: var(--text-muted);
+}
+/* 리드 문단 — 기사 첫 단락처럼 */
+[data-skin="brutal-newsprint"] .hero__sub {
+  border-left: 4px solid var(--accent); padding-left: 16px;
+  font-size: clamp(17px, 1.1vw + 14px, 20px); line-height: 1.72; color: var(--text);
+}
+/* 숫자는 지면의 주인공: 표처럼 세우고 결과값은 빨강 */
+[data-skin="brutal-newsprint"] .stat__num, [data-skin="brutal-newsprint"] .tl-date,
+[data-skin="brutal-newsprint"] .gcard__period, [data-skin="brutal-newsprint"] .detail__period,
+[data-skin="brutal-newsprint"] .play-card__hours, [data-skin="brutal-newsprint"] .quest-strip__v { font-variant-numeric: tabular-nums; }
+[data-skin="brutal-newsprint"] .stat__num .unit { color: var(--accent); }
+[data-skin="brutal-newsprint"] .quest-strip { border-top: 4px double var(--ink); border-bottom: 4px double var(--ink); border-left: 0; border-right: 0; padding: 14px 0; }
+[data-skin="brutal-newsprint"] .quest-strip__k { font-weight: 700; color: var(--ink); }
+[data-skin="brutal-newsprint"] .quest-strip__v--hi { font-family: var(--font-display); font-size: 1.5em; line-height: 1.1; color: var(--accent); }
+[data-skin="brutal-newsprint"] .quest-strip__badge { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+/* 카드 = 기사 한 꼭지 */
+[data-skin="brutal-newsprint"] .gcard__name { line-height: 1.22; }
+[data-skin="brutal-newsprint"] .gcard__cat { letter-spacing: .1em; }
+/* 섹션 제목 위 지면 표기 */
+[data-skin="brutal-newsprint"] main { counter-reset: npsec; }
+[data-skin="brutal-newsprint"] .section__head { counter-increment: npsec; }
+[data-skin="brutal-newsprint"] .section__head .eyebrow::after { content: '  ·  PAGE ' counter(npsec); opacity: .65; }
+[data-skin="brutal-newsprint"] .footer__brand .ghost { color: var(--accent); }
+
+/* ── 한 방: 1면 배너 헤드라인 + 반전 빨강 kicker + 드롭캡 ───────────────
+   신문이 가진 가장 강한 장치는 '큰 제목'입니다. 그 한 방만 크게 씁니다. */
+:root[data-skin="brutal-newsprint"] {
+  --text-display: clamp(42px, 8vw + 6px, 124px);
+  --text-heading-lg: clamp(36px, 6.2vw + 8px, 92px);
+}
+[data-skin="brutal-newsprint"] .hero__title { line-height: .98; letter-spacing: -.045em; padding-bottom: 18px; border-bottom: 5px double var(--ink); }
+[data-skin="brutal-newsprint"] .hero__eyebrow, [data-skin="brutal-newsprint"] .eyebrow {
+  background: var(--accent); color: var(--bg); border: 0; padding: 6px 12px; font-weight: 700; letter-spacing: .16em;
+}
+[data-skin="brutal-newsprint"] .hero__eyebrow .ghost { color: var(--bg); }
+[data-skin="brutal-newsprint"] .section__lead::first-letter {
+  float: left; font-family: var(--font-display); font-size: 3.1em; line-height: .82; margin: .05em .1em 0 0; color: var(--accent);
+}
+[data-skin="brutal-newsprint"] .section__title { font-size: var(--text-heading-lg); line-height: 1; letter-spacing: -.04em; }
+[data-skin="brutal-newsprint"] .proj-title { line-height: 1; letter-spacing: -.045em; }
+[data-skin="brutal-newsprint"] .quest-strip__v--hi { font-size: 2em; letter-spacing: -.03em; }
+[data-skin="brutal-newsprint"] .stat__num { font-size: clamp(34px, 3.4vw + 14px, 58px); line-height: .92; letter-spacing: -.04em; }
+[data-skin="brutal-newsprint"] .gcard:hover .gcard__frame { background: var(--bg); }
+
+/* ── 히어로 판: 먹색 한 장 — 1면 배너를 뒤집은 것처럼. 아래는 이중 괘선 ── */
+[data-skin="brutal-newsprint"] { --hero-slab: #1a1a1a; --hero-slab-r: 0; }
+[data-skin="brutal-newsprint"][data-theme="dark"] { --hero-slab: #ecebe4; }
+[data-skin="brutal-newsprint"] .hero::before { border-bottom: 5px double var(--slab-fg, #ecebe4); }
+[data-skin="brutal-newsprint"] .hero__grid > div:first-child { --heading: #ecebe4; --text: #ecebe4; --text-muted: #c9c8c0; --ink: #ecebe4; --border: #ecebe4; --slab-fg: #ecebe4; }
+[data-skin="brutal-newsprint"][data-theme="dark"] .hero::before { border-bottom-color: #1a1a1a; }
+[data-skin="brutal-newsprint"][data-theme="dark"] .hero__grid > div:first-child { --heading: #1a1a1a; --text: #1a1a1a; --text-muted: #4a4a46; --ink: #1a1a1a; --border: #1a1a1a; }
+[data-skin="brutal-newsprint"] .hero__title { color: var(--heading); border-bottom-color: var(--ink); }
+[data-skin="brutal-newsprint"] .hero__sub, [data-skin="brutal-newsprint"] .hero__note { color: var(--text); }
+[data-skin="brutal-newsprint"] .hero__eyebrow { color: #ffffff; }
+[data-skin="brutal-newsprint"] .hero .btn--primary { background: var(--ink); color: var(--hero-slab); border-color: var(--ink); box-shadow: none; }
+[data-skin="brutal-newsprint"] .hero .btn--outline { background: transparent; border-color: var(--ink); color: var(--text); box-shadow: none; }
+[data-skin="brutal-newsprint"] .hero .btn--outline:hover { background: var(--ink); color: var(--hero-slab); }
+[data-skin="brutal-newsprint"] .home-screen .hero { padding-block: clamp(26px, 5vh, 56px) clamp(30px, 5vh, 56px); }

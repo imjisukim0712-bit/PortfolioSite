@@ -55,7 +55,14 @@ window.PORTFOLIO_CONTENT = {
     player: {
       photo:    "assets/img/profile.jpg",   // 프로필 사진 경로
       photoAlt: { ko: "김지수 프로필 사진", en: "Jisu Kim portrait" }
-    }
+    },
+    // 사진 옆 말풍선 '한마디'. '한 마디 더' 버튼을 누르면 순서대로 바뀝니다. 자유롭게 추가·삭제.
+    quips: [
+      { ko: "일단, 직접 해보는 편.",   en: "I like to try things myself." },
+      { ko: "생각은 문서로 남겨요.",   en: "I put my thoughts into words." },
+      { ko: "같은 그림을 보고 싶어요.", en: "Let's get on the same page." }
+    ],
+    quipMore: { ko: "한 마디 더", en: "One more" }
   },
 
   /* ── 이력서 페이지 ──────────────────────────────────────────────────────
@@ -167,6 +174,24 @@ window.PORTFOLIO_CONTENT = {
   coverLetter: {
     title: { ko: "자기소개서", en: "About Me" },
     lead:  { ko: "곧 채울 예정입니다.", en: "Coming soon." },
+    // 맨 위 요약 — '함께 일하면, 이런 기획자입니다.' 강점 세 가지. 본문(blocks)의 개요 역할.
+    summary: {
+      title: { ko: "함께 일하면, 이런 기획자입니다.", en: "This is how I work." },
+      items: [
+        { tag: "01 / DOCUMENT",
+          title: { ko: "생각을 정리합니다", en: "I clarify ideas" },
+          body:  { ko: "의도를 명세서로 옮겨, 팀이 같은 기준으로 이야기하게 합니다.",
+                   en: "I turn intent into specifications so the team has a shared reference." } },
+        { tag: "02 / PROTOTYPE",
+          title: { ko: "직접 확인합니다", en: "I test by making" },
+          body:  { ko: "기획한 내용을 프로토타입으로 만들고, 플레이하며 확인합니다.",
+                   en: "I build prototypes of my designs and check how they play." } },
+        { tag: "03 / OBSERVE",
+          title: { ko: "다음 판단에 남깁니다", en: "I learn for the next decision" },
+          body:  { ko: "기대에 못 미친 결과를 겪은 뒤, 시장과 플레이를 먼저 살피는 습관을 들였습니다.",
+                   en: "After results fell short, I learned to study the market and the play experience first." } }
+      ]
+    },
     blocks: []
   },
 

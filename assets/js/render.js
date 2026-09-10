@@ -33,6 +33,8 @@
   /* 도구 아이콘 (단색, currentColor). label 은 화면에 함께 표기 */
   // 시각 편집기용 앵커 — 이 경로로 content.js 값을 되돌려 씁니다.
   function ep(path) { return ' data-e="' + path + '"'; }
+  // 홈 말풍선 '한마디'의 현재 순번 — main.js 가 '한 마디 더' 버튼으로 올립니다.
+  var QUIP = { i: 0 };
 
   /* ── 게임 카드 (홈 뽑기 · 프로젝트 목록 공용) ──────────────────────────
      구성: 이름 / 분류·대표 태그·등급 / 그림(없으면 자동 생성) / 개요
@@ -190,6 +192,18 @@
     return t(field, lang).split(/\n{2,}|\n/).filter(function (s){return s.trim();}).map(function (s){return '<p>' + s + '</p>';}).join('');
   }
 
+  /* 강점 세 장 — 자기소개서 맨 위 요약과 홈(덱 아래)에서 같은 카드를 씁니다 (coverLetter.summary.items) */
+  function strengthCards(c, lang) {
+    var sm = (c.coverLetter && c.coverLetter.summary) || {};
+    var items = arr(sm.items).filter(function (it) { return has(it.title, lang) || has(it.body, lang); });
+    if (!items.length) return '';
+    return '<div class="strengths">' + items.map(function (it, i) {
+      return '<article class="strength"><span class="strength__tag">' + esc(it.tag || '') + '</span>' +
+        '<h3 class="strength__t"' + ep('coverLetter.summary.items.' + i + '.title') + '>' + esc(t(it.title, lang)) + '</h3>' +
+        '<p class="strength__b"' + ep('coverLetter.summary.items.' + i + '.body') + '>' + esc(t(it.body, lang)) + '</p></article>';
+    }).join('') + '</div>';
+  }
+
   /* ---------- HOME ---------- */
   function renderHome(c, lang, base) {
     var h = c.home || {};
@@ -199,10 +213,20 @@
     var frame = photoSrc
       ? '<figure class="portrait"><img src="' + esc(base + photoSrc) + '" alt="' + esc(altTxt) + '" loading="lazy"></figure>'
       : '<figure class="portrait portrait--empty" role="img" aria-label="' + esc(altTxt) + '">' + GHOST + '</figure>';
+    // 사진 옆 말풍선 '한마디' — home.quips 중 현재 순번(QUIP.i) 하나를 보여 주고, 버튼으로 다음 문장으로 넘깁니다.
+    var quips = arr(h.quips).map(function (q, i) { return { q: q, i: i }; }).filter(function (o) { return has(o.q, lang); });
+    var cur = quips.length ? quips[QUIP.i % quips.length] : null;
+    var quipHtml = cur
+      ? '<p class="quip" data-quip aria-live="polite"><span' + ep('home.quips.' + cur.i) + '>' + esc(t(cur.q, lang)) + '</span></p>'
+      : '';
+    var quipBtn = quips.length > 1
+      ? '<button type="button" class="quip__more" data-quip-more><span' + ep('home.quipMore') + '>' + esc(t(h.quipMore, lang) || (lang === 'en' ? 'One more' : '한 마디 더')) + '</span> <span aria-hidden="true">↻</span></button>'
+      : '';
     var playerCard =
-      '<div class="hero__portrait">' + frame +
+      '<div class="hero__portrait">' + quipHtml + frame +
         '<p class="portrait__cap"><span class="portrait__nm"' + ep('meta.name') + '>' + esc(t(c.meta.name, lang)) + '</span>' +
         '<span class="portrait__role"' + ep('meta.role') + '>' + esc(t(c.meta.role, lang)) + '</span></p>' +
+        quipBtn +
       '</div>';
     var hero =
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
@@ -283,21 +307,26 @@
         '<p class="hp-game__b">' + esc(metaJoin([ t(g.genre, lang), t(g.hours, lang) ])) + '</p></div>';
     }).join('');
 
-    var resumeSec = '<section class="section hp"><div class="wrap">' +
+    var resumeSec = '<section class="section hp hp--sep"><div class="wrap">' +
       (projRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('프로젝트 경험','Project experience') + '</h2><div class="hpl">' + projRows + '</div></div>' : '') +
       (actRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('대외 활동','Activities') + '</h2><div class="hpl">' + actRows + '</div></div>' : '') +
       (skillItems ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('보유 기술','Skills') + '</h2><div class="hp-skills">' + skillItems + '</div></div>' : '') +
       moreLink('resume', ' reveal') +
       '</div></section>';
 
-    var coverSec = '<section class="section hp hp--sep"><div class="wrap">' + moreLink('cover', ' reveal') + '</div></section>';
+    // 자기소개서 요약 — 강점 세 장을 카드로 (덱 바로 아래)
+    var smTitle = (c.coverLetter && c.coverLetter.summary && c.coverLetter.summary.title) || '';
+    var sCards = strengthCards(c, lang);
+    var coverSec = '<section class="section hp hp--summary"><div class="wrap">' +
+      (sCards ? '<div class="hp-block reveal"><h2 class="hp-h"' + ep('coverLetter.summary.title') + '>' + esc(t(smTitle, lang)) + '</h2>' + sCards + '</div>' : '') +
+      moreLink('cover', ' reveal') + '</div></section>';
 
     var playSec = '<section class="section hp hp--sep"><div class="wrap">' +
       (gameItems ? '<div class="hp-games reveal">' + gameItems + '</div>' : '') +
       moreLink('play', ' reveal') +
       '</div></section>';
 
-    return resumeSec + coverSec + playSec;
+    return coverSec + resumeSec + playSec;
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)
@@ -367,6 +396,12 @@
   function renderCover(c, lang, base) {
     var cl = c.coverLetter || {};
     var blocks = arr(cl.blocks);
+    // 맨 위 요약 — '함께 일하면, 이런 기획자입니다.' 강점 세 장 (coverLetter.summary)
+    var sm = cl.summary || {};
+    var cards = strengthCards(c, lang);
+    var summary = cards
+      ? '<section class="cl-summary reveal" aria-labelledby="cl-summary-t"><h2 class="cl-summary__t" id="cl-summary-t"' + ep('coverLetter.summary.title') + '>' + esc(t(sm.title, lang)) + '</h2>' + cards + '</section>'
+      : '';
     var body;
     if (!blocks.length) {
       body = '<div class="cover-empty">' + GHOST + '<p>' + esc(t(cl.lead, lang) || (lang==='en'?'Coming soon.':'곧 채울 예정입니다.')) + '</p></div>';
@@ -377,7 +412,7 @@
     }
     return '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'ABOUT ME':'자기소개서') + '</p>' +
-      '<h2 class="section__title"' + ep('coverLetter.title') + '>' + esc(t(cl.title, lang)) + '</h2></header>' + body + '</div></section>';
+      '<h2 class="section__title"' + ep('coverLetter.title') + '>' + esc(t(cl.title, lang)) + '</h2></header>' + summary + body + '</div></section>';
   }
 
   /* ---------- PROJECTS ---------- */
@@ -505,6 +540,6 @@
     navHtml: navHtml, sheetHtml: sheetHtml, footerHtml: footerHtml,
     renderHome: renderHome, renderResume: renderResume, renderCover: renderCover,
     renderProjects: renderProjects, renderDetail: renderDetail, renderPlay: renderPlay,
-    drawCardHtml: drawCardHtml
+    drawCardHtml: drawCardHtml, quip: QUIP
   };
 })(window);

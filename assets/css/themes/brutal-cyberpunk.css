@@ -1,0 +1,113 @@
+@charset "UTF-8";
+/* 네오 브루탈리즘 · 시안 A — 게임 사이버펑크
+   두꺼운 테두리는 그대로, 색만 검정 + 애시드 옐로 + 시안/마젠타로.
+   제목에는 색수차(글리치) 그림자, 덱에는 위험 표시 사선, 칩은 모서리를 깎습니다.
+   다크 = 밤의 거리(기본 느낌) · 라이트 = 콘크리트 낮 + 형광 옐로 사인 */
+:root[data-skin="brutal-cyberpunk"] {
+  --font-display: 'Black Han Sans', 'Archivo Black', 'Noto Sans KR', sans-serif;
+  --display-weight: 400;
+  --bw: 3px;
+  --ink: #0a0a0c; --sh-c: #f6ff3c;
+  --sh: 6px 6px 0 var(--sh-c); --sh-lg: 10px 10px 0 var(--sh-c); --sh-sm: 4px 4px 0 var(--sh-c); --sh-hover: 9px 9px 0 var(--sh-c);
+  --bg: #eceef1; --bg-elev: #e1e5ea; --surface: #ffffff; --surface-2: #f5f6f8;
+  --border: #0a0a0c; --border-2: #0a0a0c;
+  --text: #17171b; --text-muted: #4b4b56; --heading: #0a0a0c;
+  --accent: #ff2e7e; --accent-soft: #ff5c9a; --accent-2: #00889c;
+  --cta: #ffffff; --cta-text: #0a0a0c; --cta-hover: #f6ff3c;
+  --ghost-c: #0a0a0c; --glow: transparent; --btn-primary-text: #ffffff;
+  --aubergine: #0a0a0c; --paper: #f6ff3c; --periwinkle: #ff2e7e;
+  --ghost-lavender: #f6ff3c; --buttercream: #f4f6ea; --blush: #ffd8e6; --cornflower: #00889c; --mint: #00889c;
+  --mark: #f6ff3c;
+  --gen0: #ff2e7e; --gen1: #00889c; --gen2: #0a0a0c;
+  --grade-r: #6b6b75; --grade-sr: #00889c; --grade-ssr-a: #ff2e7e; --grade-ssr-b: #0a0a0c;
+  --paper-grid: repeating-linear-gradient(135deg, transparent 0 22px, rgb(10 10 12 / .045) 22px 24px);
+  --glitch-a: #00c8e0; --glitch-b: #ff2e7e; --hazard: #f6ff3c; --tape: #f6ff3c;
+  color-scheme: light;
+}
+:root[data-skin="brutal-cyberpunk"][data-theme="dark"] {
+  --ink: #f6ff3c; --sh-c: #ff2e7e;
+  --bg: #08080a; --bg-elev: #0f0f13; --surface: #121218; --surface-2: #1a1a22;
+  --border: #f6ff3c; --border-2: #f6ff3c;
+  --text: #e6e6ea; --text-muted: #a1a1ac; --heading: #ffffff;
+  --accent: #f6ff3c; --accent-soft: #ffff7a; --accent-2: #00e5ff;
+  --cta: #1f1f14; --cta-text: #f6ff3c; --cta-hover: #2b2b18;
+  --ghost-c: #f6ff3c; --btn-primary-text: #08080a;
+  --aubergine: #f6ff3c; --paper: #08080a; --periwinkle: #00e5ff;
+  --ghost-lavender: #14202a; --buttercream: #2a2a12; --blush: #2a1220; --cornflower: #00e5ff; --mint: #00e5ff;
+  --mark: #f6ff3c;
+  --gen0: #f6ff3c; --gen1: #00e5ff; --gen2: #ff2e7e;
+  --grade-r: #5b5b66; --grade-sr: #00e5ff; --grade-ssr-a: #f6ff3c; --grade-ssr-b: #ff2e7e;
+  --paper-grid: repeating-linear-gradient(135deg, transparent 0 22px, rgb(246 255 60 / .04) 22px 24px);
+  --shadow-card: none; --hazard: #2a2a12; --tape: #f6ff3c;
+  color-scheme: dark;
+}
+[data-skin="brutal-cyberpunk"] body { background-size: auto; }
+/* 제목: 색수차로 어긋난 글리치 — 본체는 또렷하게 남겨 읽힘을 지킵니다 */
+[data-skin="brutal-cyberpunk"] .hero__title { text-shadow: -2px 0 var(--glitch-a), 2px 0 var(--glitch-b); letter-spacing: -.02em; }
+[data-skin="brutal-cyberpunk"] .hero__title .accent { background: var(--accent); color: var(--btn-primary-text); padding: 0 .06em; text-shadow: none; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .hero__title .accent { color: #08080a; }
+[data-skin="brutal-cyberpunk"] .section__title, [data-skin="brutal-cyberpunk"] .proj-title, [data-skin="brutal-cyberpunk"] .detail__title { text-shadow: -1.5px 0 var(--glitch-a), 1.5px 0 var(--glitch-b); }
+/* 모서리를 깎은 칩 — 사이버펑크 기하 */
+[data-skin="brutal-cyberpunk"] .hero__eyebrow, [data-skin="brutal-cyberpunk"] .eyebrow, [data-skin="brutal-cyberpunk"] .tag,
+[data-skin="brutal-cyberpunk"] .badge, [data-skin="brutal-cyberpunk"] .gcard__cat, [data-skin="brutal-cyberpunk"] .gcard__grade,
+[data-skin="brutal-cyberpunk"] .play-card__hours, [data-skin="brutal-cyberpunk"] .quest-strip__badge {
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+}
+[data-skin="brutal-cyberpunk"] .hero__eyebrow::before { content: '// '; color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .eyebrow::before { content: '// '; }
+[data-skin="brutal-cyberpunk"] .hero__eyebrow .ghost { display: none; }
+/* 덱: 위험 표시 사선 */
+[data-skin="brutal-cyberpunk"] .card-back { background-color: #0a0a0c; background-image: repeating-linear-gradient(-45deg, transparent 0 12px, var(--tape) 12px 24px); }
+[data-skin="brutal-cyberpunk"] .card-back::before { background: #0a0a0c; border-color: var(--tape); }
+[data-skin="brutal-cyberpunk"] .card-back__seal .ghost { color: var(--tape); }
+[data-skin="brutal-cyberpunk"] .draw__deck-card:nth-child(1) { background: var(--accent); }
+[data-skin="brutal-cyberpunk"] .draw__deck-card:nth-child(2) { background: var(--accent-2); }
+[data-skin="brutal-cyberpunk"] .draw__deck-face { color: var(--paper); }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .draw__deck-face { color: var(--ink); }
+/* 판·칩 색 */
+[data-skin="brutal-cyberpunk"] .nav { background: var(--ink); color: var(--paper); border-bottom-color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .nav__logo { color: var(--paper); }
+[data-skin="brutal-cyberpunk"] .nav__logo .ghost { color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .nav__logo-en, [data-skin="brutal-cyberpunk"] .nav__link { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+[data-skin="brutal-cyberpunk"] .nav__link:hover { color: var(--paper); border-color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .nav__link.is-active { background: var(--accent); color: var(--btn-primary-text); border-color: var(--accent); }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .nav__link.is-active { color: #08080a; }
+[data-skin="brutal-cyberpunk"] .icon-btn, [data-skin="brutal-cyberpunk"] .nav__burger, [data-skin="brutal-cyberpunk"] .lang-toggle { background: var(--ink); color: var(--paper); border-color: var(--accent); box-shadow: none; }
+[data-skin="brutal-cyberpunk"] .lang-toggle__btn { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+[data-skin="brutal-cyberpunk"] .lang-toggle__btn[aria-pressed="true"] { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin="brutal-cyberpunk"] .btn--primary { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .btn--primary { color: #08080a; }
+[data-skin="brutal-cyberpunk"] .btn--outline:hover { background: var(--accent-2); color: #08080a; }
+[data-skin="brutal-cyberpunk"] .tag--lavender { background: var(--accent-2); color: #08080a; }
+[data-skin="brutal-cyberpunk"] .badge { background: var(--accent-2); color: #08080a; }
+[data-skin="brutal-cyberpunk"] .gcard__cat { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .gcard__cat { color: #08080a; }
+[data-skin="brutal-cyberpunk"] .stat__num { color: var(--heading); }
+[data-skin="brutal-cyberpunk"] .stat__num .unit { color: var(--accent-2); }
+[data-skin="brutal-cyberpunk"] .quest-strip__badge { background: var(--accent-2); color: #08080a; border-color: var(--ink); }
+[data-skin="brutal-cyberpunk"] .quest-strip__v--hi { color: var(--accent-2); font-weight: 700; }
+[data-skin="brutal-cyberpunk"] .hp-skill__ic { background: var(--accent-2); color: #08080a; }
+[data-skin="brutal-cyberpunk"] .media-box { background-image: repeating-linear-gradient(-45deg, transparent 0 18px, var(--hazard) 18px 36px); }
+[data-skin="brutal-cyberpunk"] .footer { background: var(--ink); color: var(--paper); border-top-color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .footer__brand .ghost { color: var(--accent); }
+[data-skin="brutal-cyberpunk"] .section--elev { background: var(--bg-elev); border-top: var(--bw) solid var(--ink); border-bottom: var(--bw) solid var(--ink); }
+/* 라이트: 형광 옐로는 사인처럼 몇 군데에만 — 굳은 그림자·고스트 칸·상단바 글자 */
+[data-skin="brutal-cyberpunk"] .hero__eyebrow { background: var(--hazard); border-color: var(--ink); color: var(--ink); }
+[data-skin="brutal-cyberpunk"][data-theme="dark"] .hero__eyebrow { background: var(--surface-2); color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { [data-skin="brutal-cyberpunk"] .hero__title { text-shadow: none; } }
+
+/* ── 히어로 판: 애시드 옐로 한 장, 오른쪽 아래 모서리를 깎아 칩처럼. 판 위 글자는 검정 ── */
+[data-skin="brutal-cyberpunk"], [data-skin="brutal-cyberpunk"][data-theme="dark"] { --hero-slab: #f6ff3c; --hero-slab-r: 0; }
+[data-skin="brutal-cyberpunk"] .hero::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 34px), calc(100% - 34px) 100%, 0 100%); }
+[data-skin="brutal-cyberpunk"] .hero { border-bottom: var(--bw) solid #0a0a0c; }
+[data-skin="brutal-cyberpunk"] .hero__grid > div:first-child { --heading: #0a0a0c; --text: #131316; --text-muted: #2c2c33; --ink: #0a0a0c; }
+[data-skin="brutal-cyberpunk"] .hero__title, [data-skin="brutal-cyberpunk"] .hero__sub, [data-skin="brutal-cyberpunk"] .hero__note { color: #0a0a0c; }
+[data-skin="brutal-cyberpunk"] .hero__title .accent, [data-skin="brutal-cyberpunk"][data-theme="dark"] .hero__title .accent { background: #0a0a0c; color: #f6ff3c; }
+[data-skin="brutal-cyberpunk"] .hero__eyebrow, [data-skin="brutal-cyberpunk"][data-theme="dark"] .hero__eyebrow { background: #0a0a0c; color: #f6ff3c; border-color: #0a0a0c; }
+[data-skin="brutal-cyberpunk"] .hero__eyebrow::before { color: #ff2e7e; }
+[data-skin="brutal-cyberpunk"] .hero .btn--primary, [data-skin="brutal-cyberpunk"][data-theme="dark"] .hero .btn--primary { background: #0a0a0c; color: #f6ff3c; border-color: #0a0a0c; box-shadow: 6px 6px 0 #ff2e7e; }
+[data-skin="brutal-cyberpunk"] .hero .btn--outline { background: transparent; border-color: #0a0a0c; color: #0a0a0c; box-shadow: 6px 6px 0 #00e5ff; }
+[data-skin="brutal-cyberpunk"] .hero .btn--outline:hover { background: #0a0a0c; color: #f6ff3c; }
+[data-skin="brutal-cyberpunk"] .hero .hero__portrait { border-color: #0a0a0c; --sh-c: #ff2e7e; }
+[data-skin="brutal-cyberpunk"] .hero .quip { border-color: #0a0a0c; }
+[data-skin="brutal-cyberpunk"] .home-screen .hero { padding-block: clamp(26px, 5vh, 56px) clamp(34px, 5vh, 64px); }

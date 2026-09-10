@@ -1,0 +1,257 @@
+@charset "UTF-8";
+/* ==========================================================================
+   테마 · 브랜드 홈페이지 (공통)  —  Brand Homepage
+   세계적인 회사들이 자기 제품을 무대에 올리는 방식: 넓은 여백 · 큰 타이포 ·
+   테두리 대신 그림자로 뜬 판 · 알약 버튼 · 문장처럼 읽히는 소제목.
+   프로젝트를 '제품'처럼 소개하는 어법이라, 카드 한 장이 곧 한 편의 발표가 됩니다.
+   시안별 색·서체·시그니처 장치는 brand-<시안>.css 가 정합니다.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. 토큰 — 기본보다 한 단계 크고 넓게
+   -------------------------------------------------------------------------- */
+:root[data-skin-theme="brand"] {
+  --font-sans: 'Inter', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --tracking: -0.02em;
+  --display-weight: 700;
+
+  --radius-card: 18px; --radius-lg: 24px; --radius-chip: 8px; --radius-pill: 999px;
+  --line: 1px;
+
+  --text-caption: 12.5px;
+  --text-body-sm: 14.5px;
+  --text-body: 16px;
+  --text-subheading: clamp(17px, 1.2vw + 13px, 21px);
+  --text-heading-sm: clamp(20px, 1.5vw + 14px, 26px);
+  --text-heading: clamp(26px, 2.8vw + 16px, 42px);
+  --text-heading-lg: clamp(34px, 5vw + 14px, 68px);
+  --text-display: clamp(40px, 6.2vw + 14px, 92px);
+
+  --nav-h: 68px;
+  --gutter: 22px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / .05), 0 10px 30px -18px rgb(0 0 0 / .16);
+  --shadow-lift: 0 1px 3px rgb(0 0 0 / .06), 0 26px 60px -34px rgb(0 0 0 / .3);
+  --shadow-sm: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. 바탕·글자
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] body { line-height: 1.66; -webkit-font-smoothing: antialiased; }
+[data-skin-theme="brand"] h1, [data-skin-theme="brand"] h2, [data-skin-theme="brand"] h3, [data-skin-theme="brand"] h4 { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: -.035em; }
+[data-skin-theme="brand"] .hero__title, [data-skin-theme="brand"] .section__title, [data-skin-theme="brand"] .proj-title,
+[data-skin-theme="brand"] .detail__title, [data-skin-theme="brand"] .stat__num, [data-skin-theme="brand"] .hp-h,
+[data-skin-theme="brand"] .card__title, [data-skin-theme="brand"] .gcard__name, [data-skin-theme="brand"] .nav__logo,
+[data-skin-theme="brand"] .portrait__nm, [data-skin-theme="brand"] .play-card__name, [data-skin-theme="brand"] .pager__title,
+[data-skin-theme="brand"] .tl-role, [data-skin-theme="brand"] .hpl-row__t, [data-skin-theme="brand"] .draw__deck-label,
+[data-skin-theme="brand"] .block__label { font-family: var(--font-display); }
+[data-skin-theme="brand"] :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+[data-skin-theme="brand"] .stat__num, [data-skin-theme="brand"] .tl-date, [data-skin-theme="brand"] .gcard__period,
+[data-skin-theme="brand"] .detail__period, [data-skin-theme="brand"] .play-card__hours, [data-skin-theme="brand"] .quest-strip__v { font-variant-numeric: tabular-nums; }
+[data-skin-theme="brand"] .section { padding-block: clamp(48px, 8vh, 96px); }
+
+/* --------------------------------------------------------------------------
+   3. 상단 바 — 화면 폭을 다 쓰는 얇은 띠
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .nav-wrap { padding: 0; background: transparent; }
+[data-skin-theme="brand"] .nav {
+  max-width: none; min-height: var(--nav-h);
+  padding: 10px max(var(--gutter), env(safe-area-inset-left, 0px));
+  border: 0; border-bottom: var(--line) solid var(--border); border-radius: 0;
+  background: var(--nav-bg, var(--bg)); box-shadow: none; color: var(--text);
+  -webkit-backdrop-filter: saturate(180%) blur(14px); backdrop-filter: saturate(180%) blur(14px);
+}
+[data-skin-theme="brand"] .nav__logo { font-weight: 600; font-size: 16px; color: var(--heading); letter-spacing: -.02em; }
+[data-skin-theme="brand"] .nav__logo .ghost { width: 22px; height: 24px; color: var(--accent); }
+[data-skin-theme="brand"] .nav__logo-en { font-size: 12px; color: var(--text-muted); }
+[data-skin-theme="brand"] .nav__link { border-radius: var(--radius-pill); padding: 8px 15px; font-size: 14px; font-weight: 500; color: var(--text-muted); }
+[data-skin-theme="brand"] .nav__link .chev { display: none; }
+[data-skin-theme="brand"] .nav__link:hover { background: var(--surface-2); color: var(--heading); }
+[data-skin-theme="brand"] .nav__link.is-active { background: var(--cta); color: var(--cta-text); font-weight: 600; }
+[data-skin-theme="brand"] .icon-btn, [data-skin-theme="brand"] .nav__burger { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: transparent; color: var(--text); width: 40px; height: 40px; }
+[data-skin-theme="brand"] .icon-btn:hover { background: var(--surface-2); color: var(--accent); }
+[data-skin-theme="brand"] .lang-toggle { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: transparent; padding: 2px; }
+[data-skin-theme="brand"] .lang-toggle__btn { border-radius: var(--radius-pill); padding: 7px 11px; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+[data-skin-theme="brand"] .lang-toggle__btn[aria-pressed="true"] { background: var(--cta); color: var(--cta-text); }
+[data-skin-theme="brand"] .sheet__panel { border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: var(--line) solid var(--border); }
+[data-skin-theme="brand"] .sheet__link { border-bottom: var(--line) solid var(--border); font-weight: 500; }
+[data-skin-theme="brand"] .sheet__num { color: var(--accent); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   4. 버튼·칩 — 알약, 테두리보다 색면
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .btn { border-radius: var(--radius-pill); font-size: 15px; font-weight: 600; min-height: 48px; padding: 13px 26px; letter-spacing: -.01em; }
+[data-skin-theme="brand"] .btn--primary { background: var(--accent); color: var(--btn-primary-text); border: 0; box-shadow: none; }
+[data-skin-theme="brand"] .btn--primary:hover { background: var(--accent-soft); transform: translateY(-1px); }
+[data-skin-theme="brand"] .btn--outline { background: transparent; border: var(--line) solid var(--border-2); color: var(--text); }
+[data-skin-theme="brand"] .btn--outline:hover { border-color: var(--accent); color: var(--accent); background: var(--surface-2); }
+[data-skin-theme="brand"] .btn--sm { min-height: 40px; padding: 9px 16px; font-size: 13.5px; }
+[data-skin-theme="brand"] .link-more, [data-skin-theme="brand"] .hp-more { border-radius: var(--radius-pill); background: transparent; border: var(--line) solid var(--border-2); color: var(--text); font-weight: 600; }
+[data-skin-theme="brand"] .link-more:hover, [data-skin-theme="brand"] .hp-more:hover { border-color: var(--accent); color: var(--accent); }
+[data-skin-theme="brand"] .tag { border-radius: var(--radius-pill); border: 0; background: var(--surface-2); color: var(--text-muted); font-size: 12.5px; font-weight: 500; }
+[data-skin-theme="brand"] .tag--lavender, [data-skin-theme="brand"] .tag--cornflower { background: var(--cta); color: var(--cta-text); }
+[data-skin-theme="brand"] .badge { border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text); border: 0; font-weight: 600; font-size: 12px; letter-spacing: 0; text-transform: none; }
+[data-skin-theme="brand"] .badge__dot { background: currentColor; }
+[data-skin-theme="brand"] .eyebrow {
+  border: 0; background: none; padding: 0; border-radius: 0;
+  color: var(--accent); font-size: 12.5px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   5. 히어로 — 제품 발표 상단
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .hero { min-height: 0; padding-block: clamp(40px, 8vh, 104px) clamp(30px, 5vh, 64px); }
+[data-skin-theme="brand"] .home-screen .hero { padding-block: clamp(28px, 5vh, 64px) clamp(24px, 4vh, 48px); }
+[data-skin-theme="brand"] .home-screen .hero__title { font-size: clamp(34px, 4.2vw + 13px, 72px); }
+[data-skin-theme="brand"] .hero__eyebrow { border: 0; background: none; padding: 0; color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+[data-skin-theme="brand"] .hero__eyebrow .ghost { color: var(--accent); }
+[data-skin-theme="brand"] .hero__title { font-weight: var(--display-weight); line-height: 1.08; letter-spacing: -.045em; }
+[data-skin-theme="brand"] .hero__title .accent { color: var(--accent); }
+[data-skin-theme="brand"] .hero__sub { color: var(--text-muted); font-size: var(--text-subheading); line-height: 1.6; }
+[data-skin-theme="brand"] .hero__note { font-size: 13px; color: var(--text-muted); letter-spacing: 0; }
+[data-skin-theme="brand"] .portrait { border-radius: var(--radius-lg); border: 0; background: var(--surface-2); box-shadow: var(--shadow-card); overflow: hidden; }
+[data-skin-theme="brand"] .portrait--empty { background: var(--surface-2); color: var(--accent); }
+[data-skin-theme="brand"] .portrait__cap { padding: 7px 16px; border-radius: var(--radius-pill); background: var(--surface); border: var(--line) solid var(--border); }
+[data-skin-theme="brand"] .portrait__nm { font-weight: 600; }
+[data-skin-theme="brand"] .portrait__role { color: var(--text-muted); font-weight: 500; }
+[data-skin-theme="brand"] .ghost-art { border-radius: var(--radius-lg); border: 0; background: var(--surface-2); }
+[data-skin-theme="brand"] .ghost-art::before { background: none; }
+[data-skin-theme="brand"] .ghost-art .ghost { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   6. 카드 — 테두리 없이 떠 있는 판, 등급은 얇은 링으로
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .card-back { border-radius: var(--radius-card); border: 0; background: var(--surface-2); background-image: none; box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .card-back::before { display: none; }
+[data-skin-theme="brand"] .card-back__seal .ghost { color: var(--accent); filter: none; }
+[data-skin-theme="brand"] .draw__deck-face { color: var(--text); }
+[data-skin-theme="brand"] .draw__deck-label { font-weight: 600; font-size: 15px; }
+[data-skin-theme="brand"] .draw__deck-hint { font-size: 12.5px; color: var(--text-muted); }
+[data-skin-theme="brand"] .draw-card__front, [data-skin-theme="brand"] .draw-card__back { border-radius: var(--radius-card); }
+[data-skin-theme="brand"] .draw__empty, [data-skin-theme="brand"] .proj-empty { border: var(--line) dashed var(--border-2); border-radius: var(--radius-card); }
+
+[data-skin-theme="brand"] .gcard {
+  --frame: transparent; --frame-w: 0px; --frame-glow: transparent;
+  --badge-bg: var(--surface-2); --badge-fg: var(--text-muted);
+  border-radius: var(--radius-card); background-size: auto; background-position: 0 0;
+  box-shadow: var(--shadow-card); animation: none;
+}
+[data-skin-theme="brand"] .gcard::after { display: none; }
+[data-skin-theme="brand"] .gcard__frame { border-radius: var(--radius-card); background: var(--surface); padding: 4.4cqw; }
+[data-skin-theme="brand"] .gcard__name { font-weight: 600; font-size: 6.6cqw; line-height: 1.28; text-align: left; letter-spacing: -.03em; }
+[data-skin-theme="brand"] .gcard__meta { margin-block: 2.4cqw 3.2cqw; }
+[data-skin-theme="brand"] .gcard__cat { background: var(--cta); color: var(--cta-text); border-radius: var(--radius-pill); font-weight: 600; }
+[data-skin-theme="brand"] .gcard__tag { text-align: right; color: var(--text-muted); }
+[data-skin-theme="brand"] .gcard__grade { border-radius: var(--radius-pill); font-weight: 700; letter-spacing: .02em; }
+[data-skin-theme="brand"] .gcard__art { border-radius: calc(var(--radius-card) - 6px); background: var(--surface-2); }
+:root[data-skin-theme="brand"] .gcard__gen--0 { color: var(--gen0); }
+:root[data-skin-theme="brand"] .gcard__gen--1 { color: var(--gen1); }
+:root[data-skin-theme="brand"] .gcard__gen--2 { color: var(--gen2); }
+[data-skin-theme="brand"] .gcard__desc { text-align: left; color: var(--text-muted); }
+[data-skin-theme="brand"] .gcard__go { color: var(--accent); font-weight: 600; }
+:root[data-skin-theme="brand"] .gcard[data-grade="A"] { --frame: transparent; --frame-w: 0px; }
+:root[data-skin-theme="brand"] .gcard[data-grade="R"] { --frame: var(--grade-r); --frame-w: 1px; --badge-bg: var(--grade-r-bg, var(--surface-2)); --badge-fg: var(--grade-r-fg, var(--text-muted)); }
+:root[data-skin-theme="brand"] .gcard[data-grade="SR"] { --frame: var(--grade-sr); --frame-w: 1.5px; --badge-bg: var(--grade-sr-bg, var(--grade-sr)); --badge-fg: var(--grade-sr-fg, #fff); }
+:root[data-skin-theme="brand"] .gcard[data-grade="SSR"] { --frame: var(--grade-ssr); --frame-w: 2px; --badge-bg: var(--grade-ssr-bg, var(--accent)); --badge-fg: var(--grade-ssr-fg, #fff); }
+
+/* --------------------------------------------------------------------------
+   7. 홈 요약 · 섹션 · 이력서
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .hp--sep { border-top: var(--line) solid var(--border); }
+[data-skin-theme="brand"] .hp-h { font-weight: 600; letter-spacing: -.03em; }
+[data-skin-theme="brand"] .hpl-row { border-top: var(--line) solid var(--border); border-radius: var(--radius-chip); }
+[data-skin-theme="brand"] .hpl-row:hover { background: var(--surface-2); }
+[data-skin-theme="brand"] .hp-thumb { border-radius: var(--radius-chip); border: 0; background: var(--surface-2); }
+[data-skin-theme="brand"] .hp-thumb--empty { color: var(--accent); }
+[data-skin-theme="brand"] .hpl-row__t { font-weight: 600; }
+[data-skin-theme="brand"] .hp-skill__ic { border-radius: var(--radius-pill); border: 0; background: var(--cta); color: var(--cta-text); }
+[data-skin-theme="brand"] .hp-skill__t { font-weight: 600; }
+[data-skin-theme="brand"] .hp-game__ic { border-radius: var(--radius-chip); border: 0; background: var(--surface-2); color: var(--accent); }
+[data-skin-theme="brand"] .hp-game__t { font-weight: 600; }
+[data-skin-theme="brand"] .section--elev { background: var(--bg-elev); border-top: 0; border-bottom: 0; }
+[data-skin-theme="brand"] .section__title { font-weight: var(--display-weight); letter-spacing: -.04em; }
+[data-skin-theme="brand"] .section__lead { color: var(--text-muted); font-size: var(--text-subheading); }
+[data-skin-theme="brand"] .stat { border: 0; border-radius: var(--radius-card); background: var(--surface); box-shadow: none; }
+[data-skin-theme="brand"] .stat__num { font-weight: var(--display-weight); font-size: clamp(32px, 3.2vw + 12px, 52px); color: var(--heading); line-height: 1.02; letter-spacing: -.045em; }
+[data-skin-theme="brand"] .stat__num .unit { font-size: .38em; color: var(--text-muted); }
+[data-skin-theme="brand"] .stat__label { color: var(--text-muted); font-size: 13.5px; }
+[data-skin-theme="brand"] .profile { border: 0; border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); overflow: hidden; }
+[data-skin-theme="brand"] .profile__row { border-top: var(--line) solid var(--border); }
+@media (min-width: 720px) { [data-skin-theme="brand"] .profile__row:nth-child(even) { border-left: var(--line) solid var(--border); } }
+[data-skin-theme="brand"] .profile__k { color: var(--text-muted); font-weight: 500; }
+[data-skin-theme="brand"] .card { border: 0; border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .card__title { font-weight: 600; }
+[data-skin-theme="brand"] .card__body { color: var(--text-muted); }
+[data-skin-theme="brand"] .tool__ic { border-radius: var(--radius-chip); border: 0; background: var(--surface-2); color: var(--text); }
+[data-skin-theme="brand"] .timeline::before { background: var(--border); width: var(--line); }
+[data-skin-theme="brand"] .tl-item::before { width: 10px; height: 10px; border-radius: 999px; background: var(--accent); border: 0; box-shadow: 0 0 0 4px var(--bg); }
+[data-skin-theme="brand"] .tl-item--now::before { background: var(--grade-sr); }
+[data-skin-theme="brand"] .tl-date { color: var(--text-muted); font-weight: 600; letter-spacing: 0; font-size: 13px; }
+[data-skin-theme="brand"] .tl-role { font-weight: 600; }
+[data-skin-theme="brand"] .tl-org { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   8. 프로젝트 · 상세 · 게임플레이 · 푸터
+   -------------------------------------------------------------------------- */
+[data-skin-theme="brand"] .proj-title { font-weight: var(--display-weight); letter-spacing: -.04em; }
+[data-skin-theme="brand"] .tabs { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: transparent; padding: 3px; gap: 2px; }
+[data-skin-theme="brand"] .tab { border-radius: var(--radius-pill); padding: 9px 18px; font-size: 14px; font-weight: 600; color: var(--text-muted); }
+[data-skin-theme="brand"] .tab.is-active { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin-theme="brand"][data-theme="dark"] .tab.is-active { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin-theme="brand"] .back-link { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: transparent; color: var(--text-muted); font-weight: 500; }
+[data-skin-theme="brand"] .back-link:hover { border-color: var(--accent); color: var(--accent); }
+[data-skin-theme="brand"] .detail__title { font-weight: var(--display-weight); line-height: 1.1; letter-spacing: -.045em; }
+[data-skin-theme="brand"] .detail__period { color: var(--text-muted); }
+[data-skin-theme="brand"] .quest-strip { border-radius: var(--radius-card); border: 0; border-left: 3px solid var(--accent); background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .quest-strip__badge { border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text); font-weight: 700; }
+[data-skin-theme="brand"] .quest-strip__k { color: var(--text-muted); font-weight: 600; letter-spacing: 0; width: 58px; }
+[data-skin-theme="brand"] .quest-strip__v--hi { color: var(--accent); font-weight: 700; }
+[data-skin-theme="brand"] .detail__meta-row { border-left: 2px solid var(--border); }
+[data-skin-theme="brand"] .detail__meta-k { color: var(--text-muted); font-weight: 500; letter-spacing: 0; }
+[data-skin-theme="brand"] .detail__learned-title { font-weight: 600; }
+[data-skin-theme="brand"] .bullets li::before { background: var(--accent); width: 5px; height: 5px; border-radius: 999px; }
+[data-skin-theme="brand"] .store-link { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: transparent; color: var(--text-muted); }
+[data-skin-theme="brand"] .store-link:hover { border-color: var(--accent); color: var(--accent); }
+[data-skin-theme="brand"] .media-box { border-radius: var(--radius-lg); border: 0; background: var(--surface-2); box-shadow: none; }
+[data-skin-theme="brand"] .media-box--empty { color: var(--text-muted); }
+[data-skin-theme="brand"] .block__label { font-weight: 600; letter-spacing: -.02em; }
+[data-skin-theme="brand"] .block__label small { color: var(--text-muted); font-weight: 500; }
+[data-skin-theme="brand"] .pager__item { border-radius: var(--radius-card); border: 0; background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .pager__item:hover { box-shadow: var(--shadow-lift); }
+[data-skin-theme="brand"] .pager__dir { color: var(--text-muted); font-weight: 600; letter-spacing: 0; }
+[data-skin-theme="brand"] .pager__title { font-weight: 600; }
+[data-skin-theme="brand"] .play-card { border-radius: var(--radius-card); border: 0; background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .play-card__name { font-weight: 600; }
+[data-skin-theme="brand"] .play-card__hours { border-radius: var(--radius-pill); background: var(--cta); color: var(--cta-text); font-weight: 600; }
+[data-skin-theme="brand"] .play-card__genre { color: var(--text-muted); }
+[data-skin-theme="brand"] .play-card__note { border-top: var(--line) solid var(--border); color: var(--text-muted); }
+[data-skin-theme="brand"] .play-card__icon { border-radius: var(--radius-chip); }
+[data-skin-theme="brand"] .cover-empty { border-radius: var(--radius-lg); border: var(--line) dashed var(--border-2); background: var(--surface); }
+[data-skin-theme="brand"] .footer { border-top: var(--line) solid var(--border); background: var(--bg-elev); }
+[data-skin-theme="brand"] .footer__brand { font-weight: 600; }
+[data-skin-theme="brand"] .footer__brand .ghost { color: var(--accent); }
+[data-skin-theme="brand"] .footer__tagline, [data-skin-theme="brand"] .footer__copy { color: var(--text-muted); }
+[data-skin-theme="brand"] .to-top { border-radius: var(--radius-pill); border: var(--line) solid var(--border); background: var(--surface); color: var(--text); }
+
+/* ── 카드 호버·기울기 ─────────────────────────────────────────────────── */
+[data-skin-theme="brand"] .gcard,
+[data-skin-theme="brand"] .gcard.reveal.is-visible {
+  transform: perspective(680px) rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0, var(--lift), 0) scale(var(--sc, 1));
+  transition: transform .5s cubic-bezier(.2, .8, .3, 1), box-shadow .5s ease;
+}
+:root[data-skin-theme="brand"] .gcard.is-tilt,
+[data-skin-theme="brand"] .gcard.reveal.is-visible.is-tilt { transition: transform .06s linear, box-shadow .12s linear; }
+[data-skin-theme="brand"] .gcard:hover { --lift: -8px; --sc: 1.03; box-shadow: var(--shadow-lift); }
+
+/* ── 사진 옆 말풍선 · 사진 카드 · 자기소개서 요약 (브랜드: 테두리 없이 그림자로) ── */
+[data-skin-theme="brand"] .quip { border: 0; border-radius: 20px 20px 20px 6px; box-shadow: var(--shadow-lift); background: var(--surface); color: var(--heading); font-weight: 600; }
+[data-skin-theme="brand"] .quip::after { border: 0; }
+[data-skin-theme="brand"] .quip__more { border-color: var(--border-2); background: var(--surface); }
+[data-skin-theme="brand"] .hero__portrait { padding: 12px 12px 14px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow-lift); --pose-rest: -2deg; }
+[data-skin-theme="brand"] .hero__portrait .portrait { box-shadow: none; border-radius: 14px; }
+[data-skin-theme="brand"] .hero__portrait .portrait__cap { border: 0; background: none; padding: 4px 0 0; }
+[data-skin-theme="brand"] .cl-summary { border: 0; padding-top: 0; }
+[data-skin-theme="brand"] .strength { border: 0; box-shadow: var(--shadow-card); }
+[data-skin-theme="brand"] .strength__t { font-family: var(--font-display); font-weight: 600; }

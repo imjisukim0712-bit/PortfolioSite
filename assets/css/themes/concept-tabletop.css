@@ -1,0 +1,161 @@
+@charset "UTF-8";
+/* 컨셉 무대 · 시안 C — 보드게임 테이블
+   남색 펠트 테이블 위에 크라프트 상자 뚜껑이 놓이고, 두꺼운 종이 카드와 나무 토큰이 흩어져 있습니다.
+   첫 화면(판)이 상자 뚜껑, 카드 뽑기는 진짜 덱, 수치는 점수 토큰, 버튼은 나무 말.
+   펠트 위 글자는 밝게, 종이·크라프트 위 글자는 어둡게 — 물건마다 색을 따로 정합니다.
+   라이트 = 펠트 테이블 · 다크 = 조명을 낮춘 테이블 */
+:root[data-skin="concept-tabletop"] {
+  --font-sans: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-display: 'Outfit', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --display-weight: 800;
+  --tracking: -0.02em;
+  --radius-card: 10px; --radius-lg: 14px; --radius-chip: 6px; --radius-pill: 999px;
+
+  /* 펠트(바탕) 위 */
+  --bg: #1e2a4a; --bg-elev: #17213b; --surface: #fbf3e3; --surface-2: #efe3c8;
+  --border: #c9b48c; --border-2: #a48c5c;
+  --text: #e9e0cc; --text-muted: #bdb39c; --heading: #fff8e8;
+  --accent: #e0a33a; --accent-soft: #ffc45c;
+  --cta: #efe3c8; --cta-text: #4a381f; --cta-hover: #e6d6b3;
+  --ghost-c: #e0a33a; --glow: transparent; --btn-primary-text: #fff8e8;
+  --aubergine: #3b2a1a; --paper: #fbf3e3; --periwinkle: #e0a33a;
+  --ghost-lavender: #efe3c8; --buttercream: #efe3c8; --blush: #ead0c4; --cornflower: #6f9bd6; --mint: #7aa66f;
+  --nav-bg: #3b2a1a;
+  --gen0: #8a5a34; --gen1: #2f5d8a; --gen2: #7a4b2a;
+  --grade-r: #a48c5c; --grade-r-bg: #efe3c8; --grade-r-fg: #6f5f47;
+  --grade-sr: #c98a1e; --grade-sr-bg: #f6e2b5; --grade-sr-fg: #6a4400;
+  --grade-ssr: #b2432e; --grade-ssr-bg: #b2432e; --grade-ssr-fg: #fff3e0;
+  --shadow-card: 0 2px 0 #c9b48c, 0 10px 22px -12px rgb(0 0 0 / .55);
+  --shadow-lift: 0 3px 0 #c9b48c, 0 26px 44px -20px rgb(0 0 0 / .7);
+  --deck-shadow: 0 3px 0 #a48c5c, 0 10px 20px -10px rgb(0 0 0 / .6);
+  --hero-slab: #d9c3a0; --hero-slab-r: 14px;
+  --kraft: #d9c3a0; --kraft-2: #c9ae82; --wood: #8a5a34; --wood-2: #6b4326; --ink: #2a1f12; --cream: #fbf3e3;
+  color-scheme: light;
+}
+:root[data-skin="concept-tabletop"][data-theme="dark"] {
+  --bg: #0f1626; --bg-elev: #0b101c; --surface: #e9dfc8; --surface-2: #d9cdb0;
+  --border: #b3a07a; --border-2: #8f7a52;
+  --text: #d8d0bd; --text-muted: #a49b86; --heading: #f4ecd8;
+  --accent: #e0a33a; --accent-soft: #ffc45c;
+  --cta: #d9cdb0; --cta-text: #3d2c17; --cta-hover: #cdbf9e;
+  --aubergine: #2e2014; --paper: #e9dfc8;
+  --nav-bg: #2e2014;
+  --shadow-card: 0 2px 0 #b3a07a, 0 12px 24px -12px rgb(0 0 0 / .8);
+  --shadow-lift: 0 3px 0 #b3a07a, 0 28px 48px -22px rgb(0 0 0 / .9);
+  --deck-shadow: 0 3px 0 #8f7a52, 0 12px 22px -10px rgb(0 0 0 / .8);
+  --hero-slab: #b89f78; --kraft: #b89f78; --kraft-2: #a48a62; --wood: #6f4626; --wood-2: #55351c; --cream: #e9dfc8;
+  color-scheme: dark;
+}
+
+/* ── 펠트 질감 · 나무 상단 바 ─────────────────────────────────────────── */
+[data-skin="concept-tabletop"] body { background-image: radial-gradient(rgb(255 255 255 / .05) .8px, transparent .9px); background-size: 4px 4px; }
+[data-skin="concept-tabletop"] .nav-wrap { background: transparent; }
+[data-skin="concept-tabletop"] .nav { background: linear-gradient(180deg, var(--wood), var(--wood-2)); color: var(--cream); border: 0; border-bottom: 3px solid #4a2d18; box-shadow: 0 6px 18px -8px rgb(0 0 0 / .7); }
+[data-skin="concept-tabletop"] .nav__logo, [data-skin="concept-tabletop"] .nav__logo-en { color: var(--cream); }
+[data-skin="concept-tabletop"] .nav__logo .ghost { color: var(--accent); }
+[data-skin="concept-tabletop"] .nav__link { color: color-mix(in srgb, var(--cream) 78%, transparent); border-radius: 999px; }
+[data-skin="concept-tabletop"] .nav__link:hover { background: rgb(255 255 255 / .12); color: var(--cream); }
+[data-skin="concept-tabletop"] .nav__link.is-active { background: var(--cream); color: var(--ink); }
+[data-skin="concept-tabletop"] .icon-btn, [data-skin="concept-tabletop"] .nav__burger, [data-skin="concept-tabletop"] .lang-toggle { background: rgb(255 255 255 / .12); border-color: transparent; color: var(--cream); }
+[data-skin="concept-tabletop"] .lang-toggle__btn { color: color-mix(in srgb, var(--cream) 75%, transparent); }
+[data-skin="concept-tabletop"] .lang-toggle__btn[aria-pressed="true"] { background: var(--cream); color: var(--ink); }
+[data-skin="concept-tabletop"] .footer { background: linear-gradient(180deg, var(--wood), var(--wood-2)); border-top: 3px solid #4a2d18; color: var(--cream); }
+[data-skin="concept-tabletop"] .footer__brand, [data-skin="concept-tabletop"] .footer__tagline, [data-skin="concept-tabletop"] .footer__copy { color: var(--cream); }
+[data-skin="concept-tabletop"] .footer__brand .ghost { color: var(--accent); }
+
+/* ── 상자 뚜껑: 크라프트 판 + 엠보싱 테두리 ─────────────────────────── */
+[data-skin="concept-tabletop"] .hero::before {
+  background-image: repeating-linear-gradient(90deg, rgb(0 0 0 / .035) 0 1px, transparent 1px 4px);
+  box-shadow: inset 0 0 0 6px var(--kraft-2), inset 0 0 0 8px color-mix(in srgb, var(--cream) 55%, transparent), 0 22px 46px -20px rgb(0 0 0 / .75);
+}
+[data-skin="concept-tabletop"] .hero__grid > div:first-child { --heading: #2a1f12; --text: #3d2f1e; --text-muted: #6a5842; --border: #a48c5c; }
+[data-skin="concept-tabletop"] .hero__title { font-weight: 800; letter-spacing: -.035em; line-height: 1.08; color: #2a1f12; text-shadow: 0 1px 0 rgb(255 255 255 / .35); }
+[data-skin="concept-tabletop"] .hero__title .accent { color: #b2432e; }
+[data-skin="concept-tabletop"] .hero__sub, [data-skin="concept-tabletop"] .hero__note { color: #3d2f1e; }
+[data-skin="concept-tabletop"] .hero__eyebrow { border: 0; padding: 6px 12px; border-radius: 6px; background: var(--cream); color: #6a5842; box-shadow: 0 2px 0 var(--kraft-2); font-family: var(--font-display); font-weight: 700; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; transform: rotate(-1.5deg); }
+[data-skin="concept-tabletop"] .hero__eyebrow .ghost { color: #b2432e; }
+[data-skin="concept-tabletop"] .hero__eyebrow::after { content: '  ·  1 PLAYER  ·  ∞ MIN'; }
+[data-skin="concept-tabletop"] .hero .btn--primary { background: linear-gradient(180deg, var(--wood), var(--wood-2)); color: var(--cream); border: 0; box-shadow: 0 3px 0 #3a2312, inset 0 1px 0 rgb(255 255 255 / .18); }
+[data-skin="concept-tabletop"] .hero .btn--outline { background: var(--cream); color: #2a1f12; border: 0; box-shadow: 0 3px 0 var(--kraft-2); }
+[data-skin="concept-tabletop"] .hero .btn:hover { transform: translateY(1px); box-shadow: 0 2px 0 #3a2312; }
+[data-skin="concept-tabletop"] .hero .btn--outline:hover { background: var(--cream); color: #b2432e; box-shadow: 0 2px 0 var(--kraft-2); }
+[data-skin="concept-tabletop"] .home-screen .hero { padding-block: 40px 40px; }
+
+/* ── 종이 카드: 크림 두꺼운 종이, 안쪽에 재단선 ─────────────────────── */
+[data-skin="concept-tabletop"] .gcard, [data-skin="concept-tabletop"] .card, [data-skin="concept-tabletop"] .stat, [data-skin="concept-tabletop"] .strength,
+[data-skin="concept-tabletop"] .play-card, [data-skin="concept-tabletop"] .pager__item, [data-skin="concept-tabletop"] .profile, [data-skin="concept-tabletop"] .quest-strip,
+[data-skin="concept-tabletop"] .media-box, [data-skin="concept-tabletop"] .hp-thumb, [data-skin="concept-tabletop"] .tabs, [data-skin="concept-tabletop"] .cover-empty {
+  --heading: #2a1f12; --text: #3d2f1e; --text-muted: #6f5f47; --border: #c9b48c; --border-2: #a48c5c; --accent: #b2432e; --accent-soft: #8f3524;
+  color: var(--text);
+}
+[data-skin="concept-tabletop"] .gcard { --frame: var(--kraft-2); --frame-w: 2px; border-radius: 10px; box-shadow: var(--shadow-card); }
+[data-skin="concept-tabletop"] .gcard__frame { border-radius: 8px; background: var(--cream); outline: 1px dashed var(--border-2); outline-offset: -7px; padding: 5cqw; }
+[data-skin="concept-tabletop"] .gcard__name { font-family: var(--font-display); font-weight: 800; }
+[data-skin="concept-tabletop"] .gcard__cat { background: var(--wood); color: var(--cream); border-radius: 4px; }
+[data-skin="concept-tabletop"] .gcard__grade { border-radius: 999px; font-family: var(--font-display); font-weight: 800; }
+[data-skin="concept-tabletop"] .gcard__art { border-radius: 6px; background: var(--surface-2); }
+[data-skin="concept-tabletop"] .gcard__go { color: #b2432e; font-weight: 700; }
+[data-skin="concept-tabletop"] .gcard:hover { box-shadow: var(--shadow-lift); }
+:root[data-skin="concept-tabletop"] .gcard[data-grade="SSR"] { --frame: #b2432e; --frame-w: 3px; }
+:root[data-skin="concept-tabletop"] .gcard[data-grade="SR"] { --frame: #c98a1e; --frame-w: 3px; }
+[data-skin="concept-tabletop"] .card, [data-skin="concept-tabletop"] .play-card, [data-skin="concept-tabletop"] .pager__item, [data-skin="concept-tabletop"] .profile, [data-skin="concept-tabletop"] .quest-strip, [data-skin="concept-tabletop"] .media-box { background: var(--cream); border: 2px solid var(--kraft-2); box-shadow: var(--shadow-card); }
+[data-skin="concept-tabletop"] .quest-strip { border-left: 6px solid #b2432e; }
+[data-skin="concept-tabletop"] .quest-strip__badge { background: #b2432e; color: var(--cream); }
+[data-skin="concept-tabletop"] .quest-strip__v--hi { color: #b2432e; font-weight: 800; }
+[data-skin="concept-tabletop"] .hp-thumb { background: var(--cream); }
+
+/* ── 점수 토큰 · 나무 말 ──────────────────────────────────────────────── */
+[data-skin="concept-tabletop"] .stat { background: var(--cream); border: 2px solid var(--kraft-2); border-radius: 16px; box-shadow: var(--shadow-card); position: relative; }
+[data-skin="concept-tabletop"] .stat::before { content: ''; position: absolute; inset: 6px; border: 1px dashed var(--border-2); border-radius: 11px; pointer-events: none; }
+[data-skin="concept-tabletop"] .stat__num { font-family: var(--font-display); font-weight: 800; color: #b2432e; }
+[data-skin="concept-tabletop"] .btn, [data-skin="concept-tabletop"] .link-more, [data-skin="concept-tabletop"] .hp-more { border-radius: 999px; font-family: var(--font-display); font-weight: 700; letter-spacing: .02em; }
+[data-skin="concept-tabletop"] .btn--primary, [data-skin="concept-tabletop"] .link-more, [data-skin="concept-tabletop"] .hp-more { background: linear-gradient(180deg, var(--wood), var(--wood-2)); color: var(--cream); border: 0; box-shadow: 0 3px 0 #3a2312, inset 0 1px 0 rgb(255 255 255 / .18); }
+[data-skin="concept-tabletop"] .btn--primary:hover, [data-skin="concept-tabletop"] .link-more:hover, [data-skin="concept-tabletop"] .hp-more:hover { transform: translateY(1px); box-shadow: 0 2px 0 #3a2312; color: var(--cream); }
+[data-skin="concept-tabletop"] .btn--outline { background: var(--cream); color: #2a1f12; border: 0; box-shadow: 0 3px 0 var(--kraft-2); }
+[data-skin="concept-tabletop"] .btn--outline:hover { background: var(--cream); color: #b2432e; transform: translateY(1px); box-shadow: 0 2px 0 var(--kraft-2); }
+[data-skin="concept-tabletop"] .tag, [data-skin="concept-tabletop"] .badge, [data-skin="concept-tabletop"] .play-card__hours { background: var(--cream); color: #3d2f1e; border: 1px solid var(--kraft-2); border-radius: 999px; }
+[data-skin="concept-tabletop"] .eyebrow { color: var(--accent); font-family: var(--font-display); font-weight: 700; letter-spacing: .14em; }
+[data-skin="concept-tabletop"] .section__title, [data-skin="concept-tabletop"] .proj-title, [data-skin="concept-tabletop"] .detail__title, [data-skin="concept-tabletop"] .hp-h { font-family: var(--font-display); font-weight: 800; letter-spacing: -.03em; }
+[data-skin="concept-tabletop"] .hp-h::before { content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 12px; border-radius: 50%; background: linear-gradient(180deg, var(--wood), var(--wood-2)); box-shadow: 0 2px 0 #3a2312; vertical-align: -.02em; }
+[data-skin="concept-tabletop"] .hpl-row:hover { background: rgb(255 255 255 / .06); }
+[data-skin="concept-tabletop"] .hp-skill__ic { background: var(--cream); color: var(--wood); border-radius: 50%; }
+[data-skin="concept-tabletop"] .hp-game__ic { background: var(--cream); color: var(--wood); }
+[data-skin="concept-tabletop"] .timeline::before { background: rgb(255 255 255 / .18); }
+[data-skin="concept-tabletop"] .tl-item::before { width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(180deg, var(--wood), var(--wood-2)); box-shadow: 0 2px 0 #3a2312, 0 0 0 3px var(--bg); }
+[data-skin="concept-tabletop"] .tl-item--now::before { background: linear-gradient(180deg, #e0a33a, #b57a1a); box-shadow: 0 2px 0 #7a4f0a, 0 0 0 3px var(--bg); }
+[data-skin="concept-tabletop"] .tl-date { color: var(--accent); font-family: var(--font-display); font-weight: 700; }
+[data-skin="concept-tabletop"] .section--elev { background: var(--bg-elev); }
+[data-skin="concept-tabletop"] .tab { border-radius: 999px; font-family: var(--font-display); font-weight: 700; }
+[data-skin="concept-tabletop"] .tabs { background: var(--cream); border: 2px solid var(--kraft-2); }
+[data-skin="concept-tabletop"] .tab.is-active { background: var(--wood); color: var(--cream); }
+[data-skin="concept-tabletop"] .back-link, [data-skin="concept-tabletop"] .store-link { background: var(--cream); color: #2a1f12; border: 0; box-shadow: 0 2px 0 var(--kraft-2); border-radius: 999px; }
+
+/* ── 덱: 진짜 카드처럼 크라프트 뒷면 ──────────────────────────────────── */
+[data-skin="concept-tabletop"] .draw > .wrap::before { content: '덱을 눌러 카드 4장 뽑기'; display: block; margin-bottom: 14px; font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+[data-skin="concept-tabletop"] .card-back { background: var(--kraft); background-image: repeating-linear-gradient(45deg, rgb(0 0 0 / .05) 0 6px, transparent 6px 12px); border: 2px solid var(--kraft-2); border-radius: 10px; box-shadow: inset 0 0 0 5px var(--kraft), inset 0 0 0 6px var(--kraft-2); }
+[data-skin="concept-tabletop"] .card-back::before { display: none; }
+[data-skin="concept-tabletop"] .card-back__seal .ghost { color: var(--wood); }
+[data-skin="concept-tabletop"] .draw__deck-face { color: #2a1f12; }
+[data-skin="concept-tabletop"] .draw__deck-label { font-family: var(--font-display); font-weight: 800; }
+[data-skin="concept-tabletop"] .draw__deck-hint { color: #6a5842; }
+[data-skin="concept-tabletop"] .draw__deck { --d1-rot: -3deg; --d1-x: -7px; --d1-y: 4px; --d2-rot: 2deg; --d2-x: 6px; --d2-y: 2px; }
+
+/* ── 사진: 종이 카드에 붙인 캐릭터 카드 · 말풍선은 스티커 ────────────── */
+[data-skin="concept-tabletop"] .hero__portrait { --pose-rest: -3deg; padding: 12px 12px 14px; border-radius: 12px; background: var(--cream); border: 2px solid var(--kraft-2); box-shadow: 0 3px 0 var(--kraft-2), 0 18px 36px -18px rgb(0 0 0 / .6); }
+[data-skin="concept-tabletop"] .hero__portrait .portrait { border-radius: 8px; box-shadow: none; }
+[data-skin="concept-tabletop"] .hero__portrait .portrait__cap { border: 0; background: none; padding: 4px 0 0; }
+[data-skin="concept-tabletop"] .portrait__nm { color: #2a1f12; font-family: var(--font-display); font-weight: 800; }
+[data-skin="concept-tabletop"] .portrait__role { color: #6a5842; }
+[data-skin="concept-tabletop"] .quip { border: 2px solid var(--kraft-2); border-radius: 14px 14px 14px 4px; background: var(--cream); color: #2a1f12; box-shadow: 0 3px 0 var(--kraft-2); font-family: var(--font-display); font-weight: 700; }
+[data-skin="concept-tabletop"] .quip::after { border-right: 2px solid var(--kraft-2); border-bottom: 2px solid var(--kraft-2); background: var(--cream); }
+[data-skin="concept-tabletop"] .quip__more { border: 0; border-radius: 999px; background: linear-gradient(180deg, var(--wood), var(--wood-2)); color: var(--cream); box-shadow: 0 3px 0 #3a2312; font-family: var(--font-display); font-weight: 700; }
+[data-skin="concept-tabletop"] .quip__more:hover { transform: translateY(1px); box-shadow: 0 2px 0 #3a2312; color: var(--cream); }
+
+/* ── 강점 요약: 토큰 카드 ─────────────────────────────────────────────── */
+[data-skin="concept-tabletop"] .strength { background: var(--cream); border: 2px solid var(--kraft-2); border-radius: 12px; box-shadow: var(--shadow-card); outline: 1px dashed var(--border-2); outline-offset: -7px; }
+[data-skin="concept-tabletop"] .strength__tag { color: #b2432e; font-family: var(--font-display); font-weight: 700; letter-spacing: .1em; }
+[data-skin="concept-tabletop"] .strength__t { font-family: var(--font-display); font-weight: 800; }
+[data-skin="concept-tabletop"] .cl-summary { border-color: rgb(255 255 255 / .18); }
+[data-skin="concept-tabletop"] .cl-summary__t, [data-skin="concept-tabletop"] .section__lead { color: var(--heading); }
+[data-skin="concept-tabletop"] .cover-block p, [data-skin="concept-tabletop"] .cover-block h3 { color: var(--text); }
+[data-skin="concept-tabletop"] .cover-block h3 { color: var(--heading); }

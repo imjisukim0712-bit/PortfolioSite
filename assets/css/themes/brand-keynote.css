@@ -1,0 +1,114 @@
+@charset "UTF-8";
+/* 브랜드 홈페이지 · 시안 A — 키노트 (제품 발표 무대)
+   무채색만 씁니다. 색을 빼는 대신 여백과 글자 크기로 위계를 만듭니다.
+   한 방: 히어로를 화면 한가운데에 세우고 — 문장·사진·버튼이 모두 중앙 정렬 —
+   제목을 화면 폭까지 키웁니다. 발표 슬라이드 첫 장의 어법.
+   라이트 = 흰 무대 · 다크 = 완전한 검정 무대 */
+:root[data-skin="brand-keynote"] {
+  --display-weight: 600;
+  --tracking: -0.022em;
+  --radius-card: 18px; --radius-lg: 20px;
+  --text-display: clamp(42px, 7.6vw + 12px, 108px);
+  --text-heading-lg: clamp(34px, 5.6vw + 12px, 76px);
+
+  --bg: #ffffff; --bg-elev: #f5f5f7; --surface: #ffffff; --surface-2: #f5f5f7;
+  --border: #d2d2d7; --border-2: #b8b8bf;
+  --text: #46464b; --text-muted: #6e6e73; --heading: #1d1d1f;
+  --accent: #0071e3; --accent-soft: #0077ed;
+  --cta: #f5f5f7; --cta-text: #1d1d1f; --cta-hover: #ebebed;
+  --ghost-c: #86868b; --glow: transparent; --btn-primary-text: #ffffff;
+  --aubergine: #1d1d1f; --paper: #ffffff; --periwinkle: #86868b;
+  --ghost-lavender: #f5f5f7; --buttercream: #f5f5f7; --blush: #f5f5f7; --cornflower: #0071e3; --mint: #6e6e73;
+  --nav-bg: rgb(255 255 255 / .8);
+  --gen0: #1d1d1f; --gen1: #86868b; --gen2: #c7c7cc;
+  --grade-r: #d2d2d7; --grade-r-bg: #f5f5f7; --grade-r-fg: #6e6e73;
+  --grade-sr: #86868b; --grade-sr-bg: #1d1d1f; --grade-sr-fg: #ffffff;
+  --grade-ssr: #1d1d1f; --grade-ssr-bg: #1d1d1f; --grade-ssr-fg: #ffffff;
+  --shadow-card: 0 2px 10px -6px rgb(0 0 0 / .16);
+  --shadow-lift: 0 24px 56px -34px rgb(0 0 0 / .34);
+  color-scheme: light;
+}
+:root[data-skin="brand-keynote"][data-theme="dark"] {
+  --bg: #000000; --bg-elev: #0b0b0d; --surface: #1d1d1f; --surface-2: #262629;
+  --border: #38383d; --border-2: #4b4b52;
+  --text: #c8c8cd; --text-muted: #98989d; --heading: #f5f5f7;
+  --accent: #2997ff; --accent-soft: #4aa8ff;
+  --cta: #1d1d1f; --cta-text: #f5f5f7; --cta-hover: #262629;
+  --ghost-c: #98989d; --btn-primary-text: #ffffff;
+  --aubergine: #f5f5f7; --paper: #000000; --periwinkle: #98989d;
+  --ghost-lavender: #1d1d1f; --buttercream: #1d1d1f; --blush: #1d1d1f; --cornflower: #2997ff; --mint: #98989d;
+  --nav-bg: rgb(0 0 0 / .78);
+  --gen0: #f5f5f7; --gen1: #98989d; --gen2: #55555a;
+  --grade-r: #38383d; --grade-r-bg: #262629; --grade-r-fg: #98989d;
+  --grade-sr: #98989d; --grade-sr-bg: #f5f5f7; --grade-sr-fg: #000000;
+  --grade-ssr: #f5f5f7; --grade-ssr-bg: #f5f5f7; --grade-ssr-fg: #000000;
+  --shadow-card: 0 2px 12px -7px rgb(0 0 0 / .65);
+  --shadow-lift: 0 26px 58px -34px rgb(0 0 0 / .85);
+  color-scheme: dark;
+}
+
+/* ── 한 방: 무대 한가운데에 세운 히어로 ────────────────────────────────── */
+@media (min-width: 900px) {
+  [data-skin="brand-keynote"] .hero__grid { grid-template-columns: 1fr; justify-items: center; gap: 34px; }
+  [data-skin="brand-keynote"] .hero__media { justify-self: center; order: 2; }
+}
+[data-skin="brand-keynote"] .hero__grid > div:first-child { text-align: center; display: flex; flex-direction: column; align-items: center; }
+[data-skin="brand-keynote"] .hero__sub { max-width: 40rem; margin-inline: auto; font-size: clamp(18px, 1.4vw + 14px, 25px); color: var(--text-muted); }
+[data-skin="brand-keynote"] .hero__title { max-width: 18ch; letter-spacing: -.05em; line-height: 1.05; }
+[data-skin="brand-keynote"] .hero__title .accent { color: var(--heading); }
+[data-skin="brand-keynote"] .btn-row { justify-content: center; }
+[data-skin="brand-keynote"] .hero__eyebrow { color: var(--text-muted); letter-spacing: .1em; }
+[data-skin="brand-keynote"] .hero__eyebrow .ghost { color: var(--text-muted); }
+[data-skin="brand-keynote"] .portrait { width: min(260px, 70vw); border-radius: 22px; }
+[data-skin="brand-keynote"] .home-screen .hero__title { font-size: clamp(36px, 5.2vw + 12px, 86px); }
+[data-skin="brand-keynote"] .home-screen .portrait { width: min(186px, 46vw); }
+[data-skin="brand-keynote"] .home-screen .hero__sub { font-size: clamp(16px, 1vw + 13px, 20px); }
+/* 홈에서는 무대를 낮춰 카드가 첫 화면에 걸치게 합니다 */
+[data-skin="brand-keynote"] .home-screen .hero { min-height: 0; padding-block: clamp(22px, 4vh, 48px) clamp(16px, 2.5vh, 32px); }
+@media (min-width: 900px) { [data-skin="brand-keynote"] .home-screen .hero__grid { gap: 20px; } }
+[data-skin="brand-keynote"] .home-screen .portrait { width: min(158px, 40vw); }
+[data-skin="brand-keynote"] .home-screen .btn-row { margin-top: 24px; }
+
+/* 무채색 무대: 링크 파랑은 '누를 수 있는 것'에만 남깁니다 */
+[data-skin="brand-keynote"] .eyebrow { color: var(--text-muted); }
+[data-skin="brand-keynote"] .section__title, [data-skin="brand-keynote"] .proj-title,
+[data-skin="brand-keynote"] .detail__title { letter-spacing: -.05em; }
+[data-skin="brand-keynote"] .section__head { text-align: center; }
+[data-skin="brand-keynote"] .section__lead { margin-inline: auto; max-width: 44rem; }
+[data-skin="brand-keynote"] .btn--primary { background: var(--accent); }
+[data-skin="brand-keynote"] .nav__link.is-active { background: transparent; color: var(--heading); font-weight: 600; }
+[data-skin="brand-keynote"] .tl-item::before { background: var(--heading); }
+[data-skin="brand-keynote"] .tl-item--now::before { background: var(--accent); }
+[data-skin="brand-keynote"] .tl-date { color: var(--text-muted); }
+[data-skin="brand-keynote"] .stat { background: var(--bg-elev); padding-block: 26px; }
+[data-skin="brand-keynote"] .stat__num { color: var(--heading); }
+[data-skin="brand-keynote"] .hp-h::before { display: none; }
+[data-skin="brand-keynote"] .hp-skill__ic { background: var(--surface-2); color: var(--heading); }
+[data-skin="brand-keynote"] .quest-strip { border-left-color: var(--heading); }
+[data-skin="brand-keynote"] .quest-strip__badge { background: var(--heading); color: var(--bg); }
+[data-skin="brand-keynote"] .quest-strip__v--hi { color: var(--heading); }
+[data-skin="brand-keynote"] .gcard__cat { background: var(--surface-2); color: var(--text-muted); }
+[data-skin="brand-keynote"] .gcard__go { color: var(--accent); }
+[data-skin="brand-keynote"] .card-back { background: var(--surface-2); }
+[data-skin="brand-keynote"] .card-back__seal .ghost { color: var(--ghost-c); }
+[data-skin="brand-keynote"] .draw__deck-card:nth-child(1) { background: var(--bg-elev); }
+[data-skin="brand-keynote"] .footer { background: var(--bg-elev); }
+
+/* ── 히어로 판: 검정 한 장, 아래를 크게 둥글게 — 제품 발표 페이지의 어두운 첫 화면 ── */
+[data-skin="brand-keynote"] { --hero-slab: #1d1d1f; --hero-slab-r: 36px; }
+[data-skin="brand-keynote"][data-theme="dark"] { --hero-slab: #1d1d1f; }
+[data-skin="brand-keynote"] .hero__grid > div:first-child { --heading: #f5f5f7; --text: #f5f5f7; --text-muted: #a1a1a6; }
+[data-skin="brand-keynote"] .hero__title, [data-skin="brand-keynote"] .hero__title .accent { color: #f5f5f7; }
+[data-skin="brand-keynote"] .hero__sub, [data-skin="brand-keynote"] .hero__note, [data-skin="brand-keynote"] .hero__eyebrow, [data-skin="brand-keynote"] .hero__eyebrow .ghost { color: #a1a1a6; }
+[data-skin="brand-keynote"] .hero .btn--outline { border-color: rgb(255 255 255 / .5); color: #f5f5f7; }
+[data-skin="brand-keynote"] .hero .btn--outline:hover { background: rgb(255 255 255 / .12); border-color: #f5f5f7; color: #f5f5f7; }
+[data-skin="brand-keynote"] .hero { padding-inline: 0; }
+[data-skin="brand-keynote"] .home-screen .hero { padding-block: clamp(30px, 5vh, 56px) clamp(30px, 5vh, 56px); }
+[data-skin="brand-keynote"] .hero .hero__portrait { background: #ffffff; }
+[data-skin="brand-keynote"] .hero .portrait__nm { color: #1d1d1f; }
+[data-skin="brand-keynote"] .hero .portrait__role { color: #6e6e73; }
+/* 키노트는 사진이 제목 아래 가운데에 오므로, 말풍선은 위가 아니라 카드 오른쪽 옆에 둡니다 (버튼 줄을 가리지 않게) */
+[data-skin="brand-keynote"] .quip { top: 14px; right: auto; left: calc(100% - 16px); width: max-content; max-width: 13rem; transform: rotate(4deg); transform-origin: 0 100%; border-radius: 20px 20px 20px 6px; }
+[data-skin="brand-keynote"] .quip::after { left: -4px; bottom: 12px; transform: rotate(135deg) skewX(-18deg); }
+[data-skin="brand-keynote"] .quip.is-pop { animation: quipPopSide .38s cubic-bezier(.2,.8,.3,1); }
+@keyframes quipPopSide { 0% { transform: rotate(4deg) scale(.86); } 60% { transform: rotate(4deg) scale(1.06); } 100% { transform: rotate(4deg) scale(1); } }

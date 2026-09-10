@@ -1,0 +1,165 @@
+@charset "UTF-8";
+/* 컨셉 무대 · 시안 A — 명세서 (게임 기획서)
+   사이트가 한 권의 기획서입니다. 회색 책상 위에 흰 종이 한 장이 놓이고,
+   그 위에 문서 번호·개정 표·번호 매긴 절·빨간 펜 교정·체크박스가 찍힙니다.
+   카드 뽑기는 '부록 A'. 기획서를 쓰는 사람의 포트폴리오에 가장 곧은 어법.
+   라이트 = 흰 종이 · 다크 = 밤의 책상 */
+:root[data-skin="concept-spec"] {
+  --font-sans: 'IBM Plex Sans KR', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --display-weight: 600;
+  --tracking: -0.012em;
+  --radius-card: 2px; --radius-lg: 3px; --radius-chip: 2px; --radius-pill: 2px;
+  --text-display: clamp(34px, 5vw + 12px, 68px);
+  --text-heading-lg: clamp(28px, 3.6vw + 12px, 48px);
+
+  --bg: #e4e3dd; --bg-elev: #f2f1ec; --surface: #ffffff; --surface-2: #f4f3ee;
+  --border: #cfd0cb; --border-2: #9a9b96;
+  --text: #2b2f35; --text-muted: #61666e; --heading: #1f2328;
+  --accent: #c8102e; --accent-soft: #a50d25;
+  --cta: #fff3a3; --cta-text: #4a3d00; --cta-hover: #ffec7a;
+  --ghost-c: #c8102e; --glow: transparent; --btn-primary-text: #fdfcf9;
+  --aubergine: #1f2328; --paper: #fdfcf9; --periwinkle: #c8102e;
+  --ghost-lavender: #fff3a3; --buttercream: #fff3a3; --blush: #fbe3e6; --cornflower: #1f6feb; --mint: #1a7f4b;
+  --nav-bg: #fdfcf9;
+  --gen0: #c8102e; --gen1: #1f6feb; --gen2: #61666e;
+  --grade-r: #9a9b96; --grade-r-bg: #f4f3ee; --grade-r-fg: #61666e;
+  --grade-sr: #1f6feb; --grade-sr-bg: #e6efff; --grade-sr-fg: #17458f;
+  --grade-ssr: #c8102e; --grade-ssr-bg: #fbe3e6; --grade-ssr-fg: #8f0b21;
+  --shadow-card: 0 1px 0 rgb(0 0 0 / .05);
+  --shadow-lift: 0 12px 26px -16px rgb(0 0 0 / .35);
+  --hero-slab: #f2f1ec; --hero-slab-r: 3px;
+  --sheet: #fdfcf9; --rule: #d7d6d0; --pen: #c8102e;
+  color-scheme: light;
+}
+:root[data-skin="concept-spec"][data-theme="dark"] {
+  --bg: #1b1d21; --bg-elev: #24272c; --surface: #2a2e34; --surface-2: #31353c;
+  --border: #454a52; --border-2: #666c76;
+  --text: #d5d8dd; --text-muted: #9aa0a8; --heading: #f0f1f3;
+  --accent: #ff5c6c; --accent-soft: #ff7b88;
+  --cta: #4a3f10; --cta-text: #ffe580; --cta-hover: #5a4d14;
+  --ghost-c: #ff5c6c; --btn-primary-text: #1b1d21;
+  --aubergine: #f0f1f3; --paper: #24272c; --periwinkle: #ff5c6c;
+  --ghost-lavender: #4a3f10; --buttercream: #4a3f10; --blush: #4a2228; --cornflower: #7aa2ff; --mint: #5ccf8f;
+  --nav-bg: #24272c;
+  --gen0: #ff5c6c; --gen1: #7aa2ff; --gen2: #9aa0a8;
+  --grade-r: #666c76; --grade-r-bg: #31353c; --grade-r-fg: #d5d8dd;
+  --grade-sr: #7aa2ff; --grade-sr-bg: #1f2b45; --grade-sr-fg: #b9ccff;
+  --grade-ssr: #ff5c6c; --grade-ssr-bg: #4a2228; --grade-ssr-fg: #ffb3ba;
+  --shadow-card: 0 1px 0 rgb(0 0 0 / .4);
+  --shadow-lift: 0 14px 30px -16px rgb(0 0 0 / .8);
+  --hero-slab: #2c3037; --sheet: #24272c; --rule: #3c4149; --pen: #ff5c6c;
+  color-scheme: dark;
+}
+
+/* ── 책상 위 종이 한 장 ─────────────────────────────────────────────── */
+[data-skin="concept-spec"] body { background-image: none; }
+[data-skin="concept-spec"] main {
+  max-width: calc(var(--page-max) + 88px); margin: 18px auto 44px; padding-block: 6px 28px;
+  background: var(--sheet); border: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .6) inset, 0 26px 60px -34px rgb(0 0 0 / .45);
+  counter-reset: sec;
+}
+[data-skin="concept-spec"] .nav-wrap { background: var(--bg); }
+[data-skin="concept-spec"] .nav { border-bottom: 1px solid var(--border-2); }
+[data-skin="concept-spec"] .nav__logo { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+[data-skin="concept-spec"] .nav__link { border-radius: 2px; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .02em; }
+[data-skin="concept-spec"] .nav__link.is-active { background: var(--heading); color: var(--sheet); }
+[data-skin="concept-spec"] .icon-btn, [data-skin="concept-spec"] .nav__burger, [data-skin="concept-spec"] .lang-toggle,
+[data-skin="concept-spec"] .lang-toggle__btn { border-radius: 2px; }
+[data-skin="concept-spec"] .lang-toggle__btn[aria-pressed="true"] { background: var(--heading); color: var(--sheet); }
+[data-skin="concept-spec"] .footer { background: var(--bg); border-top: 1px solid var(--border-2); }
+
+/* ── 문서 머리: 문서 번호 · 개정 · 결재란 ───────────────────────────── */
+[data-skin="concept-spec"] .hero { border-top: 3px solid var(--heading); }
+[data-skin="concept-spec"] .hero::before { border: 1px solid var(--border); border-top: 0; }
+[data-skin="concept-spec"] .hero::after {
+  content: '작성 김지수  ·  검토 ☐  ·  승인 ☐'; position: absolute; left: max(20px, calc(50% - var(--page-max) / 2)); bottom: 14px;
+  font: 500 11px/1.4 var(--font-mono); letter-spacing: .06em; color: var(--text-muted);
+  padding: 4px 8px; border: 1px solid var(--border-2); background: var(--sheet);
+}
+[data-skin="concept-spec"] .hero__eyebrow { border: 0; background: none; padding: 0; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; color: var(--text-muted); text-transform: uppercase; }
+[data-skin="concept-spec"] .hero__eyebrow .ghost { display: none; }
+[data-skin="concept-spec"] .hero__eyebrow::before { content: 'DOC NO. GDD-2026-09  ·  REV 2.3  ·  '; color: var(--pen); }
+[data-skin="concept-spec"] .hero__title { font-weight: 600; letter-spacing: -.02em; line-height: 1.16; }
+[data-skin="concept-spec"] .hero__title .accent { color: var(--pen); text-decoration: underline wavy; text-decoration-thickness: 2px; text-underline-offset: .18em; }
+[data-skin="concept-spec"] .hero__sub { font-size: var(--text-body); max-width: 36rem; }
+[data-skin="concept-spec"] .home-screen .hero { padding-block: 72px 56px; }   /* 위: 포스트잇이 상단 바에 가리지 않게 · 아래: 결재란 자리 */
+[data-skin="concept-spec"] .hero { padding-block: 72px 56px; }
+
+/* ── 번호 매긴 절 · 빨간 펜 · 체크박스 ─────────────────────────────── */
+[data-skin="concept-spec"] .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--text-muted); }
+[data-skin="concept-spec"] .section__title::before, [data-skin="concept-spec"] .hp-h::before, [data-skin="concept-spec"] .cl-summary__t::before {
+  counter-increment: sec; content: counter(sec) '.0';
+  display: inline-block; width: auto; height: auto; margin-right: 14px; vertical-align: 0; border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--font-mono); font-weight: 500; font-size: .72em; color: var(--pen); letter-spacing: 0;
+}
+[data-skin="concept-spec"] .section__head { border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+[data-skin="concept-spec"] .section__title, [data-skin="concept-spec"] .proj-title, [data-skin="concept-spec"] .detail__title { font-weight: 600; letter-spacing: -.02em; }
+[data-skin="concept-spec"] .hp-h { font-weight: 600; border-bottom: 1px solid var(--rule); padding-bottom: 10px; }
+[data-skin="concept-spec"] .tl-item::before { content: '☑'; width: auto; height: auto; border-radius: 0; background: none; box-shadow: none; font-size: 15px; line-height: 1; color: var(--pen); top: 2px; }
+[data-skin="concept-spec"] .tl-item--now::before { content: '☐'; color: var(--heading); }
+[data-skin="concept-spec"] .timeline::before { background: var(--rule); }
+[data-skin="concept-spec"] .tl-date, [data-skin="concept-spec"] .gcard__period, [data-skin="concept-spec"] .detail__period, [data-skin="concept-spec"] .play-card__hours { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; color: var(--text-muted); }
+[data-skin="concept-spec"] .bullets li::before { content: '☐'; width: auto; height: auto; border-radius: 0; background: none; font-size: 13px; line-height: 1; color: var(--pen); top: 4px; }
+[data-skin="concept-spec"] .stat { border: 1px solid var(--border); border-radius: 2px; background: var(--surface); box-shadow: none; }
+[data-skin="concept-spec"] .stat__num { font-family: var(--font-mono); font-weight: 500; color: var(--heading); letter-spacing: -.02em; }
+[data-skin="concept-spec"] .stat__label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; }
+
+/* ── 버튼 · 칩: 사무 문서의 어법 ─────────────────────────────────────── */
+[data-skin="concept-spec"] .btn { border-radius: 2px; min-height: 42px; padding: 10px 18px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="concept-spec"] .btn--primary { background: var(--heading); color: var(--sheet); }
+[data-skin="concept-spec"] .btn--primary:hover { background: var(--pen); color: #fff; transform: none; }
+[data-skin="concept-spec"] .btn--outline { border: 1.5px solid var(--heading); color: var(--heading); background: var(--sheet); }
+[data-skin="concept-spec"] .btn--outline:hover { background: var(--cta); color: var(--heading); border-color: var(--heading); }
+[data-skin="concept-spec"] .link-more, [data-skin="concept-spec"] .hp-more { border-radius: 2px; border: 1.5px solid var(--heading); color: var(--heading); font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="concept-spec"] .tag, [data-skin="concept-spec"] .badge, [data-skin="concept-spec"] .gcard__cat, [data-skin="concept-spec"] .quest-strip__badge, [data-skin="concept-spec"] .play-card__hours { border-radius: 2px; font-family: var(--font-mono); letter-spacing: .02em; }
+[data-skin="concept-spec"] .tag, [data-skin="concept-spec"] .gcard__cat { background: var(--cta); color: var(--cta-text); }   /* 형광펜 */
+
+/* ── 카드: 종이 위 사각 틀, 등급은 빨간 고무도장 ────────────────────── */
+[data-skin="concept-spec"] .gcard { --frame: var(--border-2); --frame-w: 1px; border-radius: 2px; box-shadow: none; }
+[data-skin="concept-spec"] .gcard__frame { border-radius: 1px; padding: 4.6cqw; }
+[data-skin="concept-spec"] .gcard__name { font-weight: 600; }
+[data-skin="concept-spec"] .gcard__grade { border: 1.5px solid var(--pen); background: transparent; color: var(--pen); border-radius: 2px; font-family: var(--font-mono); letter-spacing: .12em; transform: rotate(-6deg); }
+:root[data-skin="concept-spec"] .gcard[data-grade="SSR"] { --frame: var(--pen); --frame-w: 2px; --badge-bg: transparent; --badge-fg: var(--pen); }
+:root[data-skin="concept-spec"] .gcard[data-grade="SR"] { --frame: var(--grade-sr); --badge-bg: transparent; --badge-fg: var(--grade-sr); }
+:root[data-skin="concept-spec"] .gcard[data-grade="SR"] .gcard__grade { border-color: var(--grade-sr); }
+:root[data-skin="concept-spec"] .gcard[data-grade="R"] .gcard__grade, :root[data-skin="concept-spec"] .gcard[data-grade="A"] .gcard__grade { border-color: var(--border-2); color: var(--text-muted); }
+[data-skin="concept-spec"] .gcard__art { border-radius: 1px; background: var(--surface-2); }
+[data-skin="concept-spec"] .gcard:hover { box-shadow: var(--shadow-lift); }
+[data-skin="concept-spec"] .card, [data-skin="concept-spec"] .play-card, [data-skin="concept-spec"] .pager__item, [data-skin="concept-spec"] .profile,
+[data-skin="concept-spec"] .quest-strip, [data-skin="concept-spec"] .media-box { border: 1px solid var(--border); border-radius: 2px; box-shadow: none; }
+[data-skin="concept-spec"] .quest-strip { border-left: 3px solid var(--pen); }
+[data-skin="concept-spec"] .quest-strip__badge { background: var(--pen); color: #fff; }
+[data-skin="concept-spec"] .quest-strip__v--hi { color: var(--pen); font-weight: 600; }
+
+/* ── 부록 A: 카드 뽑기 ─────────────────────────────────────────────── */
+[data-skin="concept-spec"] .draw > .wrap::before { content: '부록 A  ·  프로젝트 카드 (무작위 4장 · 덱을 눌러 다시 뽑기)'; display: block; margin-bottom: 14px; padding-top: 10px; border-top: 1px solid var(--rule); font: 500 11px/1.5 var(--font-mono); letter-spacing: .1em; color: var(--text-muted); }
+[data-skin="concept-spec"] .card-back { background: var(--surface-2); background-image: repeating-linear-gradient(0deg, transparent 0 22px, var(--rule) 22px 23px); border: 1px solid var(--border-2); border-radius: 2px; }
+[data-skin="concept-spec"] .card-back::before { display: none; }
+[data-skin="concept-spec"] .card-back__seal .ghost { color: var(--pen); }
+[data-skin="concept-spec"] .draw__deck-face { color: var(--heading); }
+[data-skin="concept-spec"] .draw__deck-label { font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
+[data-skin="concept-spec"] .draw__deck-hint { font-family: var(--font-mono); font-size: 11px; }
+
+/* ── 사진: 클립으로 붙인 증명사진 · 말풍선은 포스트잇 ────────────────── */
+[data-skin="concept-spec"] .hero__portrait { --pose-rest: 0deg; padding: 8px 8px 10px; border-radius: 2px; border: 1px solid var(--border); background: #fff; box-shadow: 0 2px 6px -2px rgb(0 0 0 / .25); }
+[data-skin="concept-spec"] .hero__portrait::before { content: ''; position: absolute; top: -12px; left: 50%; width: 14px; height: 30px; margin-left: -7px; border: 2px solid var(--border-2); border-radius: 7px; background: transparent; z-index: 3; }
+[data-skin="concept-spec"] .hero__portrait .portrait { border-radius: 1px; }
+[data-skin="concept-spec"] .hero__portrait .portrait__cap { padding: 4px 0 0; }
+[data-skin="concept-spec"] .portrait__nm { font-family: var(--font-mono); font-weight: 600; font-size: 15px; }
+[data-skin="concept-spec"] .portrait__role { font-family: var(--font-mono); font-size: 11px; }
+[data-skin="concept-spec"] .quip { border: 0; border-radius: 1px; background: var(--cta); color: #3a3000; box-shadow: 2px 3px 0 rgb(0 0 0 / .12); font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; }
+[data-skin="concept-spec"] .quip::after { border: 0; background: var(--cta); }
+[data-skin="concept-spec"] .quip__more { border-radius: 2px; border: 1.5px solid var(--heading); background: var(--sheet); color: var(--heading); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="concept-spec"] .quip__more:hover { background: var(--cta); color: var(--heading); transform: none; }
+
+/* ── 강점 요약: 항목 표 ────────────────────────────────────────────── */
+[data-skin="concept-spec"] .cl-summary { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+[data-skin="concept-spec"] .strength { border: 1px solid var(--border); border-radius: 2px; box-shadow: none; background: var(--surface); }
+[data-skin="concept-spec"] .strength__tag { color: var(--pen); }
+[data-skin="concept-spec"] .strength__t { font-weight: 600; }
+[data-skin="concept-spec"] .tab { border-radius: 2px; font-family: var(--font-mono); font-size: 12.5px; }
+[data-skin="concept-spec"] .tab.is-active { background: var(--heading); color: var(--sheet); }
+[data-skin="concept-spec"] .tabs, [data-skin="concept-spec"] .back-link, [data-skin="concept-spec"] .store-link { border-radius: 2px; }
