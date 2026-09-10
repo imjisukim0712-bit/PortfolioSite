@@ -199,22 +199,53 @@
   [data-skin="pixel-famicom"] { --fc-grip-w: 60px; --fc-bezel: 34px; --fc-r: 44px; --fc-quip-x: 30px; --fc-quip-y: 60px; }
   [data-skin="pixel-famicom"] .hero > .wrap { padding: 28px 28px 26px; }
 }
-@media (max-width: 700px) {
-  /* 세로로 잡는 휴대기: 화면 아래에 버튼 띠 */
-  [data-skin="pixel-famicom"] { --fc-r: 34px; --fc-bezel: 16px; }
-  [data-skin="pixel-famicom"] .hero, [data-skin="pixel-famicom"] .home-screen .hero {
-    grid-template-columns: 1fr 1fr; grid-template-areas: "screen screen" "gl gr"; width: calc(100% - 20px);
+@media (max-width: 899px) {
+  /* ── 가로가 짧으면 세로로 잡는 휴대기 ───────────────────────────────────
+     본체를 눕히지 않고 세워 둡니다: 위는 액정 한 판, 아래는 조작부 한 판.
+     조작부는 왼쪽 SELECT ◀ ▶ · 오른쪽 B A 로 나뉘지만 자주색 바탕이 이어져
+     한 덩어리로 보이고, 본체의 둥근 아래 모서리를 함께 만듭니다.
+     액정 안의 글·사진은 그대로 세워 둡니다 (회전하지 않습니다).
+     경계(900px)는 히어로 내용이 두 칸에서 한 칸으로 바뀌는 폭과 같습니다.
+     ──────────────────────────────────────────────────────────────────── */
+  [data-skin="pixel-famicom"] {
+    --fc-r: 38px; --fc-bezel: 14px;
+    --fc-quip-x: 22px; --fc-quip-y: 20px;
+    --fc-deck: 92px;             /* 아래 조작부 높이 */
+    --text-display: clamp(30px, 7vw + 4px, 40px);   /* 기기 한 대가 한 화면에 들어오도록 */
   }
-  [data-skin="pixel-famicom"] .hero > .wrap { grid-area: screen; margin: var(--fc-bezel) 12px 0; padding: 22px 18px 22px; }
-  [data-skin="pixel-famicom"] .fc-grip { flex-direction: row; gap: 12px; margin-top: var(--fc-bezel); padding: 14px 18px 16px; border-top: 6px solid var(--fc-gold); }
-  [data-skin="pixel-famicom"] .fc-grip--l { grid-area: gl; justify-content: flex-start; border-right: 0; }
-  [data-skin="pixel-famicom"] .fc-grip--r { grid-area: gr; justify-content: flex-end; border-left: 0; }
-  [data-skin="pixel-famicom"] .fc-key { width: 32px; height: 32px; }
-  /* 세로로 쌓이는 배치: 사진 카드가 글 아래로 내려오므로, 위 자리는 grid 간격(32px)과 나눠 가집니다 */
-  [data-skin="pixel-famicom"] { --fc-quip-x: 26px; --fc-quip-y: 26px; }
+  [data-skin="pixel-famicom"] .hero, [data-skin="pixel-famicom"] .home-screen .hero {
+    grid-template-columns: 1fr 1fr; grid-template-areas: "screen screen" "gl gr";
+    width: calc(100% - 18px); padding-bottom: 8px;
+  }
+  [data-skin="pixel-famicom"] .hero > .wrap { grid-area: screen; margin: var(--fc-bezel) 13px 0; padding: 18px 15px 18px; }
+  /* 조작부 */
+  [data-skin="pixel-famicom"] .fc-grip {
+    flex-direction: row; align-items: center; gap: 13px;
+    min-height: var(--fc-deck); margin-top: 14px; padding: 14px 18px;
+    border-top: 5px solid var(--fc-gold); border-left: 0; border-right: 0;
+    background: linear-gradient(180deg, var(--fc-grip-hi), var(--fc-grip));
+  }
+  [data-skin="pixel-famicom"] .fc-grip--l { grid-area: gl; justify-content: flex-start; border-bottom-left-radius: calc(var(--fc-r) - 9px); }
+  [data-skin="pixel-famicom"] .fc-grip--r { grid-area: gr; justify-content: flex-end; border-bottom-right-radius: calc(var(--fc-r) - 9px); }
+  [data-skin="pixel-famicom"] .fc-key { width: 38px; height: 38px; }
+  [data-skin="pixel-famicom"] .fc-key--ab { font-size: 14px; }
+  [data-skin="pixel-famicom"] .fc-ab { gap: 5px; }
+  /* 액정 안: 글 아래로 내려오는 사진 카드를 조금 줄여 기기 한 대가 한눈에 들어오게 */
+  [data-skin="pixel-famicom"] .hero__grid { gap: 16px; }
   [data-skin="pixel-famicom"] .hero__media { width: 100%; }
-  [data-skin="pixel-famicom"] .hero__portrait { width: 100%; max-width: 300px; margin-inline: auto; }
-  [data-skin="pixel-famicom"] .portrait { width: min(270px, 100%); }
+  [data-skin="pixel-famicom"] .hero__portrait { width: 100%; max-width: 210px; margin-inline: auto; }
+  [data-skin="pixel-famicom"] .portrait { width: min(174px, 100%); }
+  [data-skin="pixel-famicom"] .hero__sub { margin-top: 16px; font-size: 14.5px; line-height: 1.6; }
+  [data-skin="pixel-famicom"] .hero__eyebrow { margin-bottom: 14px; }
+  [data-skin="pixel-famicom"] .hero .btn-row { margin-top: 20px; max-width: 300px; }
+  [data-skin="pixel-famicom"] .hero .btn { min-height: 42px; padding: 10px 16px; }
+}
+@media (max-width: 420px) {
+  [data-skin="pixel-famicom"] { --fc-r: 32px; --fc-deck: 86px; }
+  [data-skin="pixel-famicom"] .fc-grip { gap: 10px; padding: 11px 13px; }
+  [data-skin="pixel-famicom"] .fc-key { width: 34px; height: 34px; }
+  [data-skin="pixel-famicom"] .hero__portrait { max-width: 190px; }
+  [data-skin="pixel-famicom"] .portrait { width: min(158px, 100%); }
 }
 
 /* ── 카드 = 패미컴 카트리지 ──────────────────────────────────────────────
