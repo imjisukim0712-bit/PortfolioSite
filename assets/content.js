@@ -192,7 +192,21 @@ window.PORTFOLIO_CONTENT = {
                    en: "After results fell short, I learned to study the market and the play experience first." } }
       ]
     },
-    blocks: []
+    // 본문 — 문단은 \n\n 으로 나눕니다.
+    blocks: [
+      { heading: { ko: "문제를 풀 때, 가장 몰입합니다.", en: "Solving problems is where I find my focus." },
+        body: { ko: "게임에서는 플레이어에게 과제가 주어지고, 선택에는 빠르고 확실한 피드백이 돌아옵니다. 저는 그 과정에서 느껴지는 문제 해결의 재미와, 직접 상호작용하며 몰입하는 경험을 좋아합니다.\n\n학생 시절부터 인디게임을 개발했습니다. 플래시 게임부터 Play Store 앱까지, 상상한 것을 직접 플레이할 수 있는 형태로 만드는 경험을 쌓았습니다.",
+              en: "Games give players challenges, and choices bring fast, tangible feedback. I enjoy the problem-solving process and the immersion that comes from direct interaction.\n\nI began developing indie games as a student. From Flash games to Play Store apps, I learned to turn ideas into something people could actually play." } },
+      { heading: { ko: "좋은 아이디어에도, 공통 언어가 필요합니다.", en: "Good ideas need a shared language." },
+        body: { ko: "타워디펜스 모바일 게임을 함께 만들 때, 회의마다 팀원들이 서로 다른 게임을 떠올린다는 것을 느꼈습니다. 말로 더 자세히 설명하는 것만으로는 충분하지 않았습니다.\n\n그래서 기획이라고 할 만한 명세서를 처음 작성했습니다. 아이디어를 문서로 옮기자 팀은 같은 기준으로 이야기할 수 있게 되었습니다. 출시 후 10만 다운로드라는 성과와 함께, 저는 팀의 이해를 맞추는 기획의 역할을 배웠습니다.",
+              en: "While developing a mobile tower defense game, I noticed that teammates imagined different things in meetings. More detailed verbal explanations were not enough.\n\nI wrote my first real design specification. Putting ideas into a document gave the team a common reference. Alongside reaching 100K downloads after release, I learned how design can align a team's understanding." } },
+      { heading: { ko: "실패의 다음에는, 관찰이 남았습니다.", en: "After a setback, I learned to observe." },
+        body: { ko: "개인 개발을 하며 기대에 미치지 못한 결과도 경험했습니다. 돌아보니 시장조사가 부족했고, 플랫폼과 트렌드를 충분히 파악하지 못했습니다.\n\n그 뒤로는 시장의 게임을 먼저 살피는 습관을 들였습니다. 최근에는 AI를 활용해 매일 정해진 시간에 인기 게임 순위 변화를 측정하는 프로세스를 구축했습니다. 감상을 넘어서, 기획 판단에 쓸 수 있는 관찰을 쌓고 있습니다.",
+              en: "Some of my independent games fell short of expectations. Looking back, I had not researched the market, platform, or trends well enough.\n\nI began studying games in the market first. More recently, I built an AI-assisted process to measure popular game ranking changes at a regular time each day. I am building observations that can inform design decisions." } },
+      { heading: { ko: "회피하지 않고, 다음 질문으로.", en: "Face the challenge, then ask the next question." },
+        body: { ko: "저에게 중요한 태도는 문제를 잘 정의하고 정면으로 마주하는 것입니다. 팀원에게 더 효율적으로 의도를 전달하고, 다른 관점을 이해하기 위해 계속 소통하는 기획자가 되고 싶습니다.\n\n장기적으로는 큰 목표를 작은 문제로 나누어 해결하는 PD로 성장하고 싶습니다. 지금은 작은 실천을 반복하고, 어제의 문제를 오늘의 배움으로 바꾸는 데 집중합니다.",
+              en: "The attitude I value is defining problems clearly and facing them directly. I want to communicate intent effectively and keep talking to understand other perspectives.\n\nIn the long term, I want to grow into a producer who breaks big goals into manageable problems. For now, I focus on small, consistent actions and turning yesterday's problems into today's learning." } }
+    ]
   },
 
   /* ── 프로젝트 ───────────────────────────────────────────────────────────

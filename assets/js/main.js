@@ -206,7 +206,7 @@
     if ('IntersectionObserver' in window && els.length) {
       revObs = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-visible'); revObs.unobserve(e.target); } });
-      }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+      }, { rootMargin:'0px 0px 14% 0px', threshold:0 });   /* 화면에 들어오기 조금 전에 미리 나타나게 */
       els.forEach(function (el){ revObs.observe(el); });
     } else { els.forEach(function (el){ el.classList.add('is-visible'); }); }
   }

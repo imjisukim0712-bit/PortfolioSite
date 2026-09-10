@@ -10,8 +10,9 @@
                  카트리지가 꽂혀 있는 동안은 A = 자세히 보기 · B = 꺼내기
      카트리지    프로젝트 카드(.draw-card · .proj-card)를 누르면 바로 열리지 않고,
                  카트리지가 게임기 아래 슬롯(게임기가 안 보이면 화면 위에 내려오는 슬롯)으로
-                 날아 들어간 뒤 화면이 켜지며 프로젝트 개요(타이틀 화면)가 뜹니다.
-                 '자세히 보기'를 누르면 그 페이지로, '꺼내기'를 누르면 카트리지가 도로 나옵니다.
+                 날아 들어간 뒤 화면이 켜집니다. 홈에서는 프로젝트 개요(타이틀 화면)가 뜨고,
+                 '자세히 보기'를 누르면 화면 전체가 켜지며 상세로 넘어갑니다 ('꺼내기'는 카트리지를 도로 뺍니다).
+                 프로젝트 목록 같은 다른 페이지에서는 개요 없이 곧바로 상세로 넘어갑니다.
 
    themes.js 의 pixel 테마 항목 `scripts` 로 읽히며, 다른 시안에서는 아무것도 하지 않습니다.
    페이지가 다시 그려질 때마다(언어 전환·갤러리 페이지 이동) 자동으로 다시 붙습니다.
@@ -103,7 +104,7 @@
     scrollToY(secs[nxt].getBoundingClientRect().top + window.pageYOffset - navH());
   }
   function pressA(kind) {
-    if (pending) { if (pending.ready) go(pending.a); return; }        /* 꽂혀 있으면 A = 자세히 보기 */
+    if (pending) { if (pending.ready) viewDetail(); return; }        /* 꽂혀 있으면 A = 자세히 보기 */
     if (kind === 'draw') {
       var deck = document.querySelector('[data-draw]'); if (!deck) return;
       deck.click();
@@ -228,6 +229,8 @@
         (useHero ? hero.querySelector('.wrap') : document.body).appendChild(boot);
         setTimeout(function () {
           if (pending !== me) return;
+          /* 개요는 홈에서만 — 프로젝트 목록 등 다른 페이지에서는 곧바로 상세로 넘어갑니다 */
+          if ((document.body.getAttribute('data-page') || 'home') !== 'home') { go(a); return; }
           boot.innerHTML = overviewHtml(a, projectOf(a));
           boot.classList.add('is-on');
           me.ready = true; setAB(t(T.viewS), t(T.eject));
@@ -235,6 +238,17 @@
         }, 820);
       };
     };
+  }
+
+  /* 자세히 보기: 액정이 화면 전체를 덮으며 켜지고, 그 뒤에 상세 페이지로 넘어갑니다 */
+  function viewDetail() {
+    var me = pending; if (!me || !me.ready) return;
+    me.ready = false; setAB(null, null);
+    var full = document.createElement('div');
+    full.className = 'fc-boot fc-boot--full is-on';
+    full.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(cardTitle(me.a) || t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
+    document.body.appendChild(full);
+    setTimeout(function () { go(me.a); }, 560);
   }
 
   /* 꺼내기: 화면이 꺼지고 카트리지가 슬롯에서 나와 제자리로 돌아갑니다 */
@@ -275,7 +289,7 @@
 
   document.addEventListener('click', function (e) {
     if (!e.target.closest) return;
-    if (e.target.closest('[data-fc-view]')) { e.preventDefault(); if (pending && pending.ready) go(pending.a); return; }
+    if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
     if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
     var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }
     var ka = e.target.closest('[data-fc-a]'); if (ka) { e.preventDefault(); pressA(ka.getAttribute('data-fc-a')); return; }

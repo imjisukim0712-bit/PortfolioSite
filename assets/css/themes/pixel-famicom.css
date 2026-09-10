@@ -176,6 +176,10 @@
 /* '한 마디 더' 버튼은 숨깁니다 — 왼쪽 손잡이 SELECT ◀ ▶ 가 한마디를 넘깁니다 */
 [data-skin="pixel-famicom"] .quip__more { display: none; }
 
+/* 아래로 스크롤할 때 나타나는 연출은 짧게 — 픽셀 테마의 steps(5) 는 끊겨 보여 쓰지 않습니다 */
+[data-skin="pixel-famicom"] .reveal { transition: opacity .18s ease-out, transform .18s ease-out; }
+[data-skin="pixel-famicom"] .reveal:not(.is-visible) { transform: translateY(10px); }
+
 /* ── 액정 안 사진 카드와 '한마디' 자리 ────────────────────────────────────
    카드는 한마디를 넘길 때마다 조금씩 기울고(--pose-d, 최대 5°), 말풍선은 카드 위·옆으로
    튀어나옵니다. 액정은 테두리가 있는 화면이라 그만큼을 미리 비워 두지 않으면 글자가 셸에 물립니다.
@@ -221,17 +225,23 @@
    다크 모드에서도 라벨은 크림색 그대로이고, 라벨 안 글자색 토큰만 밝은 바탕용으로 다시 정합니다. */
 [data-skin="pixel-famicom"] {
   --fc-cart: #383838; --fc-cart-hi: #474747;   /* 셸 */
+  /* 바닥에 깔리는 그림자 — 딱딱한 오프셋 그림자는 칩이 기울 때 '뒷장'처럼 붙어다녀서 쓰지 않습니다 */
+  --fc-cart-shadow: 0 12px 22px -14px rgb(0 0 0 / .55);
+  --fc-cart-shadow-lift: 0 22px 38px -20px rgb(0 0 0 / .6);
   --fc-label: #f8f3e7;                          /* 라벨 종이 */
   --fc-check: rgb(255 255 255 / .07);           /* 뒷면 체크 */
 }
-[data-skin="pixel-famicom"][data-theme="dark"] { --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a; }
-
+[data-skin="pixel-famicom"][data-theme="dark"] {
+  --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a;
+  --fc-cart-shadow: 0 12px 22px -12px rgb(0 0 0 / .8);
+  --fc-cart-shadow-lift: 0 22px 38px -18px rgb(0 0 0 / .85);
+}
 [data-skin="pixel-famicom"] .gcard {
   --stripe: linear-gradient(var(--fc-grip), var(--fc-grip));
   display: flex; flex-direction: column; padding: 0; overflow: visible;
   background: linear-gradient(180deg, var(--fc-cart-hi), var(--fc-cart)); background-size: auto; background-position: 0 0;
   border: 3px solid var(--fc-line); border-radius: 4px 4px 6px 6px;
-  box-shadow: 5px 5px 0 var(--lo); animation: none;
+  animation: none;
 }
 /* 금색 단자(위) + 귀 두 개(아래) */
 [data-skin="pixel-famicom"] .gcard::before, [data-skin="pixel-famicom"] .card-back::after {
@@ -254,7 +264,18 @@
 :root[data-skin="pixel-famicom"] .gcard[data-grade="A"]   { --stripe: linear-gradient(var(--fc-grip), var(--fc-grip)); }
 :root[data-skin="pixel-famicom"] .gcard[data-grade="R"]   { --stripe: linear-gradient(var(--grade-r), var(--grade-r)); }
 :root[data-skin="pixel-famicom"] .gcard[data-grade="SR"]  { --stripe: linear-gradient(var(--grade-sr), var(--grade-sr)); }
-:root[data-skin="pixel-famicom"] .gcard[data-grade="SSR"] { --stripe: repeating-linear-gradient(45deg, var(--grade-ssr-a) 0 6px, var(--grade-ssr-b) 6px 12px); box-shadow: 5px 5px 0 var(--lo); }
+:root[data-skin="pixel-famicom"] .gcard[data-grade="SSR"] { --stripe: repeating-linear-gradient(45deg, var(--grade-ssr-a) 0 6px, var(--grade-ssr-b) 6px 12px); }
+/* ── 칩 그림자는 바닥에 깔립니다 ──────────────────────────────────────
+   pixel.css 가 등급별로 딱딱한 오프셋 그림자(5px 5px 0)를 여러 특이도로 걸어 두어,
+   칩이 기울면 그림자가 '뒷장'처럼 붙어 따라다녔습니다. 등급·상태별로 선택자를 하나씩
+   맞춰 싸우는 대신 이 한 곳에서 !important 로 못박습니다 (중요 선언끼리는 특이도로 갈리므로
+   기울임·호버 쪽이 기본보다 높아 그대로 이깁니다). */
+:root[data-skin="pixel-famicom"] .gcard,
+:root[data-skin="pixel-famicom"] .gcard[data-grade="SSR"] { box-shadow: var(--fc-cart-shadow) !important; }
+:root[data-skin="pixel-famicom"] .gcard:hover,
+:root[data-skin="pixel-famicom"] .gcard.is-tilt,
+:root[data-skin="pixel-famicom"] .gcard[data-grade="SSR"]:hover,
+:root[data-skin="pixel-famicom"] .gcard[data-grade="SSR"].is-tilt { box-shadow: var(--fc-cart-shadow-lift) !important; }
 /* 다크 모드: 라벨은 크림 그대로 → 라벨 안 글자·칩·그림 색을 밝은 바탕용으로 */
 [data-skin="pixel-famicom"][data-theme="dark"] .gcard__frame {
   --heading: #161616; --text: #262626; --text-muted: #5f5a50; --accent: #b8252b;
