@@ -41,8 +41,9 @@ window.PORTFOLIO_CONTENT = {
      link 예시: "resume.html", "projects.html", "play.html", "cover-letter.html"
      ────────────────────────────────────────────────────────────────────── */
   home: {
-    sub: { ko: "“재미없다”는 한마디를 측정 가능한 문장으로 바꾸고, 로그에서 원인을 찾고, 빌드로 증명합니다.",
-           en: "I turn “it's not fun” into a measurable sentence, find the cause in the logs, and prove it in the build." },
+    // 큰 로그라인 아래 한 줄 설명. 비워 두면 그 줄을 아예 그리지 않습니다 (지금은 안 씁니다).
+    // 다시 쓰려면 ko·en 을 함께 채우세요 — 한쪽만 채우면 다른 언어 화면에서 빈 줄이 됩니다.
+    sub: { ko: "", en: "" },
     ctaResume:   { ko: "이력서", en: "Résumé" },
     ctaProjects: { ko: "포트폴리오", en: "Portfolio" },
     // 하단 카드 뽑기 인터랙션 — 좌측 스택 버튼을 누르면 프로젝트가 랜덤으로 펼쳐집니다.

@@ -233,7 +233,7 @@
       '<section class="hero"><div class="wrap"><div class="hero__grid">' +
         '<div><p class="hero__eyebrow">' + GHOST + '<span>' + esc(t(c.meta.role, lang)) + ' · Portfolio</span></p>' +
           '<h1 class="hero__title"' + ep('hero.titleHtml') + '>' + t(c.hero.titleHtml, lang) + '</h1>' +
-          '<p class="hero__sub"' + ep('home.sub') + '>' + esc(t(h.sub, lang)) + '</p>' +
+          (t(h.sub, lang) ? '<p class="hero__sub"' + ep('home.sub') + '>' + esc(t(h.sub, lang)) + '</p>' : '') +
           '<div class="btn-row">' +
             '<a class="btn btn--primary" href="' + esc(base+HREF.resume) + '"' + ep('home.ctaResume') + '>' + esc(t(h.ctaResume, lang)) + '</a>' +
             '<a class="btn btn--outline" href="' + esc(base+HREF.projects) + '"' + ep('home.ctaProjects') + '>' + esc(t(h.ctaProjects, lang)) + '</a>' +
