@@ -81,6 +81,9 @@
 
 [data-skin-theme="pixel"] .sheet { background: rgb(0 0 0 / .55); -webkit-backdrop-filter: none; backdrop-filter: none; }
 [data-skin-theme="pixel"] .sheet__panel { border-radius: 0; border: var(--bw) solid var(--ink); box-shadow: 6px 6px 0 var(--lo); }
+/* 복사 알림(HUD)도 픽셀 상자로 — 둥근 알약 대신 각진 테두리 + 딱딱한 그림자 */
+[data-skin-theme="pixel"] .toast { border: var(--bw) solid var(--ink); border-radius: 0; box-shadow: 5px 5px 0 var(--lo); }
+[data-skin-theme="pixel"] .toast__mail { font-family: 'Galmuri11', monospace; font-size: 12px; }
 [data-skin-theme="pixel"] .sheet__link { font-family: var(--font-display); border-bottom: 2px dashed var(--border); }
 [data-skin-theme="pixel"] .sheet__num { font-family: var(--font-mono); font-size: 8px; }
 

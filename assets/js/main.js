@@ -259,8 +259,44 @@
     if (card) { var poses = [[-5, 0], [3, -6], [1.5, -2]], pz = poses[R.quip.i % poses.length]; card.style.setProperty('--pose-d', pz[0] + 'deg'); card.style.setProperty('--pose-y', pz[1] + 'px'); }
   }
 
+  /* ---------- 복사 알림(HUD) ---------- */
+  var toastEl = null, toastTimer = null;
+  function toast(msg, sub) {
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'toast'; toastEl.setAttribute('role', 'status'); document.body.appendChild(toastEl); }
+    toastEl.innerHTML = '<span>' + R.esc(msg) + '</span>' + (sub ? '<span class="toast__mail">' + R.esc(sub) + '</span>' : '');
+    void toastEl.offsetWidth;                         /* 연달아 눌러도 다시 뜨도록 */
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2200);
+  }
+  /* 메일 앱이 없는 환경(브라우저 전용 메일 등)에서는 mailto: 를 눌러도 아무 일이 없어 보이므로,
+     주소를 클립보드에도 함께 넣고 알려 줍니다. 메일 앱이 있으면 그대로 열립니다. */
+  function copyText(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    } catch (e) {}
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+        document.body.appendChild(ta); ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject();
+      } catch (e) { reject(e); }
+    });
+  }
+
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-quip-more]')) { cycleQuip(); return; }
+    var mail = e.target.closest('a[href^="mailto:"]');
+    if (mail) {                                        /* 링크는 그대로 두고(메일 앱), 주소는 복사 */
+      var addr = mail.getAttribute('href').slice(7).split('?')[0];
+      copyText(decodeURIComponent(addr)).then(function () {
+        toast(R.t(content.meta.emailCopied, lang), decodeURIComponent(addr));
+      }, function () {});
+      return;
+    }
     var langBtn = e.target.closest('[data-lang-btn]');
     if (langBtn) { lang = langBtn.getAttribute('data-lang-btn')==='en'?'en':'ko'; saveLang(lang); var y=window.pageYOffset; render(); window.scrollTo(0,y); return; }
     if (e.target.closest('[data-theme-toggle]')) { toggleTheme(); return; }
