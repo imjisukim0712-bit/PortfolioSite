@@ -925,6 +925,8 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .steam__ic svg { width: 100%; height: 100%; }
 .steam__t { font-size: var(--text-heading-sm); line-height: 1.3; color: var(--heading); }
 .steam__note { flex: 1 1 100%; font-size: var(--text-caption); color: var(--text-muted); }
+/* '예시 데이터' 딱지 — 스팀 연결 전에만 붙습니다 (진짜 기록으로 읽히면 안 되므로 눈에 띄게) */
+.steam__sample { padding: 4px 10px; border: 1px solid var(--accent); border-radius: var(--radius-pill); font-size: var(--text-caption); font-weight: 600; color: var(--accent); white-space: nowrap; }
 .steam__body { display: grid; gap: 20px; align-items: center; }
 @media (min-width: 820px) { .steam__body { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 32px; } }
 .steam__chart { margin: 0; }

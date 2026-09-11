@@ -381,6 +381,7 @@ window.PORTFOLIO_CONTENT = {
       recentLabel: { ko: "요즘 하는 게임", en: "Playing lately" },
       restLabel:   { ko: "그 외 장르",    en: "Other genres" },
       updatedLabel:{ ko: "갱신",          en: "Updated" },
+      sampleLabel: { ko: "예시 데이터 · 스팀 연결 전", en: "Sample data · not connected yet" },
       tableGenre:  { ko: "장르",          en: "Genre" },
       tableHours:  { ko: "시간",          en: "Hours" },
       tableGames:  { ko: "게임 수",       en: "Titles" },

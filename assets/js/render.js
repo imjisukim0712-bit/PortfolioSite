@@ -584,10 +584,13 @@
       '<th scope="col">' + esc(t(s.tableGenre, lang)) + '</th><th scope="col">' + esc(t(s.tableHours, lang)) + '</th>' +
       '<th scope="col">' + esc(t(s.tableGames, lang)) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
 
+    /* 아직 스팀을 연결하지 않아 예시 숫자를 띄우는 동안에는, 진짜 기록으로 오해하지 않도록 딱지를 붙입니다.
+       (수집 스크립트가 실제 값을 쓰면 sample 이 사라져 딱지도 함께 없어집니다) */
+    var sample = d.sample ? '<span class="steam__sample">' + esc(t(s.sampleLabel, lang)) + '</span>' : '';
     var note = t(s.note, lang) + (d.generatedAt ? ' · ' + t(s.updatedLabel, lang) + ' ' + d.generatedAt : '');
-    return '<div class="steam reveal">' +
+    return '<div class="steam reveal' + (d.sample ? ' steam--sample' : '') + '">' +
       '<div class="steam__head"><span class="steam__ic" aria-hidden="true">' + STEAM_ICON + '</span>' +
-        '<h3 class="steam__t"' + ep('play.steam.title') + '>' + esc(t(s.title, lang)) + '</h3>' +
+        '<h3 class="steam__t"' + ep('play.steam.title') + '>' + esc(t(s.title, lang)) + '</h3>' + sample +
         '<p class="steam__note">' + esc(note) + '</p></div>' +
       '<div class="steam__body"><figure class="steam__chart">' + svg + '</figure>' +
       '<div class="steam__side">' + stats + table + '</div></div></div>';
