@@ -6,6 +6,7 @@
 
      왼쪽 그립   SELECT ◀ ▶  — 홈에서는 사진 옆 '한마디'를 앞뒤로 넘깁니다 ('한 마디 더' 버튼 대신).
                               한마디가 없는 페이지(이력서)에서는 이전·다음 절로 이동합니다.
+                 ✉ 메일 — content.js 의 meta.email 로 메일 쓰기 (값이 비어 있으면 키를 달지 않습니다).
      오른쪽 그립 B = 밝기(다크 · 라이트)  ·  A = 뽑기(홈: 프로젝트 덱을 누름) / 아래로(이력서)
                  카트리지가 꽂혀 있는 동안은 A = 자세히 보기 · B = 꺼내기
      카트리지    프로젝트 카드(.draw-card · .proj-card)를 누르면 바로 열리지 않고,
@@ -33,6 +34,8 @@
     drawA:  { ko: '프로젝트 카드 뽑기', en: 'Draw project cards' },
     down:   { ko: '아래로',        en: 'Down' },
     downA:  { ko: '아래 내용으로',  en: 'Scroll to the content' },
+    mail:   { ko: '메일',          en: 'Mail' },
+    mailA:  { ko: '이메일 보내기',  en: 'Send me an email' },
     boot:   { ko: '읽는 중',       en: 'LOADING' },
     view:   { ko: '자세히 보기',   en: 'View details' },
     viewS:  { ko: '보기',          en: 'View' },
@@ -45,6 +48,9 @@
     cleared:{ ko: '달성',          en: 'Cleared' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
+  /* 손잡이 메일 키 아이콘 (봉투) */
+  var MAIL_SVG = '<svg viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">' +
+    '<rect x="1" y="1.6" width="16" height="11" /><path d="m1.6 2.4 7.4 5.6 7.4-5.6" stroke-linejoin="round"/></svg>';
 
   function lang() {
     var v = window.PortfolioApp && window.PortfolioApp.getLang ? window.PortfolioApp.getLang() : document.documentElement.getAttribute('lang');
@@ -64,13 +70,17 @@
     var wrap = hero.querySelector('.wrap'); if (!wrap) return;
     var hasQuip = !!hero.querySelector('[data-quip]');
     var hasDeck = !!document.querySelector('[data-draw]');
+    var mail = ((content().meta && content().meta.email) || '').trim();   /* content.js 의 meta.email */
 
     var left = document.createElement('div');
     left.className = 'fc-grip fc-grip--l';
     left.innerHTML =
       '<span class="fc-lbl">' + T.select + '</span>' +
       '<button type="button" class="fc-key" data-fc-step="-1" aria-label="' + esc(t(hasQuip ? T.prevQ : T.prevS)) + '"><span aria-hidden="true">◀</span></button>' +
-      '<button type="button" class="fc-key" data-fc-step="1" aria-label="' + esc(t(hasQuip ? T.nextQ : T.nextS)) + '"><span aria-hidden="true">▶</span></button>';
+      '<button type="button" class="fc-key" data-fc-step="1" aria-label="' + esc(t(hasQuip ? T.nextQ : T.nextS)) + '"><span aria-hidden="true">▶</span></button>' +
+      /* 메일 키 — 누르면 메일 앱이 열립니다 (이메일은 content.js 의 meta.email 한 곳에서) */
+      (mail ? '<span class="fc-ab"><a class="fc-key fc-key--mail" href="mailto:' + esc(mail) + '" aria-label="' + esc(t(T.mailA) + ' — ' + mail) + '">' + MAIL_SVG + '</a>' +
+              '<span class="fc-lbl">' + esc(t(T.mail)) + '</span></span>' : '');
 
     var right = document.createElement('div');
     right.className = 'fc-grip fc-grip--r';
@@ -125,7 +135,12 @@
      (clip-path 로 슬롯 선 위쪽을 잘라 '안으로 들어가는' 것처럼 — 중간에 한 번 걸렸다가 딸깍 들어감)
      ④ 본체가 살짝 눌리고 ⑤ 화면이 켜지며 '읽는 중' → ⑥ 프로젝트 개요(타이틀 화면).
      '자세히 보기'(A) 로 이동, '꺼내기'(B) 로 카트리지가 도로 나와 제자리로 돌아갑니다.
-     슬롯은 화면에 보이는 게임기(.hero.fc-console)의 아래쪽. 게임기가 안 보이면 화면 위에서 슬롯 띠가 내려옵니다. */
+     슬롯은 화면에 보이는 게임기(.hero.fc-console)의 아래쪽. 게임기가 안 보이면 화면 위에서 슬롯 띠가 내려옵니다.
+
+     연출 도중 스크롤해도 어긋나지 않도록, 카트리지는 **슬롯과 같은 좌표계**에 둡니다:
+     게임기 슬롯이면 문서에(absolute — 스크롤을 따라 게임기와 함께 움직임),
+     화면 위 슬롯 띠면 화면에(fixed — 스크롤과 상관없이 띠와 함께 제자리).
+     한쪽만 따라 움직이면 스크롤한 만큼 슬롯이 달아나 카트리지가 허공에 꽂힙니다. */
   var pending = null;   /* 꽂혀 있는 카트리지 { a, fly, slot, hero, useHero, dx, dy1, H, ready } */
   function projectOf(a) {
     var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id = m ? decodeURIComponent(m[1]) : '';
@@ -173,8 +188,7 @@
 
   function insert(a) {
     var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard'); if (!face) { go(a); return; }
-    /* 진행 중인 부드러운 스크롤(CSS scroll-behavior)을 그 자리에서 멈춥니다 — 슬롯 위치를 화면 좌표로 재기 때문 */
-    try { window.scrollTo({ top: window.pageYOffset, left: window.pageXOffset, behavior: 'instant' }); } catch (e) {}
+    var sx = window.pageXOffset, sy = window.pageYOffset;          /* 화면 좌표 → 문서 좌표로 옮길 때 더할 스크롤량 */
     var r = a.getBoundingClientRect(), H = r.height, W = r.width;
 
     /* 슬롯: 보이는 게임기 아래쪽, 없으면 화면 위 슬롯 띠 */
@@ -184,13 +198,19 @@
     if (useHero) { hero.classList.add('is-slot'); lineY = hb.bottom - 3; cx = hb.left + hb.width / 2; }
     else {
       slot = document.createElement('div'); slot.className = 'fc-slot'; document.body.appendChild(slot);
+      /* 띠는 화면 밖(translateY -100%)에서 시작하므로, 그대로 재면 꽂는 선이 띠 높이(58px)만큼 위로 잡혀
+         카트리지가 띠보다 위, 허공에 꽂혔습니다 → 변형을 잠깐 꺼서 '내려온 뒤'의 자리를 재고 되돌립니다 */
+      slot.style.transform = 'none';
       var sb = slot.getBoundingClientRect(); lineY = sb.bottom - 3; cx = sb.left + sb.width / 2;
+      slot.style.transform = '';
       slot.animate([{ transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }], { duration: 320, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' });
     }
 
-    /* 날아가는 복제본 (원본은 자리만 비워 둠) */
+    /* 날아가는 복제본 (원본은 자리만 비워 둠) — 슬롯이 문서에 있으면 복제본도 문서에 붙입니다 */
     var fly = document.createElement('div'); fly.className = 'fc-fly';
-    fly.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + W + 'px;height:' + H + 'px';
+    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') +
+      ';left:' + (r.left + (useHero ? sx : 0)) + 'px;top:' + (r.top + (useHero ? sy : 0)) + 'px' +
+      ';width:' + W + 'px;height:' + H + 'px';
     var clone = face.cloneNode(true);
     clone.classList.remove('is-tilt', 'reveal', 'is-visible'); clone.classList.add('fc-fly__card');
     clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('hidden');
@@ -220,6 +240,12 @@
         { duration: 900, delay: 140, fill: 'forwards' });
       push.onfinish = function () {
         if (pending !== me) return;
+        /* 연출 도중 스크롤해 게임기가 화면 밖으로 밀려났으면, 화면이 켜지기 전에 도로 데려옵니다 */
+        if (useHero) {
+          var hr = hero.getBoundingClientRect();
+          var seen = Math.min(hr.bottom, window.innerHeight) - Math.max(hr.top, navH());
+          if (seen < Math.min(hr.height, window.innerHeight - navH()) * .6) scrollToY(hr.top + window.pageYOffset - navH() - 8);
+        }
         /* ④ 본체가 살짝 눌림 */
         var body = useHero ? hero : slot;
         if (body) body.animate([{ transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }, { transform: useHero ? 'translateY(4px)' : 'translate(-50%,4px)' }, { transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }], { duration: 220, easing: 'ease-out', fill: useHero ? 'none' : 'forwards' });
@@ -256,7 +282,16 @@
     var me = pending; if (!me || !me.ready) return;
     me.ready = false; setAB(null, null);
     var boot = document.querySelector('.fc-boot'); if (boot) boot.parentNode.removeChild(boot);
-    var fly = me.fly, dx = me.dx, dy1 = me.dy1, H = me.H;
+    var fly = me.fly, H = me.H;
+    /* 슬롯 띠(화면에 붙은 경우)는 그 사이 스크롤한 만큼 카드가 옮겨 갔을 수 있으니 기준점을 다시 잡습니다
+       — 카트리지는 아직 완전히 잘려 보이지 않으므로 자리를 옮겨도 눈에 띄지 않습니다 */
+    if (!me.useHero) {
+      var r2 = me.a.getBoundingClientRect();
+      var lx = parseFloat(fly.style.left) || 0, ly = parseFloat(fly.style.top) || 0;
+      me.dx += lx - r2.left; me.dy1 += ly - r2.top;
+      fly.style.left = r2.left + 'px'; fly.style.top = r2.top + 'px';
+    }
+    var dx = me.dx, dy1 = me.dy1;
     var at = function (fx, fy) { return 'translate(' + fx + 'px,' + fy + 'px)'; };
     var out = fly.animate(
       [{ transform: at(dx, dy1 - H), clipPath: 'inset(100% 0 0 0)' }, { transform: at(dx, dy1), clipPath: 'inset(0 0 0 0)' }],

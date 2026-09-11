@@ -14,7 +14,7 @@ window.PORTFOLIO_CONTENT = {
     name:       { ko: "김지수",        en: "Jisu Kim" },
     role:       { ko: "게임 기획자",   en: "Game Designer" },
     resumeUrl:  "assets/resume/jisu-kim-resume.pdf",
-    email:      "",
+    email:      "imjisukim0712@gmail.com",
     github:     "https://github.com/imjisukim0712-bit"
   },
 

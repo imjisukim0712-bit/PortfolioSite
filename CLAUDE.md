@@ -89,14 +89,19 @@
 - 홈 히어로 사진 옆 말풍선은 `content.js` 의 `home.quips[]`(`{ko,en}`) 를 순서대로 보여 주고, `home.quipMore` 가 **한 마디 더** 버튼 글자입니다.
   현재 순번은 `render.js` 의 `QUIP.i`(export `quip`) 이고, `main.js` 의 `cycleQuip()` 이 버튼 클릭에 글자만 바꾸고 사진 카드(`.hero__portrait`)의 `--pose-d`/`--pose-y` 를 바꿔 살짝 움직입니다.
   테마는 `--pose-rest` 로 쉴 때 기울기를 정합니다 (transform 을 직접 쓰지 않습니다).
-- 강점 세 장은 `coverLetter.summary` (`title` + `items[]{tag,title,body}`) 이고 `render.js` 의 `strengthCards()` 가 홈(덱 아래 `.hp--summary`)과 자기소개서 맨 위(`.cl-summary`)에 같은 `.strengths > .strength` 카드를 그립니다.
+- 홈 덱 아래 개요(`homePreview()`)는 **이력서 → 자기소개서 → 게임플레이** 순서입니다. 프로젝트는 바로 위 덱의 카드가 맡으므로 개요에서는 다시 보여 주지 않습니다. 첫 절만 구분선(`hp--sep`) 없이 시작합니다.
+- 강점 세 장은 `coverLetter.summary` (`title` + `items[]{tag,title,body}`) 이고 `render.js` 의 `strengthCards()` 가 홈(개요의 `.hp--summary`)과 자기소개서 맨 위(`.cl-summary`)에 같은 `.strengths > .strength` 카드를 그립니다.
   `coverLetter.blocks[]` 의 `body` 는 문단을 `\n\n` 으로 나눈 `{ko,en}` 한 덩어리입니다 (`paragraphs()` 규약).
 - 히어로 색면(판)은 기본 CSS 의 `.hero::before` 가 `--hero-slab`(색) · `--hero-slab-r`(모서리) 토큰으로 그립니다. 화면이 넓어도 본문 폭(`--page-max`)+20px 까지만 깔립니다. 테마 시안 파일이 토큰과 판 위 글자색을 정하고, 기본 디자인은 판이 없습니다.
 - `themes.js` 의 테마 항목은 `scripts: ['js/….js']` 로 스크립트를 함께 읽을 수 있습니다. 지금은 `pixel` 테마가
   `assets/js/themes/famicom.js` 를 씁니다: 홈·이력서의 `.hero` 를 휴대용 게임기로 만들어, 양옆 손잡이(`.fc-grip`)에
-  SELECT ◀ ▶ · B · A 버튼을 붙입니다. SELECT ◀ ▶ 는 홈에서 사진 옆 '한마디'를 앞뒤로 넘기고
+  SELECT ◀ ▶ · ✉ · B · A 버튼을 붙입니다. SELECT ◀ ▶ 는 홈에서 사진 옆 '한마디'를 앞뒤로 넘기고
   (`PortfolioApp.cycleQuip(dir)` · '한 마디 더' 버튼은 이 시안에서 숨김), 한마디가 없는 페이지에서는 이전·다음 절로 이동합니다.
+  ✉(메일) 은 `content.js` 의 `meta.email` 로 메일 쓰기이고, 값이 비어 있으면 키를 달지 않습니다 (좁은 화면에서는 자리를 위해 'SELECT' 글자만 접습니다).
   B 는 다크·라이트 전환(헤더의 `[data-theme-toggle]` 을 누름), A 는 홈에서 덱 뽑기(`[data-draw]`), 그 밖에서는 아래 내용으로 스크롤.
+  **기기 크기는 두 페이지가 같아야 합니다**: 본체 높이를 안에 든 내용이 아니라 `--fc-h`(화면 높이 기준 clamp)로 정하고,
+  높이를 많이 먹는 사진(`.portrait`)·고스트 그림(`.ghost-art`)·큰 제목(`--text-display` · 홈 제목)을 `--fc-h` 에 묶어 두었습니다.
+  액정 안 내용을 늘리거나 줄일 때는 이 세 개도 함께 보세요 (`min-height` 라서 내용이 넘치면 잘리는 대신 기기가 늘어납니다 — 그러면 페이지마다 크기가 달라집니다).
   이 시안의 카드는 카트리지입니다: 셸(`.gcard` 배경) · 단자(위)와 귀(아래)(`.gcard::before`) · 라벨(`.gcard__frame`) 이고,
   등급은 테두리 대신 라벨 위 띠 색 `--stripe` 로 구분합니다. 다크 모드에서도 라벨은 크림색이라 라벨 안 글자색 토큰을 다시 정합니다.
   카드(`a.draw-card` · `a.proj-card`)를 누르면 바로 이동하지 않고 **꽂기 연출**이 먼저 나옵니다: 카드 복제본(`.fc-fly`)이
@@ -105,5 +110,8 @@
   (`.fc-boot > .fc-ov`: 그림 · 분류/태그/등급 · 제목 · 한 줄 · 기간/인원/역할/상태 · 퀘스트 — 모두 `projects.items[]` 에서)가
   뜹니다. **자세히 보기**(또는 손잡이 A)가 원래 링크를 `data-fc-go` 표시와 함께 다시 눌러 이동하고(갤러리의 링크 가로채기도
   그대로 동작), **꺼내기**(손잡이 B · Esc)는 카트리지가 도로 나와 제자리로 돌아갑니다. 모션 최소화 설정·수식키 클릭은 바로 이동합니다.
+  카트리지(`.fc-fly`)는 **슬롯과 같은 좌표계**에 둡니다 — 게임기 슬롯이면 문서에(`absolute` + 스크롤량), 화면 위 슬롯 띠면 화면에(`fixed`).
+  한쪽만 스크롤을 따라가면 꽂는 자리가 어긋나 카트리지가 허공에 꽂힙니다. 슬롯 띠의 꽂는 선은 `transform` 을 잠깐 꺼서
+  '내려온 뒤'의 자리로 재고, 연출 도중 게임기가 화면 밖으로 밀려났으면 화면이 켜지기 전에 도로 스크롤해 데려옵니다.
   `[data-slot="main"]` 의 자식이 바뀔 때마다(언어 전환·갤러리 페이지 이동) 다시 붙고, 다른 시안에서는 아무것도 하지 않습니다.
   페이지 한 줄 설명은 그 파일의 `PAGES[].desc` 에 `{ ko, en }` 으로 있습니다 (이중언어 규칙 적용).

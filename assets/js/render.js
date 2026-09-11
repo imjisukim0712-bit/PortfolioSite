@@ -169,7 +169,8 @@
       '<div><div class="footer__brand">' + GHOST + '<span>' + esc(t(c.meta.name, lang)) + ' · ' + esc(t(c.meta.role, lang)) + '</span></div>' +
         '<p class="footer__tagline"' + ep('footer.tagline') + '>' + esc(t(c.footer && c.footer.tagline, lang)) + '</p></div>' +
       '<div class="footer__links">' + links + '</div>' +
-      '</div><p class="footer__copy">© ' + new Date().getFullYear() + ' ' + esc(t(c.meta.name, lang)) + '</p>';
+      '</div><p class="footer__copy">© ' + new Date().getFullYear() + ' ' + esc(t(c.meta.name, lang)) +
+        (mail ? ' · <a class="footer__mail" href="mailto:' + esc(mail) + '">' + esc(mail) + '</a>' : '') + '</p>';
   }
 
   function tagsHtml(tags, lang, style) {
@@ -256,7 +257,8 @@
     return '<div class="home-screen">' + hero + drawSec + '</div>' + homePreview(c, lang, base);
   }
 
-  // 홈 아래 랜딩형 개요 — 이력서·자기소개서·게임플레이 미리보기 (실제 데이터에서).
+  // 홈 아래 랜딩형 개요 — 이력서 → 자기소개서 → 게임플레이 순서의 미리보기 (실제 데이터에서).
+  // 프로젝트는 바로 위 덱(카트리지 카드)이 맡으므로 여기서는 다루지 않습니다.
   function homePreview(c, lang, base) {
     function metaJoin(parts) { return parts.map(function (x) { return (x || '').toString().trim(); }).filter(Boolean).join(' · '); }
     function moreLink(page, cls) {
@@ -272,15 +274,7 @@
     }
     var L = function (ko, en) { return lang === 'en' ? en : ko; };
 
-    // 프로젝트 경험 — 2개만
-    var projRows = arr(c.projects && c.projects.items).slice(0, 2).map(function (p, i) {
-      var meta = metaJoin([ t(p.myRole, lang), t(p.sub, lang) ]);
-      return '<a class="hpl-row" href="' + esc(base + 'projects/detail.html?p=' + encodeURIComponent(p.id)) + '">' +
-        thumb(p.thumb, t(p.title, lang)) +
-        '<span class="hpl-row__body"><span class="hpl-row__top"><span class="hpl-row__t"' + ep('projects.items.'+i+'.title') + '>' + esc(t(p.title, lang)) + '</span>' +
-        '<span class="hpl-row__d"' + ep('projects.items.'+i+'.period') + '>' + esc(t(p.period, lang)) + '</span></span>' +
-        (meta ? '<span class="hpl-row__m">' + esc(meta) + '</span>' : '') + '</span></a>';
-    }).join('');
+    // 프로젝트는 여기서 다시 보여 주지 않습니다 — 바로 위 덱의 카드(카트리지)가 프로젝트 목록입니다.
 
     // 대외 활동 (경력 항목) — 2개만
     var actRows = arr(c.resume && c.resume.career && c.resume.career.items).slice(0, 2).map(function (it, i) {
@@ -307,8 +301,8 @@
         '<p class="hp-game__b">' + esc(metaJoin([ t(g.genre, lang), t(g.hours, lang) ])) + '</p></div>';
     }).join('');
 
-    var resumeSec = '<section class="section hp hp--sep"><div class="wrap">' +
-      (projRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('프로젝트 경험','Project experience') + '</h2><div class="hpl">' + projRows + '</div></div>' : '') +
+    /* 덱 바로 아래 첫 절이라 구분선(hp--sep)을 넣지 않습니다 */
+    var resumeSec = '<section class="section hp"><div class="wrap">' +
       (actRows ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('대외 활동','Activities') + '</h2><div class="hpl">' + actRows + '</div></div>' : '') +
       (skillItems ? '<div class="hp-block reveal"><h2 class="hp-h">' + L('보유 기술','Skills') + '</h2><div class="hp-skills">' + skillItems + '</div></div>' : '') +
       moreLink('resume', ' reveal') +
@@ -317,7 +311,7 @@
     // 자기소개서 요약 — 강점 세 장을 카드로 (덱 바로 아래)
     var smTitle = (c.coverLetter && c.coverLetter.summary && c.coverLetter.summary.title) || '';
     var sCards = strengthCards(c, lang);
-    var coverSec = '<section class="section hp hp--summary"><div class="wrap">' +
+    var coverSec = '<section class="section hp hp--summary hp--sep"><div class="wrap">' +
       (sCards ? '<div class="hp-block reveal"><h2 class="hp-h"' + ep('coverLetter.summary.title') + '>' + esc(t(smTitle, lang)) + '</h2>' + sCards + '</div>' : '') +
       moreLink('cover', ' reveal') + '</div></section>';
 
@@ -326,7 +320,7 @@
       moreLink('play', ' reveal') +
       '</div></section>';
 
-    return coverSec + resumeSec + playSec;
+    return resumeSec + coverSec + playSec;      /* 이력서 → 자기소개서 → 게임플레이 */
   }
 
   // 카드 뽑기 결과 카드 (main.js 에서 호출)

@@ -948,6 +948,8 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .footer__tagline { margin-top: 6px; font-size: var(--text-caption); color: var(--text-muted); }
 .footer__links { display: flex; flex-wrap: wrap; gap: 10px; }
 .footer__copy { margin-top: 20px; font-size: var(--text-caption); color: var(--text-muted); }
+.footer__mail { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.footer__mail:hover { color: var(--accent); }
 
 .to-top { position: fixed; right: max(16px, env(safe-area-inset-right,0px)); bottom: calc(env(safe-area-inset-bottom,0px) + 16px); z-index: 80; display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--surface) 90%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--heading); opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .24s ease, transform .24s ease, visibility .24s ease; }
 .to-top.is-shown { opacity: 1; visibility: visible; transform: translateY(0); }
