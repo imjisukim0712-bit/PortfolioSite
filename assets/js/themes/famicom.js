@@ -197,7 +197,11 @@
     var slot = null, lineY, cx;
     if (useHero) { hero.classList.add('is-slot'); lineY = hb.bottom - 3; cx = hb.left + hb.width / 2; }
     else {
-      slot = document.createElement('div'); slot.className = 'fc-slot'; document.body.appendChild(slot);
+      slot = document.createElement('div'); slot.className = 'fc-slot';
+      /* 띠는 상단바 **아래**에 놓습니다 — 카트리지·띠 모두 상단바보다 아래 층이라, 화면 맨 위에 두면 바에 가립니다 */
+      var nb = document.querySelector('.nav');
+      slot.style.top = Math.max(0, nb ? nb.getBoundingClientRect().bottom + 4 : 0) + 'px';
+      document.body.appendChild(slot);
       /* 띠는 화면 밖(translateY -100%)에서 시작하므로, 그대로 재면 꽂는 선이 띠 높이(58px)만큼 위로 잡혀
          카트리지가 띠보다 위, 허공에 꽂혔습니다 → 변형을 잠깐 꺼서 '내려온 뒤'의 자리를 재고 되돌립니다 */
       slot.style.transform = 'none';
