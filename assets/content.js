@@ -363,7 +363,54 @@ window.PORTFOLIO_CONTENT = {
         hours: { ko: "TBD", en: "TBD" },
         genre: { ko: "지원 직무 · 팀 관련 게임", en: "A title related to the team" },
         note:  { ko: "지원하는 팀과 관련된 타이틀을 넣을 자리입니다.", en: "Slot for a title relevant to the team." } }
-    ]
+    ],
+
+    /* ── 스팀 연동 (게임플레이 페이지 맨 위 방사형 그래프) ───────────────────
+       깃허브 액션이 주기적으로 스팀에서 플레이 기록을 모아 assets/play-steam.js 에
+       저장하고, 화면은 그 파일만 읽습니다 (설정 방법: docs/steam-play-log.md).
+       파일이 아직 없으면 그래프 자리는 그냥 나오지 않습니다.
+
+       ■ 빼고 싶은 게임 — 아래 exclude 에 appid 숫자나 이름 일부를 적으면 됩니다.
+         성인 콘텐츠·연령 제한 게임은 적지 않아도 자동으로 빠집니다.
+       ────────────────────────────────────────────────────────────────────── */
+    steam: {
+      title:       { ko: "장르별 플레이 시간", en: "Hours by genre" },
+      note:        { ko: "스팀 라이브러리 기준", en: "From my Steam library" },
+      totalLabel:  { ko: "총 플레이",     en: "Total played" },
+      gamesLabel:  { ko: "집계 게임",     en: "Games counted" },
+      recentLabel: { ko: "요즘 하는 게임", en: "Playing lately" },
+      restLabel:   { ko: "그 외 장르",    en: "Other genres" },
+      updatedLabel:{ ko: "갱신",          en: "Updated" },
+      tableGenre:  { ko: "장르",          en: "Genre" },
+      tableHours:  { ko: "시간",          en: "Hours" },
+      tableGames:  { ko: "게임 수",       en: "Titles" },
+      hourUnit:    { ko: "시간",          en: "h" },
+      countUnit:   { ko: "종",            en: "" },
+
+      /* 여기부터는 수집 설정 — tools/steam-sync.mjs 가 읽습니다 */
+      minMinutes: 60,        // 이만큼(분) 못 논 게임은 그래프에서 뺍니다
+      axes: 6,               // 방사형 축 개수 (5~7 권장)
+      topCount: 8,           // 결과 파일에 이름을 남길 게임 수 (나머지는 숫자로만)
+      fetchLimit: 140,       // 한 번 실행에 새로 받을 상점 정보 수 (스팀 호출 제한 대비)
+      skipSoftware: true,    // 월페이퍼 엔진 같은 '게임 아닌 것' 빼기
+      exclude: [],           // 직접 빼기: appid 숫자 또는 이름 일부. 예) [ 431960, "Wallpaper" ]
+      excludeGenres: [23, 37, 70],   // 축으로 세우지 않을 장르 id (인디 · 무료 플레이 · 앞서 해보기)
+
+      /* 장르 이름표 (스팀 장르 id → 우리말·영어). 없는 id 는 스팀이 준 영어 이름을 그대로 씁니다 */
+      genreNames: {
+        "1":  { ko: "액션",          en: "Action" },
+        "2":  { ko: "전략",          en: "Strategy" },
+        "3":  { ko: "RPG",           en: "RPG" },
+        "4":  { ko: "캐주얼",        en: "Casual" },
+        "9":  { ko: "레이싱",        en: "Racing" },
+        "18": { ko: "스포츠",        en: "Sports" },
+        "25": { ko: "어드벤처",      en: "Adventure" },
+        "28": { ko: "시뮬레이션",    en: "Simulation" },
+        "29": { ko: "대규모 멀티",   en: "Massively Multiplayer" },
+        "73": { ko: "폭력적",        en: "Violent" },
+        "81": { ko: "다큐멘터리",    en: "Documentary" }
+      }
+    }
   },
 
   /* ── 푸터 (모든 페이지 공통) ─────────────────────────────────────────────

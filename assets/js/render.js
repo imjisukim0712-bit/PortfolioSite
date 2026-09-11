@@ -513,6 +513,86 @@
   }
 
   /* ---------- PLAY ---------- */
+  /* ── 스팀 플레이 기록 — 장르별 방사형 그래프 ───────────────────────────────
+     데이터는 assets/play-steam.js (window.PORTFOLIO_STEAM) 이고 tools/steam-sync.mjs 가 씁니다.
+     아직 없으면(연동 전) 이 블록은 통째로 그리지 않습니다.
+     계열이 하나뿐이라 색은 강조색 하나만 쓰고 범례를 두지 않습니다. 눈금은 **제곱근**이라
+     한 장르가 압도적이어도 나머지 모양이 뭉개지지 않고, 실제 숫자는 축 라벨과 아래 표에 그대로 적습니다.
+     그래프를 못 읽는 경우(스크린 리더·색약·인쇄)를 위해 같은 내용을 표로 한 번 더 둡니다. */
+  function steamBlock(c, lang) {
+    var d = global.PORTFOLIO_STEAM, s = (c.play && c.play.steam) || {};
+    var axes = arr(d && d.axes);
+    if (!axes.length) return '';
+
+    var names = s.genreNames || {};
+    var gname = function (a) { var n = names[String(a.id)]; return n ? t(n, lang) : (a.name || String(a.id)); };
+    var hUnit = t(s.hourUnit, lang), cUnit = t(s.countUnit, lang);
+    var nf = function (n) { return String(Math.round(n || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+    var hrs = function (n) { return nf(n) + hUnit; };
+
+    /* 좌표 — 라벨이 들어갈 자리까지 계산해 넉넉한 viewBox 를 씁니다 */
+    var CX = 190, CY = 156, R = 96, N = axes.length;
+    var max = 0;
+    for (var m = 0; m < N; m++) max = Math.max(max, axes[m].hours || 0);
+    max = max || 1;
+    function pt(i, r) {
+      var a = (Math.PI * 2 * i / N) - Math.PI / 2;
+      return [CX + Math.cos(a) * r, CY + Math.sin(a) * r];
+    }
+    function poly(r, cls) {
+      var p = [], i, q;
+      for (i = 0; i < N; i++) { q = pt(i, r); p.push(q[0].toFixed(1) + ',' + q[1].toFixed(1)); }
+      return '<polygon class="' + cls + '" points="' + p.join(' ') + '"/>';
+    }
+
+    var grid = poly(R, 'sr-grid') + poly(R * 0.66, 'sr-grid') + poly(R * 0.33, 'sr-grid');
+    var spokes = '', labels = '', dots = '', shape = [];
+    for (var i = 0; i < N; i++) {
+      var a = axes[i];
+      var r = R * Math.sqrt(Math.max(0, a.hours || 0) / max);   /* 제곱근 눈금 = 넓이가 시간에 비례 */
+      var end = pt(i, R), p = pt(i, r), lab = pt(i, R + 16);
+      spokes += '<line class="sr-spoke" x1="' + CX + '" y1="' + CY + '" x2="' + end[0].toFixed(1) + '" y2="' + end[1].toFixed(1) + '"/>';
+      shape.push(p[0].toFixed(1) + ',' + p[1].toFixed(1));
+      dots += '<circle class="sr-dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="4"/>';
+      var anchor = Math.abs(lab[0] - CX) < 2 ? 'middle' : (lab[0] > CX ? 'start' : 'end');
+      var dy = lab[1] < CY - R * 0.6 ? -4 : (lab[1] > CY + R * 0.6 ? 14 : 0);
+      labels += '<text class="sr-name" x="' + lab[0].toFixed(1) + '" y="' + (lab[1] + dy).toFixed(1) + '" text-anchor="' + anchor + '">' + esc(gname(a)) + '</text>' +
+                '<text class="sr-val" x="' + lab[0].toFixed(1) + '" y="' + (lab[1] + dy + 15).toFixed(1) + '" text-anchor="' + anchor + '">' + esc(hrs(a.hours)) + '</text>';
+    }
+
+    var alt = axes.map(function (a) { return gname(a) + ' ' + hrs(a.hours); }).join(', ');
+    var svg = '<svg class="steam-radar" viewBox="0 0 380 320" role="img" aria-label="' +
+      esc(t(s.title, lang) + ': ' + alt) + '">' + grid + spokes +
+      '<polygon class="sr-area" points="' + shape.join(' ') + '"/>' + dots + labels + '</svg>';
+
+    /* 요약 수치 — 그래프가 답하지 않는 '전체'를 숫자로 */
+    var stats = '<dl class="steam__stats">' +
+      '<div><dt>' + esc(t(s.totalLabel, lang)) + '</dt><dd>' + esc(hrs(d.totals && d.totals.hours)) + '</dd></div>' +
+      '<div><dt>' + esc(t(s.gamesLabel, lang)) + '</dt><dd>' + esc(nf(d.totals && d.totals.games) + cUnit) + '</dd></div>' +
+      (arr(d.recent).length ? '<div><dt>' + esc(t(s.recentLabel, lang)) + '</dt><dd class="steam__recent">' +
+        esc(arr(d.recent).slice(0, 2).map(function (r) { return r.name; }).join(' · ')) + '</dd></div>' : '') +
+      '</dl>';
+
+    /* 같은 내용의 표 — 그래프를 못 읽어도 값이 그대로 남습니다 */
+    var rows = axes.map(function (a) {
+      return '<tr><th scope="row">' + esc(gname(a)) + '</th><td>' + esc(hrs(a.hours)) + '</td><td>' + esc(nf(a.games) + cUnit) + '</td></tr>';
+    }).join('');
+    if (d.restHours > 0) {
+      rows += '<tr class="steam__rest"><th scope="row">' + esc(t(s.restLabel, lang)) + '</th><td>' + esc(hrs(d.restHours)) + '</td><td>' + esc(nf(d.restGenres) + cUnit) + '</td></tr>';
+    }
+    var table = '<table class="steam__table"><caption class="sr-only">' + esc(t(s.title, lang)) + '</caption><thead><tr>' +
+      '<th scope="col">' + esc(t(s.tableGenre, lang)) + '</th><th scope="col">' + esc(t(s.tableHours, lang)) + '</th>' +
+      '<th scope="col">' + esc(t(s.tableGames, lang)) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+    var note = t(s.note, lang) + (d.generatedAt ? ' · ' + t(s.updatedLabel, lang) + ' ' + d.generatedAt : '');
+    return '<div class="steam reveal">' +
+      '<div class="steam__head"><span class="steam__ic" aria-hidden="true">' + STEAM_ICON + '</span>' +
+        '<h3 class="steam__t"' + ep('play.steam.title') + '>' + esc(t(s.title, lang)) + '</h3>' +
+        '<p class="steam__note">' + esc(note) + '</p></div>' +
+      '<div class="steam__body"><figure class="steam__chart">' + svg + '</figure>' +
+      '<div class="steam__side">' + stats + table + '</div></div></div>';
+  }
+
   function renderPlay(c, lang, base) {
     var pl = c.play || {};
     var cards = arr(pl.cards).map(function (card, i) {
@@ -526,6 +606,7 @@
       '<p class="eyebrow">' + (lang==='en'?'PLAY LOG':'게임플레이') + '</p>' +
       '<h2 class="section__title"' + ep('play.title') + '>' + esc(t(pl.title, lang)) + '</h2>' +
       '<p class="section__lead"' + ep('play.lead') + '>' + esc(t(pl.lead, lang)) + '</p></header>' +
+      steamBlock(c, lang) +                      /* 스팀 연동 전이면 빈 문자열 */
       '<div class="play">' + cards + '</div></div></section>';
   }
 

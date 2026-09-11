@@ -84,6 +84,22 @@
 - 시각 편집기에서 카드 그림을 누르면 `projects.items.<i>.thumb` 슬롯으로 연결됩니다
   (`visual-editor.js` 의 `photoSlotFor()`).
 
+## 게임플레이 — 스팀 연동 방사형 그래프
+
+게임플레이 페이지 맨 위의 장르별 그래프는 **자동 수집**입니다 (자세한 사용법: `docs/steam-play-log.md`).
+
+- 흐름: `.github/workflows/steam-sync.yml`(주 1회·수동) → `tools/steam-sync.mjs` → `assets/play-steam.js`
+  (`window.PORTFOLIO_STEAM`) → `render.js` 의 `steamBlock()`. 데이터가 없으면 블록을 아예 그리지 않습니다.
+- **무엇을 넣고 뺄지는 `content.js` 의 `play.steam` 한 곳**에서 정합니다 (`exclude` 에 appid·이름, `minMinutes`,
+  `axes`, `topCount`, `excludeGenres`, `genreNames`). 수집 스크립트가 이 파일을 그대로 평가해 설정을 읽습니다 —
+  `play.steam` 의 키 이름을 바꾸면 스크립트도 함께 고쳐야 합니다.
+- **성인 콘텐츠·연령 제한·게임 아닌 소프트웨어는 집계 전에 걸러집니다** (콘텐츠 표시 1·3·4, 장르 71·72,
+  `required_age ≥ 18`, 상점 정보 없음, 장르 51~60·84). 공개 파일에 이름조차 남기지 않습니다 — 이 규칙을 약하게 바꾸지 마세요.
+- 그래프는 계열이 하나라 **강조색 하나 · 범례 없음 · 제곱근 눈금**이고, 같은 내용을 표로 한 번 더 둡니다
+  (스크린 리더·색약·인쇄). 숫자는 축 라벨과 표에 그대로 적습니다.
+- 깃허브 액션이 `GITHUB_TOKEN` 으로 push 한 커밋은 `deploy-pages.yml` 을 깨우지 않으므로, 배포 단계를
+  `steam-sync.yml` 안에 이어 붙여 두었습니다.
+
 ## 홈 말풍선 · 강점 요약 · 히어로 판
 
 - 홈 히어로 사진 옆 말풍선은 `content.js` 의 `home.quips[]`(`{ko,en}`) 를 순서대로 보여 주고, `home.quipMore` 가 **한 마디 더** 버튼 글자입니다.

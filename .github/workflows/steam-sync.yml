@@ -1,0 +1,75 @@
+# 스팀 플레이 기록 자동 갱신
+# ---------------------------------------------------------------------------
+# 주 1회(월요일 03:00 KST) 스팀에서 플레이 기록을 모아 assets/play-steam.js 를 갱신하고,
+# 바뀐 게 있으면 커밋한 뒤 그 자리에서 GitHub Pages 까지 배포합니다.
+#   · 필요한 Secrets : STEAM_API_KEY · STEAM_ID   (저장소 Settings → Secrets → Actions)
+#   · 무엇을 넣고 뺄지 : assets/content.js 의 play.steam  (exclude 에 appid·이름)
+#   · 손으로 돌리려면 : Actions 탭 → 이 워크플로 → Run workflow
+# 기본 GITHUB_TOKEN 으로 push 한 커밋은 다른 워크플로(deploy-pages.yml)를 깨우지 않기 때문에,
+# 배포 단계를 이 워크플로 안에 이어 붙여 두었습니다.
+name: Steam play log
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'      # 일요일 18:00 UTC = 월요일 03:00 KST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: steam-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 스팀에서 플레이 기록 모으기
+        env:
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          STEAM_ID: ${{ secrets.STEAM_ID }}
+        run: node tools/steam-sync.mjs
+
+      - name: 바뀐 내용이 있으면 커밋
+        id: commit
+        run: |
+          if git diff --quiet -- assets/play-steam.js tools/steam-cache.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "바뀐 내용 없음 — 배포 생략"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/play-steam.js tools/steam-cache.json
+          git commit -m "스팀 플레이 기록 갱신"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Pages
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload site
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy
+        id: deployment
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/deploy-pages@v4
