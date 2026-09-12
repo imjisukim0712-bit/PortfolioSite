@@ -61,7 +61,7 @@ python3 -m http.server 8000   # http://localhost:8000
 2. Cloudflare 대시보드 **Workers & Pages** 개요 화면 오른쪽에서 **계정 ID** 복사
 3. 이 저장소 Settings → Secrets and variables → Actions → New repository secret 으로 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` 두 개 등록
 4. 첫 배포는 Actions 탭에서 "Deploy to Cloudflare Workers" 를 **workflow_dispatch** 로 수동 실행하거나, 위 브랜치에 다시 푸시하면 시작됩니다
-5. 완료되면 `https://portfoliosite.<계정 서브도메인>.workers.dev` 에서 확인 (Worker 이름은 `wrangler.jsonc` 의 `name`)
+5. 완료되면 **https://portfoliosite.imjisukim0712.workers.dev** 에서 확인 (Worker 이름은 `wrangler.jsonc` 의 `name`)
 
 `.assetsignore` 에 올라가지 않게 막아 둔 것: `CLAUDE.md`, `README.md`(이 문서 — 편집기 비밀번호가 적혀 있음), `docs/`, `tools/`,
 `.github/` 등 사이트 화면이 아닌 파일들. 새 최상위 파일·폴더를 추가할 때 사이트에 필요 없는 것이라면 여기에도 추가하세요.
