@@ -100,6 +100,24 @@
 - 깃허브 액션이 `GITHUB_TOKEN` 으로 push 한 커밋은 `deploy-pages.yml` 을 깨우지 않으므로, 배포 단계를
   `steam-sync.yml` 안에 이어 붙여 두었습니다.
 
+## 배포 — GitHub Actions → Cloudflare Workers (자동)
+
+`main` · `claude/game-planner-portfolio-landing-ote57w` 브랜치에 푸시하면 GitHub Pages 와 Cloudflare
+두 곳에 **자동으로 같이 배포**됩니다. 둘 중 하나만 보고 "배포 안 됐네" 하지 말고, 이 흐름을 바꿀 땐 둘 다 확인하세요.
+
+- 흐름: push → `.github/workflows/deploy-cloudflare.yml` → `wrangler deploy` (`wrangler.jsonc` 설정대로
+  저장소를 통째로 정적 자산 삼아 업로드) → **https://portfoliosite.imjisukim0712.workers.dev**.
+  같은 푸시가 기존 `deploy-pages.yml`(GitHub Pages)도 그대로 돌립니다 — 배포 대상은 두 곳 다 유지.
+- 인증은 저장소 Secrets `CLOUDFLARE_API_TOKEN` · `CLOUDFLARE_ACCOUNT_ID` 두 개뿐입니다
+  (Cloudflare 대시보드 → API Tokens 에서 발급). 토큰을 새로 만들면 이 값만 갱신하면 됩니다.
+- **새 최상위 파일·폴더를 추가할 때, 사이트 화면이 아니면 `.assetsignore` 에도 추가하세요.**
+  안 넣으면 다음 푸시 때 그 파일이 공개 URL에 그대로 열립니다. `CLAUDE.md`·`README.md`·`docs/`·`tools/`처럼
+  내부용 문서·스크립트는 반드시 걸러야 합니다 — README 에는 편집기 비밀번호 같은 민감한 내용도 있으니
+  이 규칙을 약하게 바꾸지 마세요.
+- `wrangler.jsonc` 는 `main`(서버 코드) 없이 `assets.directory` 만 있는 게 정상입니다(순수 정적 사이트).
+  Wrangler 는 반드시 4 이상이어야 합니다(`deploy-cloudflare.yml` 의 `wranglerVersion: "4"`) — 3 이하에서는
+  `main` 없는 배포 자체가 안 됩니다.
+
 ## 홈 말풍선 · 강점 요약 · 히어로 판
 
 - 홈 히어로 사진 옆 말풍선은 `content.js` 의 `home.quips[]`(`{ko,en}`) 를 순서대로 보여 주고, `home.quipMore` 가 **한 마디 더** 버튼 글자입니다.
