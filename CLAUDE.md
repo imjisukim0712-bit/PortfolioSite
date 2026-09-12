@@ -117,6 +117,10 @@
 - `wrangler.jsonc` 는 `main`(서버 코드) 없이 `assets.directory` 만 있는 게 정상입니다(순수 정적 사이트).
   Wrangler 는 반드시 4 이상이어야 합니다(`deploy-cloudflare.yml` 의 `wranglerVersion: "4"`) — 3 이하에서는
   `main` 없는 배포 자체가 안 됩니다.
+- 실제 공개 주소는 **`https://jisu.kim`**(+ `www.jisu.kim`)입니다 — Cloudflare Registrar 로 산 도메인을 위 Worker 에
+  Custom Domain 으로 연결해 뒀고, `workers.dev` 주소도 그대로 계속 살아 있습니다. `content.js` 의 `meta.email`
+  (`contact@jisu.kim`)은 Cloudflare **Email Routing** 이 지메일로 전달하는 주소라 코드에는 진짜 받는 편지함이 없습니다 —
+  전달 대상을 바꾸려면 Cloudflare 대시보드 Email Routing 쪽에서 바꿔야 합니다.
 
 ## 홈 말풍선 · 강점 요약 · 히어로 판
 

@@ -1,6 +1,6 @@
 # 김지수 · 게임 기획자 포트폴리오
 
-🔗 **사이트 바로가기 → https://imjisukim0712-bit.github.io/PortfolioSite/**
+🔗 **사이트 바로가기 → https://jisu.kim**
 
 빌드 도구 없는 정적 사이트입니다. **내용과 화면이 분리돼 있어, 글을 고칠 때 HTML을 건드릴 필요가 없습니다.**
 
@@ -65,6 +65,12 @@ python3 -m http.server 8000   # http://localhost:8000
 
 `.assetsignore` 에 올라가지 않게 막아 둔 것: `CLAUDE.md`, `README.md`(이 문서 — 편집기 비밀번호가 적혀 있음), `docs/`, `tools/`,
 `.github/` 등 사이트 화면이 아닌 파일들. 새 최상위 파일·폴더를 추가할 때 사이트에 필요 없는 것이라면 여기에도 추가하세요.
+
+### 맞춤 도메인 · 메일
+`https://jisu.kim` (+ `www.jisu.kim`) 을 Cloudflare Registrar 로 구매해서 위 Worker 에 Custom Domain 으로 연결해 뒀습니다 —
+`workers.dev` 주소는 그대로 살아있고, `jisu.kim` 이 실제 공개 주소입니다. `contact@jisu.kim` 은 Cloudflare **Email Routing** 으로
+지메일함(`imjisukim0712@gmail.com`)에 전달되는 주소라, `content.js` 의 `meta.email` 이 이 값으로 되어 있습니다 — 실제 받는 편지함을
+바꾸려면 Cloudflare 대시보드 **Email Routing → jisu.kim → 라우팅 규칙**에서 목적지를 바꿔야 합니다 (코드에는 없음).
 
 ## 아직 채울 곳
 - `assets/resume/jisu-kim-resume.pdf` — 자리표시용 더미. 공개용 이력서로 교체 (원본엔 개인정보가 있어 미반영)

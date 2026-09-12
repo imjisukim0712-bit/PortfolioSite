@@ -14,7 +14,7 @@ window.PORTFOLIO_CONTENT = {
     name:       { ko: "김지수",        en: "Jisu Kim" },
     role:       { ko: "게임 기획자",   en: "Game Designer" },
     resumeUrl:  "assets/resume/jisu-kim-resume.pdf",
-    email:      "imjisukim0712@gmail.com",
+    email:      "contact@jisu.kim",
     // 이메일을 누르면 메일 앱을 여는 동시에 주소를 복사하고, 아래 문구를 잠깐 띄웁니다.
     emailCopied:{ ko: "이메일 주소를 복사했습니다", en: "Email address copied" },
     github:     "https://github.com/imjisukim0712-bit"
