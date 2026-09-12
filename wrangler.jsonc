@@ -1,0 +1,8 @@
+{
+	// Cloudflare Workers 배포 설정 (정적 자산 전용 — 서버 코드 없음)
+	"name": "portfoliosite",
+	"compatibility_date": "2026-09-12",
+	"assets": {
+		"directory": "./"
+	}
+}

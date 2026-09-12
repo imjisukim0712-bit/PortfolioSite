@@ -52,6 +52,20 @@ python3 -m http.server 8000   # http://localhost:8000
 `.github/workflows/deploy-pages.yml` 이 브랜치 푸시마다 자동 배포합니다.
 저장소 Settings → Pages → Source 가 **GitHub Actions** 여야 합니다.
 
+### Cloudflare Workers 로 배포 (저장소 비공개 + 페이지만 공개)
+`.github/workflows/deploy-cloudflare.yml` 이 같은 브랜치 푸시마다 [Wrangler](https://developers.cloudflare.com/workers/wrangler/) 로
+`wrangler.jsonc` 설정을 읽어 정적 자산을 Cloudflare Workers 에 올립니다. GitHub Actions 안에서만 저장소를 읽으므로 **저장소를 비공개로
+바꿔도 그대로 동작**합니다 (Cloudflare 쪽에 저장소 접근 권한을 따로 줄 필요 없음).
+
+1. Cloudflare 대시보드 → 오른쪽 위 프로필 → **API 토큰** → 토큰 만들기 → "Edit Cloudflare Workers" 템플릿으로 생성 → 값 복사
+2. Cloudflare 대시보드 **Workers & Pages** 개요 화면 오른쪽에서 **계정 ID** 복사
+3. 이 저장소 Settings → Secrets and variables → Actions → New repository secret 으로 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` 두 개 등록
+4. 첫 배포는 Actions 탭에서 "Deploy to Cloudflare Workers" 를 **workflow_dispatch** 로 수동 실행하거나, 위 브랜치에 다시 푸시하면 시작됩니다
+5. 완료되면 `https://portfoliosite.<계정 서브도메인>.workers.dev` 에서 확인 (Worker 이름은 `wrangler.jsonc` 의 `name`)
+
+`.assetsignore` 에 올라가지 않게 막아 둔 것: `CLAUDE.md`, `README.md`(이 문서 — 편집기 비밀번호가 적혀 있음), `docs/`, `tools/`,
+`.github/` 등 사이트 화면이 아닌 파일들. 새 최상위 파일·폴더를 추가할 때 사이트에 필요 없는 것이라면 여기에도 추가하세요.
+
 ## 아직 채울 곳
 - `assets/resume/jisu-kim-resume.pdf` — 자리표시용 더미. 공개용 이력서로 교체 (원본엔 개인정보가 있어 미반영)
 - 편집기 → 기본 정보 → 연락 이메일
