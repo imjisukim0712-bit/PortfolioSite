@@ -335,6 +335,18 @@
   }
 
   /* ---------- RESUME ---------- */
+  /* 히어로 사진 액자 — 이력서처럼 말풍선·이름표가 없는 자리에 씁니다.
+     따로 지정한 사진(resume.photo)이 없으면 홈에서 쓰는 사진(home.player.photo)을 그대로 쓰고,
+     그것도 비어 있으면 예전처럼 고스트 그림을 둡니다. */
+  function heroPhoto(c, lang, base, own) {
+    var pl = (c.home && c.home.player) || {};
+    var src = String(own || '').trim() || String(pl.photo || '').trim();
+    var alt = t(pl.photoAlt, lang) || t(c.meta.name, lang);
+    return src
+      ? '<figure class="portrait hero__photo"><img src="' + esc(base + src) + '" alt="' + esc(alt) + '"></figure>'
+      : '<div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"', 'class="ghost ghost--float"') + '</div>';
+  }
+
   function renderResume(c, lang, base) {
     var r = c.resume || {};
     var hero =
@@ -342,7 +354,7 @@
         '<div><p class="hero__eyebrow">' + (lang==='en'?'RÉSUMÉ':'이력서') + '</p>' +
           '<h1 class="hero__title"' + ep('hero.titleHtml') + '>' + t(c.hero.titleHtml, lang) + '</h1>' +
           '<p class="hero__note"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M7 2v9M3 7.2 7 11l4-3.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span' + ep('resume.heroNote') + '>' + esc(t(r.heroNote, lang)) + '</span></p></div>' +
-        '<div class="hero__media"><div class="ghost-art" aria-hidden="true">' + GHOST.replace('class="ghost"','class="ghost ghost--float"') + '</div></div>' +
+        '<div class="hero__media">' + heroPhoto(c, lang, base, r.photo) + '</div>' +
       '</div></div></section>';
 
     var stats = arr(r.stats).length ? '<section class="section section--elev"><div class="wrap"><div class="stat-grid">' + statsHtml(r.stats, lang) + '</div></div></section>' : '';

@@ -378,6 +378,9 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .portrait--empty { display: grid; place-items: center; color: var(--ghost-c); background: var(--cta); }
 .portrait--empty .ghost { width: 34%; height: auto; aspect-ratio: 32/36; }
+/* 말풍선·이름표 없이 사진만 놓는 히어로(이력서) */
+.hero__photo { margin-inline: auto; }
+
 .hero__portrait {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px;
   /* 자세: 테마가 --pose-rest(쉴 때 기울기)를 주고, '한 마디 더'가 --pose-d/--pose-y 를 더합니다 */

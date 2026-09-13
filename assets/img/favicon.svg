@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="김지수 포트폴리오">
+  <!-- 사이트 아이콘 — 정사각형. 패미컴 시안의 빨강 바탕 + 크림 고스트 (상단바 로고와 같은 표정) -->
+  <rect width="64" height="64" fill="#b8252b"/>
+  <g transform="translate(10 7.25) scale(1.375)">
+    <path fill="#f6efe0" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/>
+    <ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#2b2b2b"/>
+    <ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#2b2b2b"/>
+  </g>
+</svg>

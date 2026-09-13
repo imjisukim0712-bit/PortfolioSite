@@ -84,6 +84,15 @@
 - 시각 편집기에서 카드 그림을 누르면 `projects.items.<i>.thumb` 슬롯으로 연결됩니다
   (`visual-editor.js` 의 `photoSlotFor()`).
 
+## 사이트 아이콘 · 히어로 사진
+
+- 파비콘은 **정사각형 파일 한 장**입니다 — `assets/img/favicon.svg`(빨강 바탕 + 크림 고스트)와
+  홈 화면용 `assets/img/apple-touch-icon.png`(180px, SVG 에서 뽑음). 모든 페이지가 이 둘을 가리킵니다
+  (`projects/detail.html` 만 `../` 경로). 색을 바꾸면 SVG 를 고친 뒤 PNG 도 다시 뽑아 주세요.
+- 히어로 사진은 홈 `home.player.photo` 한 장을 이력서도 함께 씁니다. 이력서만 다른 사진을 쓰려면
+  `resume.photo` 에 경로를 넣고, 둘 다 비우면 예전처럼 고스트 그림이 들어갑니다 (`render.js` 의 `heroPhoto()`).
+  사진 크기는 패미컴 시안에서 `--fc-h` 에 묶여 있어 두 페이지 기기 크기가 어긋나지 않습니다.
+
 ## 게임플레이 — 스팀 연동 방사형 그래프
 
 게임플레이 페이지 맨 위의 장르별 그래프는 **자동 수집**입니다 (자세한 사용법: `docs/steam-play-log.md`).

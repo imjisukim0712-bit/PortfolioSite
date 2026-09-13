@@ -202,7 +202,7 @@
    내용이 액정보다 커지면 본체가 그만큼 늘어나(min-height) 페이지마다 기기 크기가 달라지므로,
    높이를 많이 먹는 셋 — 사진·고스트 그림·큰 제목 — 을 본체 높이에 묶어 둡니다.
    (넓지만 낮은 화면에서 제목이 네 줄로 늘어나 액정 밖으로 나가던 것도 이걸로 막습니다) */
-[data-skin="pixel-famicom"] [data-page="home"] .portrait { width: min(260px, calc((var(--fc-h) - 340px) * .75)); }
+[data-skin="pixel-famicom"] .hero .portrait { width: min(260px, calc((var(--fc-h) - 340px) * .75)); }
 [data-skin="pixel-famicom"] .hero .ghost-art { max-width: min(300px, calc(var(--fc-h) - 300px)); }
 [data-skin="pixel-famicom"] .hero { --text-display: min(clamp(36px, 5vw + 14px, 76px), calc((var(--fc-h) - 180px) * .14)); }
 [data-skin="pixel-famicom"] .home-screen .hero__title { font-size: min(clamp(34px, 3.4vw + 14px, 60px), calc(var(--fc-h) * .094)); }
