@@ -106,22 +106,25 @@
   }
 
   /* ── 도구 로고 ────────────────────────────────────────────────────────────
-     `assets/img/tools/<키>.svg` 에 들어 있는 **실제 브랜드 로고**를 씁니다
-     (출처: SVG Logos CC0 · theSVG Color MIT — 상표는 각 소유자의 것이고, 여기서는
-     '이 도구를 씁니다' 표시로만 씁니다).
-     새 도구를 더하려면 같은 폴더에 <키>.svg 를 넣고 아래 표에 한 줄 적으면 됩니다.
-     이름은 브랜드 이름 그대로라 번역하지 않습니다. */
+     `assets/img/tools/` 에 들어 있는 **실제 브랜드 로고**를 씁니다
+     (출처: SVG Logos CC0 · theSVG Color MIT · 구글 Flow·Hermes 는 공식 배포본 —
+     상표는 각 소유자의 것이고, 여기서는 '이 도구를 씁니다' 표시로만 씁니다).
+     표 한 줄은 n = 화면에 적는 이름 · f = 그림 파일 이름(없으면 키 그대로) ·
+     x = 확장자(없으면 svg) 이고, 그림은 `assets/img/tools/<f 또는 키>.<x>` 입니다.
+     그래서 이름과 파일이 달라도 되고(Agent = 클로드 로고), 공식 SVG 가 없는 로고는
+     png 로 둘 수 있습니다(Flow). 이름은 브랜드 이름 그대로라 번역하지 않습니다. */
   var TOOL_ICONS = {
-    word:{n:'Word'}, excel:{n:'Excel'}, powerpoint:{n:'PowerPoint'}, pdf:{n:'PDF'},
-    figma:{n:'Figma'}, obsidian:{n:'Obsidian'},
-    chatgpt:{n:'ChatGPT'}, claude:{n:'Claude'}, gemini:{n:'Gemini'},
+    office:{n:'MS Office'}, figma:{n:'Figma'}, obsidian:{n:'Obsidian'},
+    agent:{n:'Agent', f:'claude'}, hermes:{n:'Hermes'}, flow:{n:'Flow', x:'png'},
     github:{n:'GitHub'}, notion:{n:'Notion'}, jira:{n:'Jira'}, sheets:{n:'Google Sheets'},
     unity:{n:'Unity'}, godot:{n:'Godot'}, gamemaker:{n:'GameMaker'}, firebase:{n:'Firebase'},
-    steam:{n:'Steam'}
+    cloudflare:{n:'Cloudflare'}, steam:{n:'Steam'}
   };
   /* 로고 한 장. 이름은 옆(아래)에 글자로 함께 나오므로 그림 자체는 alt 를 비웁니다 */
   function toolImg(key, base) {
-    return '<img class="tool__img" src="' + esc((base || '') + 'assets/img/tools/' + key + '.svg') +
+    var it = TOOL_ICONS[key] || {};
+    return '<img class="tool__img" src="' +
+      esc((base || '') + 'assets/img/tools/' + (it.f || key) + '.' + (it.x || 'svg')) +
       '" alt="" loading="lazy" width="34" height="34">';
   }
   function toolsHtml(list, lang, base){

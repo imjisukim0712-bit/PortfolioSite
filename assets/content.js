@@ -110,7 +110,7 @@ window.PORTFOLIO_CONTENT = {
         { title: { ko: "문서 도구", en: "Document tools" },
           body:  { ko: "Figma, MS Office 활용 문서 작성. 문서 도구 자격증 보유.",
                    en: "Writing docs with Figma and MS Office. Certified in office tools." },
-          tools: ["word","excel","powerpoint","pdf","figma"] },
+          tools: ["office","figma"] },
         { title: { ko: "Obsidian", en: "Obsidian" },
           body:  { ko: "문서 초안 작성과 분류, 플러그인 활용. AI를 활용한 문서 분류 자동화.",
                    en: "Drafting and organising docs with plugins; AI-assisted auto-classification." },
@@ -118,15 +118,15 @@ window.PORTFOLIO_CONTENT = {
         { title: { ko: "AI 활용", en: "AI" },
           body:  { ko: "AI를 활용한 게임·영상·음악 제작. 챗봇 제작, 자료조사 자동화.",
                    en: "Making games, video and music with AI; building chatbots, automating research." },
-          tools: ["chatgpt","claude","gemini"] },
+          tools: ["agent","hermes","flow"] },
         { title: { ko: "협업 도구", en: "Collaboration tools" },
           body:  { ko: "깃허브, 노션, 지라, 스프레드시트. 일정 관리·버전 관리 등 협업에 활용.",
                    en: "GitHub, Notion, Jira, Spreadsheets — for scheduling, versioning and teamwork." },
           tools: ["github","notion","jira","sheets"] },
         { title: { ko: "개발 도구", en: "Development tools" },
-          body:  { ko: "유니티, 고도, 게임 메이커, 파이어베이스. 1인 및 팀 개발과 기획 도구로 활용.",
-                   en: "Unity, Godot, GameMaker, Firebase — for solo and team development and prototyping." },
-          tools: ["unity","godot","gamemaker","firebase"] }
+          body:  { ko: "유니티, 고도, 게임 메이커, 파이어베이스, 클라우드플레어. 1인 및 팀 개발과 기획 도구로 활용.",
+                   en: "Unity, Godot, GameMaker, Firebase, Cloudflare — for solo and team development and prototyping." },
+          tools: ["unity","godot","gamemaker","firebase","cloudflare"] }
       ]
     },
 
