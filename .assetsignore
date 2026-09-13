@@ -1,12 +1,15 @@
+# Cloudflare Workers 로 올리지 않을 것들 (gitignore 문법).
+# 앞에 / 를 붙여 "저장소 맨 위" 로 못박습니다 — 안 붙이면 같은 이름의 하위 폴더까지
+# 딸려 나갑니다 (예전에 tools 한 줄이 assets/img/tools/ 로고까지 지웠습니다).
 **/.git
 **/.DS_Store
 **/node_modules
 
-.github
-.nojekyll
-CLAUDE.md
-README.md
-docs
-tools
-wrangler.jsonc
-.assetsignore
+/.github
+/.nojekyll
+/CLAUDE.md
+/README.md
+/docs
+/tools
+/wrangler.jsonc
+/.assetsignore
