@@ -212,7 +212,8 @@
 [data-skin-theme="pixel"] .profile__k { font-family: var(--font-mono); font-size: 8px; }
 [data-skin-theme="pixel"] .card { border: var(--bw) solid var(--ink); border-radius: 0; box-shadow: 5px 5px 0 var(--lo); }
 [data-skin-theme="pixel"] .card__title { font-family: var(--font-display); }
-[data-skin-theme="pixel"] .tool__ic { border-radius: 0; border: 2px solid var(--ink); }
+[data-skin-theme="pixel"] .tool__ic { border-radius: 0; border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--lo); }
+[data-skin-theme="pixel"] .hp-skill__ic { border-radius: 0; border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--lo); }
 [data-skin-theme="pixel"] .timeline::before { width: 2px; background: repeating-linear-gradient(var(--ink) 0 4px, transparent 4px 8px); }
 [data-skin-theme="pixel"] .tl-item::before { width: 12px; height: 12px; border-radius: 0; border: 2px solid var(--ink); background: var(--accent); box-shadow: none; left: -25px; }
 [data-skin-theme="pixel"] .tl-item--now::before { background: var(--mint); }

@@ -84,6 +84,15 @@
 - 시각 편집기에서 카드 그림을 누르면 `projects.items.<i>.thumb` 슬롯으로 연결됩니다
   (`visual-editor.js` 의 `photoSlotFor()`).
 
+## 도구 로고 (보유 기술)
+
+- 이력서 '핵심역량' 카드와 홈 개요의 도구 표시는 **실제 브랜드 로고**입니다 — `assets/img/tools/<키>.svg`
+  (출처: SVG Logos CC0 · theSVG Color MIT. 상표는 각 소유자의 것이고 '이 도구를 씁니다' 표시로만 씁니다).
+- 새 도구를 더하려면 ① 같은 폴더에 `<키>.svg` 를 넣고 ② `render.js` 의 `TOOL_ICONS` 에 `키:{n:'이름'}` 한 줄
+  ③ `content.js` 의 `resume.skills.cards[].tools` 에 키를 적습니다. 이름은 브랜드 이름이라 번역하지 않습니다.
+- **로고가 올라가는 판은 어느 시안에서도 흰색**입니다(`.tool__ic` · `.hp-skill__ic--logo` 에 `!important`).
+  판에 색을 칠하면 깃허브·노션 같은 검은 마크가 묻히고 브랜드 색이 왜곡됩니다 — 이 규칙을 풀지 마세요.
+
 ## 사이트 아이콘 · 히어로 사진
 
 - 파비콘은 **정사각형 파일 한 장**입니다 — `assets/img/favicon.svg`(빨강 바탕 + 크림 고스트)와

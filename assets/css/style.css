@@ -475,8 +475,9 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 @media (min-width: 560px) { .hp-skills { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .hp-skills { grid-template-columns: repeat(5, 1fr); } }
 .hp-skill { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-.hp-skill__ic { width: 60px; height: 60px; border-radius: 18px; background: var(--cta); color: var(--accent); display: grid; place-items: center; }
+.hp-skill__ic { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--border); background: #fff; color: var(--accent); display: grid; place-items: center; }
 .hp-skill__ic svg { width: 30px; height: 30px; }
+.hp-skill__ic .tool__img { width: 34px; height: 34px; }
 .hp-skill__t { font-size: var(--text-body-sm); color: var(--heading); }
 .hp-skill__b { margin-top: 2px; font-size: 11px; line-height: 1.55; color: var(--text-muted); }
 .hp-more { display: flex; width: fit-content; margin: 32px 0 0 auto; gap: 8px; }
@@ -807,13 +808,19 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 /* skills */
 .skill-card { display: flex; flex-direction: column; }
 .skill-card .card__body { flex: 1 1 auto; }
-.tool-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-.tool { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; width: 60px; }
+/* 도구 로고 타일 — assets/img/tools/ 의 실제 브랜드 SVG 를 흰 판 위에 올립니다.
+   바탕을 흰색으로 고정하는 건 다크 모드 때문입니다: 깃허브·노션처럼 검은 마크가
+   어두운 바탕에서 사라지기 때문에, 브랜드 색이 제대로 보이도록 판을 흰색으로 둡니다. */
+.tool-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.tool { display: inline-flex; flex-direction: column; align-items: center; gap: 7px; width: 70px; }
 .tool__ic {
-  display: grid; place-items: center; width: 44px; height: 44px;
-  border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--heading);
+  display: grid; place-items: center; width: 52px; height: 52px;
+  border: 1px solid var(--border); border-radius: 14px; background: #fff;
 }
-.tool__ic svg { width: 24px; height: 24px; display: block; }
+.tool__img { width: 30px; height: 30px; object-fit: contain; display: block; }
+/* 로고가 올라가는 판은 어떤 시안에서도 흰색으로 둡니다 — 테마가 판에 색을 칠하면
+   깃허브·노션 같은 검은 마크나 브랜드 색이 묻혀 버립니다 (그래서 !important) */
+.tool__ic, .hp-skill__ic--logo { background: #fff !important; }
 .tool__nm { font-size: 10.5px; color: var(--text-muted); text-align: center; line-height: 1.25; letter-spacing: -0.01em; }
 
 /* --------------------------------------------------------------------------

@@ -105,26 +105,32 @@
     return 0;
   }
 
+  /* ── 도구 로고 ────────────────────────────────────────────────────────────
+     `assets/img/tools/<키>.svg` 에 들어 있는 **실제 브랜드 로고**를 씁니다
+     (출처: SVG Logos CC0 · theSVG Color MIT — 상표는 각 소유자의 것이고, 여기서는
+     '이 도구를 씁니다' 표시로만 씁니다).
+     새 도구를 더하려면 같은 폴더에 <키>.svg 를 넣고 아래 표에 한 줄 적으면 됩니다.
+     이름은 브랜드 이름 그대로라 번역하지 않습니다. */
   var TOOL_ICONS = {
-    figma:{n:"Figma",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 3h3.5v6H8.5a3 3 0 1 1 0-6z"/><path d="M12 3h3.5a3 3 0 1 1 0 6H12V3z" opacity=".72"/><path d="M8.5 9H12v6H8.5a3 3 0 1 1 0-6z" opacity=".55"/><circle cx="15.5" cy="12" r="3" opacity=".85"/><path d="M8.5 15H12v3a3 3 0 1 1-3.5-3z" opacity=".4"/></svg>'},
-    office:{n:"MS Office",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3 4 6.5v11L14 21l6-1.8V4.8L14 3zm-1 3.4v11.2l-6 1.5V8L13 6.4z"/></svg>'},
-    obsidian:{n:"Obsidian",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 5 8l3 12 8 2 3-9-5-3-2-8zm-1 4 1.5 6L9 18l-1-8 3-4z" opacity=".9"/></svg>'},
-    ai:{n:"AI",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 4.8L18.5 8l-4.7 1.2L12 14l-1.8-4.8L5.5 8l4.7-1.2L12 2z"/><path d="M18 14l.9 2.3 2.3.7-2.3.9L18 20l-.9-2.1-2.3-.9 2.3-.7L18 14z" opacity=".7"/></svg>'},
-    github:{n:"GitHub",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.300-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.8-2.4 4.6-4.6 4.9.3.3.6.9.6 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>'},
-    notion:{n:"Notion",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8.5 16V9l7 7V9" stroke-linecap="round" stroke-linejoin="round"/></svg>'},
-    jira:{n:"Jira",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l7 7-7 7-3-3 4-4-4-4 3-3z"/><path d="M12 9l3 3-3 3-7-7 3-3 4 4z" opacity=".55"/></svg>'},
-    sheets:{n:"스프레드시트",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M4 14h16M10 4v16"/></svg>'},
-    unity:{n:"Unity",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l6 3.4v7.2L12 21l-6-7.4V6.4L12 3zm0 2.6L8 8v6l4 2.4L16 14V8l-4-2.4z" opacity=".9"/></svg>'},
-    godot:{n:"Godot",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 7h12v6a6 6 0 0 1-12 0V7z"/><circle cx="9.5" cy="10.5" r="1.4" fill="#fff"/><circle cx="14.5" cy="10.5" r="1.4" fill="#fff"/><path d="M7 5h3v2H7zM14 5h3v2h-3z"/></svg>'},
-    gamemaker:{n:"GameMaker",s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="3"/><circle cx="8" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="13.5" r="1.1" fill="currentColor" stroke="none"/></svg>'},
-    firebase:{n:"Firebase",s:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 18L8 4l3 5 2-3 6 12-7 3-7-3z" opacity=".85"/><path d="M5 18l3-14 2 8-5 6z" opacity=".55"/></svg>'}
+    word:{n:'Word'}, excel:{n:'Excel'}, powerpoint:{n:'PowerPoint'}, pdf:{n:'PDF'},
+    figma:{n:'Figma'}, obsidian:{n:'Obsidian'},
+    chatgpt:{n:'ChatGPT'}, claude:{n:'Claude'}, gemini:{n:'Gemini'},
+    github:{n:'GitHub'}, notion:{n:'Notion'}, jira:{n:'Jira'}, sheets:{n:'Google Sheets'},
+    unity:{n:'Unity'}, godot:{n:'Godot'}, gamemaker:{n:'GameMaker'}, firebase:{n:'Firebase'},
+    steam:{n:'Steam'}
   };
-  function toolsHtml(list, lang){
+  /* 로고 한 장. 이름은 옆(아래)에 글자로 함께 나오므로 그림 자체는 alt 를 비웁니다 */
+  function toolImg(key, base) {
+    return '<img class="tool__img" src="' + esc((base || '') + 'assets/img/tools/' + key + '.svg') +
+      '" alt="" loading="lazy" width="34" height="34">';
+  }
+  function toolsHtml(list, lang, base){
     var arr2 = Array.isArray(list) ? list : [];
     if (!arr2.length) return '';
     return '<div class="tool-grid">' + arr2.map(function(key){
       var it = TOOL_ICONS[key]; if (!it) return '';
-      return '<span class="tool" title="' + esc(it.n) + '"><span class="tool__ic">' + it.s + '</span><span class="tool__nm">' + esc(it.n) + '</span></span>';
+      return '<span class="tool" title="' + esc(it.n) + '"><span class="tool__ic">' + toolImg(key, base) +
+        '</span><span class="tool__nm">' + esc(it.n) + '</span></span>';
     }).join('') + '</div>';
   }
 
@@ -287,8 +293,9 @@
     // 보유 기술 (아이콘 + 설명)
     var skillItems = arr(c.resume && c.resume.skills && c.resume.skills.cards).map(function (card, i) {
       var first = arr(card.tools)[0];
-      var icon = (first && TOOL_ICONS[first]) ? TOOL_ICONS[first].s : GHOST;
-      return '<div class="hp-skill"><span class="hp-skill__ic">' + icon + '</span>' +
+      var isLogo = !!(first && TOOL_ICONS[first]);
+      var icon = isLogo ? toolImg(first, base) : GHOST;
+      return '<div class="hp-skill"><span class="hp-skill__ic' + (isLogo ? ' hp-skill__ic--logo' : '') + '">' + icon + '</span>' +
         '<div><p class="hp-skill__t"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</p>' +
         '<p class="hp-skill__b"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p></div></div>';
     }).join('');
@@ -372,7 +379,7 @@
     var sk = r.skills || {};
     var skillCards = arr(sk.cards).map(function (card, i) {
       return '<article class="card skill-card reveal"><h3 class="card__title"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</h3>' +
-        '<p class="card__body"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p>' + toolsHtml(card.tools, lang) + '</article>';
+        '<p class="card__body"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p>' + toolsHtml(card.tools, lang, base) + '</article>';
     }).join('');
     var skills = '<section class="section"><div class="wrap"><header class="section__head reveal">' +
       '<p class="eyebrow">' + (lang==='en'?'CORE SKILLS':'핵심역량') + '</p>' +
