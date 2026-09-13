@@ -1,0 +1,12 @@
+**/.git
+**/.DS_Store
+**/node_modules
+
+.github
+.nojekyll
+CLAUDE.md
+README.md
+docs
+tools
+wrangler.jsonc
+.assetsignore
