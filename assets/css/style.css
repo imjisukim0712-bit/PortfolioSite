@@ -470,16 +470,15 @@ main { display: block; padding-top: calc(var(--nav-h) + 24px); }
 .hpl-row__d { flex: none; font-size: var(--text-caption); color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hpl-row__m { display: block; margin-top: 6px; font-size: var(--text-body-sm); line-height: 1.6; color: var(--text-muted); }
 a.hpl-row:hover .hpl-row__t { color: var(--accent); }
-/* 보유 기술 — 큰 아이콘 + 작은 글씨, 5개 한 줄 */
-.hp-skills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-@media (min-width: 560px) { .hp-skills { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 900px) { .hp-skills { grid-template-columns: repeat(5, 1fr); } }
-.hp-skill { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+/* 보유 기술 — 아이콘 + 이름만. 설명은 이력서 '핵심역량' 카드에 있으니 여기선 뺍니다.
+   칸을 화면 폭에 맞춰 늘리지 않고(그러면 아이콘 사이가 휑해집니다) 제목·위 목록과 같은
+   왼쪽 줄에 맞춰 붙입니다 */
+.hp-skills { display: flex; flex-wrap: wrap; gap: 16px 26px; }
+.hp-skill { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; width: 104px; }
 .hp-skill__ic { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--border); background: #fff; color: var(--accent); display: grid; place-items: center; }
 .hp-skill__ic svg { width: 30px; height: 30px; }
 .hp-skill__ic .tool__img { width: 34px; height: 34px; }
-.hp-skill__t { font-size: var(--text-body-sm); color: var(--heading); }
-.hp-skill__b { margin-top: 2px; font-size: 11px; line-height: 1.55; color: var(--text-muted); }
+.hp-skill__t { font-size: var(--text-body-sm); line-height: 1.35; color: var(--heading); }
 .hp-more { display: flex; width: fit-content; margin: 32px 0 0 auto; gap: 8px; }
 .hp-more span { transition: transform .2s ease; }
 .hp-more:hover span { transform: translateX(4px); }

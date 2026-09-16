@@ -80,7 +80,7 @@
 [data-skin="brutal-newsprint"] .footer__tagline, [data-skin="brutal-newsprint"] .footer__copy { color: var(--text-muted); opacity: 1; }
 [data-skin="brutal-newsprint"] .footer .btn--outline { color: var(--ink); border-color: var(--ink); box-shadow: none; }
 /* 눈 피로 완화: 라벨·메타만 고정폭, 본문은 산세리프 */
-[data-skin="brutal-newsprint"] .hero__sub, [data-skin="brutal-newsprint"] .section__lead, [data-skin="brutal-newsprint"] .card__body, [data-skin="brutal-newsprint"] .tl-body, [data-skin="brutal-newsprint"] .play-card__note, [data-skin="brutal-newsprint"] .bullets li, [data-skin="brutal-newsprint"] .block__body, [data-skin="brutal-newsprint"] .gcard__desc, [data-skin="brutal-newsprint"] .hp-skill__b, [data-skin="brutal-newsprint"] .hpl-row__m { font-family: var(--font-sans); line-height: 1.7; }
+[data-skin="brutal-newsprint"] .hero__sub, [data-skin="brutal-newsprint"] .section__lead, [data-skin="brutal-newsprint"] .card__body, [data-skin="brutal-newsprint"] .tl-body, [data-skin="brutal-newsprint"] .play-card__note, [data-skin="brutal-newsprint"] .bullets li, [data-skin="brutal-newsprint"] .block__body, [data-skin="brutal-newsprint"] .gcard__desc, [data-skin="brutal-newsprint"] .hpl-row__m { font-family: var(--font-sans); line-height: 1.7; }
 [data-skin="brutal-newsprint"] .hero__sub { font-size: var(--text-subheading); color: var(--text); }
 [data-skin="brutal-newsprint"] .tag, [data-skin="brutal-newsprint"] .hpl-row__d, [data-skin="brutal-newsprint"] .tl-date, [data-skin="brutal-newsprint"] .gcard__meta, [data-skin="brutal-newsprint"] .play-card__genre { font-family: var(--font-mono); }
 

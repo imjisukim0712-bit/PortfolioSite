@@ -293,14 +293,13 @@
         '<span class="hpl-row__m">' + esc(metaJoin([ t(it.org, lang), t(it.body, lang) ])) + '</span></span></div>';
     }).join('');
 
-    // 보유 기술 (아이콘 + 설명)
+    // 보유 기술 — 아이콘 + 이름만 (설명은 이력서 '핵심역량' 카드에서 읽습니다)
     var skillItems = arr(c.resume && c.resume.skills && c.resume.skills.cards).map(function (card, i) {
       var first = arr(card.tools)[0];
       var isLogo = !!(first && TOOL_ICONS[first]);
       var icon = isLogo ? toolImg(first, base) : GHOST;
       return '<div class="hp-skill"><span class="hp-skill__ic' + (isLogo ? ' hp-skill__ic--logo' : '') + '">' + icon + '</span>' +
-        '<div><p class="hp-skill__t"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</p>' +
-        '<p class="hp-skill__b"' + ep('resume.skills.cards.'+i+'.body') + '>' + esc(t(card.body, lang)) + '</p></div></div>';
+        '<p class="hp-skill__t"' + ep('resume.skills.cards.'+i+'.title') + '>' + esc(t(card.title, lang)) + '</p></div>';
     }).join('');
 
     // 게임플레이 카드
