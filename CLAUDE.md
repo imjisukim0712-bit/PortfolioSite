@@ -138,6 +138,7 @@
   GitHub Pages(**https://imjisukim0712-bit.github.io/PortfolioSite/**)에서 합니다 — GitHub Pages 는 이 설정과 무관하게 전체 사이트를 올립니다.
   **공개할 때**는 `directory` 를 `"./"` 로 되돌리고 `not_found_handling` 줄을 지우면 됩니다(그 뒤로는 아래 `.assetsignore` 가 다시 적용).
   `.assetsignore` 는 assets 폴더 맨 위의 것만 읽히므로 준비중인 동안에는 쓰이지 않습니다.
+  준비중 화면의 연락 이메일(`coming-soon/index.html` 의 `mailto:`)은 `content.js` 를 못 읽어 따로 적혀 있으니, `meta.email` 을 바꾸면 여기도 같이 바꾸세요.
 - 인증은 저장소 Secrets `CLOUDFLARE_API_TOKEN` · `CLOUDFLARE_ACCOUNT_ID` 두 개뿐입니다
   (Cloudflare 대시보드 → API Tokens 에서 발급). 토큰을 새로 만들면 이 값만 갱신하면 됩니다.
 - **새 최상위 파일·폴더를 추가할 때, 사이트 화면이 아니면 `.assetsignore` 에도 추가하세요.**
