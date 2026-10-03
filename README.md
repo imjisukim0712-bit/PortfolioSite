@@ -1,6 +1,8 @@
 # 김지수 · 게임 기획자 포트폴리오
 
-🔗 **사이트 바로가기 → https://jisu.kim**
+🔗 **사이트 바로가기 → https://jisu.kim** (공개 전이라 지금은 "준비 중" 화면만 나옵니다)
+
+🛠 **작업 중인 전체 사이트 → https://imjisukim0712-bit.github.io/PortfolioSite/**
 
 빌드 도구 없는 정적 사이트입니다. **내용과 화면이 분리돼 있어, 글을 고칠 때 HTML을 건드릴 필요가 없습니다.**
 
@@ -62,6 +64,10 @@ python3 -m http.server 8000   # http://localhost:8000
 3. 이 저장소 Settings → Secrets and variables → Actions → New repository secret 으로 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` 두 개 등록
 4. 첫 배포는 Actions 탭에서 "Deploy to Cloudflare Workers" 를 **workflow_dispatch** 로 수동 실행하거나, 위 브랜치에 다시 푸시하면 시작됩니다
 5. 완료되면 **https://portfoliosite.imjisukim0712.workers.dev** 에서 확인 (Worker 이름은 `wrangler.jsonc` 의 `name`)
+
+**지금은 공개 전이라 Cloudflare 에는 `coming-soon/index.html`(준비중 화면) 한 장만 올라갑니다** — `wrangler.jsonc` 의
+`assets.directory` 가 `./coming-soon` 이고, 어떤 주소로 들어와도 그 화면이 나옵니다. GitHub Pages 는 그대로 전체 사이트를 올리니
+작업 확인은 거기서 하세요. **공개할 때**는 `wrangler.jsonc` 에서 `directory` 를 `"./"` 로 바꾸고 `not_found_handling` 줄을 지운 뒤 푸시하면 됩니다.
 
 `.assetsignore` 에 올라가지 않게 막아 둔 것: `CLAUDE.md`, `README.md`(이 문서 — 편집기 비밀번호가 적혀 있음), `docs/`, `tools/`,
 `.github/` 등 사이트 화면이 아닌 파일들. 새 최상위 파일·폴더를 추가할 때 사이트에 필요 없는 것이라면 여기에도 추가하세요.

@@ -3,6 +3,9 @@
 	"name": "portfoliosite",
 	"compatibility_date": "2026-09-12",
 	"assets": {
-		"directory": "./"
+		// 공개 전: jisu.kim 은 어떤 주소로 들어와도 준비중 화면만 보여 줍니다 (작업 확인은 GitHub Pages).
+		// 공개할 때: directory 를 "./" 로 바꾸고 not_found_handling 줄을 지웁니다.
+		"directory": "./coming-soon",
+		"not_found_handling": "single-page-application"
 	}
 }

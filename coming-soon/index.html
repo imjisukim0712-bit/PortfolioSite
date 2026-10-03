@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>김지수 · 준비 중</title>
+<meta name="description" content="김지수 게임 기획자 포트폴리오를 준비하고 있습니다. · Jisu Kim's game design portfolio is coming soon.">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#efe6d2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#232323" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23b8252b'/%3E%3Cg transform='translate(10 7.25) scale(1.375)'%3E%3Cpath fill='%23f6efe0' d='M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z'/%3E%3Cellipse cx='11.5' cy='15' rx='2.2' ry='2.7' fill='%232b2b2b'/%3E%3Cellipse cx='20.5' cy='15' rx='2.2' ry='2.7' fill='%232b2b2b'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #efe6d2; --text: #262626; --muted: #5f5a50;
+    --accent: #b8252b; --line: #2b2b2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #232323; --text: #efe6d2; --muted: #b3ab9b; --accent: #e0373d; --line: #111; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; min-height: 100%;
+    display: grid; place-items: center;
+    padding: 32px 20px;
+    background: var(--bg); color: var(--text);
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif;
+    letter-spacing: -0.02em; text-align: center;
+  }
+  main { max-width: 28rem; }
+  .badge {
+    width: 96px; height: 96px; margin: 0 auto 32px;
+    display: grid; place-items: center;
+    background: var(--accent);
+    border: 3px solid var(--line);
+    box-shadow: 6px 6px 0 var(--line);
+  }
+  .badge svg { width: 60%; animation: bob 2.4s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-4px); } }
+  @media (prefers-reduced-motion: reduce) { .badge svg { animation: none; } }
+  h1 { margin: 0; font-size: clamp(28px, 7vw, 40px); font-weight: 800; line-height: 1.25; }
+  h1 .en {
+    display: block; margin-top: 8px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  p { margin: 24px 0 0; font-size: 15px; line-height: 1.7; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <div class="badge" aria-hidden="true">
+    <svg viewBox="0 0 32 36">
+      <path fill="#f6efe0" d="M16 2c-7.2 0-13 5.8-13 13v19l4.3-3.2 4.3 3.2 4.4-3.2 4.3 3.2 4.3-3.2 4.4 3.2V15c0-7.2-5.8-13-13-13z"/>
+      <ellipse cx="11.5" cy="15" rx="2.2" ry="2.7" fill="#2b2b2b"/>
+      <ellipse cx="20.5" cy="15" rx="2.2" ry="2.7" fill="#2b2b2b"/>
+    </svg>
+  </div>
+  <h1>준비 중입니다<span class="en" lang="en">Coming soon</span></h1>
+  <p>김지수 · 게임 기획자 포트폴리오<br><span lang="en">Jisu Kim · Game Designer Portfolio</span></p>
+</main>
+</body>
+</html>

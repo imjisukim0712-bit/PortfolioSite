@@ -132,6 +132,12 @@
 - 흐름: push → `.github/workflows/deploy-cloudflare.yml` → `wrangler deploy` (`wrangler.jsonc` 설정대로
   저장소를 통째로 정적 자산 삼아 업로드) → **https://portfoliosite.imjisukim0712.workers.dev**.
   같은 푸시가 기존 `deploy-pages.yml`(GitHub Pages)도 그대로 돌립니다 — 배포 대상은 두 곳 다 유지.
+- **지금은 공개 전이라 Cloudflare 쪽(jisu.kim · workers.dev)에는 준비중 화면만 올라갑니다.** `wrangler.jsonc` 의
+  `assets.directory` 가 `./coming-soon`(준비중 페이지 한 장)이고 `not_found_handling: "single-page-application"` 이라
+  어떤 경로로 들어와도 그 한 장만 200 으로 보입니다(사이트 파일·README 등은 아예 올라가지 않음). 작업 확인은
+  GitHub Pages(**https://imjisukim0712-bit.github.io/PortfolioSite/**)에서 합니다 — GitHub Pages 는 이 설정과 무관하게 전체 사이트를 올립니다.
+  **공개할 때**는 `directory` 를 `"./"` 로 되돌리고 `not_found_handling` 줄을 지우면 됩니다(그 뒤로는 아래 `.assetsignore` 가 다시 적용).
+  `.assetsignore` 는 assets 폴더 맨 위의 것만 읽히므로 준비중인 동안에는 쓰이지 않습니다.
 - 인증은 저장소 Secrets `CLOUDFLARE_API_TOKEN` · `CLOUDFLARE_ACCOUNT_ID` 두 개뿐입니다
   (Cloudflare 대시보드 → API Tokens 에서 발급). 토큰을 새로 만들면 이 값만 갱신하면 됩니다.
 - **새 최상위 파일·폴더를 추가할 때, 사이트 화면이 아니면 `.assetsignore` 에도 추가하세요.**
@@ -141,7 +147,7 @@
 - `wrangler.jsonc` 는 `main`(서버 코드) 없이 `assets.directory` 만 있는 게 정상입니다(순수 정적 사이트).
   Wrangler 는 반드시 4 이상이어야 합니다(`deploy-cloudflare.yml` 의 `wranglerVersion: "4"`) — 3 이하에서는
   `main` 없는 배포 자체가 안 됩니다.
-- 실제 공개 주소는 **`https://jisu.kim`**(+ `www.jisu.kim`)입니다 — Cloudflare Registrar 로 산 도메인을 위 Worker 에
+- 실제 공개 주소는 **`https://jisu.kim`**(+ `www.jisu.kim`, 지금은 준비중 화면)입니다 — Cloudflare Registrar 로 산 도메인을 위 Worker 에
   Custom Domain 으로 연결해 뒀고, `workers.dev` 주소도 그대로 계속 살아 있습니다. `content.js` 의 `meta.email`
   (`contact@jisu.kim`)은 Cloudflare **Email Routing** 이 지메일로 전달하는 주소라 코드에는 진짜 받는 편지함이 없습니다 —
   전달 대상을 바꾸려면 Cloudflare 대시보드 Email Routing 쪽에서 바꿔야 합니다.
