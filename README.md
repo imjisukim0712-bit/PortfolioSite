@@ -1,7 +1,5 @@
 # 김지수 · 게임 기획자 포트폴리오
 
-🔗 **사이트 바로가기 → https://jisu.kim** (공개 전이라 지금은 "준비 중" 화면만 나옵니다)
-
 🛠 **작업 중인 전체 사이트 → https://imjisukim0712-bit.github.io/PortfolioSite/**
 
 빌드 도구 없는 정적 사이트입니다. **내용과 화면이 분리돼 있어, 글을 고칠 때 HTML을 건드릴 필요가 없습니다.**
@@ -10,6 +8,9 @@
 - 디자인: 첨부 **Phantom** 스타일 (라벤더 · 오베르진, 100px 알약, weight 350) + **다크모드**
 - 반응형: 모바일 우선, 320px까지 가로 스크롤 없음
 - iOS / Safari: `viewport-fit=cover` + `env(safe-area-inset-*)`, `100svh`, `-webkit-backdrop-filter`, `scroll-behavior` 폴백
+
+- 추후 공식 사이트: https://jisu.kim (공개 전이라 지금은 "준비 중" 화면만 나옵니다)
+
 
 ## 페이지 구조 (별도 페이지)
 
