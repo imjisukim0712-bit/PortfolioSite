@@ -1,63 +1,53 @@
-/* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-refined) 전용 스크립트
-   ----------------------------------------------------------------------------
-   홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-refined.css)가
-   본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
-
-     왼쪽 그립   SELECT ◀ ▶  — 홈에서는 사진 옆 '한마디'를 앞뒤로 넘깁니다 ('한 마디 더' 버튼 대신).
-                              한마디가 없는 페이지(이력서)에서는 이전·다음 절로 이동합니다.
-                 ✉ 메일 — content.js 의 meta.email 로 메일 쓰기 (값이 비어 있으면 키를 달지 않습니다).
-     오른쪽 그립 B = 밝기(다크 · 라이트)  ·  A = 뽑기(홈: 프로젝트 덱을 누름) / 아래로(이력서)
-                 카트리지가 꽂혀 있는 동안은 A = 자세히 보기 · B = 꺼내기
-     카트리지    프로젝트 카드(.draw-card · .proj-card)를 누르면 바로 열리지 않고,
-                 카트리지가 게임기 아래 슬롯(게임기가 안 보이면 화면 위에 내려오는 슬롯)으로
-                 날아 들어간 뒤 화면이 켜집니다. 홈에서는 프로젝트 개요(타이틀 화면)가 뜨고,
-                 '자세히 보기'를 누르면 화면 전체가 켜지며 상세로 넘어갑니다 ('꺼내기'는 카트리지를 도로 뺍니다).
-                 프로젝트 목록 같은 다른 페이지에서는 개요 없이 곧바로 상세로 넘어갑니다.
-
-   themes.js 의 pixel 테마 항목 `scripts` 로 읽히며, 다른 시안에서는 아무것도 하지 않습니다.
-   페이지가 다시 그려질 때마다(언어 전환·갤러리 페이지 이동) 자동으로 다시 붙습니다.
-   문구는 모두 { ko, en } 쌍입니다 — 한국어를 고치면 영어도 함께 고칩니다.
-   ========================================================================== */
+/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
+   hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
+   main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
 (function () {
   'use strict';
+  if (window.__portfolioFCRefined) return;
+  window.__portfolioFCRefined = true;
   var SKIN = 'pixel-fc-refined';
   var T = {
     select: 'SELECT',
-    prevQ:  { ko: '이전 한마디',   en: 'Previous quip' },
-    nextQ:  { ko: '다음 한마디',   en: 'Next quip' },
-    prevS:  { ko: '이전 절로',     en: 'Previous section' },
-    nextS:  { ko: '다음 절로',     en: 'Next section' },
-    light:  { ko: '밝기',          en: 'Light' },
+    prevQ: { ko: '이전 한마디', en: 'Previous quip' },
+    nextQ: { ko: '다음 한마디', en: 'Next quip' },
+    prevS: { ko: '이전 절로', en: 'Previous section' },
+    nextS: { ko: '다음 절로', en: 'Next section' },
+    light: { ko: '밝기', en: 'Light' },
     lightA: { ko: '다크 · 라이트 전환', en: 'Toggle dark mode' },
-    draw:   { ko: '뽑기',          en: 'Draw' },
-    drawA:  { ko: '프로젝트 카드 뽑기', en: 'Draw project cards' },
-    down:   { ko: '아래로',        en: 'Down' },
-    downA:  { ko: '아래 내용으로',  en: 'Scroll to the content' },
-    mail:   { ko: '메일',          en: 'Mail' },
-    mailA:  { ko: '이메일 보내기',  en: 'Send me an email' },
-    boot:   { ko: '읽는 중',       en: 'LOADING' },
-    view:   { ko: '자세히 보기',   en: 'View details' },
-    viewS:  { ko: '보기',          en: 'View' },
-    eject:  { ko: '꺼내기',        en: 'Eject' },
-    period: { ko: '기간',          en: 'Period' },
-    team:   { ko: '인원',          en: 'Team' },
-    role:   { ko: '역할',          en: 'Role' },
-    status: { ko: '상태',          en: 'Status' },
-    quest:  { ko: '퀘스트',        en: 'Quest' },
-    cleared:{ ko: '달성',          en: 'Cleared' }
+    draw: { ko: '뽑기', en: 'Draw' },
+    drawA: { ko: '프로젝트 카드 뽑기', en: 'Draw project cards' },
+    down: { ko: '아래로', en: 'Down' },
+    downA: { ko: '아래 내용으로', en: 'Scroll to the content' },
+    mail: { ko: '메일', en: 'Mail' },
+    mailA: { ko: '이메일 보내기', en: 'Send me an email' },
+    saves: { ko: '세이브 슬롯', en: 'SAVE SLOTS' },
+    inventory: { ko: '아이템', en: 'ITEMS' },
+    status: { ko: '상태', en: 'STATUS' },
+    record: { ko: '기록', en: 'LOG' },
+    selection: { ko: '게임 선택', en: 'GAME SELECT' },
+    hoverHint: { ko: '올리거나 포커스하면 미리보기 · 누르면 바로 상세로', en: 'Hover or focus to preview · Select to open details' },
+    touchHint: { ko: '카트리지를 누르면 바로 상세로 이동합니다.', en: 'Tap a cartridge to open its details.' },
+    openHint: { ko: '카트리지를 누르면 상세로 이동합니다.', en: 'Select the cartridge to open its details.' },
+    insert: { ko: '꽂기', en: 'Insert' },
+    insertHint: { ko: '누르면 꽂기 · 상세 보기', en: 'Insert · Open details' },
+    insertA: { ko: '선택한 프로젝트 꽂고 열기', en: 'Insert and open the selected project' },
+    all: { ko: '전체 프로젝트', en: 'All projects' },
+    restore: { ko: '첫 화면으로', en: 'Home screen' },
+    preview: { ko: '프로젝트 미리보기', en: 'Project preview' },
+    period: { ko: '기간', en: 'Period' },
+    role: { ko: '역할', en: 'Role' },
+    quest: { ko: '퀘스트', en: 'Quest' },
+    result: { ko: '결과', en: 'Result' },
+    media: { ko: '플레이 화면', en: 'GAMEPLAY' },
+    emptyMedia: { ko: '미디어 준비 중', en: 'MEDIA PENDING' }
   };
-  var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
-  /* 손잡이 메일 키 아이콘 (봉투) */
-  var MAIL_SVG = '<svg viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">' +
-    '<rect x="1" y="1.6" width="16" height="11" /><path d="m1.6 2.4 7.4 5.6 7.4-5.6" stroke-linejoin="round"/></svg>';
-
+  var MAIL_SVG = '<svg viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="1.6" width="16" height="11"/><path d="m1.6 2.4 7.4 5.6 7.4-5.6"/></svg>';
   function lang() {
     var v = window.PortfolioApp && window.PortfolioApp.getLang ? window.PortfolioApp.getLang() : document.documentElement.getAttribute('lang');
     return v === 'en' ? 'en' : 'ko';
   }
   function t(o) { var L = lang(); return typeof o === 'string' ? o : (o && (o[L] || o.ko)) || ''; }
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
   function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function navH() { var n = document.querySelector('.nav'); return (n ? n.getBoundingClientRect().height : 60) + 16; }
@@ -92,254 +82,417 @@
     hero.insertBefore(left, wrap);
     hero.appendChild(right);
   }
-  /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */
-  function setAB(a, b) {
-    var la = document.querySelector('[data-fc-lbl="a"]'), lb = document.querySelector('[data-fc-lbl="b"]');
-    if (la) { if (!la.getAttribute('data-orig')) la.setAttribute('data-orig', la.textContent); la.textContent = a || la.getAttribute('data-orig'); }
-    if (lb) { if (!lb.getAttribute('data-orig')) lb.setAttribute('data-orig', lb.textContent); lb.textContent = b || lb.getAttribute('data-orig'); }
-  }
 
-  /* 페이지의 절(section) 목록 — 히어로를 뺀 나머지 */
   function sections() {
-    return Array.prototype.filter.call(document.querySelectorAll('main section'), function (s) { return !s.classList.contains('hero'); });
+    return Array.prototype.filter.call(document.querySelectorAll('main section'), function (s) {
+      return !s.classList.contains('hero');
+    });
   }
   function step(dir) {
+    resetPreview(false);
     var hero = document.querySelector('.hero.fc-console'); if (!hero) return;
     var app = window.PortfolioApp;
-    if (hero.querySelector('[data-quip]') && app && app.cycleQuip) { app.cycleQuip(dir); return; }   /* 홈: 한마디 넘기기 */
-    var secs = sections(); if (!secs.length) return;                                                  /* 그 밖: 절 이동 */
+    if (hero.querySelector('[data-quip]') && app && app.cycleQuip) { app.cycleQuip(dir); return; }
+    var secs = sections(); if (!secs.length) return;
     var y = window.pageYOffset + navH() + 2, cur = -1;
     for (var i = 0; i < secs.length; i++) if (secs[i].getBoundingClientRect().top + window.pageYOffset <= y) cur = i;
-    var nxt = Math.max(0, Math.min(secs.length - 1, cur + dir));
-    scrollToY(secs[nxt].getBoundingClientRect().top + window.pageYOffset - navH());
+    var next = secs[Math.max(0, Math.min(secs.length - 1, cur + dir))];
+    scrollToY(next.getBoundingClientRect().top + window.pageYOffset - navH());
   }
   function pressA(kind) {
-    if (pending) { if (pending.ready) viewDetail(); return; }        /* 꽂혀 있으면 A = 자세히 보기 */
+    if (selected && selected.isConnected) { selected.click(); return; }
     if (kind === 'draw') {
       var deck = document.querySelector('[data-draw]'); if (!deck) return;
       deck.click();
       var r = deck.getBoundingClientRect();
       if (r.top < navH() || r.bottom > window.innerHeight) scrollToY(r.top + window.pageYOffset - navH() - 8);
-      return;
+    } else {
+      var secs = sections();
+      if (secs.length) scrollToY(secs[0].getBoundingClientRect().top + window.pageYOffset - navH());
     }
-    var secs = sections();
-    if (secs.length) scrollToY(secs[0].getBoundingClientRect().top + window.pageYOffset - navH());
   }
-  function pressB() {
-    if (pending) { if (pending.ready) eject(); return; }               /* 꽂혀 있으면 B = 꺼내기 */
-    var b = document.querySelector('[data-theme-toggle]'); if (b) b.click();
+  function each(selector, fn, root) { Array.prototype.forEach.call((root || document).querySelectorAll(selector), fn); }
+  function node(tag, cls, value) {
+    var el = document.createElement(tag); el.className = cls;
+    if (value !== undefined) el.textContent = value;
+    return el;
+  }
+  function titlebar(el, code) {
+    if (!el || el.classList.contains('fcr-title')) return;
+    el.classList.add('fcr-title');
+    var label = node('span', 'fcr-title__label');
+    while (el.firstChild) label.appendChild(el.firstChild);
+    el.appendChild(label);
+    if (code) el.appendChild(node('span', 'fcr-code', code));
+  }
+  function panelAround(wrap) {
+    if (!wrap || wrap.querySelector(':scope > .fcr-page-window')) return;
+    var panel = node('div', 'fcr-window fcr-page-window');
+    while (wrap.firstChild) panel.appendChild(wrap.firstChild);
+    wrap.appendChild(panel);
+    var head = panel.querySelector('.section__head');
+    if (head) {
+      head.classList.add('fcr-titlebar');
+      var lead = head.querySelector('.section__lead');
+      if (lead) head.insertAdjacentElement('afterend', lead);
+    }
   }
 
-  /* ── 카트리지 꽂기 연출 ────────────────────────────────────────────────
-     ① 누른 카드를 집어 올려(살짝 기울며) ② 슬롯 아래까지 가져간 뒤 ③ 단자부터 슬롯 안으로 밀어 넣습니다
-     (clip-path 로 슬롯 선 위쪽을 잘라 '안으로 들어가는' 것처럼 — 중간에 한 번 걸렸다가 딸깍 들어감)
-     ④ 본체가 살짝 눌리고 ⑤ 화면이 켜지며 '읽는 중' → ⑥ 프로젝트 개요(타이틀 화면).
-     '자세히 보기'(A) 로 이동, '꺼내기'(B) 로 카트리지가 도로 나와 제자리로 돌아갑니다.
-     슬롯은 화면에 보이는 게임기(.hero.fc-console)의 아래쪽. 게임기가 안 보이면 화면 위에서 슬롯 띠가 내려옵니다.
+  /* 메뉴 창: 원래 데이터·편집 앵커·브랜드 로고를 보존하며 바깥 구조만 정돈합니다. */
+  function menus() {
+    each('.hp-block', function (block) {
+      block.classList.add('fcr-window');
+      titlebar(block.querySelector('.hp-h'), t(block.querySelector('.hpl') ? T.saves : block.querySelector('.hp-skills') ? T.inventory : T.status));
+    });
+    var activities = document.querySelector('.hp .hpl');
+    if (activities) activities.closest('.wrap').classList.add('fcr-home-resume');
+    each('.hpl-row', function (row, i) {
+      var thumb = row.querySelector('.hp-thumb');
+      if (thumb) thumb.setAttribute('data-fcr-slot', ('0' + (i + 1)).slice(-2));
+    });
+    each('.hp-skills', function (grid) {
+      if (!grid.querySelector('.fcr-inventory-empty')) {
+        var empty = node('span', 'fcr-inventory-empty');
+        empty.setAttribute('aria-hidden', 'true'); grid.appendChild(empty);
+      }
+    });
+    each('.cl-summary', function (summary) {
+      summary.classList.add('fcr-window'); titlebar(summary.querySelector('.cl-summary__t'), t(T.status));
+    });
+    each('.cover-block', function (block, i) {
+      block.classList.add('fcr-window', 'fcr-story');
+      titlebar(block.querySelector('h3'), ('0' + (i + 1)).slice(-2) + ' / ' + t(T.record));
+    });
+    each('.hp-games', function (games) {
+      if (games.parentNode.classList.contains('fcr-play-window')) return;
+      var panel = node('div', 'fcr-window fcr-play-window');
+      var heading = node('h2', 'hp-h', t(content().play && content().play.title));
+      titlebar(heading, t(T.record));
+      games.parentNode.insertBefore(panel, games); panel.appendChild(heading); panel.appendChild(games);
+      var items = (content().play && content().play.cards) || [];
+      each('.hp-game', function (game, i) {
+        var body = node('div', 'fcr-game-body');
+        var title = game.querySelector('.hp-game__t'), sub = game.querySelector('.hp-game__b');
+        if (title) body.appendChild(title);
+        if (sub) body.appendChild(sub);
+        if (items[i] && t(items[i].note)) body.appendChild(node('p', 'fcr-game-note', t(items[i].note)));
+        game.appendChild(body);
+      }, games);
+    });
+    if (document.body.getAttribute('data-page') === 'resume') {
+      each('main > .section', function (section) {
+        if (section.querySelector('.section__head')) panelAround(section.querySelector('.wrap'));
+      });
+    }
+    each('.skill-card, .play-card', function (card, i) {
+      card.classList.add('fcr-item-window');
+      card.setAttribute('data-fcr-number', ('0' + (i + 1)).slice(-2));
+    });
+    each('.detail__learned', function (box) {
+      box.classList.add('fcr-window', 'fcr-learned'); titlebar(box.querySelector('.detail__learned-title'), t(T.record));
+    });
+    each('.detail__media', function (box) {
+      if (box.classList.contains('fcr-window')) return;
+      box.classList.add('fcr-window');
+      var media = box.querySelector('.media-box');
+      var heading = node('h2', 'fcr-media-title', t(media && media.classList.contains('media-box--empty') ? T.emptyMedia : T.media));
+      titlebar(heading); box.insertBefore(heading, box.firstChild);
+    });
+  }
 
-     연출 도중 스크롤해도 어긋나지 않도록, 카트리지는 **슬롯과 같은 좌표계**에 둡니다:
-     게임기 슬롯이면 문서에(absolute — 스크롤을 따라 게임기와 함께 움직임),
-     화면 위 슬롯 띠면 화면에(fixed — 스크롤과 상관없이 띠와 함께 제자리).
-     한쪽만 따라 움직이면 스크롤한 만큼 슬롯이 달아나 카트리지가 허공에 꽂힙니다. */
-  var pending = null;   /* 꽂혀 있는 카트리지 { a, fly, slot, hero, useHero, dx, dy1, H, ready } */
+  var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
   function projectOf(a) {
-    var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id = m ? decodeURIComponent(m[1]) : '';
+    var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id;
+    try { id = m ? decodeURIComponent(m[1]) : ''; } catch (e) { return null; }
     var items = (content().projects && content().projects.items) || [];
     for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
     return null;
   }
-  function cardTitle(a) { var n = a.querySelector('.gcard__name'); return n ? n.textContent : ''; }
-  function go(a) { a.setAttribute('data-fc-go', '1'); a.click(); }
-  function cleanup() {
-    pending = null;
-    Array.prototype.forEach.call(document.querySelectorAll('.fc-fly, .fc-slot, .fc-boot'), function (el) { el.parentNode && el.parentNode.removeChild(el); });
-    Array.prototype.forEach.call(document.querySelectorAll('[data-fc-lifted]'), function (el) { el.style.visibility = ''; el.removeAttribute('data-fc-lifted'); });
-    var h = document.querySelector('.hero.is-slot'); if (h) h.classList.remove('is-slot');
-    setAB(null, null);
-  }
-
-  /* 개요(타이틀 화면) 마크업 */
-  function overviewHtml(a, p) {
-    var c = content(), tabs = (c.projects && c.projects.tabs) || {};
-    if (!p) return '<div class="fc-ov"><h2 class="fc-ov__t">' + esc(cardTitle(a)) + '</h2>' + buttons() + '</div>';
-    var grade = GRADES[p.grade] ? p.grade : 'A';
-    var art = a.querySelector('.gcard__art');
-    var rows = [[T.period, p.period], [T.team, p.headcount], [T.role, p.myRole], [T.status, p.status]].filter(function (r) { return t(r[1]); })
-      .map(function (r) { return '<span class="fc-ov__k">' + esc(t(r[0])) + '</span><span class="fc-ov__v">' + esc(t(r[1])) + '</span>'; }).join('');
+  function previewHtml(p, a) {
+    var tabs = (content().projects && content().projects.tabs) || {};
     var q = p.quest || {};
-    var quest = t(q.goal) ? '<p class="fc-ov__q"><span class="fc-ov__k">' + esc(t(T.quest)) + '</span> ' + esc(t(q.goal)) +
-      (t(q.result) ? ' <span class="fc-ov__arrow" aria-hidden="true">→</span> <b>' + esc(t(q.result)) + '</b>' : '') +
-      (q.cleared ? ' <span class="fc-ov__clear">✓ ' + esc(t(T.cleared)) + '</span>' : '') + '</p>' : '';
-    return '<div class="fc-ov">' +
-      '<div class="fc-ov__art" aria-hidden="true">' + (art ? art.innerHTML : '') + '</div>' +
-      '<div class="fc-ov__body">' +
-        '<p class="fc-ov__meta"><span class="fc-ov__cat">' + esc(t(tabs[p.category]) || '') + '</span><span class="fc-ov__tag">' + esc(t(p.tag)) + '</span><span class="fc-ov__grade" data-grade="' + grade + '">' + grade + '</span></p>' +
-        '<h2 class="fc-ov__t">' + esc(t(p.title)) + '</h2>' +
-        (t(p.sub) ? '<p class="fc-ov__sub">' + esc(t(p.sub)) + '</p>' : '') +
-        (rows ? '<dl class="fc-ov__rows">' + rows + '</dl>' : '') +
-        quest + buttons() +
-      '</div></div>';
-    function buttons() {
-      return '<div class="fc-ov__btns">' +
-        '<button type="button" class="fc-ov__btn fc-ov__btn--go" data-fc-view><b>A</b> ' + esc(t(T.view)) + ' →</button>' +
-        '<button type="button" class="fc-ov__btn" data-fc-eject><b>B</b> ' + esc(t(T.eject)) + '</button></div>';
+    var rows = [[T.period, p.period], [T.role, p.myRole]].filter(function (r) { return t(r[1]); }).map(function (r) {
+      return '<div><dt>' + esc(t(r[0])) + '</dt><dd>' + esc(t(r[1])) + '</dd></div>';
+    }).join('');
+    // 카드의 실제 아트 DOM을 재사용합니다. 원본 .gcard와 사진은 바꾸지 않습니다.
+    var art = a.querySelector('.gcard__art');
+    return (art ? '<div class="fcr-preview__art" aria-hidden="true">' + art.innerHTML + '</div>' : '') +
+      '<div class="fcr-preview__info"><div class="fcr-preview__intro"><p class="fcr-preview__category">' + esc(t(tabs[p.category])) +
+      (t(p.tag) ? ' · ' + esc(t(p.tag)) : '') + '</p><h2 class="fcr-preview__title">' + esc(t(p.title)) + '</h2>' +
+      '<p class="fcr-preview__sub">' + esc(t(p.sub)) + '</p></div>' +
+      '<dl class="fcr-preview__facts">' + rows + '</dl>' +
+      (t(q.goal) || t(q.result) ? '<div class="fcr-preview__quest">' +
+        (t(q.goal) ? '<p><span>' + esc(t(T.quest)) + '</span>' + esc(t(q.goal)) + '</p>' : '') +
+        (t(q.result) ? '<p><span>' + esc(t(T.result)) + '</span><b>' + esc(t(q.result)) + '</b></p>' : '') + '</div>' : '') +
+      '</div>';
+  }
+  function makePreview(inHero) {
+    var el = node('div', 'fcr-preview' + (inHero ? ' fcr-preview--lcd' : ' fcr-preview--list fcr-window'));
+    el.setAttribute('role', 'region'); el.setAttribute('aria-label', t(T.preview));
+    el.innerHTML = '<div class="fcr-preview__bar"><span>▶ ' + esc(t(T.selection)) + '</span>' +
+      (inHero ? '<button type="button" data-fcr-reset>' + esc(t(T.restore)) + ' <span aria-hidden="true">×</span></button>' : '') +
+      '</div><div class="fcr-preview__body"></div>' +
+      '<div class="fcr-preview__footer"><button type="button" data-fcr-open><kbd>A</kbd> ' + esc(t(T.insertHint)) + ' →</button></div>';
+    el.hidden = true;
+    return el;
+  }
+  function status() {
+    var el = document.getElementById('fcr-status');
+    if (!el) {
+      el = node('div', 'sr-only'); el.id = 'fcr-status';
+      el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite'); el.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+  function previewA(enabled) {
+    var key = document.querySelector('[data-fc-a]'), label = document.querySelector('[data-fc-lbl="a"]');
+    if (!key) return;
+    var draw = key.getAttribute('data-fc-a') === 'draw';
+    key.setAttribute('aria-label', t(enabled ? T.insertA : draw ? T.drawA : T.downA));
+    if (label) label.textContent = t(enabled ? T.insert : draw ? T.draw : T.down);
+  }
+  function fadePreview(el) {
+    if (el && el.animate && !reduced()) el.animate([{ opacity: .7 }, { opacity: 1 }], { duration: 140, easing: 'ease-out' });
+  }
+  function resetPreview(returnFocus, switching) {
+    var old = selected; selected = null;
+    if (old) old.classList.remove('is-fcr-preview');
+    each('.fcr-preview', function (el) { el.hidden = true; });
+    each('.hero.is-fcr-previewing', function (hero) {
+      hero.classList.remove('is-fcr-previewing');
+      var grid = hero.querySelector('.hero__grid');
+      if (grid) {
+        grid.removeAttribute('inert'); grid.removeAttribute('aria-hidden');
+        if (!switching) fadePreview(grid.querySelector(':scope > div'));
+      }
+    });
+    previewA(false);
+    var live = document.getElementById('fcr-status'); if (live) live.textContent = '';
+    if (returnFocus && old && old.isConnected) {
+      restoringFocus = true; old.focus({ preventScroll: true }); restoringFocus = false;
     }
   }
-
-  function insert(a) {
-    var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard'); if (!face) { go(a); return; }
-    var sx = window.pageXOffset, sy = window.pageYOffset;          /* 화면 좌표 → 문서 좌표로 옮길 때 더할 스크롤량 */
-    var r = a.getBoundingClientRect(), H = r.height, W = r.width;
-
-    /* 슬롯: 보이는 게임기 아래쪽, 없으면 화면 위 슬롯 띠 */
-    var hero = document.querySelector('.hero.fc-console'), hb = hero && hero.getBoundingClientRect();
-    var useHero = !!(hb && hb.bottom > navH() + 20 && hb.bottom < window.innerHeight - 40);
-    var slot = null, lineY, cx;
-    if (useHero) { hero.classList.add('is-slot'); lineY = hb.bottom - 3; cx = hb.left + hb.width / 2; }
-    else {
-      slot = document.createElement('div'); slot.className = 'fc-slot';
-      /* 띠는 상단바 **아래**에 놓습니다 — 카트리지·띠 모두 상단바보다 아래 층이라, 화면 맨 위에 두면 바에 가립니다 */
-      var nb = document.querySelector('.nav');
-      slot.style.top = Math.max(0, nb ? nb.getBoundingClientRect().bottom + 4 : 0) + 'px';
-      document.body.appendChild(slot);
-      /* 띠는 화면 밖(translateY -100%)에서 시작하므로, 그대로 재면 꽂는 선이 띠 높이(58px)만큼 위로 잡혀
-         카트리지가 띠보다 위, 허공에 꽂혔습니다 → 변형을 잠깐 꺼서 '내려온 뒤'의 자리를 재고 되돌립니다 */
-      slot.style.transform = 'none';
-      var sb = slot.getBoundingClientRect(); lineY = sb.bottom - 3; cx = sb.left + sb.width / 2;
-      slot.style.transform = '';
-      slot.animate([{ transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }], { duration: 320, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' });
-    }
-
-    /* 날아가는 복제본 (원본은 자리만 비워 둠) — 슬롯이 문서에 있으면 복제본도 문서에 붙입니다 */
-    var fly = document.createElement('div'); fly.className = 'fc-fly';
-    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') +
-      ';left:' + (r.left + (useHero ? sx : 0)) + 'px;top:' + (r.top + (useHero ? sy : 0)) + 'px' +
-      ';width:' + W + 'px;height:' + H + 'px';
-    var clone = face.cloneNode(true);
-    clone.classList.remove('is-tilt', 'reveal', 'is-visible'); clone.classList.add('fc-fly__card');
-    clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('hidden');
-    fly.appendChild(clone); document.body.appendChild(fly);
-    a.style.visibility = 'hidden'; a.setAttribute('data-fc-lifted', '1');
-
-    var dx = cx - (r.left + W / 2), dy1 = lineY - r.top;   /* 카드 윗변(단자)이 슬롯 선에 닿는 자리 */
-    pending = { a: a, fly: fly, slot: slot, hero: hero, useHero: useHero, dx: dx, dy1: dy1, H: H, ready: false };
-    var me = pending;
-    var at = function (fx, fy, s, rot) { return 'translate(' + fx + 'px,' + fy + 'px) scale(' + s + ') rotate(' + rot + 'deg)'; };
-
-    /* ① 집어 올리기 → ② 슬롯 아래로 가져가기 (살짝 기울었다가 바로 서며 자리를 잡음) */
-    var lift = fly.animate(
-      [{ transform: at(0, 0, 1, 0), offset: 0 },
-       { transform: at(dx * .08, -26, 1.08, -3), offset: .28, easing: 'cubic-bezier(.2,.7,.3,1)' },
-       { transform: at(dx * .82, dy1 * .8, 1.05, 1.5), offset: .78, easing: 'cubic-bezier(.3,.6,.3,1)' },
-       { transform: at(dx, dy1, 1, 0), offset: 1 }],
-      { duration: 980, easing: 'cubic-bezier(.35,.65,.25,1)', fill: 'forwards' });
-    lift.onfinish = function () {
-      if (pending !== me) return;
-      /* ③ 슬롯 안으로: 절반쯤 들어가다 한 번 걸리고, 딸깍 끝까지 (transform 과 clip-path 를 같은 키프레임으로 → 슬롯 선에 딱 맞춤) */
-      var push = fly.animate(
-        [{ transform: at(dx, dy1, 1, 0),            clipPath: 'inset(0 0 0 0)',     offset: 0,   easing: 'cubic-bezier(.4,.1,.7,1)' },
-         { transform: at(dx, dy1 - H * .58, 1, 0),  clipPath: 'inset(58% 0 0 0)',   offset: .58, easing: 'linear' },
-         { transform: at(dx, dy1 - H * .60, 1, 0),  clipPath: 'inset(60% 0 0 0)',   offset: .74, easing: 'cubic-bezier(.6,0,.9,.6)' },
-         { transform: at(dx, dy1 - H, 1, 0),        clipPath: 'inset(100% 0 0 0)',  offset: 1 }],
-        { duration: 900, delay: 140, fill: 'forwards' });
-      push.onfinish = function () {
-        if (pending !== me) return;
-        /* 연출 도중 스크롤해 게임기가 화면 밖으로 밀려났으면, 화면이 켜지기 전에 도로 데려옵니다 */
-        if (useHero) {
-          var hr = hero.getBoundingClientRect();
-          var seen = Math.min(hr.bottom, window.innerHeight) - Math.max(hr.top, navH());
-          if (seen < Math.min(hr.height, window.innerHeight - navH()) * .6) scrollToY(hr.top + window.pageYOffset - navH() - 8);
-        }
-        /* ④ 본체가 살짝 눌림 */
-        var body = useHero ? hero : slot;
-        if (body) body.animate([{ transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }, { transform: useHero ? 'translateY(4px)' : 'translate(-50%,4px)' }, { transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }], { duration: 220, easing: 'ease-out', fill: useHero ? 'none' : 'forwards' });
-        /* ⑤ 화면 켜짐: 검은 화면 + '읽는 중' → ⑥ 개요 */
-        var boot = document.createElement('div'); boot.className = 'fc-boot' + (useHero ? '' : ' fc-boot--full');
-        boot.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
-        (useHero ? hero.querySelector('.wrap') : document.body).appendChild(boot);
-        setTimeout(function () {
-          if (pending !== me) return;
-          /* 개요는 홈에서만 — 프로젝트 목록 등 다른 페이지에서는 곧바로 상세로 넘어갑니다 */
-          if ((document.body.getAttribute('data-page') || 'home') !== 'home') { go(a); return; }
-          boot.innerHTML = overviewHtml(a, projectOf(a));
-          boot.classList.add('is-on');
-          me.ready = true; setAB(t(T.viewS), t(T.eject));
-          var b = boot.querySelector('[data-fc-view]'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
-        }, 820);
-      };
-    };
-  }
-
-  /* 자세히 보기: 액정이 화면 전체를 덮으며 켜지고, 그 뒤에 상세 페이지로 넘어갑니다 */
-  function viewDetail() {
-    var me = pending; if (!me || !me.ready) return;
-    me.ready = false; setAB(null, null);
-    var full = document.createElement('div');
-    full.className = 'fc-boot fc-boot--full is-on';
-    full.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(cardTitle(me.a) || t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
-    document.body.appendChild(full);
-    setTimeout(function () { go(me.a); }, 560);
-  }
-
-  /* 꺼내기: 화면이 꺼지고 카트리지가 슬롯에서 나와 제자리로 돌아갑니다 */
-  function eject() {
-    var me = pending; if (!me || !me.ready) return;
-    me.ready = false; setAB(null, null);
-    var boot = document.querySelector('.fc-boot'); if (boot) boot.parentNode.removeChild(boot);
-    var fly = me.fly, H = me.H;
-    /* 슬롯 띠(화면에 붙은 경우)는 그 사이 스크롤한 만큼 카드가 옮겨 갔을 수 있으니 기준점을 다시 잡습니다
-       — 카트리지는 아직 완전히 잘려 보이지 않으므로 자리를 옮겨도 눈에 띄지 않습니다 */
-    if (!me.useHero) {
-      var r2 = me.a.getBoundingClientRect();
-      var lx = parseFloat(fly.style.left) || 0, ly = parseFloat(fly.style.top) || 0;
-      me.dx += lx - r2.left; me.dy1 += ly - r2.top;
-      fly.style.left = r2.left + 'px'; fly.style.top = r2.top + 'px';
-    }
-    var dx = me.dx, dy1 = me.dy1;
-    var at = function (fx, fy) { return 'translate(' + fx + 'px,' + fy + 'px)'; };
-    var out = fly.animate(
-      [{ transform: at(dx, dy1 - H), clipPath: 'inset(100% 0 0 0)' }, { transform: at(dx, dy1), clipPath: 'inset(0 0 0 0)' }],
-      { duration: 520, easing: 'cubic-bezier(.3,.6,.3,1)', fill: 'forwards' });
-    out.onfinish = function () {
-      if (pending !== me) return;
-      if (me.slot) me.slot.animate([{ transform: 'translate(-50%,0)' }, { transform: 'translate(-50%,-100%)' }], { duration: 300, delay: 320, easing: 'ease-in', fill: 'forwards' });
-      var back = fly.animate(
-        [{ transform: at(dx, dy1) + ' scale(1)' }, { transform: at(dx * .5, dy1 * .5 - 24) + ' scale(1.06)', offset: .5 }, { transform: at(0, 0) + ' scale(1)' }],
-        { duration: 720, easing: 'cubic-bezier(.35,.65,.25,1)', fill: 'forwards' });
-      back.onfinish = function () { if (pending === me) cleanup(); };
-    };
-  }
-
-  document.addEventListener('click', function (e) {
-    if (!active()) return;
-    var a = e.target.closest ? e.target.closest('a.draw-card, a.proj-card') : null;
-    if (!a || a.getAttribute('data-fc-go') || e.defaultPrevented) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;   /* 새 탭 등은 그대로 */
-    if (reduced()) return;                                                       /* 모션 최소화: 바로 이동 */
-    e.preventDefault(); e.stopPropagation();
+  function preview(a, announce) {
     if (pending) return;
-    insert(a);
-  }, true);
-  window.addEventListener('pageshow', function (e) { if (e.persisted) cleanup(); });
-  document.addEventListener('keydown', function (e) {
-    if (!pending || !pending.ready) return;
-    if (e.key === 'Escape') { e.preventDefault(); eject(); }
-  });
+    var p = projectOf(a);
+    if (selected === a) { if (announce && p) announceProject(p); return; }
+    var el = document.querySelector('.fcr-preview--lcd, .fcr-preview--list'); if (!p || !el) return;
+    resetPreview(false, true); selected = a; a.classList.add('is-fcr-preview');
+    el.querySelector('.fcr-preview__body').innerHTML = previewHtml(p, a); el.hidden = false;
+    fadePreview(el.querySelector('.fcr-preview__body'));
+    var hero = el.closest('.hero');
+    if (hero) {
+      hero.classList.add('is-fcr-previewing');
+      var grid = hero.querySelector('.hero__grid');
+      if (grid) { grid.setAttribute('inert', ''); grid.setAttribute('aria-hidden', 'true'); }
+      previewA(true);
+      var aux = document.querySelector('.fcr-preview--aux');
+      if (aux) aux.querySelector('.fcr-preview__body').innerHTML = previewHtml(p, a);
+      positionAux();
+    }
+    if (announce) announceProject(p);
+  }
+  function announceProject(p) {
+    status().textContent = [t(p.title), t(p.sub), t(T.period) + ': ' + t(p.period), t(T.role) + ': ' + t(p.myRole), t(p.quest && p.quest.goal), t(p.quest && p.quest.result)].filter(Boolean).join('. ');
+  }
+  // 액정이 잘릴 때만 카드 바로 위(공간이 없으면 아래)에 읽기 전용 보조 창을 표시합니다.
+  // 카드 행의 문서 위치와 스크롤은 바꾸지 않습니다.
+  function positionAux() {
+    var aux = document.querySelector('.fcr-preview--aux'), lcd = document.querySelector('.fcr-preview--lcd');
+    if (!aux || !lcd) return;
+    aux.hidden = true;
+    if (!active() || !selected || !selected.isConnected || lcd.hidden || pending) return;
+    var viewH = window.innerHeight, viewW = window.innerWidth || document.documentElement.clientWidth;
+    var top = navH(), screen = lcd.getBoundingClientRect(), card = selected.getBoundingClientRect();
+    if ((screen.top >= top && screen.bottom <= viewH - 12) || card.bottom <= top || card.top >= viewH - 12) return;
+    aux.hidden = false;
+    var box = aux.getBoundingClientRect(), y = card.top - box.height - 12;
+    if (y < top && card.bottom + 12 + box.height <= viewH - 12) y = card.bottom + 12;
+    y = Math.max(top, Math.min(y, viewH - box.height - 12));
+    aux.style.left = Math.max(12, Math.min(card.left, viewW - box.width - 12)) + 'px';
+    aux.style.top = y + 'px';
+  }
+  var auxFrame = false;
+  function scheduleAux() {
+    if (!active() || !selected || auxFrame) return;
+    if (!window.requestAnimationFrame) { positionAux(); return; }
+    auxFrame = true;
+    window.requestAnimationFrame(function () { auxFrame = false; positionAux(); });
+  }
+  function setupSelection() {
+    var draw = document.querySelector('.draw .wrap'), head = document.querySelector('.proj-head');
+    if (!draw && !head) return;
+    var hint = document.getElementById('fcr-selection-hint');
+    if (!hint) {
+      var row = node('div', 'fcr-select-guide');
+      hint = node('p', '', t(window.matchMedia && window.matchMedia('(hover: none)').matches ? T.touchHint : T.hoverHint));
+      hint.id = 'fcr-selection-hint'; row.appendChild(hint);
+      if (draw) {
+        var link = node('a', 'fcr-all-link', t(T.all) + ' →'); link.href = 'projects.html';
+        row.appendChild(link); draw.insertBefore(row, draw.firstChild);
+      } else head.insertAdjacentElement('afterend', row);
+    }
+    var heroWrap = document.querySelector('.hero > .wrap');
+    if (heroWrap && !heroWrap.querySelector('.fcr-preview')) heroWrap.appendChild(makePreview(true));
+    if (heroWrap && !document.querySelector('.fcr-preview--aux')) {
+      var aux = node('div', 'fcr-preview fcr-preview--aux fcr-window');
+      aux.setAttribute('aria-hidden', 'true'); aux.setAttribute('inert', ''); aux.hidden = true;
+      aux.innerHTML = '<div class="fcr-preview__bar">▶ ' + esc(t(T.selection)) + '</div>' +
+        '<div class="fcr-preview__body"></div><p class="fcr-preview__aux-hint">' + esc(t(T.openHint)) + '</p>';
+      // body 바로 아래에 두어 게임기의 overflow:hidden에 잘리지 않게 합니다.
+      document.body.appendChild(aux);
+    }
+    if (head && !document.querySelector('.fcr-preview--list')) {
+      var pane = makePreview(false), grid = document.querySelector('[data-proj-grid]');
+      if (grid) grid.insertAdjacentElement('afterend', pane);
+    }
+    each('a.draw-card, a.proj-card', function (a) {
+      var ids = (a.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      if (ids.indexOf(hint.id) < 0) { ids.push(hint.id); a.setAttribute('aria-describedby', ids.join(' ')); }
+    });
+  }
 
+  /* 420ms 이동 + 260ms 밀어 넣기. 로딩·중간 개요·전체 화면 켜기 없이 이동합니다.
+     800ms 타이머는 WAAPI 완료 이벤트가 누락되어도 링크가 멈추지 않도록 하는 상한입니다. */
+  function cleanup() {
+    var me = pending; pending = null;
+    if (me) {
+      clearTimeout(me.timer);
+      (me.animations || []).forEach(function (a) { a.cancel(); });
+      if (me.a) { me.a.style.visibility = ''; me.a.removeAttribute('aria-busy'); }
+    }
+    each('.fc-fly, .fc-slot', function (el) { el.remove(); });
+    each('.hero.is-slot', function (el) { el.classList.remove('is-slot'); });
+  }
+  function insert(a) {
+    var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
+    if (!face || !face.animate) { window.location.assign(a.href); return; }
+    cleanup();
+    var aux = document.querySelector('.fcr-preview--aux'); if (aux) aux.hidden = true;
+    var r = a.getBoundingClientRect(), hero = document.querySelector('.hero.fc-console');
+    var hr = hero && hero.getBoundingClientRect();
+    var useHero = !!(hr && hr.bottom > navH() + 30 && hr.bottom < window.innerHeight - 40);
+    var line, cx, slot;
+    if (useHero) {
+      hero.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
+    } else {
+      slot = node('div', 'fc-slot'); slot.setAttribute('aria-hidden', 'true');
+      slot.style.top = navH() - 12 + 'px'; slot.style.transform = 'translate(-50%, 0)';
+      document.body.appendChild(slot);
+      var sr = slot.getBoundingClientRect(); line = sr.bottom - 3; cx = sr.left + sr.width / 2;
+    }
+    var fly = node('div', 'fc-fly'); fly.setAttribute('aria-hidden', 'true'); fly.setAttribute('inert', '');
+    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') + ';left:' +
+      (r.left + (useHero ? window.pageXOffset : 0)) + 'px;top:' +
+      (r.top + (useHero ? window.pageYOffset : 0)) + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
+    var clone = face.cloneNode(true);
+    clone.classList.remove('is-tilt', 'reveal', 'is-visible', 'is-fcr-preview'); clone.classList.add('fc-fly__card');
+    clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('aria-describedby');
+    fly.appendChild(clone); document.body.appendChild(fly);
+    a.style.visibility = 'hidden'; a.setAttribute('aria-busy', 'true');
+    var me = pending = { a: a, animations: [] };
+    function finish() {
+      if (pending !== me) return;
+      var url = a.href; cleanup(); window.location.assign(url);
+    }
+    me.timer = setTimeout(finish, 800);
+    var dx = cx - r.left - r.width / 2, dy = line - r.top;
+    function at(x, y) { return 'translate(' + x + 'px,' + y + 'px)'; }
+    try {
+      if (slot) me.animations.push(slot.animate([
+        { transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }
+      ], { duration: 120, fill: 'forwards', easing: 'ease-out' }));
+      var animation = fly.animate([
+        { transform: at(0, 0), clipPath: 'inset(0 0 0 0)', offset: 0 },
+        { transform: at(dx * .2, -20), clipPath: 'inset(0 0 0 0)', offset: .2 },
+        { transform: at(dx, dy), clipPath: 'inset(0 0 0 0)', offset: 420 / 680 },
+        { transform: at(dx, dy - r.height), clipPath: 'inset(100% 0 0 0)', offset: 1 }
+      ], { duration: 680, fill: 'forwards', easing: 'cubic-bezier(.3,.65,.3,1)' });
+      me.animations.push(animation); animation.onfinish = finish;
+    } catch (e) { finish(); }
+  }
+
+  document.addEventListener('pointerover', function (e) {
+    if (!active() || e.pointerType === 'touch' || !e.target.closest) return;
+    var a = e.target.closest('a.draw-card, a.proj-card');
+    if (a && (!e.relatedTarget || !a.contains(e.relatedTarget))) preview(a, false);
+  });
+  document.addEventListener('focusin', function (e) {
+    if (!active() || restoringFocus || !e.target.closest) return;
+    var a = e.target.closest('a.draw-card, a.proj-card'); if (a) preview(a, true);
+  });
   document.addEventListener('click', function (e) {
-    if (!e.target.closest) return;
-    if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
-    if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
-    var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }
-    var ka = e.target.closest('[data-fc-a]'); if (ka) { e.preventDefault(); pressA(ka.getAttribute('data-fc-a')); return; }
-    if (e.target.closest('[data-fc-b]')) { e.preventDefault(); pressB(); }
+    if (!active() || !e.target.closest) return;
+    if (e.target.closest('[data-draw]')) {
+      var cards = document.querySelector('[data-draw-cards]');
+      e.fcrDrawBefore = cards && cards.firstChild; return;
+    }
+    var a = e.target.closest('a.draw-card, a.proj-card');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button || a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
+    if (reduced()) { cleanup(); return; }
+    e.preventDefault(); e.stopPropagation(); insert(a);
+  }, true);
+  document.addEventListener('click', function (e) {
+    if (!active() || !e.target.closest) return;
+    var deck = e.target.closest('[data-draw]');
+    if (deck && !rearmingDeck) {
+      var cards = document.querySelector('[data-draw-cards]'), app = window.PortfolioApp;
+      // main의 언어 전환은 새 덱을 그리지만 click 바인딩을 다시 하지 않습니다.
+      // 실제 뽑기가 없었을 때만 공개 API로 재바인딩하여 원래의 무작위 뽑기를 실행합니다.
+      if (cards && cards.firstChild === e.fcrDrawBefore && app && app.rerender) {
+        var hadFocus = document.activeElement === deck;
+        var aHadFocus = document.activeElement && document.activeElement.hasAttribute('data-fc-a');
+        rearmingDeck = true;
+        try {
+          app.rerender(); scan();
+          if (aHadFocus) {
+            var aKey = document.querySelector('[data-fc-a]'); if (aKey) aKey.focus({ preventScroll: true });
+          }
+          var rebound = document.querySelector('[data-draw]');
+          if (rebound) { if (hadFocus) rebound.focus({ preventScroll: true }); rebound.click(); }
+        } finally { rearmingDeck = false; }
+      }
+      return;
+    }
+    if (e.target.closest('[data-fcr-reset]')) { resetPreview(true); return; }
+    if (e.target.closest('[data-fcr-open]')) { if (selected && selected.isConnected) selected.click(); return; }
+    var stepKey = e.target.closest('[data-fc-step]');
+    if (stepKey) { step(parseInt(stepKey.getAttribute('data-fc-step'), 10) || 1); return; }
+    var aKey = e.target.closest('[data-fc-a]');
+    if (aKey) { pressA(aKey.getAttribute('data-fc-a')); return; }
+    if (e.target.closest('[data-fc-b]')) { var b = document.querySelector('[data-theme-toggle]'); if (b) b.click(); }
+    var tab = e.target.closest('[data-proj-tab]');
+    if (tab && selected && selected.hidden) {
+      var first = document.querySelector('a.proj-card:not([hidden])');
+      if (first) preview(first, false);
+    }
   });
-
-  /* 다시 그려질 때마다 붙입니다 (main 의 자식이 바뀌면) */
-  function scan() { cleanup(); var h = document.querySelector('.hero'); if (h) build(h); }
+  document.addEventListener('keydown', function (e) {
+    if (!active() || e.key !== 'Escape') return;
+    if (pending || selected) { e.preventDefault(); cleanup(); resetPreview(false); }
+  });
+  window.addEventListener('pagehide', cleanup);
+  window.addEventListener('scroll', scheduleAux, { passive: true });
+  window.addEventListener('resize', scheduleAux);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) { cleanup(); resetPreview(false); } });
+  function scan() {
+    cleanup(); resetPreview(false);
+    each('.fcr-preview--aux', function (el) { el.remove(); });
+    if (deckObserver) deckObserver.disconnect();
+    if (!active()) return;
+    var h = document.querySelector('.hero'); if (h) build(h);
+    menus(); setupSelection(); status();
+    var deck = document.querySelector('[data-draw-cards]');
+    if (deck && window.MutationObserver) {
+      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
+      deckObserver.observe(deck, { childList: true });
+    }
+  }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
     if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
+    if (window.MutationObserver) new MutationObserver(scan).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
     scan();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

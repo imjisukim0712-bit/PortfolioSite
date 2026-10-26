@@ -39,8 +39,9 @@
 
 ## 디자인 테마(스킨) — `assets/js/themes.js` · `assets/css/themes/`
 
-기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 12개.
+기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 15개.
 (`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
+`pixel-fc-refined` · `pixel-fc-shelf` · `pixel-fc-screen` 은 패미컴을 복제해 다듬은 **개선안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js`, 원본 `famicom.js` 와 별개). 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).

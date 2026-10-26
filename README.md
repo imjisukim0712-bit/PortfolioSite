@@ -95,12 +95,12 @@ python3 -m http.server 8000   # http://localhost:8000
 ## 색 · 다크모드 조정
 `assets/css/style.css` 상단 `:root`(라이트) 와 `:root[data-theme="dark"]`(다크) 의 시맨틱 토큰만 바꾸면 전체에 반영됩니다.
 
-## 디자인 테마 시안 (테마 8종 · 시안 12개)
+## 디자인 테마 시안 (테마 8종 · 시안 15개)
 `themes.html` 에서 전체 시안을 보고, 카드를 누르면 그 디자인이 입혀진 실제 사이트가 열립니다.
 
 | 테마 | 시안 id |
 |---|---|
-| 레트로 픽셀 아케이드 | `pixel-famicom` |
+| 레트로 픽셀 아케이드 | `pixel-famicom` · 개선안 `pixel-fc-refined` · `pixel-fc-shelf` · `pixel-fc-screen` |
 | 네오 브루탈리즘 | `brutal-cyberpunk` · `brutal-newsprint` |
 | 브랜드 홈페이지 | `brand-keynote` · `brand-bento` |
 | 컨셉 무대 | `concept-spec` · `concept-patch` · `concept-tabletop` |

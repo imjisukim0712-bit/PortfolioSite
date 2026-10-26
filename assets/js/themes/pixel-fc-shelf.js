@@ -1,24 +1,5 @@
-/* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-shelf) 전용 스크립트
-   ----------------------------------------------------------------------------
-   홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-shelf.css)가
-   본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
-
-     왼쪽 그립   SELECT ◀ ▶  — 홈에서는 사진 옆 '한마디'를 앞뒤로 넘깁니다 ('한 마디 더' 버튼 대신).
-                              한마디가 없는 페이지(이력서)에서는 이전·다음 절로 이동합니다.
-                 ✉ 메일 — content.js 의 meta.email 로 메일 쓰기 (값이 비어 있으면 키를 달지 않습니다).
-     오른쪽 그립 B = 밝기(다크 · 라이트)  ·  A = 뽑기(홈: 프로젝트 덱을 누름) / 아래로(이력서)
-                 카트리지가 꽂혀 있는 동안은 A = 자세히 보기 · B = 꺼내기
-     카트리지    프로젝트 카드(.draw-card · .proj-card)를 누르면 바로 열리지 않고,
-                 카트리지가 게임기 아래 슬롯(게임기가 안 보이면 화면 위에 내려오는 슬롯)으로
-                 날아 들어간 뒤 화면이 켜집니다. 홈에서는 프로젝트 개요(타이틀 화면)가 뜨고,
-                 '자세히 보기'를 누르면 화면 전체가 켜지며 상세로 넘어갑니다 ('꺼내기'는 카트리지를 도로 뺍니다).
-                 프로젝트 목록 같은 다른 페이지에서는 개요 없이 곧바로 상세로 넘어갑니다.
-
-   themes.js 의 pixel 테마 항목 `scripts` 로 읽히며, 다른 시안에서는 아무것도 하지 않습니다.
-   페이지가 다시 그려질 때마다(언어 전환·갤러리 페이지 이동) 자동으로 다시 붙습니다.
-   문구는 모두 { ko, en } 쌍입니다 — 한국어를 고치면 영어도 함께 고칩니다.
-   ========================================================================== */
+/* 개선안 B · 진열장. 원본 기기/카드 구조는 유지하고 선택과 읽기 단계를 줄입니다.
+   부모 테마 famicom.js도 함께 로드되므로 동작용 data-fcs-* / fcs-fly를 따로 씁니다. */
 (function () {
   'use strict';
   var SKIN = 'pixel-fc-shelf';
@@ -30,24 +11,20 @@
     nextS:  { ko: '다음 절로',     en: 'Next section' },
     light:  { ko: '밝기',          en: 'Light' },
     lightA: { ko: '다크 · 라이트 전환', en: 'Toggle dark mode' },
-    draw:   { ko: '뽑기',          en: 'Draw' },
-    drawA:  { ko: '프로젝트 카드 뽑기', en: 'Draw project cards' },
+    draw:   { ko: '랜덤',          en: 'Random' },
+    drawA:  { ko: '진열장에서 랜덤 한 장 고르기', en: 'Pick a random cartridge from the shelf' },
     down:   { ko: '아래로',        en: 'Down' },
     downA:  { ko: '아래 내용으로',  en: 'Scroll to the content' },
     mail:   { ko: '메일',          en: 'Mail' },
     mailA:  { ko: '이메일 보내기',  en: 'Send me an email' },
-    boot:   { ko: '읽는 중',       en: 'LOADING' },
-    view:   { ko: '자세히 보기',   en: 'View details' },
-    viewS:  { ko: '보기',          en: 'View' },
+    view:   { ko: '전체 문서 보기', en: 'Read full document' },
+    viewS:  { ko: '문서',          en: 'Document' },
     eject:  { ko: '꺼내기',        en: 'Eject' },
-    period: { ko: '기간',          en: 'Period' },
     team:   { ko: '인원',          en: 'Team' },
     role:   { ko: '역할',          en: 'Role' },
     status: { ko: '상태',          en: 'Status' },
-    quest:  { ko: '퀘스트',        en: 'Quest' },
-    cleared:{ ko: '달성',          en: 'Cleared' }
+    quest:  { ko: '퀘스트',        en: 'Quest' }
   };
-  var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
   var MAIL_SVG = '<svg viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">' +
     '<rect x="1" y="1.6" width="16" height="11" /><path d="m1.6 2.4 7.4 5.6 7.4-5.6" stroke-linejoin="round"/></svg>';
@@ -57,7 +34,7 @@
     return v === 'en' ? 'en' : 'ko';
   }
   function t(o) { var L = lang(); return typeof o === 'string' ? o : (o && (o[L] || o.ko)) || ''; }
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function esc(s) { return window.PortfolioRender.esc(s); }
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
   function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function navH() { var n = document.querySelector('.nav'); return (n ? n.getBoundingClientRect().height : 60) + 16; }
@@ -69,15 +46,15 @@
     if (!active() || hero.querySelector('.fc-grip')) return;
     var wrap = hero.querySelector('.wrap'); if (!wrap) return;
     var hasQuip = !!hero.querySelector('[data-quip]');
-    var hasDeck = !!document.querySelector('[data-draw]');
+    var hasDeck = !!document.querySelector('[data-fcs-shelf]');
     var mail = ((content().meta && content().meta.email) || '').trim();   /* content.js 의 meta.email */
 
     var left = document.createElement('div');
     left.className = 'fc-grip fc-grip--l';
     left.innerHTML =
       '<span class="fc-lbl">' + T.select + '</span>' +
-      '<button type="button" class="fc-key" data-fc-step="-1" aria-label="' + esc(t(hasQuip ? T.prevQ : T.prevS)) + '"><span aria-hidden="true">◀</span></button>' +
-      '<button type="button" class="fc-key" data-fc-step="1" aria-label="' + esc(t(hasQuip ? T.nextQ : T.nextS)) + '"><span aria-hidden="true">▶</span></button>' +
+      '<button type="button" class="fc-key" data-fcs-step="-1" aria-label="' + esc(t(hasQuip ? T.prevQ : T.prevS)) + '"><span aria-hidden="true">◀</span></button>' +
+      '<button type="button" class="fc-key" data-fcs-step="1" aria-label="' + esc(t(hasQuip ? T.nextQ : T.nextS)) + '"><span aria-hidden="true">▶</span></button>' +
       /* 메일 키 — 누르면 메일 앱이 열립니다 (이메일은 content.js 의 meta.email 한 곳에서) */
       (mail ? '<span class="fc-ab"><a class="fc-key fc-key--mail" href="mailto:' + esc(mail) + '" aria-label="' + esc(t(T.mailA) + ' — ' + mail) + '">' + MAIL_SVG + '</a>' +
               '<span class="fc-lbl">' + esc(t(T.mail)) + '</span></span>' : '');
@@ -85,8 +62,8 @@
     var right = document.createElement('div');
     right.className = 'fc-grip fc-grip--r';
     right.innerHTML =
-      '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fc-b aria-label="' + esc(t(T.lightA)) + '">B</button><span class="fc-lbl" data-fc-lbl="b">' + esc(t(T.light)) + '</span></span>' +
-      '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fc-a="' + (hasDeck ? 'draw' : 'down') + '" aria-label="' + esc(t(hasDeck ? T.drawA : T.downA)) + '">A</button><span class="fc-lbl" data-fc-lbl="a">' + esc(t(hasDeck ? T.draw : T.down)) + '</span></span>';
+      '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fcs-b aria-label="' + esc(t(T.lightA)) + '">B</button><span class="fc-lbl" data-fcs-lbl="b">' + esc(t(T.light)) + '</span></span>' +
+      '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fcs-a="' + (hasDeck ? 'draw' : 'down') + '" aria-label="' + esc(t(hasDeck ? T.drawA : T.downA)) + '">A</button><span class="fc-lbl" data-fcs-lbl="a">' + esc(t(hasDeck ? T.draw : T.down)) + '</span></span>';
 
     hero.classList.add('fc-console');
     hero.insertBefore(left, wrap);
@@ -94,9 +71,15 @@
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */
   function setAB(a, b) {
-    var la = document.querySelector('[data-fc-lbl="a"]'), lb = document.querySelector('[data-fc-lbl="b"]');
+    var la = document.querySelector('[data-fcs-lbl="a"]'), lb = document.querySelector('[data-fcs-lbl="b"]');
     if (la) { if (!la.getAttribute('data-orig')) la.setAttribute('data-orig', la.textContent); la.textContent = a || la.getAttribute('data-orig'); }
     if (lb) { if (!lb.getAttribute('data-orig')) lb.setAttribute('data-orig', lb.textContent); lb.textContent = b || lb.getAttribute('data-orig'); }
+    [[document.querySelector('[data-fcs-a]'), a ? t(T.view) : null],
+     [document.querySelector('[data-fcs-b]'), b ? t(T.eject) : null]].forEach(function (pair) {
+      var key = pair[0]; if (!key) return;
+      if (!key.hasAttribute('data-orig-label')) key.setAttribute('data-orig-label', key.getAttribute('aria-label'));
+      key.setAttribute('aria-label', pair[1] || key.getAttribute('data-orig-label'));
+    });
   }
 
   /* 페이지의 절(section) 목록 — 히어로를 뺀 나머지 */
@@ -113,233 +96,269 @@
     var nxt = Math.max(0, Math.min(secs.length - 1, cur + dir));
     scrollToY(secs[nxt].getBoundingClientRect().top + window.pageYOffset - navH());
   }
+  var UI = {
+    collection: { ko: '01 / 카트리지', en: '01 / COLLECTION' },
+    shelf: { ko: '카트리지 진열장', en: 'Cartridge shelf' },
+    instruction: { ko: '한 장을 꽂으면, 화면에서 바로 읽습니다.', en: 'Insert a cartridge. Read the project on screen.' },
+    random: { ko: '랜덤 한 장', en: 'Pick one' },
+    filter: { ko: '프로젝트 분류', en: 'Project categories' },
+    count: { ko: '장 진열', en: 'cartridges on display' },
+    hint: { ko: '카트리지 선택 → 액정에서 읽기', en: 'Choose a cartridge → read on screen' },
+    empty: { ko: '아직 진열된 카트리지가 없습니다.', en: 'No cartridges on this shelf yet.' },
+    selected: { ko: '랜덤 선택', en: 'Random pick' },
+    inserting: { ko: '꽂는 중 · 아무 곳이나 누르면 바로 보기', en: 'Inserting · click anywhere to skip' },
+    reading: { ko: '읽는 중', en: 'READING' },
+    learned: { ko: '무엇을 배웠는지', en: 'What I learned' },
+    result: { ko: '결과', en: 'Result' },
+    summary: { ko: '요약 상세', en: 'Project summary' },
+    play: { ko: '플레이에서 얻은 관점', en: 'Lessons from playing' }
+  };
+  var pending = null, mainRoot = null, lastPick = '';
+  function all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function items() { return (content().projects && content().projects.items) || []; }
+  function base() { return document.body.getAttribute('data-page') === 'detail' ? '../' : ''; }
+  function projectOf(a) {
+    try {
+      var id = new URL(a.href, location.href).searchParams.get('p');
+      return items().filter(function (p) { return p.id === id; })[0];
+    } catch (e) { return null; }
+  }
   function pressA(kind) {
-    if (pending) { if (pending.ready) viewDetail(); return; }        /* 꽂혀 있으면 A = 자세히 보기 */
-    if (kind === 'draw') {
-      var deck = document.querySelector('[data-draw]'); if (!deck) return;
-      deck.click();
-      var r = deck.getBoundingClientRect();
-      if (r.top < navH() || r.bottom > window.innerHeight) scrollToY(r.top + window.pageYOffset - navH() - 8);
-      return;
-    }
+    if (pending) { if (pending.ready) location.href = pending.a.href; else finishInsert(); return; }
+    if (kind === 'draw') { randomPick(); return; }
     var secs = sections();
     if (secs.length) scrollToY(secs[0].getBoundingClientRect().top + window.pageYOffset - navH());
   }
   function pressB() {
-    if (pending) { if (pending.ready) eject(); return; }               /* 꽂혀 있으면 B = 꺼내기 */
+    if (pending) { cleanup(true); return; }
     var b = document.querySelector('[data-theme-toggle]'); if (b) b.click();
   }
-
-  /* ── 카트리지 꽂기 연출 ────────────────────────────────────────────────
-     ① 누른 카드를 집어 올려(살짝 기울며) ② 슬롯 아래까지 가져간 뒤 ③ 단자부터 슬롯 안으로 밀어 넣습니다
-     (clip-path 로 슬롯 선 위쪽을 잘라 '안으로 들어가는' 것처럼 — 중간에 한 번 걸렸다가 딸깍 들어감)
-     ④ 본체가 살짝 눌리고 ⑤ 화면이 켜지며 '읽는 중' → ⑥ 프로젝트 개요(타이틀 화면).
-     '자세히 보기'(A) 로 이동, '꺼내기'(B) 로 카트리지가 도로 나와 제자리로 돌아갑니다.
-     슬롯은 화면에 보이는 게임기(.hero.fc-console)의 아래쪽. 게임기가 안 보이면 화면 위에서 슬롯 띠가 내려옵니다.
-
-     연출 도중 스크롤해도 어긋나지 않도록, 카트리지는 **슬롯과 같은 좌표계**에 둡니다:
-     게임기 슬롯이면 문서에(absolute — 스크롤을 따라 게임기와 함께 움직임),
-     화면 위 슬롯 띠면 화면에(fixed — 스크롤과 상관없이 띠와 함께 제자리).
-     한쪽만 따라 움직이면 스크롤한 만큼 슬롯이 달아나 카트리지가 허공에 꽂힙니다. */
-  var pending = null;   /* 꽂혀 있는 카트리지 { a, fly, slot, hero, useHero, dx, dy1, H, ready } */
-  function projectOf(a) {
-    var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id = m ? decodeURIComponent(m[1]) : '';
-    var items = (content().projects && content().projects.items) || [];
-    for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
-    return null;
+  function filterButtons() {
+    var tabs = (content().projects && content().projects.tabs) || {};
+    return '<div class="fcs-filters" role="group" aria-label="' + esc(t(UI.filter)) + '">' +
+      ['all', 'game', 'planning'].filter(function (key) { return tabs[key]; }).map(function (key) {
+        return '<button type="button" data-fcs-filter="' + key + '" aria-pressed="' + (key === 'all') + '">' + esc(t(tabs[key])) + '</button>';
+      }).join('') + '</div>';
   }
-  function cardTitle(a) { var n = a.querySelector('.gcard__name'); return n ? n.textContent : ''; }
-  function go(a) { a.setAttribute('data-fc-go', '1'); a.click(); }
-  function cleanup() {
-    pending = null;
-    Array.prototype.forEach.call(document.querySelectorAll('.fc-fly, .fc-slot, .fc-boot'), function (el) { el.parentNode && el.parentNode.removeChild(el); });
-    Array.prototype.forEach.call(document.querySelectorAll('[data-fc-lifted]'), function (el) { el.style.visibility = ''; el.removeAttribute('data-fc-lifted'); });
-    var h = document.querySelector('.hero.is-slot'); if (h) h.classList.remove('is-slot');
-    setAB(null, null);
+  function randomButton() { return '<button type="button" class="fcs-random" data-fcs-random><span aria-hidden="true">↻</span> ' + esc(t(UI.random)) + '</button>'; }
+  function shelfFoot() {
+    return '<div class="fcs-shelf__foot"><span data-fcs-count></span><span>' + esc(t(UI.hint)) + '</span></div>' +
+      '<p class="sr-only" role="status" aria-live="polite" data-fcs-status></p>';
   }
-
-  /* 개요(타이틀 화면) 마크업 */
-  function overviewHtml(a, p) {
-    var c = content(), tabs = (c.projects && c.projects.tabs) || {};
-    if (!p) return '<div class="fc-ov"><h2 class="fc-ov__t">' + esc(cardTitle(a)) + '</h2>' + buttons() + '</div>';
-    var grade = GRADES[p.grade] ? p.grade : 'A';
+  function prepareShelf() {
+    var draw = document.querySelector('.draw'), grid = document.querySelector('[data-proj-grid]');
+    if (draw && !draw.hasAttribute('data-fcs-shelf')) {
+      draw.setAttribute('data-fcs-shelf', '');
+      draw.innerHTML = '<div class="wrap"><div class="fcs-library-head fcs-library-head--home"><h2 class="hp-h">' + esc(t(UI.shelf)) + '</h2><div class="fcs-library-label"><p class="fcs-kicker">' + esc(t(UI.collection)) + '</p>' +
+        '<p class="fcs-instruction">' + esc(t(UI.instruction)) + '</p></div></div>' +
+        '<div class="fcs-toolbar">' + filterButtons() + randomButton() + '</div>' +
+        '<div class="fcs-shelf"><div class="fcs-shelf__cards" data-fcs-cards>' + items().map(function (p, i) {
+          return window.PortfolioRender.drawCardHtml(content(), lang(), base(), p, i);
+        }).join('') + '</div>' + shelfFoot() + '</div></div>';
+      all('a.draw-card', draw).forEach(function (a) {
+        var p = projectOf(a); if (p) a.setAttribute('data-cat', p.category || '');
+      });
+    } else if (grid && !grid.hasAttribute('data-fcs-cards')) {
+      var section = grid.closest('.section'), head = section.querySelector('.proj-head'), oldTabs = head.querySelector('.tabs');
+      section.setAttribute('data-fcs-shelf', ''); section.classList.add('fcs-project-library');
+      if (oldTabs) oldTabs.remove();
+      head.classList.add('fcs-library-head');
+      var kicker = document.createElement('p'); kicker.className = 'fcs-kicker'; kicker.textContent = t(UI.collection); head.prepend(kicker);
+      var instruction = document.createElement('p'); instruction.className = 'fcs-instruction'; instruction.textContent = t(UI.instruction); head.appendChild(instruction);
+      head.insertAdjacentHTML('afterend', '<div class="fcs-toolbar">' + filterButtons() + randomButton() + '</div>');
+      var shelf = document.createElement('div'); shelf.className = 'fcs-shelf'; grid.before(shelf); shelf.appendChild(grid);
+      grid.classList.add('fcs-shelf__cards'); grid.setAttribute('data-fcs-cards', '');
+      shelf.insertAdjacentHTML('beforeend', shelfFoot());
+      // Cards remain the renderer's original cartridge markup, including period labels.
+      all('.proj-card', grid).forEach(function (a) { a.classList.add('is-visible'); });
+      var empty = section.querySelector('[data-proj-empty]'); if (empty) empty.remove();
+    }
+    var shelf = document.querySelector('[data-fcs-shelf]');
+    if (shelf) {
+      shelf.style.setProperty('--fcs-columns', Math.max(1, items().length));
+      filterShelf('all');
+    }
+  }
+  function filterShelf(cat) {
+    var shelf = document.querySelector('[data-fcs-shelf]'); if (!shelf) return;
+    all('[data-fcs-filter]', shelf).forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-fcs-filter') === cat)); });
+    var count = 0;
+    all('[data-fcs-cards] > a', shelf).forEach(function (a) {
+      a.hidden = cat !== 'all' && a.getAttribute('data-cat') !== cat;
+      a.classList.remove('is-picked');
+      if (!a.hidden) count++;
+    });
+    var rail = shelf.querySelector('[data-fcs-cards]');
+    rail.scrollLeft = 0;
+    var empty = rail.querySelector('.fcs-empty');
+    if (!empty) { empty = document.createElement('p'); empty.className = 'fcs-empty'; empty.textContent = t(UI.empty); rail.appendChild(empty); }
+    empty.hidden = count > 0;
+    shelf.querySelector('[data-fcs-count]').textContent = String(count).padStart(2, '0') + ' / ' + items().length + ' ' + t(UI.count);
+    shelf.querySelector('[data-fcs-random]').disabled = count === 0;
+    shelf.querySelector('[data-fcs-status]').textContent = '';
+  }
+  function randomPick() {
+    var shelf = document.querySelector('[data-fcs-shelf]'); if (!shelf) return;
+    var cards = all('[data-fcs-cards] > a', shelf).filter(function (a) { return !a.hidden; });
+    if (!cards.length) return;
+    var pool = cards.filter(function (a) { return a.href !== lastPick; }); if (!pool.length) pool = cards;
+    var a = pool[Math.floor(Math.random() * pool.length)]; lastPick = a.href;
+    cards.forEach(function (c) { c.classList.remove('is-picked'); });
+    a.classList.add('is-picked'); a.focus({ preventScroll: true });
+    a.scrollIntoView({ behavior: reduced() ? 'instant' : 'smooth', block: 'nearest', inline: 'center' });
+    var p = projectOf(a); shelf.querySelector('[data-fcs-status]').textContent = t(UI.selected) + ': ' + (p ? t(p.title) : a.textContent);
+  }
+  function summaryHtml(p, a) {
+    var tabs = (content().projects && content().projects.tabs) || {}, q = p.quest || {};
+    var idx = items().indexOf(p) + 1;
+    var rows = [[T.team, p.headcount], [T.role, p.myRole], [T.status, p.status]].filter(function (row) { return t(row[1]); });
+    var links = p.links || {};
+    var external = [['Google Play', links.googlePlay], ['Steam', links.steam]].filter(function (row) { return /^https?:\/\//i.test(row[1] || ''); });
     var art = a.querySelector('.gcard__art');
-    var rows = [[T.period, p.period], [T.team, p.headcount], [T.role, p.myRole], [T.status, p.status]].filter(function (r) { return t(r[1]); })
-      .map(function (r) { return '<span class="fc-ov__k">' + esc(t(r[0])) + '</span><span class="fc-ov__v">' + esc(t(r[1])) + '</span>'; }).join('');
-    var q = p.quest || {};
-    var quest = t(q.goal) ? '<p class="fc-ov__q"><span class="fc-ov__k">' + esc(t(T.quest)) + '</span> ' + esc(t(q.goal)) +
-      (t(q.result) ? ' <span class="fc-ov__arrow" aria-hidden="true">→</span> <b>' + esc(t(q.result)) + '</b>' : '') +
-      (q.cleared ? ' <span class="fc-ov__clear">✓ ' + esc(t(T.cleared)) + '</span>' : '') + '</p>' : '';
-    return '<div class="fc-ov">' +
-      '<div class="fc-ov__art" aria-hidden="true">' + (art ? art.innerHTML : '') + '</div>' +
-      '<div class="fc-ov__body">' +
-        '<p class="fc-ov__meta"><span class="fc-ov__cat">' + esc(t(tabs[p.category]) || '') + '</span><span class="fc-ov__tag">' + esc(t(p.tag)) + '</span><span class="fc-ov__grade" data-grade="' + grade + '">' + grade + '</span></p>' +
-        '<h2 class="fc-ov__t">' + esc(t(p.title)) + '</h2>' +
-        (t(p.sub) ? '<p class="fc-ov__sub">' + esc(t(p.sub)) + '</p>' : '') +
-        (rows ? '<dl class="fc-ov__rows">' + rows + '</dl>' : '') +
-        quest + buttons() +
-      '</div></div>';
-    function buttons() {
-      return '<div class="fc-ov__btns">' +
-        '<button type="button" class="fc-ov__btn fc-ov__btn--go" data-fc-view><b>A</b> ' + esc(t(T.view)) + ' →</button>' +
-        '<button type="button" class="fc-ov__btn" data-fc-eject><b>B</b> ' + esc(t(T.eject)) + '</button></div>';
-    }
+    return '<div class="fcs-screen__bar"><span>' + String(idx).padStart(2, '0') + ' / ' + esc(t(UI.summary)) + '</span>' +
+      '<button type="button" data-fcs-eject><b>B</b> ' + esc(t(T.eject)) + '</button></div>' +
+      '<div class="fcs-screen__layout' + (art ? ' fcs-screen__layout--art' : '') + '">' +
+      (art ? '<div class="fcs-screen__art" aria-hidden="true">' + art.innerHTML + '</div>' : '') +
+      '<div class="fcs-screen__body"><p class="fcs-screen__meta">' + esc(t(tabs[p.category])) + ' <span aria-hidden="true">/</span> ' + esc(t(p.period)) + '</p>' +
+      '<h2 id="fcs-summary-title" tabindex="-1">' + esc(t(p.title)) + '</h2>' +
+      '<p class="fcs-screen__sub">' + esc(t(p.sub)) + '</p>' +
+      '<dl class="fcs-screen__facts">' + rows.map(function (row) { return '<div><dt>' + esc(t(row[0])) + '</dt><dd>' + esc(t(row[1])) + '</dd></div>'; }).join('') + '</dl>' +
+      ((t(q.goal) || t(q.result)) ? '<dl class="fcs-screen__quest">' +
+        (t(q.goal) ? '<div><dt>' + esc(t(T.quest)) + '</dt><dd>' + esc(t(q.goal)) + '</dd></div>' : '') +
+        (t(q.result) ? '<div><dt>' + (q.cleared ? '✓ ' : '') + esc(t(UI.result)) + '</dt><dd>' + esc(t(q.result)) + '</dd></div>' : '') + '</dl>' : '') +
+      ((p.learned || []).length ? '<div class="fcs-screen__learned"><h3>' + esc(t(UI.learned)) + '</h3><p>' + p.learned.slice(0, 3).map(function (line) {
+        return esc(t(line).replace(/<[^>]*>/g, ''));
+      }).join(' ') + '</p></div>' : '') +
+      '<div class="fcs-screen__tags">' + (p.genres || []).map(function (g) { return '<span>' + esc(t(g)) + '</span>'; }).join('') + '</div>' +
+      '<div class="fcs-screen__links">' + external.map(function (row) { return '<a href="' + esc(row[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(row[0]) + ' ↗</a>'; }).join('') +
+      '<a class="fcs-screen__document" href="' + esc(a.getAttribute('href')) + '">' + esc(t(T.view)) + ' →</a></div></div></div>';
   }
-
+  function readerConsole() {
+    var hero = document.querySelector('.hero.fc-console'); if (hero) return hero;
+    hero = document.createElement('section'); hero.className = 'hero fcs-reader-console';
+    hero.innerHTML = '<div class="wrap"></div>';
+    var main = document.querySelector('[data-slot="main"]'); main.insertBefore(hero, main.firstChild);
+    build(hero); return hero;
+  }
+  function cleanup(restoreFocus) {
+    var me = pending; pending = null; if (!me) return;
+    clearTimeout(me.timer);
+    if (me.animation) me.animation.cancel();
+    if (me.fly) me.fly.remove();
+    if (me.notice) me.notice.remove();
+    if (me.load) me.load.remove();
+    if (me.screen) me.screen.remove();
+    me.a.classList.remove('is-loaded'); me.a.removeAttribute('aria-current');
+    me.a.removeAttribute('aria-controls'); me.a.removeAttribute('aria-expanded');
+    if (me.grid) me.grid.hidden = me.wasHidden;
+    me.hero.classList.remove('is-fcs-slot', 'fcs-has-summary');
+    me.wrap.style.removeProperty('--fcs-reader-h');
+    if (me.hero.classList.contains('fcs-reader-console')) me.hero.remove();
+    setAB(null, null);
+    if (restoreFocus && me.a.isConnected) { me.a.focus({ preventScroll: true }); me.a.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' }); }
+  }
+  function finishInsert() {
+    var me = pending; if (!me || me.ready) return;
+    clearTimeout(me.timer); if (me.animation) me.animation.cancel();
+    if (me.fly) me.fly.remove(); if (me.notice) me.notice.remove();
+    if (me.load) me.load.remove();
+    me.ready = true; me.screen.hidden = false;
+    setAB(t(T.viewS), t(T.eject));
+    me.screen.querySelector('h2').focus({ preventScroll: true });
+  }
   function insert(a) {
-    var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard'); if (!face) { go(a); return; }
-    var sx = window.pageXOffset, sy = window.pageYOffset;          /* 화면 좌표 → 문서 좌표로 옮길 때 더할 스크롤량 */
-    var r = a.getBoundingClientRect(), H = r.height, W = r.width;
-
-    /* 슬롯: 보이는 게임기 아래쪽, 없으면 화면 위 슬롯 띠 */
-    var hero = document.querySelector('.hero.fc-console'), hb = hero && hero.getBoundingClientRect();
-    var useHero = !!(hb && hb.bottom > navH() + 20 && hb.bottom < window.innerHeight - 40);
-    var slot = null, lineY, cx;
-    if (useHero) { hero.classList.add('is-slot'); lineY = hb.bottom - 3; cx = hb.left + hb.width / 2; }
-    else {
-      slot = document.createElement('div'); slot.className = 'fc-slot';
-      /* 띠는 상단바 **아래**에 놓습니다 — 카트리지·띠 모두 상단바보다 아래 층이라, 화면 맨 위에 두면 바에 가립니다 */
-      var nb = document.querySelector('.nav');
-      slot.style.top = Math.max(0, nb ? nb.getBoundingClientRect().bottom + 4 : 0) + 'px';
-      document.body.appendChild(slot);
-      /* 띠는 화면 밖(translateY -100%)에서 시작하므로, 그대로 재면 꽂는 선이 띠 높이(58px)만큼 위로 잡혀
-         카트리지가 띠보다 위, 허공에 꽂혔습니다 → 변형을 잠깐 꺼서 '내려온 뒤'의 자리를 재고 되돌립니다 */
-      slot.style.transform = 'none';
-      var sb = slot.getBoundingClientRect(); lineY = sb.bottom - 3; cx = sb.left + sb.width / 2;
-      slot.style.transform = '';
-      slot.animate([{ transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }], { duration: 320, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' });
-    }
-
-    /* 날아가는 복제본 (원본은 자리만 비워 둠) — 슬롯이 문서에 있으면 복제본도 문서에 붙입니다 */
-    var fly = document.createElement('div'); fly.className = 'fc-fly';
-    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') +
-      ';left:' + (r.left + (useHero ? sx : 0)) + 'px;top:' + (r.top + (useHero ? sy : 0)) + 'px' +
-      ';width:' + W + 'px;height:' + H + 'px';
-    var clone = face.cloneNode(true);
-    clone.classList.remove('is-tilt', 'reveal', 'is-visible'); clone.classList.add('fc-fly__card');
-    clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('hidden');
-    fly.appendChild(clone); document.body.appendChild(fly);
-    a.style.visibility = 'hidden'; a.setAttribute('data-fc-lifted', '1');
-
-    var dx = cx - (r.left + W / 2), dy1 = lineY - r.top;   /* 카드 윗변(단자)이 슬롯 선에 닿는 자리 */
-    pending = { a: a, fly: fly, slot: slot, hero: hero, useHero: useHero, dx: dx, dy1: dy1, H: H, ready: false };
+    var p = projectOf(a); if (!p) return false;
+    cleanup(false);
+    all('[data-fcs-cards] > a.is-picked').forEach(function (card) { card.classList.remove('is-picked'); });
+    var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
+    var from = a.getBoundingClientRect(), sx = window.pageXOffset, sy = window.pageYOffset;
+    var fromLeft = Math.max(10, Math.min(from.left, window.innerWidth - from.width - 10));
+    var hero = readerConsole(), wrap = hero.querySelector(':scope > .wrap'), grid = wrap.querySelector('.hero__grid');
+    var oldHidden = grid && grid.hidden;
+    // Give the reader a bounded LCD, with its own scroll area on short screens.
+    wrap.style.setProperty('--fcs-reader-h', Math.max(300, Math.min(560, window.innerHeight - navH() - (window.innerWidth < 900 ? 150 : 120))) + 'px');
+    if (grid) grid.hidden = true;
+    hero.classList.add('fcs-has-summary', 'is-fcs-slot');
+    var screen = document.createElement('div'); screen.className = 'fcs-screen'; screen.id = 'fcs-summary'; screen.hidden = true;
+    screen.setAttribute('role', 'region'); screen.setAttribute('aria-labelledby', 'fcs-summary-title'); screen.innerHTML = summaryHtml(p, a); wrap.appendChild(screen);
+    a.classList.add('is-loaded'); a.setAttribute('aria-current', 'true'); a.setAttribute('aria-controls', screen.id); a.setAttribute('aria-expanded', 'true');
+    pending = { a: a, hero: hero, wrap: wrap, grid: grid, wasHidden: oldHidden, screen: screen, ready: false };
     var me = pending;
-    var at = function (fx, fy, s, rot) { return 'translate(' + fx + 'px,' + fy + 'px) scale(' + s + ') rotate(' + rot + 'deg)'; };
-
-    /* ① 집어 올리기 → ② 슬롯 아래로 가져가기 (살짝 기울었다가 바로 서며 자리를 잡음) */
-    var lift = fly.animate(
-      [{ transform: at(0, 0, 1, 0), offset: 0 },
-       { transform: at(dx * .08, -26, 1.08, -3), offset: .28, easing: 'cubic-bezier(.2,.7,.3,1)' },
-       { transform: at(dx * .82, dy1 * .8, 1.05, 1.5), offset: .78, easing: 'cubic-bezier(.3,.6,.3,1)' },
-       { transform: at(dx, dy1, 1, 0), offset: 1 }],
-      { duration: 980, easing: 'cubic-bezier(.35,.65,.25,1)', fill: 'forwards' });
-    lift.onfinish = function () {
-      if (pending !== me) return;
-      /* ③ 슬롯 안으로: 절반쯤 들어가다 한 번 걸리고, 딸깍 끝까지 (transform 과 clip-path 를 같은 키프레임으로 → 슬롯 선에 딱 맞춤) */
-      var push = fly.animate(
-        [{ transform: at(dx, dy1, 1, 0),            clipPath: 'inset(0 0 0 0)',     offset: 0,   easing: 'cubic-bezier(.4,.1,.7,1)' },
-         { transform: at(dx, dy1 - H * .58, 1, 0),  clipPath: 'inset(58% 0 0 0)',   offset: .58, easing: 'linear' },
-         { transform: at(dx, dy1 - H * .60, 1, 0),  clipPath: 'inset(60% 0 0 0)',   offset: .74, easing: 'cubic-bezier(.6,0,.9,.6)' },
-         { transform: at(dx, dy1 - H, 1, 0),        clipPath: 'inset(100% 0 0 0)',  offset: 1 }],
-        { duration: 900, delay: 140, fill: 'forwards' });
-      push.onfinish = function () {
-        if (pending !== me) return;
-        /* 연출 도중 스크롤해 게임기가 화면 밖으로 밀려났으면, 화면이 켜지기 전에 도로 데려옵니다 */
-        if (useHero) {
-          var hr = hero.getBoundingClientRect();
-          var seen = Math.min(hr.bottom, window.innerHeight) - Math.max(hr.top, navH());
-          if (seen < Math.min(hr.height, window.innerHeight - navH()) * .6) scrollToY(hr.top + window.pageYOffset - navH() - 8);
-        }
-        /* ④ 본체가 살짝 눌림 */
-        var body = useHero ? hero : slot;
-        if (body) body.animate([{ transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }, { transform: useHero ? 'translateY(4px)' : 'translate(-50%,4px)' }, { transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }], { duration: 220, easing: 'ease-out', fill: useHero ? 'none' : 'forwards' });
-        /* ⑤ 화면 켜짐: 검은 화면 + '읽는 중' → ⑥ 개요 */
-        var boot = document.createElement('div'); boot.className = 'fc-boot' + (useHero ? '' : ' fc-boot--full');
-        boot.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
-        (useHero ? hero.querySelector('.wrap') : document.body).appendChild(boot);
-        setTimeout(function () {
-          if (pending !== me) return;
-          /* 개요는 홈에서만 — 프로젝트 목록 등 다른 페이지에서는 곧바로 상세로 넘어갑니다 */
-          if ((document.body.getAttribute('data-page') || 'home') !== 'home') { go(a); return; }
-          boot.innerHTML = overviewHtml(a, projectOf(a));
-          boot.classList.add('is-on');
-          me.ready = true; setAB(t(T.viewS), t(T.eject));
-          var b = boot.querySelector('[data-fc-view]'); if (b) { try { b.focus({ preventScroll: true }); } catch (e) {} }
-        }, 820);
-      };
-    };
+    var load = document.createElement('div'); load.className = 'fcs-screen-load'; load.setAttribute('aria-hidden', 'true');
+    load.innerHTML = '<span>' + esc(t(UI.reading)) + ' <span class="fcs-screen-load__dots">▮▮▮</span></span>';
+    wrap.appendChild(load); me.load = load;
+    var hr = hero.getBoundingClientRect(), top = hr.top + window.pageYOffset - navH();
+    if (reduced() || !face || !face.animate) { window.scrollTo({ top: Math.max(0, top), behavior: 'instant' }); finishInsert(); return true; }
+    var fly = document.createElement('div'); fly.className = 'fcs-fly'; fly.setAttribute('aria-hidden', 'true');
+    fly.style.cssText = 'position:absolute;left:' + (fromLeft + sx) + 'px;top:' + (from.top + sy) + 'px;width:' + from.width + 'px;height:' + from.height + 'px';
+    var clone = face.cloneNode(true); clone.classList.remove('is-tilt', 'reveal', 'is-visible'); clone.classList.add('fcs-fly__card');
+    clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('hidden'); clone.removeAttribute('tabindex');
+    fly.appendChild(clone); document.body.appendChild(fly); me.fly = fly;
+    var dx = hr.left + hr.width / 2 + window.pageXOffset - (fromLeft + sx + from.width / 2);
+    var dy = hr.bottom + window.pageYOffset - 3 - (from.top + sy), H = from.height;
+    function at(x, y, rot) { return 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg)'; }
+    me.animation = fly.animate([
+      { transform: at(0, 0, 0), clipPath: 'inset(0)', offset: 0 },
+      { transform: at(dx * .15, -18, -3), clipPath: 'inset(0)', offset: .18 },
+      { transform: at(dx, dy, 0), clipPath: 'inset(0)', offset: .58 },
+      { transform: at(dx, dy - H, 0), clipPath: 'inset(100% 0 0 0)', offset: 1 }
+    ], { duration: 680, easing: 'cubic-bezier(.25,.65,.3,1)', fill: 'forwards' });
+    me.animation.onfinish = function () { if (pending === me) finishInsert(); };
+    // Timer also completes in engines that do not dispatch the animation event.
+    me.timer = setTimeout(function () { if (pending === me) finishInsert(); }, 720);
+    var notice = document.createElement('p'); notice.className = 'fcs-inserting'; notice.setAttribute('role', 'status'); notice.textContent = t(UI.inserting); document.body.appendChild(notice); me.notice = notice;
+    scrollToY(top); return true;
   }
-
-  /* 자세히 보기: 액정이 화면 전체를 덮으며 켜지고, 그 뒤에 상세 페이지로 넘어갑니다 */
-  function viewDetail() {
-    var me = pending; if (!me || !me.ready) return;
-    me.ready = false; setAB(null, null);
-    var full = document.createElement('div');
-    full.className = 'fc-boot fc-boot--full is-on';
-    full.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(cardTitle(me.a) || t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
-    document.body.appendChild(full);
-    setTimeout(function () { go(me.a); }, 560);
-  }
-
-  /* 꺼내기: 화면이 꺼지고 카트리지가 슬롯에서 나와 제자리로 돌아갑니다 */
-  function eject() {
-    var me = pending; if (!me || !me.ready) return;
-    me.ready = false; setAB(null, null);
-    var boot = document.querySelector('.fc-boot'); if (boot) boot.parentNode.removeChild(boot);
-    var fly = me.fly, H = me.H;
-    /* 슬롯 띠(화면에 붙은 경우)는 그 사이 스크롤한 만큼 카드가 옮겨 갔을 수 있으니 기준점을 다시 잡습니다
-       — 카트리지는 아직 완전히 잘려 보이지 않으므로 자리를 옮겨도 눈에 띄지 않습니다 */
-    if (!me.useHero) {
-      var r2 = me.a.getBoundingClientRect();
-      var lx = parseFloat(fly.style.left) || 0, ly = parseFloat(fly.style.top) || 0;
-      me.dx += lx - r2.left; me.dy1 += ly - r2.top;
-      fly.style.left = r2.left + 'px'; fly.style.top = r2.top + 'px';
+  function decoratePages() {
+    var preview = document.querySelector('.hp .hpl'); if (preview) preview.closest('.hp').classList.add('fcs-resume-preview');
+    var games = document.querySelector('.hp-games');
+    if (games && !games.closest('.fcs-play-panel')) {
+      var panel = document.createElement('div'); panel.className = 'hp-block fcs-play-panel';
+      games.before(panel); panel.innerHTML = '<h2 class="hp-h">' + esc(t(UI.play)) + '</h2>'; panel.appendChild(games);
+      all('.hp-game', games).forEach(function (card, i) {
+        var a = document.createElement('a'); a.className = card.className; a.href = base() + 'play.html#fcs-play-' + i;
+        while (card.firstChild) a.appendChild(card.firstChild); card.replaceWith(a);
+        var record = (content().play && content().play.cards || [])[i];
+        if (record && t(record.note)) { var note = document.createElement('p'); note.className = 'fcs-game-note'; note.textContent = t(record.note); note.setAttribute('data-e', 'play.cards.' + i + '.note'); a.appendChild(note); }
+      });
     }
-    var dx = me.dx, dy1 = me.dy1;
-    var at = function (fx, fy) { return 'translate(' + fx + 'px,' + fy + 'px)'; };
-    var out = fly.animate(
-      [{ transform: at(dx, dy1 - H), clipPath: 'inset(100% 0 0 0)' }, { transform: at(dx, dy1), clipPath: 'inset(0 0 0 0)' }],
-      { duration: 520, easing: 'cubic-bezier(.3,.6,.3,1)', fill: 'forwards' });
-    out.onfinish = function () {
-      if (pending !== me) return;
-      if (me.slot) me.slot.animate([{ transform: 'translate(-50%,0)' }, { transform: 'translate(-50%,-100%)' }], { duration: 300, delay: 320, easing: 'ease-in', fill: 'forwards' });
-      var back = fly.animate(
-        [{ transform: at(dx, dy1) + ' scale(1)' }, { transform: at(dx * .5, dy1 * .5 - 24) + ' scale(1.06)', offset: .5 }, { transform: at(0, 0) + ' scale(1)' }],
-        { duration: 720, easing: 'cubic-bezier(.35,.65,.25,1)', fill: 'forwards' });
-      back.onfinish = function () { if (pending === me) cleanup(); };
-    };
+    all('.play-card').forEach(function (card, i) { card.id = 'fcs-play-' + i; });
+    all('.cover-block').forEach(function (block, i) { block.setAttribute('data-fcs-index', String(i + 1).padStart(2, '0')); });
   }
-
   document.addEventListener('click', function (e) {
-    if (!active()) return;
-    var a = e.target.closest ? e.target.closest('a.draw-card, a.proj-card') : null;
-    if (!a || a.getAttribute('data-fc-go') || e.defaultPrevented) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;   /* 새 탭 등은 그대로 */
-    if (reduced()) return;                                                       /* 모션 최소화: 바로 이동 */
-    e.preventDefault(); e.stopPropagation();
-    if (pending) return;
-    insert(a);
+    if (!active() || !e.target.closest) return;
+    if (pending && !pending.ready) { e.preventDefault(); e.stopImmediatePropagation(); finishInsert(); return; }
+    var a = e.target.closest('a.draw-card, a.proj-card');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    if (projectOf(a)) { e.preventDefault(); e.stopImmediatePropagation(); insert(a); }
   }, true);
-  window.addEventListener('pageshow', function (e) { if (e.persisted) cleanup(); });
-  document.addEventListener('keydown', function (e) {
-    if (!pending || !pending.ready) return;
-    if (e.key === 'Escape') { e.preventDefault(); eject(); }
-  });
-
   document.addEventListener('click', function (e) {
-    if (!e.target.closest) return;
-    if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
-    if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
-    var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }
-    var ka = e.target.closest('[data-fc-a]'); if (ka) { e.preventDefault(); pressA(ka.getAttribute('data-fc-a')); return; }
-    if (e.target.closest('[data-fc-b]')) { e.preventDefault(); pressB(); }
+    if (!active() || !e.target.closest) return;
+    var b = e.target.closest('[data-fcs-filter]'); if (b) { filterShelf(b.getAttribute('data-fcs-filter')); return; }
+    if (e.target.closest('[data-fcs-random]')) { randomPick(); return; }
+    if (e.target.closest('[data-fcs-eject]')) { cleanup(true); return; }
+    b = e.target.closest('[data-fcs-step]'); if (b) { step(parseInt(b.getAttribute('data-fcs-step'), 10) || 1); return; }
+    b = e.target.closest('[data-fcs-a]'); if (b) { pressA(b.getAttribute('data-fcs-a')); return; }
+    if (e.target.closest('[data-fcs-b]')) pressB();
   });
-
-  /* 다시 그려질 때마다 붙입니다 (main 의 자식이 바뀌면) */
-  function scan() { cleanup(); var h = document.querySelector('.hero'); if (h) build(h); }
+  document.addEventListener('keydown', function (e) {
+    if (!active() || !pending) return;
+    if (e.key === 'Escape') { e.preventDefault(); cleanup(true); }
+    else if (!pending.ready && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); finishInsert(); }
+  });
+  window.addEventListener('pagehide', function () { cleanup(false); });
+  function scan() {
+    cleanup(false); if (!active()) return;
+    var main = document.querySelector('[data-slot="main"]'); if (!main) return;
+    mainRoot = main.firstElementChild;
+    prepareShelf(); var h = main.querySelector('.hero'); if (h) build(h); decoratePages();
+  }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
-    if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
+    if (main && window.MutationObserver) new MutationObserver(function () {
+      if (!mainRoot || mainRoot.parentNode !== main) scan();
+    }).observe(main, { childList: true });
+    if (window.MutationObserver) new MutationObserver(function () { scan(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
     scan();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
