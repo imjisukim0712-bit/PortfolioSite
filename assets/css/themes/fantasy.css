@@ -1,0 +1,136 @@
+@charset "UTF-8";
+/* Fantasy: materials, type and shared components. No card geometry overrides. */
+:root[data-skin-theme="fantasy"] {
+  --font-sans: 'Noto Sans KR', sans-serif;
+  --font-display: 'Cinzel', 'Gowun Batang', serif;
+  --font-mono: 'Cinzel', 'Gowun Batang', serif;
+  --tracking: -.02em;
+  --radius-card: 5px;
+  --radius-lg: 6px;
+  --radius-pill: 3px;
+  --page-max: 1200px;
+  --text-display: clamp(32px, 4.3vw, 58px);
+  --text-heading-lg: clamp(30px, 3.8vw, 46px);
+  --section-pad-y: clamp(48px, 6vw, 80px);
+  --card-pad: clamp(22px, 3vw, 32px);
+}
+
+[data-skin-theme="fantasy"] body {
+  background-image: radial-gradient(ellipse at 50% 0, var(--fq-haze), transparent 720px),
+    repeating-linear-gradient(100deg, transparent 0 5px, var(--fq-grain) 5px 6px);
+}
+[data-skin-theme="fantasy"] h1,
+[data-skin-theme="fantasy"] h2,
+[data-skin-theme="fantasy"] h3,
+[data-skin-theme="fantasy"] h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -.035em;
+}
+[data-skin-theme="fantasy"] :focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+[data-skin-theme="fantasy"] .btn,
+[data-skin-theme="fantasy"] .link-more,
+[data-skin-theme="fantasy"] .back-link {
+  border: 1px solid var(--fq-gold);
+  border-radius: 3px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 3px var(--fq-button-inset), 0 3px 6px rgb(32 23 12 / .1);
+}
+[data-skin-theme="fantasy"] .btn { font-size: 14px; padding: 13px 24px; }
+[data-skin-theme="fantasy"] .btn--primary {
+  background: linear-gradient(180deg, var(--fq-green-hi), var(--fq-green));
+  color: var(--fq-ivory);
+}
+[data-skin-theme="fantasy"] .btn--primary:hover {
+  background: var(--fq-green-hi);
+  box-shadow: inset 0 0 0 3px var(--fq-button-inset), 0 4px 14px var(--glow);
+}
+[data-skin-theme="fantasy"] .btn--outline { background: var(--surface); color: var(--heading); }
+[data-skin-theme="fantasy"] .btn--outline:hover { background: var(--cta-hover); }
+[data-skin-theme="fantasy"] .btn-row { gap: 10px; margin-top: 28px; }
+[data-skin-theme="fantasy"] .tag { border-radius: 3px; padding: 5px 10px; }
+[data-skin-theme="fantasy"] .tag--lavender { color: var(--text); }
+[data-skin-theme="fantasy"] .badge { background: var(--fq-green); color: var(--fq-ivory); }
+[data-skin-theme="fantasy"] .eyebrow {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+}
+[data-skin-theme="fantasy"] .eyebrow::before {
+  content: '◆';
+  color: var(--fq-gold);
+  font-size: 8px;
+}
+[data-skin-theme="fantasy"] .section__title { line-height: 1.35; }
+[data-skin-theme="fantasy"] .section__lead { font-size: 16px; line-height: 1.85; max-width: 38rem; }
+[data-skin-theme="fantasy"] .section__head { margin-bottom: 32px; }
+[data-skin-theme="fantasy"] .card,
+[data-skin-theme="fantasy"] .profile,
+[data-skin-theme="fantasy"] .play-card,
+[data-skin-theme="fantasy"] .steam,
+[data-skin-theme="fantasy"] .pager__item {
+  border: 1px solid var(--border-2);
+  background: var(--fq-panel);
+  box-shadow: var(--shadow-card), inset 0 0 0 4px var(--surface), inset 0 0 0 5px var(--border);
+}
+[data-skin-theme="fantasy"] .card__index { color: var(--accent); font-family: var(--font-display); }
+[data-skin-theme="fantasy"] .card__body { line-height: 1.85; }
+[data-skin-theme="fantasy"] .tool__ic,
+[data-skin-theme="fantasy"] .hp-skill__ic--logo {
+  background: #fff !important;
+  border: 1px solid #d3c4a2;
+  border-radius: 4px;
+}
+[data-skin-theme="fantasy"] .gcard {
+  --frame: var(--fq-gold);
+  box-shadow: 0 4px 8px rgb(16 25 21 / .15), 0 10px 20px -14px #111;
+}
+[data-skin-theme="fantasy"] .gcard__frame { background: var(--fq-card); }
+[data-skin-theme="fantasy"] .gcard__name { font-family: var(--font-display); font-weight: 700; }
+[data-skin-theme="fantasy"] .gcard__art { background: var(--bg-elev); }
+:root[data-skin-theme="fantasy"] .gcard[data-grade="A"] { --frame: var(--border-2); }
+:root[data-skin-theme="fantasy"] .gcard[data-grade="R"] {
+  --frame: linear-gradient(145deg, #637b77, #e1e4d6 25%, #8a9e98 60%, #d4dace);
+  --badge-bg: var(--surface-2); --badge-fg: var(--text);
+}
+:root[data-skin-theme="fantasy"] .gcard[data-grade="SR"] {
+  --frame: linear-gradient(145deg, #96702d, #f7e3a4 25%, #a47a32 60%, #f1d88d);
+  --badge-bg: var(--cta); --badge-fg: var(--cta-text);
+}
+:root[data-skin-theme="fantasy"] .gcard[data-grade="SSR"] {
+  --frame: linear-gradient(115deg, #99b8a4, #e9d1a0 18%, #bba9bd 34%, #afc7ca 52%, #e9d6a1 70%, #99b8a4 88%);
+  --badge-bg: #e7d5a7; --badge-fg: #3f321a;
+}
+:root[data-skin-theme="fantasy"] .gcard__gen--0 { color: var(--fq-rust); }
+:root[data-skin-theme="fantasy"] .gcard__gen--1 { color: var(--fq-sage); }
+:root[data-skin-theme="fantasy"] .gcard__gen--2 { color: var(--fq-gold); }
+[data-skin-theme="fantasy"] .card-back {
+  border: 1px solid #c1a267;
+  background: radial-gradient(ellipse at 50% 30%, #3c5848, transparent 85%), #1f342c;
+  box-shadow: inset 0 0 0 4px #20372e, inset 0 0 0 5px #927c4c;
+}
+[data-skin-theme="fantasy"] .card-back::before {
+  inset: 10px;
+  border: 1px solid #9b8553;
+  background: repeating-conic-gradient(from 45deg, transparent 0 89deg, rgb(214 189 126 / .12) 89deg 90deg);
+}
+[data-skin-theme="fantasy"] .card-back__seal .ghost { color: #d7bd7b; }
+[data-skin-theme="fantasy"] .draw__deck-face { color: #f3e7ca; }
+[data-skin-theme="fantasy"] .draw__deck-label { font-family: var(--font-display); font-weight: 700; }
+[data-skin-theme="fantasy"] .draw__deck-hint { opacity: 1; color: #cfccb5; }
+[data-skin-theme="fantasy"] .quest-strip { border-radius: 3px; border-color: var(--fq-gold); background: var(--surface-2); }
+[data-skin-theme="fantasy"] .quest-strip__badge { border-radius: 2px; }
+[data-skin-theme="fantasy"] .media-box { border: 1px solid var(--fq-gold); box-shadow: var(--shadow-card); }
+[data-skin-theme="fantasy"] .block { padding-block: 26px; border-top: 1px solid var(--border-2); }
+[data-skin-theme="fantasy"] .pager__title { font-family: var(--font-display); font-weight: 700; }
+[data-skin-theme="fantasy"] .store-link { border-radius: 3px; }
+[data-skin-theme="fantasy"] .sheet__panel { border: 1px solid var(--fq-gold); box-shadow: inset 0 0 0 5px var(--bg-elev); }
+[data-skin-theme="fantasy"] .sheet__num { font-family: var(--font-display); }
+[data-skin-theme="fantasy"] .to-top { border-color: var(--fq-gold); background: var(--surface); }

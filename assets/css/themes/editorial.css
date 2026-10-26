@@ -1,0 +1,128 @@
+@charset "UTF-8";
+/* Editorial — shared typographic and material vocabulary.
+   Card interiors retain the original cqw geometry. No image effects. */
+:root[data-skin-theme="editorial"] {
+  --font-sans: 'Inter Tight', 'Noto Sans KR', 'Pretendard Variable', sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'Inter Tight', 'Noto Sans KR', sans-serif;
+  --radius-card: 0px;
+  --radius-pill: 0px;
+  --radius-lg: 0px;
+  --shadow-sm: none;
+  --shadow-card: none;
+  --deck-shadow: none;
+  --tracking: -.025em;
+}
+
+[data-skin-theme="editorial"] body { font-weight: 400; }
+[data-skin-theme="editorial"] :is(h1, h2, h3, h4) { font-weight: 800; }
+[data-skin-theme="editorial"] :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 0; }
+[data-skin-theme="editorial"] ::selection { background: var(--accent); color: #fff; }
+[data-skin-theme="editorial"] .section--elev { background: var(--bg); }
+[data-skin-theme="editorial"] .eyebrow {
+  padding: 0; border: 0; background: none; border-radius: 0;
+  color: var(--text-muted); font-size: 12px; font-weight: 600;
+  line-height: 1.5; letter-spacing: .06em; white-space: normal;
+}
+[data-skin-theme="editorial"] .section__title { font-weight: 800; line-height: 1.2; letter-spacing: -.055em; }
+[data-skin-theme="editorial"] .section__lead { font-size: 15px; line-height: 1.8; }
+
+/* A flat masthead, with the active page marked by a red rule. */
+[data-skin-theme="editorial"] .nav-wrap {
+  padding: env(safe-area-inset-top, 0px) 0 0;
+  background: var(--bg); border-bottom: 3px solid var(--heading);
+}
+[data-skin-theme="editorial"] .nav {
+  min-height: 69px; max-width: var(--page-max); padding: 8px var(--gutter);
+  border: 0; background: var(--bg); border-radius: 0; box-shadow: none; gap: 16px;
+}
+[data-skin-theme="editorial"] .nav__logo { font-size: 18px; font-weight: 800; color: var(--heading); }
+[data-skin-theme="editorial"] .nav__logo .ghost { display: none; }
+[data-skin-theme="editorial"] .nav__logo-en { color: var(--text-muted); font-size: 11px; font-weight: 500; margin-left: 10px; }
+[data-skin-theme="editorial"] .nav__menu { counter-reset: editorial-nav; gap: 0; }
+[data-skin-theme="editorial"] .nav__menu > li { counter-increment: editorial-nav; }
+[data-skin-theme="editorial"] .nav__link {
+  padding: 12px 13px; border-radius: 0; border-bottom: 3px solid transparent;
+  font-size: 13px; font-weight: 600; color: var(--text);
+}
+[data-skin-theme="editorial"] .nav__link::before {
+  content: counter(editorial-nav, decimal-leading-zero);
+  font-size: 10px; color: var(--text-muted); align-self: flex-start;
+}
+[data-skin-theme="editorial"] .nav__link .chev { display: none; }
+[data-skin-theme="editorial"] .nav__link.is-active { color: var(--heading); background: none; border-color: var(--accent); }
+[data-skin-theme="editorial"] .nav__link:hover { color: var(--accent); background: none; }
+[data-skin-theme="editorial"] .nav__actions { gap: 8px; }
+[data-skin-theme="editorial"] :is(.icon-btn, .nav__burger) { background: none; color: var(--heading); border: 1px solid var(--border); border-radius: 0; }
+[data-skin-theme="editorial"] :is(.icon-btn, .nav__burger):hover { background: var(--surface-2); }
+[data-skin-theme="editorial"] .lang-toggle { padding: 0; border: 0; border-radius: 0; background: none; }
+[data-skin-theme="editorial"] .lang-toggle__btn { min-height: 40px; padding: 8px; color: var(--text-muted); border-radius: 0; font-weight: 700; }
+[data-skin-theme="editorial"] .lang-toggle__btn[aria-pressed="true"] { background: none; color: var(--heading); text-decoration: underline; text-underline-offset: 6px; }
+[data-skin-theme="editorial"] .sheet { background: rgb(0 0 0 / .45); backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-skin-theme="editorial"] .sheet__panel { border-radius: 0; border-top: 5px solid var(--accent); box-shadow: none; }
+[data-skin-theme="editorial"] .sheet__link { font-weight: 800; }
+
+[data-skin-theme="editorial"] .btn {
+  min-height: 48px; padding: 12px 22px; border-radius: 0;
+  font-size: 14px; font-weight: 700; line-height: 1.5; box-shadow: none;
+}
+[data-skin-theme="editorial"] .btn--primary { background: var(--heading); border-color: var(--heading); color: var(--bg); }
+[data-skin-theme="editorial"] .btn--primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: none; }
+[data-skin-theme="editorial"] .btn--outline { background: transparent; border-color: var(--heading); color: var(--heading); }
+[data-skin-theme="editorial"] .btn--outline:hover { border-color: var(--accent); background: transparent; color: var(--accent); transform: none; }
+[data-skin-theme="editorial"] .btn--sm { min-height: 40px; padding: 8px 16px; }
+[data-skin-theme="editorial"] :is(.tag, .badge) { border-radius: 0; background: var(--surface-2); color: var(--text); }
+[data-skin-theme="editorial"] .badge__dot { background: var(--accent); }
+[data-skin-theme="editorial"] :is(.hp-more, .link-more) { border-radius: 0; }
+[data-skin-theme="editorial"] .hp-more { background: transparent; color: var(--heading); border: 0; border-bottom: 2px solid var(--heading); padding: 10px 0; }
+[data-skin-theme="editorial"] .hp-more:hover { background: none; border-color: var(--accent); color: var(--accent); }
+
+/* Only the finish changes on project cards; all original sizes and spacing survive. */
+:root[data-skin-theme="editorial"] .gcard {
+  --frame: var(--heading); --frame-glow: transparent;
+  --badge-bg: var(--surface-2); --badge-fg: var(--heading);
+  border-radius: 0; box-shadow: none; animation: none;
+}
+:root[data-skin-theme="editorial"] .gcard[data-grade="R"] { --frame: var(--text-muted); --badge-bg: var(--surface-2); --badge-fg: var(--heading); }
+:root[data-skin-theme="editorial"] .gcard[data-grade="SR"] { --frame: var(--heading); --badge-bg: var(--heading); --badge-fg: var(--bg); }
+:root[data-skin-theme="editorial"] .gcard[data-grade="SSR"] { --frame: var(--accent); --badge-bg: var(--accent); --badge-fg: #fff; }
+:root[data-skin-theme="editorial"] .gcard:is(:hover, .is-tilt) { box-shadow: none; }
+[data-skin-theme="editorial"] .gcard::after { display: none; }
+[data-skin-theme="editorial"] :is(.gcard__frame, .gcard__art, .gcard__cat, .gcard__grade) { border-radius: 0; }
+[data-skin-theme="editorial"] .gcard__name { font-family: var(--font-display); font-weight: 800; }
+[data-skin-theme="editorial"] .gcard__cat { background: var(--surface-2); color: var(--text); }
+:root[data-skin-theme="editorial"] .gcard__gen--0 { color: var(--accent); }
+:root[data-skin-theme="editorial"] .gcard__gen--1 { color: var(--heading); }
+:root[data-skin-theme="editorial"] .gcard__gen--2 { color: var(--text-muted); }
+[data-skin-theme="editorial"] .card-back { border-radius: 0; border-color: var(--heading); background: var(--heading); background-image: none; box-shadow: none; }
+[data-skin-theme="editorial"] .card-back::before { display: none; }
+[data-skin-theme="editorial"] .card-back__seal .ghost { color: var(--bg); filter: none; }
+[data-skin-theme="editorial"] :is(.draw-card__front, .draw-card__back) { border-radius: 0; }
+[data-skin-theme="editorial"] .draw__deck-face { color: var(--bg); }
+[data-skin-theme="editorial"] .draw__deck-label { font-weight: 800; }
+[data-skin-theme="editorial"] .draw__deck-hint { opacity: 1; }
+
+/* Rectangular, unaltered photographs and white brand-logo plates. */
+[data-skin-theme="editorial"] :is(.portrait, .hero__portrait, .ghost-art, .hp-thumb, .hp-game__ic, .play-card__icon) { border-radius: 0; box-shadow: none; }
+[data-skin-theme="editorial"] .portrait { border: 1px solid var(--heading); }
+[data-skin-theme="editorial"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; border-radius: 0; border-color: #d5d5d5; }
+[data-skin-theme="editorial"] .hp-skill__ic { border-radius: 0; }
+[data-skin-theme="editorial"] :is(.card, .strength, .play-card, .steam, .stat) { border-radius: 0; background: var(--bg); box-shadow: none; }
+[data-skin-theme="editorial"] :is(.media-box, .quest-strip, .store-link, .pager__item, .back-link, .cover-empty, .play-card__hours, .quest-strip__badge, .steam__sample) { border-radius: 0; box-shadow: none; }
+
+[data-skin-theme="editorial"] .footer { background: var(--bg); border-top: 5px solid var(--heading); padding-block: 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
+[data-skin-theme="editorial"] .footer__brand { font-size: clamp(22px, 3vw, 40px); font-weight: 800; line-height: 1.3; letter-spacing: -.05em; }
+[data-skin-theme="editorial"] .footer__brand .ghost { display: none; }
+[data-skin-theme="editorial"] .footer__tagline { margin-top: 16px; font-size: 14px; }
+[data-skin-theme="editorial"] .footer__copy { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+[data-skin-theme="editorial"] .to-top { border: 1px solid var(--heading); border-radius: 0; background: var(--bg); color: var(--heading); box-shadow: none; }
+[data-skin-theme="editorial"] :is(.pf-sw__btn, .pf-sw__panel, .pf-sw__pick) { border-radius: 0; box-shadow: none; }
+[data-skin-theme="editorial"] .pf-sw__dot { border-radius: 0; background: var(--accent); }
+
+@media (max-width: 559px) {
+  [data-skin-theme="editorial"] .nav { gap: 8px; }
+  [data-skin-theme="editorial"] .nav__logo { font-size: 16px; padding-right: 0; }
+  [data-skin-theme="editorial"] .nav__actions { gap: 4px; }
+  [data-skin-theme="editorial"] .nav__burger { width: 40px; height: 40px; }
+  [data-skin-theme="editorial"] .lang-toggle__btn { padding-inline: 7px; }
+}

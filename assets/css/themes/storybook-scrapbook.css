@@ -1,0 +1,434 @@
+@charset "UTF-8";
+/* Designer's Scrapbook — cream paper by day, a lamplit desk by night. */
+:root[data-skin="storybook-scrapbook"] {
+  color-scheme: light;
+  --bg: #f5f0e5;
+  --bg-elev: #ece6d8;
+  --surface: #fffdf6;
+  --surface-2: #eee9dc;
+  --border: #d8d1c1;
+  --border-2: #aaa38e;
+  --text: #3e473f;
+  --text-muted: #606356;
+  --heading: #303f35;
+  --accent: #48684f;
+  --accent-soft: #567759;
+  --cta: #dfe9d9;
+  --cta-text: #3a573f;
+  --cta-hover: #d1dfc9;
+  --btn-primary-text: #fffdf6;
+  --aubergine: #3e5945;
+  --ghost-lavender: #dfe9d9;
+  --periwinkle: #e1c5a4;
+  --cornflower: #4e687b;
+  --buttercream: #f3e7bb;
+  --blush: #f4dcc8;
+  --mint: #48684f;
+  --paper: #fffdf6;
+  --obsidian: #493f35;
+  --fog: #606356;
+  --ash: #d8d1c1;
+  --bone: #ece6d8;
+  --gold: #b48a4d;
+  --ghost-c: #607c59;
+  --glow: rgb(65 84 55 / .12);
+  --sb-sage: #dfe9d9;
+  --sb-peach: #f4dcc8;
+  --sb-sky: #dce9f0;
+  --sb-butter: #f3e7bb;
+  --sb-tape: #d8caa1;
+  --sb-tape-line: rgb(255 253 246 / .28);
+  --sb-ink-line: rgb(98 111 92 / .09);
+  --sb-fiber: rgb(88 74 47 / .065);
+  --sb-shadow-edge: rgb(74 62 39 / .13);
+  --shadow-sm: 0 2px 0 var(--sb-shadow-edge);
+  --shadow-card: 0 2px 3px rgb(70 58 35 / .06), 0 12px 24px -16px rgb(70 58 35 / .24);
+  --sb-paper-shadow: 0 1px 2px rgb(70 58 35 / .1), 3px 7px 0 -3px var(--bg-elev), 0 18px 35px -24px rgb(70 58 35 / .35);
+}
+
+:root[data-skin="storybook-scrapbook"][data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #24292d;
+  --bg-elev: #2d3234;
+  --surface: #343b39;
+  --surface-2: #3d4540;
+  --border: #535c53;
+  --border-2: #7d8577;
+  --text: #eae5d8;
+  --text-muted: #c0c3b7;
+  --heading: #f7eedb;
+  --accent: #bfd0a5;
+  --accent-soft: #d0ddbc;
+  --cta: #424f42;
+  --cta-text: #d6e5c5;
+  --cta-hover: #4b5c49;
+  --btn-primary-text: #263128;
+  --aubergine: #cedbc0;
+  --ghost-lavender: #424f42;
+  --periwinkle: #ead5b5;
+  --cornflower: #4e687b;
+  --buttercream: #e8d7a9;
+  --blush: #e4c1a4;
+  --mint: #bfd0a5;
+  --paper: #f7eedb;
+  --obsidian: #302b23;
+  --fog: #c0c3b7;
+  --ash: #535c53;
+  --bone: #2d3234;
+  --gold: #d8ba7f;
+  --ghost-c: #bfd0a5;
+  --glow: rgb(191 208 165 / .14);
+  --sb-sage: #3e4e43;
+  --sb-peach: #54473e;
+  --sb-sky: #394b56;
+  --sb-butter: #504b36;
+  --sb-tape: #7d785b;
+  --sb-tape-line: rgb(247 238 219 / .12);
+  --sb-ink-line: rgb(209 217 195 / .065);
+  --sb-fiber: rgb(236 214 169 / .045);
+  --sb-shadow-edge: rgb(0 0 0 / .22);
+  --shadow-sm: 0 2px 0 var(--sb-shadow-edge);
+  --shadow-card: 0 2px 3px rgb(0 0 0 / .12), 0 12px 24px -16px rgb(0 0 0 / .5);
+  --sb-paper-shadow: 0 1px 2px rgb(0 0 0 / .2), 3px 7px 0 -3px #303634, 0 18px 35px -24px rgb(0 0 0 / .6);
+}
+
+/* Quiet paper grain, no image assets or photo effects. */
+[data-skin="storybook-scrapbook"] body {
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--sb-fiber) .65px, transparent .85px),
+    repeating-linear-gradient(12deg, transparent 0 5px, var(--sb-fiber) 5px 5.35px, transparent 5.35px 9px);
+  background-size: 7px 9px, 19px 17px;
+}
+[data-skin="storybook-scrapbook"] main { padding-top: 104px; }
+[data-skin="storybook-scrapbook"] [data-page="home"] main { padding-top: 104px; }
+
+/* The navigation is a notebook index with raised paper tabs. */
+[data-skin="storybook-scrapbook"] .nav-wrap { padding: 14px 16px 18px; }
+[data-skin="storybook-scrapbook"] .nav {
+  min-height: 60px;
+  max-width: 1152px;
+  padding: 8px 10px 8px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 14px 5px;
+  box-shadow: var(--shadow-card);
+}
+[data-skin="storybook-scrapbook"] .nav__logo { color: var(--heading); font-size: 25px; gap: 9px; }
+[data-skin="storybook-scrapbook"] .nav__logo .ghost { color: var(--accent); }
+[data-skin="storybook-scrapbook"] .nav__logo-en { color: var(--text-muted); font-family: var(--font-sans); font-size: 11px; }
+[data-skin="storybook-scrapbook"] .nav__link {
+  padding: 10px 13px;
+  border-radius: 10px 10px 4px 4px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+[data-skin="storybook-scrapbook"] .nav__link:hover { background: var(--surface-2); color: var(--heading); }
+[data-skin="storybook-scrapbook"] .nav__link.is-active { background: var(--sb-sage); color: var(--heading); box-shadow: 0 2px 0 var(--border-2); }
+[data-skin="storybook-scrapbook"] :is(.icon-btn, .nav__burger) { background: var(--surface-2); color: var(--heading); border-radius: 12px; }
+[data-skin="storybook-scrapbook"] .lang-toggle { border: 1px dashed var(--border-2); background: transparent; border-radius: 12px; }
+[data-skin="storybook-scrapbook"] .lang-toggle__btn { color: var(--text-muted); padding: 9px 8px; border-radius: 8px; }
+[data-skin="storybook-scrapbook"] .lang-toggle__btn[aria-pressed="true"] { background: var(--sb-sage); color: var(--heading); }
+[data-skin="storybook-scrapbook"] .sheet__panel { border: 1px solid var(--border); border-radius: 14px 14px 5px 5px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .sheet__link { font-family: var(--font-display); font-size: 28px; border-bottom-style: dashed; }
+
+/* A spread of ruled paper: the title at left, a taped portrait at right. */
+[data-skin="storybook-scrapbook"] .home-screen { min-height: 0; gap: 30px; padding-top: 16px; }
+[data-skin="storybook-scrapbook"] .hero { min-height: 0; padding: 62px 0 68px; margin-inline: auto; width: 100%; }
+[data-skin="storybook-scrapbook"] .home-screen .hero { padding: 62px 0 68px; }
+[data-skin="storybook-scrapbook"] .hero::before {
+  inset: 0 max(16px, calc((100% - 1152px) / 2));
+  border: 1px solid var(--border);
+  border-radius: 9px 15px 10px 5px;
+  background: linear-gradient(90deg, transparent 41px, var(--sb-peach) 41px 43px, transparent 43px),
+    repeating-linear-gradient(transparent 0 31px, var(--sb-ink-line) 31px 32px), var(--surface);
+  box-shadow: var(--sb-paper-shadow);
+}
+[data-skin="storybook-scrapbook"] .hero::after {
+  content: ''; position: absolute; top: 30px; bottom: 30px;
+  left: max(28px, calc((100% - 1128px) / 2)); width: 9px; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle at 50% 20px, var(--bg) 0 3px, var(--border) 3px 4px, transparent 4.5px) 0 0 / 9px 58px;
+}
+[data-skin="storybook-scrapbook"] .hero__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, .9fr); gap: 30px; padding-inline: 58px 28px; }
+[data-skin="storybook-scrapbook"] .hero__grid > div { min-width: 0; }
+[data-skin="storybook-scrapbook"] .hero__eyebrow {
+  background: var(--sb-peach); border: 0; border-radius: 3px 8px 4px 7px;
+  margin-bottom: 24px; padding: 7px 15px; transform: rotate(-2deg); font-size: 13px; letter-spacing: .01em;
+}
+[data-skin="storybook-scrapbook"] .hero__title,
+[data-skin="storybook-scrapbook"] .home-screen .hero__title { font-size: var(--text-display); line-height: 1.1; letter-spacing: -.065em; }
+[data-skin="storybook-scrapbook"] .hero__title .accent {
+  background: linear-gradient(transparent 72%, var(--sb-sage) 72% 94%, transparent 94%);
+  color: var(--accent); padding-inline: .025em;
+}
+[data-skin="storybook-scrapbook"] .hero__sub { display: block; font-size: 16px; }
+[data-skin="storybook-scrapbook"] .hero .btn-row { margin-top: 30px; gap: 12px; }
+[data-skin="storybook-scrapbook"] .hero__media { position: relative; justify-self: center; padding-top: 24px; }
+[data-skin="storybook-scrapbook"] .hero__media::before {
+  content: ''; position: absolute; inset: -2px -24px 20px; z-index: -1;
+  background: var(--sb-sage); border-radius: 48% 44% 42% 50%; transform: rotate(6deg);
+}
+[data-skin="storybook-scrapbook"] .hero__portrait {
+  --pose-rest: 3deg; gap: 8px;
+  padding: 12px 12px 15px; border: 1px solid var(--border);
+  border-radius: 3px; background: var(--surface); box-shadow: var(--sb-paper-shadow);
+}
+[data-skin="storybook-scrapbook"] .hero__portrait::before,
+[data-skin="storybook-scrapbook"] .hero__photo::before {
+  content: ''; position: absolute; width: 108px; height: 28px; left: calc(50% - 54px); top: -18px; z-index: 3;
+  background: repeating-linear-gradient(90deg, var(--sb-tape-line) 0 1px, transparent 1px 5px), var(--sb-tape);
+  clip-path: polygon(2% 0, 98% 3%, 96% 20%, 100% 38%, 97% 57%, 100% 80%, 98% 100%, 0 95%, 3% 73%, 0 53%, 3% 32%, 0 14%);
+  transform: rotate(-8deg); pointer-events: none;
+}
+[data-skin="storybook-scrapbook"] .portrait,
+[data-skin="storybook-scrapbook"] .home-screen .portrait { width: clamp(180px, 20vw, 244px); border-radius: 2px; border: 1px solid var(--border); box-shadow: none; }
+[data-skin="storybook-scrapbook"] .portrait__cap { padding: 3px 0; }
+[data-skin="storybook-scrapbook"] .portrait__nm { font-size: 29px; }
+[data-skin="storybook-scrapbook"] .portrait__role { font-size: 11px; }
+[data-skin="storybook-scrapbook"] .quip {
+  top: auto; bottom: 62px; right: -26px; max-width: 190px; width: max-content;
+  padding: 11px 14px; border: 1px solid var(--border-2); border-radius: 18px 17px 17px 3px;
+  background: var(--sb-butter); color: var(--heading); font-family: var(--font-display); font-size: 23px; font-weight: 700;
+  transform: rotate(-7deg); box-shadow: var(--shadow-card);
+}
+[data-skin="storybook-scrapbook"] .quip::after { width: 10px; height: 10px; bottom: -6px; border-color: var(--border-2); }
+[data-skin="storybook-scrapbook"] .quip.is-pop { animation: none; }
+[data-skin="storybook-scrapbook"] .quip__more { border: 0; background: transparent; padding: 5px 12px; min-height: 36px; color: var(--text-muted); font-size: 12px; }
+[data-skin="storybook-scrapbook"] .hero__photo { position: relative; overflow: visible; padding: 10px 10px 28px; background: var(--surface); box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .hero__photo img { border-radius: 2px; }
+[data-skin="storybook-scrapbook"] .hero__note { font-size: 13px; margin-top: 28px; }
+
+/* Project draw: a dotted work mat with a scalloped paper edge. */
+[data-skin="storybook-scrapbook"] .draw,
+[data-skin="storybook-scrapbook"] .home-screen .draw { padding: 26px 0 32px; }
+[data-skin="storybook-scrapbook"] .draw__stage {
+  position: relative; padding: 30px 28px; gap: 20px; border: 1px dashed var(--border-2); border-radius: 12px;
+  background: radial-gradient(var(--sb-ink-line) 1px, transparent 1.5px) 0 0 / 13px 13px, var(--bg-elev);
+}
+[data-skin="storybook-scrapbook"] .draw__stage::after {
+  content: ''; position: absolute; left: 10px; right: 10px; bottom: -7px; height: 12px; pointer-events: none;
+  background: radial-gradient(circle at 7px 0, var(--bg-elev) 7px, transparent 7.5px) 0 0 / 14px 12px repeat-x;
+}
+[data-skin="storybook-scrapbook"] .card-back {
+  background: repeating-linear-gradient(45deg, transparent 0 9px, rgb(255 255 255 / .045) 9px 10px), #526a55;
+  border-color: #3f5743;
+  box-shadow: var(--shadow-card);
+}
+[data-skin="storybook-scrapbook"] .card-back::before { border-color: rgb(255 253 246 / .4); border-style: dashed; }
+[data-skin="storybook-scrapbook"] .card-back::after { background: none; }
+[data-skin="storybook-scrapbook"] .card-back__seal .ghost { color: #f0dfbf; filter: none; }
+[data-skin="storybook-scrapbook"] .draw__deck-face { color: #fffdf6; }
+[data-skin="storybook-scrapbook"] .draw__deck-label { font-family: var(--font-display); font-size: clamp(16px, 1.9vw, 26px); font-weight: 700; line-height: 1.2; }
+[data-skin="storybook-scrapbook"] .draw__deck-hint { opacity: 1; font-size: 11px; color: #f2ead9; }
+/* Card surfaces only; never change internal sizes, spacing or cqw type. */
+[data-skin="storybook-scrapbook"] .gcard { box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .gcard__name { font-family: var(--font-display); }
+[data-skin="storybook-scrapbook"] .gcard__frame { background: var(--surface); }
+/* The base hover sheen covers card art, so remove it for untouched thumbnails. */
+:root[data-skin="storybook-scrapbook"] .gcard::after { background: none; mix-blend-mode: normal; }
+
+/* Home chapters: activity notes and a separate, pinned skills sheet. */
+[data-skin="storybook-scrapbook"] .hp { padding-block: 64px; }
+[data-skin="storybook-scrapbook"] .hp--sep { border-top: 2px dashed var(--border); }
+[data-skin="storybook-scrapbook"] .hp:not(.hp--sep) > .wrap {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px 42px; align-items: start;
+}
+[data-skin="storybook-scrapbook"] .hp-block { min-width: 0; margin-bottom: 0; }
+[data-skin="storybook-scrapbook"] .hp-h { font-size: clamp(32px, 3.2vw, 42px); margin-bottom: 25px; }
+[data-skin="storybook-scrapbook"] .hp:not(.hp--sep) .hp-block:nth-child(2) {
+  position: relative; padding: 28px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--surface); box-shadow: var(--sb-paper-shadow); margin-top: 8px;
+}
+[data-skin="storybook-scrapbook"] .hp:not(.hp--sep) .hp-block:nth-child(2)::before,
+[data-skin="storybook-scrapbook"] .strength::before,
+[data-skin="storybook-scrapbook"] .steam::before {
+  content: ''; position: absolute; top: -12px; left: calc(50% - 38px); width: 76px; height: 25px;
+  background: repeating-linear-gradient(90deg, var(--sb-tape-line) 0 1px, transparent 1px 4px), var(--sb-tape);
+  transform: rotate(-4deg); pointer-events: none;
+}
+[data-skin="storybook-scrapbook"] .hpl { gap: 16px; }
+[data-skin="storybook-scrapbook"] .hpl-row,
+[data-skin="storybook-scrapbook"] .hpl-row:first-child {
+  padding: 22px; border: 1px solid var(--border); border-radius: 5px 12px 6px 4px; background: var(--surface); box-shadow: var(--shadow-card);
+}
+[data-skin="storybook-scrapbook"] .hpl-row__top { flex-wrap: wrap; gap: 6px 12px; }
+[data-skin="storybook-scrapbook"] .hpl-row__t { font-family: var(--font-display); font-size: 27px; font-weight: 700; }
+[data-skin="storybook-scrapbook"] .hpl-row__d { font-size: 11px; }
+[data-skin="storybook-scrapbook"] .hpl-row__m { font-size: 14px; }
+[data-skin="storybook-scrapbook"] .hp-thumb { width: 58px; height: 58px; border: 4px solid var(--surface); border-radius: 5px; box-shadow: 0 0 0 1px var(--border); }
+[data-skin="storybook-scrapbook"] .hp-skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 12px; }
+[data-skin="storybook-scrapbook"] .hp-skill { width: auto; min-width: 0; }
+[data-skin="storybook-scrapbook"] .hp-skill__ic { border-radius: 16px 19px 15px 20px; box-shadow: 0 3px 0 var(--sb-shadow-edge); }
+[data-skin="storybook-scrapbook"] .hp-skill__t { font-size: 13px; }
+[data-skin="storybook-scrapbook"] .hp-more { grid-column: 1 / -1; margin: 16px 0 0 auto; background: var(--surface); color: var(--heading); border: 1px dashed var(--border-2); }
+
+/* Three sticky notes, with sufficient contrast in both paper palettes. */
+[data-skin="storybook-scrapbook"] .strengths { gap: 26px; padding: 14px 5px 8px; align-items: stretch; }
+[data-skin="storybook-scrapbook"] .strength {
+  position: relative; min-width: 0; padding: 32px 25px 30px; border: 0; border-radius: 2px 3px 22px 3px;
+  background: var(--sb-sage); box-shadow: var(--sb-paper-shadow); transform: rotate(-1.5deg);
+}
+[data-skin="storybook-scrapbook"] .strength:nth-child(2) { background: var(--sb-peach); transform: translateY(10px) rotate(1.5deg); }
+[data-skin="storybook-scrapbook"] .strength:nth-child(3) { background: var(--sb-sky); transform: rotate(-.8deg); }
+[data-skin="storybook-scrapbook"] .strength__tag { font-size: 12px; color: var(--text); letter-spacing: .04em; }
+[data-skin="storybook-scrapbook"] .strength__t { font-size: 30px; line-height: 1.15; margin: 18px 0 14px; }
+[data-skin="storybook-scrapbook"] .strength__b { color: var(--text); font-size: 15px; line-height: 1.85; }
+[data-skin="storybook-scrapbook"] .hp--summary .hp-more { margin-top: 36px; }
+
+/* Play previews read as a row of collected photo cards. */
+[data-skin="storybook-scrapbook"] .hp-games { gap: 28px; max-width: none; }
+[data-skin="storybook-scrapbook"] .hp-game { padding: 12px 12px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .hp-game__ic { border-radius: 2px; aspect-ratio: 4 / 3; margin-bottom: 18px; }
+[data-skin="storybook-scrapbook"] .hp-game__t { font-family: var(--font-display); font-size: 30px; padding-inline: 7px; }
+[data-skin="storybook-scrapbook"] .hp-game__b { padding-inline: 7px; }
+
+/* Résumé: notebook rows, a pinned skill sheet, and dated career clippings. */
+[data-skin="storybook-scrapbook"] .stat-grid { gap: 18px; }
+[data-skin="storybook-scrapbook"] .stat { background: var(--sb-peach); border: 0; border-radius: 8px 20px 9px 18px; text-align: center; padding: 26px 16px; }
+[data-skin="storybook-scrapbook"] .stat:nth-child(even) { background: var(--sb-sage); }
+[data-skin="storybook-scrapbook"] .stat__num { font-size: 44px; }
+[data-skin="storybook-scrapbook"] .profile { border-radius: 4px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .profile__row { border-top-style: dashed; padding: 18px 24px; grid-template-columns: 6.5em minmax(0, 1fr); }
+[data-skin="storybook-scrapbook"] .skill-card { border-radius: 4px 4px 16px 4px; border-top: 5px solid var(--sb-sage); }
+[data-skin="storybook-scrapbook"] .skill-card:nth-child(2) { border-top-color: var(--sb-peach); }
+[data-skin="storybook-scrapbook"] .skill-card:nth-child(3) { border-top-color: var(--sb-sky); }
+[data-skin="storybook-scrapbook"] .tool__ic { border-radius: 12px; }
+[data-skin="storybook-scrapbook"] .timeline { padding-left: 40px; gap: 28px; max-width: 900px; }
+[data-skin="storybook-scrapbook"] .timeline::before { left: 10px; width: 0; background: none; border-left: 2px dashed var(--border-2); }
+[data-skin="storybook-scrapbook"] .tl-item {
+  padding: 28px 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px 10px 5px 3px; box-shadow: var(--sb-paper-shadow);
+}
+[data-skin="storybook-scrapbook"] .tl-item::before { top: 34px; left: -38px; width: 15px; height: 15px; background: var(--sb-peach); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--border-2); }
+[data-skin="storybook-scrapbook"] .tl-item--now::before { background: var(--accent); }
+[data-skin="storybook-scrapbook"] .tl-date { display: inline-block; padding: 3px 12px; background: var(--sb-sky); border-radius: 999px; color: var(--text); }
+[data-skin="storybook-scrapbook"] .tl-role { margin-top: 16px; }
+[data-skin="storybook-scrapbook"] .tl-org { color: var(--accent); }
+
+/* About and project details: readable loose-leaf pages. */
+[data-skin="storybook-scrapbook"] .cl-summary { border: 0; padding-block: 12px 30px; margin-bottom: 44px; }
+[data-skin="storybook-scrapbook"] .cl-summary__t { font-size: 32px; margin-bottom: 26px; }
+[data-skin="storybook-scrapbook"] .cover-block { position: relative; max-width: 850px; padding: 32px 38px; border: 1px solid var(--border); border-left: 5px solid var(--sb-peach); border-radius: 4px; background: var(--surface); box-shadow: var(--shadow-card); }
+[data-skin="storybook-scrapbook"] .cover-block + .cover-block { margin-top: 26px; border-left-color: var(--sb-sage); }
+[data-skin="storybook-scrapbook"] .cover-block:nth-child(even) { margin-left: auto; }
+[data-skin="storybook-scrapbook"] .cover-block p { line-height: 1.95; }
+[data-skin="storybook-scrapbook"] .proj-head { padding-bottom: 26px; border-bottom: 2px dashed var(--border); margin-bottom: 40px; }
+[data-skin="storybook-scrapbook"] .tabs { background: transparent; border: 0; border-radius: 0; gap: 8px; padding: 4px 3px 5px; }
+[data-skin="storybook-scrapbook"] .tab { padding: 10px 17px; border: 1px solid var(--border); border-radius: 9px 9px 3px 3px; background: var(--surface); color: var(--text-muted); box-shadow: 0 2px 0 var(--sb-shadow-edge); }
+:root[data-skin="storybook-scrapbook"] .tab.is-active { background: var(--sb-sage); color: var(--heading); border-color: var(--border-2); }
+[data-skin="storybook-scrapbook"] .proj-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; padding: 8px 4px 24px; }
+[data-skin="storybook-scrapbook"] .detail { gap: 38px; }
+[data-skin="storybook-scrapbook"] .detail__info { padding: 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .detail__title { font-size: clamp(36px, 4vw, 52px); }
+[data-skin="storybook-scrapbook"] .back-link { border-style: dashed; }
+[data-skin="storybook-scrapbook"] .quest-strip { border-style: dashed; border-left: 3px solid var(--accent); background: var(--sb-sage); }
+[data-skin="storybook-scrapbook"] .media-box { padding: 10px; background: var(--surface); border-radius: 4px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .media-box--empty { padding: 30px; }
+[data-skin="storybook-scrapbook"] .detail__blocks { gap: 24px; }
+[data-skin="storybook-scrapbook"] .block { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 32px; }
+[data-skin="storybook-scrapbook"] .block__label { font-size: 30px; }
+[data-skin="storybook-scrapbook"] .block__label small { font-family: var(--font-sans); font-size: 11px; letter-spacing: .02em; }
+[data-skin="storybook-scrapbook"] .pager__item { border-style: dashed; background: var(--sb-sky); }
+
+/* Play log: a chart sheet and index cards with tucked-in time stickers. */
+[data-skin="storybook-scrapbook"] .steam { position: relative; margin: 20px 0 48px; padding: 34px; border-radius: 4px; box-shadow: var(--sb-paper-shadow); }
+[data-skin="storybook-scrapbook"] .steam__head { padding-bottom: 18px; border-bottom: 1px dashed var(--border); }
+[data-skin="storybook-scrapbook"] .steam__body { padding-top: 12px; }
+[data-skin="storybook-scrapbook"] .steam__stats { background: var(--sb-sage); padding: 18px; border-radius: 8px; gap: 12px 22px; }
+[data-skin="storybook-scrapbook"] .steam__stats dd { font-family: var(--font-display); font-size: 28px; }
+[data-skin="storybook-scrapbook"] .play { gap: 26px; }
+[data-skin="storybook-scrapbook"] .play-card { position: relative; padding: 26px; border-radius: 4px 4px 18px 4px; border-top: 5px solid var(--sb-sage); }
+[data-skin="storybook-scrapbook"] .play-card:nth-child(3n + 2) { border-top-color: var(--sb-peach); }
+[data-skin="storybook-scrapbook"] .play-card:nth-child(3n) { border-top-color: var(--sb-sky); }
+[data-skin="storybook-scrapbook"] .play-card__top { flex-wrap: wrap; align-items: start; gap: 8px; }
+[data-skin="storybook-scrapbook"] .play-card__name { font-size: 32px; flex: 1 1 140px; }
+[data-skin="storybook-scrapbook"] .play-card__hours { border: 1px dashed var(--border-2); background: var(--sb-butter); color: var(--heading); font-size: 12px; }
+[data-skin="storybook-scrapbook"] .play-card__icon { width: 66px; height: 66px; border: 4px solid var(--surface); border-radius: 12px; box-shadow: 0 0 0 1px var(--border); }
+[data-skin="storybook-scrapbook"] .play-card__note { border-top-style: dashed; line-height: 1.85; }
+
+/* Last page of the notebook. */
+[data-skin="storybook-scrapbook"] .footer { position: relative; margin-top: 56px; padding-block: 48px 36px; background: var(--sb-sage); border-top: 2px dashed var(--border-2); }
+[data-skin="storybook-scrapbook"] .footer__brand { font-family: var(--font-display); font-size: 28px; font-weight: 700; }
+[data-skin="storybook-scrapbook"] .footer__brand .ghost { color: var(--accent); }
+[data-skin="storybook-scrapbook"] .footer__links .btn { background: var(--surface); color: var(--heading); border: 1px dashed var(--border-2); }
+[data-skin="storybook-scrapbook"] .footer__copy { margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-2); }
+[data-skin="storybook-scrapbook"] .to-top { border-style: dashed; background: var(--surface); box-shadow: var(--shadow-card); }
+
+@media (min-width: 1280px) {
+  [data-skin="storybook-scrapbook"] .proj-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; }
+}
+@media (max-width: 999px) {
+  [data-skin="storybook-scrapbook"] .nav { padding-left: 16px; }
+  [data-skin="storybook-scrapbook"] .hero__grid { padding-inline: 44px 20px; gap: 24px; }
+  [data-skin="storybook-scrapbook"] .hero__title,
+  [data-skin="storybook-scrapbook"] .home-screen .hero__title { font-size: clamp(46px, 6.7vw, 68px); }
+  [data-skin="storybook-scrapbook"] .hp:not(.hp--sep) > .wrap { gap: 24px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  [data-skin="storybook-scrapbook"] .hp:not(.hp--sep) .hp-block:nth-child(2) { padding: 24px 20px; }
+  [data-skin="storybook-scrapbook"] .hpl-row,
+  [data-skin="storybook-scrapbook"] .hpl-row:first-child { padding: 18px; gap: 12px; }
+}
+@media (max-width: 759px) {
+  [data-skin="storybook-scrapbook"] .hero,
+  [data-skin="storybook-scrapbook"] .home-screen .hero { padding: 40px 0 44px; }
+  [data-skin="storybook-scrapbook"] .hero__grid { grid-template-columns: minmax(0, 1fr); padding-inline: 36px 14px; gap: 42px; }
+  [data-skin="storybook-scrapbook"] .hero__title,
+  [data-skin="storybook-scrapbook"] .home-screen .hero__title { font-size: clamp(45px, 7.8vw, 62px); }
+  [data-skin="storybook-scrapbook"] .hero::before { left: 12px; right: 12px; background-position: -14px 0, 0 0; }
+  [data-skin="storybook-scrapbook"] .hero::after { left: 22px; }
+  [data-skin="storybook-scrapbook"] .hero__media { padding-top: 8px; }
+  [data-skin="storybook-scrapbook"] .hero__media::before { inset: 0 -20px 10px; }
+  [data-skin="storybook-scrapbook"] .portrait,
+  [data-skin="storybook-scrapbook"] .home-screen .portrait { width: 200px; }
+  [data-skin="storybook-scrapbook"] .hero .btn-row { margin-top: 24px; }
+  [data-skin="storybook-scrapbook"] .quip { right: -16px; max-width: 180px; font-size: 22px; }
+  [data-skin="storybook-scrapbook"] .home-screen { gap: 8px; }
+  [data-skin="storybook-scrapbook"] .draw__stage { padding: 24px 16px; gap: 16px; }
+  [data-skin="storybook-scrapbook"] .draw__deck-hint { font-size: 10px; }
+  [data-skin="storybook-scrapbook"] .hp { padding-block: 46px; }
+  [data-skin="storybook-scrapbook"] .hp:not(.hp--sep) > .wrap { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  [data-skin="storybook-scrapbook"] .hp-more { margin-top: 4px; }
+  [data-skin="storybook-scrapbook"] .hp-skills { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  [data-skin="storybook-scrapbook"] .strengths { grid-template-columns: minmax(0, 1fr); gap: 30px; padding-inline: 6px; }
+  [data-skin="storybook-scrapbook"] .strength:nth-child(2) { transform: rotate(1deg); }
+  [data-skin="storybook-scrapbook"] .hp-games { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  [data-skin="storybook-scrapbook"] .hp-game { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 4px 14px; padding: 12px; align-items: center; }
+  [data-skin="storybook-scrapbook"] .hp-game__ic { grid-row: span 2; aspect-ratio: 1; margin: 0; }
+  [data-skin="storybook-scrapbook"] .hp-game__t { align-self: end; padding: 0; font-size: 28px; }
+  [data-skin="storybook-scrapbook"] .hp-game__b { align-self: start; padding: 0; margin: 0; }
+  [data-skin="storybook-scrapbook"] .proj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  [data-skin="storybook-scrapbook"] .profile__row { padding: 16px 20px; grid-template-columns: 5.5em minmax(0, 1fr); gap: 12px; }
+  [data-skin="storybook-scrapbook"] .timeline { padding-left: 28px; }
+  [data-skin="storybook-scrapbook"] .timeline::before { left: 5px; }
+  [data-skin="storybook-scrapbook"] .tl-item { padding: 24px; }
+  [data-skin="storybook-scrapbook"] .tl-item::before { left: -31px; }
+  [data-skin="storybook-scrapbook"] :is(.cover-block, .block, .detail__info, .steam) { padding: 24px; }
+  [data-skin="storybook-scrapbook"] .cover-block:nth-child(even) { margin-left: 0; }
+  [data-skin="storybook-scrapbook"] .play { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 399px) {
+  [data-skin="storybook-scrapbook"] .nav-wrap { padding-inline: 10px; }
+  [data-skin="storybook-scrapbook"] .nav { gap: 6px; padding: 7px 8px 7px 12px; }
+  [data-skin="storybook-scrapbook"] .nav__logo { font-size: 23px; gap: 6px; padding-right: 0; }
+  [data-skin="storybook-scrapbook"] .nav__actions { gap: 5px; }
+  [data-skin="storybook-scrapbook"] :is(.icon-btn, .nav__burger) { width: 36px; height: 40px; }
+  [data-skin="storybook-scrapbook"] .hero__grid { padding-left: 28px; padding-right: 10px; }
+  [data-skin="storybook-scrapbook"] .hero__eyebrow { padding-inline: 10px; font-size: 11px; }
+  [data-skin="storybook-scrapbook"] .hero .btn { padding-inline: 19px; }
+  [data-skin="storybook-scrapbook"] .hero__media { margin-left: -8px; }
+  [data-skin="storybook-scrapbook"] .portrait,
+  [data-skin="storybook-scrapbook"] .home-screen .portrait { width: 174px; }
+  [data-skin="storybook-scrapbook"] .hero__media::before { inset-inline: -10px; }
+  [data-skin="storybook-scrapbook"] .quip { right: -12px; font-size: 21px; }
+  [data-skin="storybook-scrapbook"] .proj-grid { grid-template-columns: minmax(0, 1fr); padding-inline: 18px; gap: 28px; }
+  [data-skin="storybook-scrapbook"] .hpl-row,
+  [data-skin="storybook-scrapbook"] .hpl-row:first-child { padding: 16px; }
+  [data-skin="storybook-scrapbook"] .hp-thumb { width: 44px; height: 44px; }
+  [data-skin="storybook-scrapbook"] .tab { padding-inline: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="storybook-scrapbook"] { scroll-behavior: auto; }
+  [data-skin="storybook-scrapbook"] *,
+  [data-skin="storybook-scrapbook"] *::before,
+  [data-skin="storybook-scrapbook"] *::after { transition: none !important; animation: none !important; }
+  [data-skin="storybook-scrapbook"] .hero__portrait { --pose-d: 0deg !important; --pose-y: 0px !important; }
+  [data-skin="storybook-scrapbook"] .quip__more:hover { transform: none; }
+}

@@ -39,8 +39,9 @@
 
 ## 디자인 테마(스킨) — `assets/js/themes.js` · `assets/css/themes/`
 
-기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 4종 · 시안 7개.
-(`pixel` · `brutal` · `brand` · `concept`)
+기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 12개.
+(`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
+`hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).
   `?skin=<id>` 파라미터 → `localStorage['portfolio:skin']` → `DEFAULT_SKIN` 순으로 시안을 정하고,

@@ -16,7 +16,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 4종 · 시안 7개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 12개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -61,6 +61,10 @@
           desc: { ko: '무채색만. 히어로를 화면 한가운데 세우고 제목을 화면 폭까지 키웁니다 — 발표 슬라이드 첫 장.',
                   en: 'Greyscale only: the hero stands centre stage and the headline runs the width of the screen, like the opening slide of a keynote.' },
           swatch: ['#ffffff', '#f5f5f7', '#1d1d1f', '#0071e3'] },
+        { id: 'bento', name: { ko: '벤토', en: 'Bento' },
+          desc: { ko: '라벤더 소개, 세로 사진, 민트색 한마디. 크기가 다른 둥근 타일에 기획자의 이야기와 작업을 담은 벤토 포트폴리오.',
+                  en: 'A lavender introduction, a tall portrait and a mint-colored quip. A bento portfolio that brings a designer’s story and work together in rounded tiles of different sizes.' },
+          swatch: ['#f4f4f0', '#e7e2fa', '#dceee5', '#51428a'] },
       ]
     },
     {
@@ -85,6 +89,59 @@
                   en: 'Board-game night: a kraft box lid on a navy felt table, thick cardboard cards and wooden tokens. Press the deck and the cards fan out like the real thing.' },
           fonts: [G + 'Outfit:wght@500;600;700;800'],
           swatch: ['#1e2a4a', '#d9c3a0', '#fbf3e3', '#8a5a34'] }
+      ]
+    },
+    {
+      id: 'editorial',
+      name: { ko: '에디토리얼', en: 'Editorial' },
+      desc: { ko: '정보의 순서를 만드는 타이포그래피. 종이, 괘선, 비대칭 그리드로 읽는 포트폴리오.',
+              en: 'Typography that gives information order: a portfolio built from paper, rules and an asymmetric grid.' },
+      fonts: [G + 'Inter+Tight:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;800;900'],
+      variants: [
+        { id: 'swiss', name: { ko: '스위스', en: 'Swiss' },
+          desc: { ko: '흰 종이, 순검정, 시그널 레드. 초대형 제목과 오른쪽 아래 사진, 12단 비대칭 그리드와 큰 절 번호가 만드는 선명한 질서.',
+                  en: 'White paper, pure black and signal red. An oversized headline, a portrait at the lower right, a twelve-column asymmetric grid and large section numbers create a clear reading order.' },
+          swatch: ['#ffffff', '#000000', '#e32925', '#e5e5e5'] }
+      ]
+    },
+    {
+      id: 'hud',
+      name: { ko: '콘솔 인터페이스', en: 'Console Interface' },
+      desc: { ko: '게임을 시작하기 전의 설렘. 유리 패널과 부드러운 빛으로 구성한 콘솔 홈 화면.',
+              en: 'The anticipation before pressing play: a console home screen built from glass panels and soft light.' },
+      fonts: [G + 'Exo+2:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800'],
+      scripts: ['js/themes/hud.js'],
+      variants: [
+        { id: 'launcher', name: { ko: '런처', en: 'Launcher' },
+          desc: { ko: '남청색과 보라색 사이, 빛나는 선택 링과 가로로 펼쳐진 프로젝트 라이브러리. 대표 타이틀 배너, 시스템 시계, 컨트롤러 바가 있는 부드러운 게임 런처.',
+                  en: 'Between midnight blue and violet: luminous focus rings and a horizontal project library, with a featured title banner, system clock and controller bar.' },
+          swatch: ['#10172f', '#28345a', '#a3b5ff', '#a9e5f1'] }
+      ]
+    },
+    {
+      id: 'storybook',
+      name: { ko: '이야기가 있는 노트', en: 'Storybook Notes' },
+      desc: { ko: '아이디어와 경험을 한 장씩 모은 손작업 노트. 종이의 결, 손글씨 제목, 다정한 파스텔.',
+              en: 'A handmade notebook of ideas and experiences, with paper textures, handwritten headings and gentle pastels.' },
+      fonts: [G + 'Gaegu:wght@400;700&family=Gowun+Dodum'],
+      variants: [
+        { id: 'scrapbook', name: { ko: '기획자의 스크랩북', en: 'Designer’s Scrapbook' },
+          desc: { ko: '크림색 노트 위에 테이프로 붙인 사진, 세이지·살구·하늘빛 포스트잇, 차곡차곡 모은 프로젝트 카드. 다크 모드는 조용한 밤의 책상입니다.',
+                  en: 'Taped photographs, sage, apricot and sky-blue sticky notes, and a collection of project cards on a cream notebook. Dark mode becomes a quiet desk at night.' },
+          swatch: ['#f5f0e5', '#dfe9d9', '#f4dcc8', '#dce9f0'] }
+      ]
+    },
+    {
+      id: 'fantasy',
+      name: { ko: '모험가 길드', en: 'Adventurers’ Guild' },
+      desc: { ko: '양피지와 금장, 세리프 활자로 엮은 판타지 RPG의 기록. 기획자의 여정을 한 권의 길드 장부로 펼칩니다.',
+              en: 'A fantasy RPG record bound in parchment, gold and serif type. A designer’s journey unfolds as a guild ledger.' },
+      fonts: [G + 'Cinzel:wght@400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700'],
+      variants: [
+        { id: 'quest', name: { ko: '퀘스트 로그', en: 'Quest Log' },
+          desc: { ko: '초상화가 담긴 모험가 등록증, 금장 의뢰 게시판, 세 장의 특성 카드와 모험 일지. 낮에는 양피지, 밤에는 촛불빛 금색의 가죽 장정.',
+                  en: 'A portrait-bearing adventurer record, a gilded quest board, three trait cards and a journey journal. Parchment by day; leather and candlelit gold by night.' },
+          swatch: ['#eee3c9', '#263e35', '#a27b37', '#823f36'] }
       ]
     }
   ];

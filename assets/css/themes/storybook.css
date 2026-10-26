@@ -1,0 +1,62 @@
+@charset "UTF-8";
+/* Storybook — shared paper, handwriting and stationery primitives.
+   All decoration is CSS; photographs and the cqw card layout stay untouched. */
+:root[data-skin-theme="storybook"] {
+  --font-sans: 'Gowun Dodum', 'Pretendard Variable', Pretendard, sans-serif;
+  --font-display: 'Gaegu', 'Gowun Dodum', sans-serif;
+  --font-mono: 'Gowun Dodum', sans-serif;
+  --tracking: -.025em;
+  --page-max: 1200px;
+  --gutter: 24px;
+  --section-pad-y: clamp(56px, 7vw, 96px);
+  --card-pad: 28px;
+  --radius-card: 9px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --text-body: 16px;
+  --text-body-sm: 15px;
+  --text-caption: 13px;
+  --text-heading-sm: clamp(26px, 2.1vw, 32px);
+  --text-heading: clamp(32px, 3.4vw, 44px);
+  --text-heading-lg: clamp(40px, 4.5vw, 60px);
+  --text-display: clamp(46px, 5.8vw, 80px);
+  --nav-h: 68px;
+}
+
+[data-skin-theme="storybook"] body { line-height: 1.8; }
+[data-skin-theme="storybook"] :is(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+[data-skin-theme="storybook"] :is(.nav__logo, .portrait__nm, .stat__num, .block__label) {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+[data-skin-theme="storybook"] :focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+[data-skin-theme="storybook"] ::selection { background: var(--sb-sage); color: var(--heading); }
+[data-skin-theme="storybook"] :is(.btn, .link-more, .tab, .quip__more) { min-height: 44px; }
+[data-skin-theme="storybook"] .btn {
+  padding: 13px 24px;
+  border-radius: 12px 16px 13px 16px;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: 0 3px 0 var(--sb-shadow-edge);
+}
+[data-skin-theme="storybook"] .btn--primary { border: 1px solid var(--accent); }
+[data-skin-theme="storybook"] .btn--outline { background: var(--surface); border: 1px solid var(--border-2); }
+[data-skin-theme="storybook"] :is(.tag, .badge, .eyebrow, .hero__eyebrow) { box-shadow: 0 2px 0 var(--sb-shadow-edge); }
+[data-skin-theme="storybook"] .eyebrow { border: 1px dashed var(--border-2); padding: 6px 16px; }
+[data-skin-theme="storybook"] .tag { border-style: dashed; }
+[data-skin-theme="storybook"] .badge { background: var(--accent); color: var(--btn-primary-text); }
+[data-skin-theme="storybook"] .badge__dot { animation: none; }
+[data-skin-theme="storybook"] .section__head { max-width: 760px; margin-bottom: 40px; }
+[data-skin-theme="storybook"] .section__title { line-height: 1.15; }
+[data-skin-theme="storybook"] .section__lead { font-size: 16px; line-height: 1.85; }
+[data-skin-theme="storybook"] .section--elev { background: transparent; }
+[data-skin-theme="storybook"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
+
+@media (max-width: 599px) {
+  :root[data-skin-theme="storybook"] { --gutter: 20px; --card-pad: 22px; }
+  [data-skin-theme="storybook"] .section__head { margin-bottom: 30px; }
+}

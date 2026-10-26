@@ -95,15 +95,19 @@ python3 -m http.server 8000   # http://localhost:8000
 ## 색 · 다크모드 조정
 `assets/css/style.css` 상단 `:root`(라이트) 와 `:root[data-theme="dark"]`(다크) 의 시맨틱 토큰만 바꾸면 전체에 반영됩니다.
 
-## 디자인 테마 시안 (테마 4종 · 시안 7개)
+## 디자인 테마 시안 (테마 8종 · 시안 12개)
 `themes.html` 에서 전체 시안을 보고, 카드를 누르면 그 디자인이 입혀진 실제 사이트가 열립니다.
 
 | 테마 | 시안 id |
 |---|---|
 | 레트로 픽셀 아케이드 | `pixel-famicom` |
 | 네오 브루탈리즘 | `brutal-cyberpunk` · `brutal-newsprint` |
-| 브랜드 홈페이지 | `brand-keynote` |
+| 브랜드 홈페이지 | `brand-keynote` · `brand-bento` |
 | 컨셉 무대 | `concept-spec` · `concept-patch` · `concept-tabletop` |
+| 에디토리얼 | `editorial-swiss` |
+| 콘솔 인터페이스 | `hud-launcher` |
+| 이야기가 있는 노트 | `storybook-scrapbook` |
+| 모험가 길드 | `fantasy-quest` |
 
 - **공통 요소**: 모든 시안의 홈 히어로 뒤에 본문 폭의 색면(판)이 깔리고, 사진 옆에 말풍선 '한마디'와 **한 마디 더** 버튼이 있습니다 (`content.js` 의 `home.quips`). 버튼을 누를 때마다 문장이 바뀌고 사진 카드가 살짝 움직입니다. '함께 일하면, 이런 기획자입니다.' 강점 세 장은 홈의 덱 바로 아래와 자기소개서 맨 위에 카드로 붙습니다 (`coverLetter.summary`).
 - **패미컴 시안**: 홈·이력서 첫 화면이 휴대용 게임기 한 대입니다. 왼쪽 손잡이의 **SELECT ◀ ▶** 로 사진 옆 한마디를 넘기고(이력서 페이지에서는 이전·다음 절로 이동), **B** 는 다크·라이트 전환, **A** 는 홈에서 프로젝트 뽑기(그 밖에서는 아래로). 프로젝트 카드와 뽑기 덱은 카트리지 모양이고, 카드를 누르면 카트리지가 게임기 슬롯에 꽂히는 연출 뒤에 화면에 프로젝트 개요가 뜨고, **자세히 보기**(A)로 그 페이지에 들어가거나 **꺼내기**(B)로 되돌립니다. 이 부분은 `assets/js/themes/famicom.js` 가 맡습니다.
