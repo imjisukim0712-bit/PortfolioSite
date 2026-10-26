@@ -1,21 +1,27 @@
-/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
-   hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
-   main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
+/* Docked · fixed console + scrolling cartridge library. Scoped to this skin. */
 (function () {
   'use strict';
-  if (window.__portfolioFCRefined) return;
-  window.__portfolioFCRefined = true;
+  if (window.__portfolioFCSplit) return;
+  window.__portfolioFCSplit = true;
   var SKIN = 'pixel-fc-split';
   var T = {
     select: 'SELECT',
+    dock: { ko: '고정 게임기', en: 'DOCKED CONSOLE' },
+    library: { ko: '프로젝트 보관함', en: 'PROJECT LIBRARY' },
+    choose: { ko: '다음에 꽂을 프로젝트는?', en: 'What will you play next?' },
+    rackHint: { ko: '올리거나 포커스하면 액정에 미리보기 · 한 번 눌러 상세로', en: 'Hover or focus to preview on the console · Select once to open details' },
+    random: { ko: '랜덤 선택', en: 'Random pick' },
+    dockNote: { ko: '카트리지를 올려 보세요. 이 화면에서 바로 확인할 수 있습니다.', en: 'Hover over a cartridge. Your preview stays right here.' },
+    slot: { ko: '카트리지 슬롯', en: 'CARTRIDGE SLOT' },
+    ready: { ko: '선택 대기', en: 'READY' },
     prevQ: { ko: '이전 한마디', en: 'Previous quip' },
     nextQ: { ko: '다음 한마디', en: 'Next quip' },
     prevS: { ko: '이전 절로', en: 'Previous section' },
     nextS: { ko: '다음 절로', en: 'Next section' },
     light: { ko: '밝기', en: 'Light' },
     lightA: { ko: '다크 · 라이트 전환', en: 'Toggle dark mode' },
-    draw: { ko: '뽑기', en: 'Draw' },
-    drawA: { ko: '프로젝트 카드 뽑기', en: 'Draw project cards' },
+    draw: { ko: '랜덤', en: 'Random' },
+    drawA: { ko: '프로젝트 무작위 선택', en: 'Pick a random project' },
     down: { ko: '아래로', en: 'Down' },
     downA: { ko: '아래 내용으로', en: 'Scroll to the content' },
     mail: { ko: '메일', en: 'Mail' },
@@ -50,7 +56,10 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
   function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
-  function navH() { var n = document.querySelector('.nav'); return (n ? n.getBoundingClientRect().height : 60) + 16; }
+  function navH() {
+    var n = document.querySelector('.nav');
+    return (n ? n.getBoundingClientRect().height : 60) + (window.innerWidth < 1100 ? 180 : 16);
+  }
   function scrollToY(y) { try { window.scrollTo({ top: Math.max(0, y), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, Math.max(0, y)); } }
   function content() { return window.PORTFOLIO_CONTENT || {}; }
 
@@ -59,7 +68,7 @@
     if (!active() || hero.querySelector('.fc-grip')) return;
     var wrap = hero.querySelector('.wrap'); if (!wrap) return;
     var hasQuip = !!hero.querySelector('[data-quip]');
-    var hasDeck = !!document.querySelector('[data-draw]');
+    var hasDeck = !!document.querySelector('[data-fcs-random]');
     var mail = ((content().meta && content().meta.email) || '').trim();   /* content.js 의 meta.email */
 
     var left = document.createElement('div');
@@ -84,7 +93,7 @@
   }
 
   function sections() {
-    return Array.prototype.filter.call(document.querySelectorAll('main section'), function (s) {
+    return Array.prototype.filter.call(document.querySelectorAll('.fcs-reader section'), function (s) {
       return !s.classList.contains('hero');
     });
   }
@@ -102,10 +111,8 @@
   function pressA(kind) {
     if (selected && selected.isConnected) { selected.click(); return; }
     if (kind === 'draw') {
-      var deck = document.querySelector('[data-draw]'); if (!deck) return;
+      var deck = document.querySelector('[data-fcs-random]'); if (!deck) return;
       deck.click();
-      var r = deck.getBoundingClientRect();
-      if (r.top < navH() || r.bottom > window.innerHeight) scrollToY(r.top + window.pageYOffset - navH() - 8);
     } else {
       var secs = sections();
       if (secs.length) scrollToY(secs[0].getBoundingClientRect().top + window.pageYOffset - navH());
@@ -180,7 +187,7 @@
       }, games);
     });
     if (document.body.getAttribute('data-page') === 'resume') {
-      each('main > .section', function (section) {
+      each('.fcs-reader > .section', function (section) {
         if (section.querySelector('.section__head')) panelAround(section.querySelector('.wrap'));
       });
     }
@@ -200,7 +207,7 @@
     });
   }
 
-  var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
+  var selected = null, pending = null, restoringFocus = false;
   function projectOf(a) {
     var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id;
     try { id = m ? decodeURIComponent(m[1]) : ''; } catch (e) { return null; }
@@ -287,69 +294,17 @@
       var grid = hero.querySelector('.hero__grid');
       if (grid) { grid.setAttribute('inert', ''); grid.setAttribute('aria-hidden', 'true'); }
       previewA(true);
-      var aux = document.querySelector('.fcr-preview--aux');
-      if (aux) aux.querySelector('.fcr-preview__body').innerHTML = previewHtml(p, a);
-      positionAux();
     }
     if (announce) announceProject(p);
   }
   function announceProject(p) {
     status().textContent = [t(p.title), t(p.sub), t(T.period) + ': ' + t(p.period), t(T.role) + ': ' + t(p.myRole), t(p.quest && p.quest.goal), t(p.quest && p.quest.result)].filter(Boolean).join('. ');
   }
-  // 액정이 잘릴 때만 카드 바로 위(공간이 없으면 아래)에 읽기 전용 보조 창을 표시합니다.
-  // 카드 행의 문서 위치와 스크롤은 바꾸지 않습니다.
-  function positionAux() {
-    var aux = document.querySelector('.fcr-preview--aux'), lcd = document.querySelector('.fcr-preview--lcd');
-    if (!aux || !lcd) return;
-    aux.hidden = true;
-    if (!active() || !selected || !selected.isConnected || lcd.hidden || pending) return;
-    var viewH = window.innerHeight, viewW = window.innerWidth || document.documentElement.clientWidth;
-    var top = navH(), screen = lcd.getBoundingClientRect(), card = selected.getBoundingClientRect();
-    if ((screen.top >= top && screen.bottom <= viewH - 12) || card.bottom <= top || card.top >= viewH - 12) return;
-    aux.hidden = false;
-    var box = aux.getBoundingClientRect(), y = card.top - box.height - 12;
-    if (y < top && card.bottom + 12 + box.height <= viewH - 12) y = card.bottom + 12;
-    y = Math.max(top, Math.min(y, viewH - box.height - 12));
-    aux.style.left = Math.max(12, Math.min(card.left, viewW - box.width - 12)) + 'px';
-    aux.style.top = y + 'px';
-  }
-  var auxFrame = false;
-  function scheduleAux() {
-    if (!active() || !selected || auxFrame) return;
-    if (!window.requestAnimationFrame) { positionAux(); return; }
-    auxFrame = true;
-    window.requestAnimationFrame(function () { auxFrame = false; positionAux(); });
-  }
   function setupSelection() {
-    var draw = document.querySelector('.draw .wrap'), head = document.querySelector('.proj-head');
-    if (!draw && !head) return;
-    var hint = document.getElementById('fcr-selection-hint');
-    if (!hint) {
-      var row = node('div', 'fcr-select-guide');
-      hint = node('p', '', t(window.matchMedia && window.matchMedia('(hover: none)').matches ? T.touchHint : T.hoverHint));
-      hint.id = 'fcr-selection-hint'; row.appendChild(hint);
-      if (draw) {
-        var link = node('a', 'fcr-all-link', t(T.all) + ' →'); link.href = 'projects.html';
-        row.appendChild(link); draw.insertBefore(row, draw.firstChild);
-      } else head.insertAdjacentElement('afterend', row);
-    }
-    var heroWrap = document.querySelector('.hero > .wrap');
+    var heroWrap = document.querySelector('.fcs-dock .hero > .wrap');
     if (heroWrap && !heroWrap.querySelector('.fcr-preview')) heroWrap.appendChild(makePreview(true));
-    if (heroWrap && !document.querySelector('.fcr-preview--aux')) {
-      var aux = node('div', 'fcr-preview fcr-preview--aux fcr-window');
-      aux.setAttribute('aria-hidden', 'true'); aux.setAttribute('inert', ''); aux.hidden = true;
-      aux.innerHTML = '<div class="fcr-preview__bar">▶ ' + esc(t(T.selection)) + '</div>' +
-        '<div class="fcr-preview__body"></div><p class="fcr-preview__aux-hint">' + esc(t(T.openHint)) + '</p>';
-      // body 바로 아래에 두어 게임기의 overflow:hidden에 잘리지 않게 합니다.
-      document.body.appendChild(aux);
-    }
-    if (head && !document.querySelector('.fcr-preview--list')) {
-      var pane = makePreview(false), grid = document.querySelector('[data-proj-grid]');
-      if (grid) grid.insertAdjacentElement('afterend', pane);
-    }
     each('a.draw-card, a.proj-card', function (a) {
-      var ids = (a.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
-      if (ids.indexOf(hint.id) < 0) { ids.push(hint.id); a.setAttribute('aria-describedby', ids.join(' ')); }
+      a.setAttribute('aria-describedby', 'fcs-rack-hint');
     });
   }
 
@@ -369,23 +324,14 @@
     var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
     if (!face || !face.animate) { window.location.assign(a.href); return; }
     cleanup();
-    var aux = document.querySelector('.fcr-preview--aux'); if (aux) aux.hidden = true;
-    var r = a.getBoundingClientRect(), hero = document.querySelector('.hero.fc-console');
-    var hr = hero && hero.getBoundingClientRect();
-    var useHero = !!(hr && hr.bottom > navH() + 30 && hr.bottom < window.innerHeight - 40);
-    var line, cx, slot;
-    if (useHero) {
-      hero.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
-    } else {
-      slot = node('div', 'fc-slot'); slot.setAttribute('aria-hidden', 'true');
-      slot.style.top = navH() - 12 + 'px'; slot.style.transform = 'translate(-50%, 0)';
-      document.body.appendChild(slot);
-      var sr = slot.getBoundingClientRect(); line = sr.bottom - 3; cx = sr.left + sr.width / 2;
-    }
+    var r = a.getBoundingClientRect(), hero = document.querySelector('.fcs-dock .hero.fc-console');
+    var target = hero && hero.querySelector('.fcs-slot');
+    if (!target) { window.location.assign(a.href); return; }
+    var sr = target.getBoundingClientRect();
+    hero.classList.add('is-slot');
+    var line = sr.top + sr.height / 2, cx = sr.left + sr.width / 2;
     var fly = node('div', 'fc-fly'); fly.setAttribute('aria-hidden', 'true'); fly.setAttribute('inert', '');
-    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') + ';left:' +
-      (r.left + (useHero ? window.pageXOffset : 0)) + 'px;top:' +
-      (r.top + (useHero ? window.pageYOffset : 0)) + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
+    fly.style.cssText = 'position:fixed;left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
     var clone = face.cloneNode(true);
     clone.classList.remove('is-tilt', 'reveal', 'is-visible', 'is-fcr-preview'); clone.classList.add('fc-fly__card');
     clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('aria-describedby');
@@ -397,17 +343,16 @@
       var url = a.href; cleanup(); window.location.assign(url);
     }
     me.timer = setTimeout(finish, 800);
+    var scale = Math.min(1, (sr.width - 12) / r.width);
     var dx = cx - r.left - r.width / 2, dy = line - r.top;
-    function at(x, y) { return 'translate(' + x + 'px,' + y + 'px)'; }
+    function at(x, y, sc) { return 'translate(' + x + 'px,' + y + 'px) scale(' + (sc || 1) + ')'; }
+    fly.style.transformOrigin = 'top center';
     try {
-      if (slot) me.animations.push(slot.animate([
-        { transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }
-      ], { duration: 120, fill: 'forwards', easing: 'ease-out' }));
       var animation = fly.animate([
         { transform: at(0, 0), clipPath: 'inset(0 0 0 0)', offset: 0 },
-        { transform: at(dx * .2, -20), clipPath: 'inset(0 0 0 0)', offset: .2 },
-        { transform: at(dx, dy), clipPath: 'inset(0 0 0 0)', offset: 420 / 680 },
-        { transform: at(dx, dy - r.height), clipPath: 'inset(100% 0 0 0)', offset: 1 }
+        { transform: at(dx * .25, dy * .15), clipPath: 'inset(0 0 0 0)', offset: .2 },
+        { transform: at(dx, dy, scale), clipPath: 'inset(0 0 0 0)', offset: 420 / 680 },
+        { transform: at(dx, dy - r.height * scale, scale), clipPath: 'inset(100% 0 0 0)', offset: 1 }
       ], { duration: 680, fill: 'forwards', easing: 'cubic-bezier(.3,.65,.3,1)' });
       me.animations.push(animation); animation.onfinish = finish;
     } catch (e) { finish(); }
@@ -424,10 +369,6 @@
   });
   document.addEventListener('click', function (e) {
     if (!active() || !e.target.closest) return;
-    if (e.target.closest('[data-draw]')) {
-      var cards = document.querySelector('[data-draw-cards]');
-      e.fcrDrawBefore = cards && cards.firstChild; return;
-    }
     var a = e.target.closest('a.draw-card, a.proj-card');
     if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button || a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
     if (reduced()) { cleanup(); return; }
@@ -435,23 +376,12 @@
   }, true);
   document.addEventListener('click', function (e) {
     if (!active() || !e.target.closest) return;
-    var deck = e.target.closest('[data-draw]');
-    if (deck && !rearmingDeck) {
-      var cards = document.querySelector('[data-draw-cards]'), app = window.PortfolioApp;
-      // main의 언어 전환은 새 덱을 그리지만 click 바인딩을 다시 하지 않습니다.
-      // 실제 뽑기가 없었을 때만 공개 API로 재바인딩하여 원래의 무작위 뽑기를 실행합니다.
-      if (cards && cards.firstChild === e.fcrDrawBefore && app && app.rerender) {
-        var hadFocus = document.activeElement === deck;
-        var aHadFocus = document.activeElement && document.activeElement.hasAttribute('data-fc-a');
-        rearmingDeck = true;
-        try {
-          app.rerender(); scan();
-          if (aHadFocus) {
-            var aKey = document.querySelector('[data-fc-a]'); if (aKey) aKey.focus({ preventScroll: true });
-          }
-          var rebound = document.querySelector('[data-draw]');
-          if (rebound) { if (hadFocus) rebound.focus({ preventScroll: true }); rebound.click(); }
-        } finally { rearmingDeck = false; }
+    if (e.target.closest('[data-fcs-random]')) {
+      var cards = Array.prototype.filter.call(document.querySelectorAll('.fcs-reader a.proj-card'), function (a) { return !a.hidden; });
+      if (cards.length) {
+        var card = cards[Math.floor(Math.random() * cards.length)];
+        card.focus({ preventScroll: true }); preview(card, true);
+        card.scrollIntoView({ block: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
       }
       return;
     }
@@ -465,34 +395,113 @@
     var tab = e.target.closest('[data-proj-tab]');
     if (tab && selected && selected.hidden) {
       var first = document.querySelector('a.proj-card:not([hidden])');
-      if (first) preview(first, false);
+      if (first) preview(first, false); else resetPreview(false);
     }
   });
   document.addEventListener('keydown', function (e) {
     if (!active() || e.key !== 'Escape') return;
     if (pending || selected) { e.preventDefault(); cleanup(); resetPreview(false); }
   });
-  window.addEventListener('pagehide', cleanup);
-  window.addEventListener('scroll', scheduleAux, { passive: true });
-  window.addEventListener('resize', scheduleAux);
-  window.addEventListener('pageshow', function (e) { if (e.persisted) { cleanup(); resetPreview(false); } });
+  window.addEventListener('pagehide', function () { if (active() || pending) cleanup(); });
+  window.addEventListener('pageshow', function (e) { if (active() && e.persisted) { cleanup(); resetPreview(false); } });
+  /* Build one app shell per main render. Only the shell changes; card faces and
+     editor anchors are retained. The observer is paused during our own moves. */
+  function layout(main) {
+    if (main.querySelector(':scope > .fcs-app')) return;
+    var page = document.body.getAttribute('data-page') || 'home';
+    var base = page === 'detail' ? '../' : '';
+    var c = content(), R = window.PortfolioRender;
+    var app = node('div', 'fcs-app'), dock = node('aside', 'fcs-dock'), reader = node('div', 'fcs-reader');
+    var hero = main.querySelector('.hero');
+    var home = main.querySelector('.home-screen');
+    if (home) { while (home.firstChild) main.insertBefore(home.firstChild, home); home.remove(); }
+    var draw = main.querySelector('.draw');
+    if (draw && R) {
+      var rack = node('section', 'fcs-library fcr-window');
+      rack.innerHTML = '<header class="fcs-library-head"><p class="fcs-kicker">' + esc(t(T.library)) + ' / ' + ('0' + ((c.projects && c.projects.items) || []).length).slice(-2) + '</p>' +
+        '<div><h2>' + esc(t(T.choose)) + '</h2><button type="button" data-fcs-random>↻ ' + esc(t(T.random)) + '</button></div></header>' +
+        '<p class="fcs-rack-hint" id="fcs-rack-hint">' + esc(t(T.rackHint)) + '</p><div class="fcs-rack proj-grid"></div>';
+      var grid = rack.querySelector('.fcs-rack');
+      ((c.projects && c.projects.items) || []).forEach(function (p, i) {
+        var temp = node('div', ''); temp.innerHTML = R.drawCardHtml(c, lang(), base, p, i);
+        var a = temp.firstElementChild, face = a.querySelector('.gcard');
+        a.className = 'proj-card gcard'; a.removeAttribute('style');
+        a.setAttribute('data-grade', face.getAttribute('data-grade'));
+        a.setAttribute('data-cat', p.category || '');
+        a.innerHTML = face.innerHTML; grid.appendChild(a);
+      });
+      draw.replaceWith(rack);
+    }
+    var title = main.querySelector('.proj-title, .detail__title, .section__title');
+    var lead = main.querySelector('.section__lead');
+    if (!hero) {
+      hero = node('section', 'hero');
+      hero.innerHTML = '<div class="wrap"><div class="hero__grid"><div><p class="hero__eyebrow">' + esc(t((c.nav || {})[page === 'detail' ? 'projects' : page])) + '</p></div><div class="hero__media"></div></div></div>';
+      var intro = hero.querySelector('.hero__grid > div');
+      var heading = node('h1', 'hero__title');
+      if (title) {
+        // Moving the real heading preserves its content-editing anchor.
+        heading.innerHTML = title.innerHTML;
+        Array.prototype.forEach.call(title.attributes, function (attr) { if (attr.name !== 'class') heading.setAttribute(attr.name, attr.value); });
+        title.replaceWith(heading); intro.appendChild(heading);
+      } else { heading.textContent = t((c.nav || {})[page]) || t(T.dock); intro.appendChild(heading); }
+      var summary = lead ? lead.textContent : page === 'cover' ? t(c.coverLetter && c.coverLetter.summary && c.coverLetter.summary.title) : '';
+      if (page === 'detail') {
+        var p = ((c.projects && c.projects.items) || []).filter(function (item) { return item.id === new URLSearchParams(location.search).get('p'); })[0];
+        if (p) {
+          summary = t(p.sub);
+          var temp = node('div', ''); temp.innerHTML = R.drawCardHtml(c, lang(), base, p, 0);
+          var art = temp.querySelector('.gcard__art');
+          if (art) { var artBox = node('div', 'fcs-page-art fcr-preview__art'); artBox.innerHTML = art.innerHTML; hero.querySelector('.hero__media').appendChild(artBox); }
+        }
+      }
+      if (summary) intro.appendChild(node('p', 'hero__sub', summary));
+      if (!hero.querySelector('.hero__media').firstChild) {
+        var photo = c.home && c.home.player && c.home.player.photo;
+        if (photo) hero.querySelector('.hero__media').innerHTML = '<figure class="portrait"><img src="' + esc(base + photo) + '" alt="' + esc(t(c.meta.name)) + '"></figure>';
+      }
+    } else if (page === 'resume') {
+      var heading = hero.querySelector('.hero__title');
+      heading.textContent = t(c.nav.resume); heading.removeAttribute('data-e');
+      hero.querySelector('.hero__note').classList.add('fcs-page-summary');
+    }
+    dock.innerHTML = '<div class="fcs-dock-head"><span>01 / ' + esc(t(T.dock)) + '</span><span class="fcs-ready">● ' + esc(t(T.ready)) + '</span></div>';
+    dock.appendChild(hero);
+    var slot = node('div', 'fcs-slot'); slot.setAttribute('aria-hidden', 'true');
+    slot.innerHTML = '<span>' + esc(t(T.slot)) + '</span>'; hero.appendChild(slot);
+    dock.appendChild(node('p', 'fcs-dock-note', t(T.dockNote)));
+    while (main.firstChild) reader.appendChild(main.firstChild);
+    var projectHead = reader.querySelector('.proj-head');
+    if (projectHead) {
+      var hint = node('p', 'fcs-rack-hint', t(T.rackHint)); hint.id = 'fcs-rack-hint';
+      projectHead.insertAdjacentElement('afterend', hint);
+      var random = node('button', 'fcs-random', '↻ ' + t(T.random)); random.type = 'button'; random.setAttribute('data-fcs-random', ''); projectHead.appendChild(random);
+    }
+    // Resume skills and all other windows now use the width of the reading column.
+    app.appendChild(dock); app.appendChild(reader); main.appendChild(app);
+    if (!reader.querySelector('#fcs-rack-hint')) {
+      var hint = node('span', 'sr-only', t(T.rackHint)); hint.id = 'fcs-rack-hint'; reader.appendChild(hint);
+    }
+    build(hero);
+  }
+  var mainObserver;
   function scan() {
-    cleanup(); resetPreview(false);
-    each('.fcr-preview--aux', function (el) { el.remove(); });
-    if (deckObserver) deckObserver.disconnect();
-    if (!active()) return;
-    var h = document.querySelector('.hero'); if (h) build(h);
-    menus(); setupSelection(); status();
-    var deck = document.querySelector('[data-draw-cards]');
-    if (deck && window.MutationObserver) {
-      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
-      deckObserver.observe(deck, { childList: true });
+    if (mainObserver) mainObserver.disconnect();
+    var main = document.querySelector('[data-slot="main"]');
+    try {
+      if (active() && main) {
+        cleanup(); resetPreview(false);
+        layout(main); menus(); setupSelection(); status();
+      } else if (pending) cleanup();
+    } finally {
+      if (mainObserver && main) mainObserver.observe(main, { childList: true });
     }
   }
   function init() {
-    var main = document.querySelector('[data-slot="main"]');
-    if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
-    if (window.MutationObserver) new MutationObserver(scan).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    if (window.MutationObserver) {
+      mainObserver = new MutationObserver(scan);
+      new MutationObserver(scan).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    }
     scan();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

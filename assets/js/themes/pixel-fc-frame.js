@@ -1,13 +1,18 @@
-/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
-   hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
-   main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
+/* Full Frame: 고정 하드웨어 / 스크롤 액정 / 700ms 카트리지 삽입.
+   공개 렌더·뽑기 API를 보존하고 main이 다시 그려지면 구조를 복원합니다. */
 (function () {
   'use strict';
-  if (window.__portfolioFCRefined) return;
-  window.__portfolioFCRefined = true;
+  if (window.__portfolioFCFrame) return;
+  window.__portfolioFCFrame = true;
   var SKIN = 'pixel-fc-frame';
   var T = {
     select: 'SELECT',
+    title: { ko: '타이틀 화면', en: 'TITLE SCREEN' },
+    ready: { ko: '카트리지 대기', en: 'CARTRIDGE READY' },
+    loading: { ko: '카트리지 읽는 중', en: 'READING CARTRIDGE' },
+    slot: { ko: '카트리지 슬롯', en: 'Cartridge slot' },
+    screen: { ko: '포트폴리오 액정 · 이 안에서 스크롤', en: 'Portfolio display · Scroll inside' },
+    scroll: { ko: '아래로 · 게임 선택', en: 'SCROLL · GAME SELECT' },
     prevQ: { ko: '이전 한마디', en: 'Previous quip' },
     nextQ: { ko: '다음 한마디', en: 'Next quip' },
     prevS: { ko: '이전 절로', en: 'Previous section' },
@@ -33,6 +38,7 @@
     insertA: { ko: '선택한 프로젝트 꽂고 열기', en: 'Insert and open the selected project' },
     all: { ko: '전체 프로젝트', en: 'All projects' },
     restore: { ko: '첫 화면으로', en: 'Home screen' },
+    prompt: { ko: '카트리지를 골라주세요.', en: 'Select a cartridge.' },
     preview: { ko: '프로젝트 미리보기', en: 'Project preview' },
     period: { ko: '기간', en: 'Period' },
     role: { ko: '역할', en: 'Role' },
@@ -50,15 +56,45 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
   function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
-  function navH() { var n = document.querySelector('.nav'); return (n ? n.getBoundingClientRect().height : 60) + 16; }
-  function scrollToY(y) { try { window.scrollTo({ top: Math.max(0, y), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, Math.max(0, y)); } }
+  function lcd() { return document.querySelector('.fcf-lcd'); }
+  function navH() { var el = lcd(); return el ? el.getBoundingClientRect().top + 12 : 76; }
+  function scrollToY(y) {
+    var el = lcd(); if (!el) return;
+    el.scrollTo({ top: Math.max(0, y), behavior: reduced() ? 'instant' : 'smooth' });
+  }
+  function scrollToElement(el) {
+    var screen = lcd();
+    if (el && screen) scrollToY(screen.scrollTop + el.getBoundingClientRect().top - screen.getBoundingClientRect().top - 18);
+  }
   function content() { return window.PORTFOLIO_CONTENT || {}; }
 
-  /* ── 손잡이 버튼 ─────────────────────────────────────────────────────── */
-  function build(hero) {
-    if (!active() || hero.querySelector('.fc-grip')) return;
-    var wrap = hero.querySelector('.wrap'); if (!wrap) return;
-    var hasQuip = !!hero.querySelector('[data-quip]');
+  /* 하드웨어는 main 밖에 유지합니다. main을 다시 렌더해도 액정 스크롤과 슬롯은 남습니다. */
+  function build() {
+    var main = document.querySelector('[data-slot="main"]'); if (!main) return;
+    var screen = lcd();
+    if (!screen) {
+      screen = node('div', 'fcf-lcd');
+      screen.setAttribute('role', 'region'); screen.setAttribute('tabindex', '0');
+      main.parentNode.insertBefore(screen, main); screen.appendChild(main);
+      var footer = document.querySelector('.footer'); if (footer) screen.appendChild(footer);
+      screen.addEventListener('scroll', function () {
+        scheduleAux();
+        var top = document.querySelector('[data-to-top]');
+        if (top) top.classList.toggle('is-shown', screen.scrollTop > screen.clientHeight * .6);
+      }, { passive: true });
+    }
+    screen.setAttribute('aria-label', t(T.screen));
+    if (!document.querySelector('.fcf-shell')) {
+      var shell = node('div', 'fcf-shell'); shell.setAttribute('aria-hidden', 'true'); document.body.appendChild(shell);
+    }
+    var bezel = document.querySelector('.fcf-bezel');
+    if (!bezel) { bezel = node('div', 'fcf-bezel'); document.body.appendChild(bezel); }
+    bezel.innerHTML = '<span class="fcf-power"><i aria-hidden="true"></i>POWER</span>' +
+      '<div class="fcf-slot" role="img" aria-label="' + esc(t(T.slot)) + '"><span></span><small>' + esc(t(T.ready)) + '</small></div>' +
+      '<button class="fcf-top" type="button" data-to-top aria-label="' + esc(t({ko:'액정 맨 위로', en:'Top of display'})) + '">↑ TOP</button>';
+    each('.fc-grip', function (el) { el.remove(); });
+    var hero = document.querySelector('.hero');
+    var hasQuip = !!document.querySelector('[data-quip]');
     var hasDeck = !!document.querySelector('[data-draw]');
     var mail = ((content().meta && content().meta.email) || '').trim();   /* content.js 의 meta.email */
 
@@ -78,37 +114,51 @@
       '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fc-b aria-label="' + esc(t(T.lightA)) + '">B</button><span class="fc-lbl" data-fc-lbl="b">' + esc(t(T.light)) + '</span></span>' +
       '<span class="fc-ab"><button type="button" class="fc-key fc-key--ab" data-fc-a="' + (hasDeck ? 'draw' : 'down') + '" aria-label="' + esc(t(hasDeck ? T.drawA : T.downA)) + '">A</button><span class="fc-lbl" data-fc-lbl="a">' + esc(t(hasDeck ? T.draw : T.down)) + '</span></span>';
 
-    hero.classList.add('fc-console');
-    hero.insertBefore(left, wrap);
-    hero.appendChild(right);
+    document.body.appendChild(left); document.body.appendChild(right);
+    if (hero && !hero.querySelector('.fcf-title-actions')) {
+      var row = hero.querySelector('.btn-row'), media = hero.querySelector('.hero__media'), wrap = hero.querySelector('.wrap');
+      if (row && media && document.body.dataset.page === 'home') {
+        var actions = node('div', 'fcf-title-actions'); wrap.appendChild(actions);
+        actions.appendChild(media); actions.appendChild(row);
+        var cue = node('button', 'fcf-scroll-cue', t(T.scroll) + ' ↓');
+        cue.type = 'button'; cue.setAttribute('data-fcf-scroll', ''); wrap.appendChild(cue);
+      }
+    }
+    var bar = main.querySelector('.fcf-screenbar');
+    if (!bar) { bar = node('div', 'fcf-screenbar'); main.insertBefore(bar, main.firstChild); }
+    var page = document.body.dataset.page;
+    var labels = content().nav || {};
+    bar.innerHTML = '<span>01 / ' + esc(page === 'home' ? t(T.title) : t(labels[page === 'detail' ? 'projects' : page])) +
+      '</span><span>JISU · PORTFOLIO <b aria-hidden="true">●</b></span>';
+
   }
 
   function sections() {
-    return Array.prototype.filter.call(document.querySelectorAll('main section'), function (s) {
+    var page = document.body.dataset.page;
+    var selector = page === 'cover' ? 'main .cl-summary, main .cover-block' :
+      page === 'detail' ? 'main .detail, main .detail__blocks .block, main .pager' :
+      page === 'play' ? 'main .steam, main .play-card' : 'main section';
+    return Array.prototype.filter.call(document.querySelectorAll(selector), function (s) {
       return !s.classList.contains('hero');
     });
   }
   function step(dir) {
     resetPreview(false);
-    var hero = document.querySelector('.hero.fc-console'); if (!hero) return;
     var app = window.PortfolioApp;
-    if (hero.querySelector('[data-quip]') && app && app.cycleQuip) { app.cycleQuip(dir); return; }
+    if (document.querySelector('[data-quip]') && app && app.cycleQuip) { app.cycleQuip(dir); return; }
     var secs = sections(); if (!secs.length) return;
-    var y = window.pageYOffset + navH() + 2, cur = -1;
-    for (var i = 0; i < secs.length; i++) if (secs[i].getBoundingClientRect().top + window.pageYOffset <= y) cur = i;
-    var next = secs[Math.max(0, Math.min(secs.length - 1, cur + dir))];
-    scrollToY(next.getBoundingClientRect().top + window.pageYOffset - navH());
+    var cur = -1;
+    for (var i = 0; i < secs.length; i++) if (secs[i].getBoundingClientRect().top <= navH() + 12) cur = i;
+    scrollToElement(secs[Math.max(0, Math.min(secs.length - 1, cur + dir))]);
   }
   function pressA(kind) {
     if (selected && selected.isConnected) { selected.click(); return; }
     if (kind === 'draw') {
       var deck = document.querySelector('[data-draw]'); if (!deck) return;
-      deck.click();
-      var r = deck.getBoundingClientRect();
-      if (r.top < navH() || r.bottom > window.innerHeight) scrollToY(r.top + window.pageYOffset - navH() - 8);
+      deck.click(); scrollToElement(document.querySelector('.draw'));
     } else {
-      var secs = sections();
-      if (secs.length) scrollToY(secs[0].getBoundingClientRect().top + window.pageYOffset - navH());
+      var secs = sections(), next = secs.filter(function (s) { return s.getBoundingClientRect().top > navH() + 20; })[0];
+      if (next) scrollToElement(next); else scrollToY(0);
     }
   }
   function each(selector, fn, root) { Array.prototype.forEach.call((root || document).querySelectorAll(selector), fn); }
@@ -261,6 +311,8 @@
     each('.fcr-preview', function (el) { el.hidden = true; });
     each('.hero.is-fcr-previewing', function (hero) {
       hero.classList.remove('is-fcr-previewing');
+      var actions = hero.querySelector('.fcf-title-actions');
+      if (actions) actions.removeAttribute('inert');
       var grid = hero.querySelector('.hero__grid');
       if (grid) {
         grid.removeAttribute('inert'); grid.removeAttribute('aria-hidden');
@@ -280,13 +332,16 @@
     var el = document.querySelector('.fcr-preview--lcd, .fcr-preview--list'); if (!p || !el) return;
     resetPreview(false, true); selected = a; a.classList.add('is-fcr-preview');
     el.querySelector('.fcr-preview__body').innerHTML = previewHtml(p, a); el.hidden = false;
+    el.querySelector('.fcr-preview__footer').hidden = false;
     fadePreview(el.querySelector('.fcr-preview__body'));
+    previewA(true);
     var hero = el.closest('.hero');
     if (hero) {
       hero.classList.add('is-fcr-previewing');
+      var actions = hero.querySelector('.fcf-title-actions');
+      if (actions) actions.setAttribute('inert', '');
       var grid = hero.querySelector('.hero__grid');
       if (grid) { grid.setAttribute('inert', ''); grid.setAttribute('aria-hidden', 'true'); }
-      previewA(true);
       var aux = document.querySelector('.fcr-preview--aux');
       if (aux) aux.querySelector('.fcr-preview__body').innerHTML = previewHtml(p, a);
       positionAux();
@@ -296,22 +351,20 @@
   function announceProject(p) {
     status().textContent = [t(p.title), t(p.sub), t(T.period) + ': ' + t(p.period), t(T.role) + ': ' + t(p.myRole), t(p.quest && p.quest.goal), t(p.quest && p.quest.result)].filter(Boolean).join('. ');
   }
-  // 액정이 잘릴 때만 카드 바로 위(공간이 없으면 아래)에 읽기 전용 보조 창을 표시합니다.
-  // 카드 행의 문서 위치와 스크롤은 바꾸지 않습니다.
+  // 타이틀 화면이 스크롤 밖이면 액정 위쪽에 읽기 전용 미리보기를 표시합니다.
   function positionAux() {
-    var aux = document.querySelector('.fcr-preview--aux'), lcd = document.querySelector('.fcr-preview--lcd');
-    if (!aux || !lcd) return;
+    var aux = document.querySelector('.fcr-preview--aux'), pane = document.querySelector('.fcr-preview--lcd');
+    if (!aux || !pane) return;
     aux.hidden = true;
-    if (!active() || !selected || !selected.isConnected || lcd.hidden || pending) return;
-    var viewH = window.innerHeight, viewW = window.innerWidth || document.documentElement.clientWidth;
-    var top = navH(), screen = lcd.getBoundingClientRect(), card = selected.getBoundingClientRect();
-    if ((screen.top >= top && screen.bottom <= viewH - 12) || card.bottom <= top || card.top >= viewH - 12) return;
+    if (!active() || !selected || !selected.isConnected || pane.hidden || pending) return;
+    var screen = lcd().getBoundingClientRect();
+    var card = selected.getBoundingClientRect(), home = document.querySelector('.fcr-preview--lcd').getBoundingClientRect();
+    if (home.top >= screen.top && home.bottom <= screen.bottom) return;
+    if (card.bottom <= screen.top || card.top >= screen.bottom) return;
     aux.hidden = false;
-    var box = aux.getBoundingClientRect(), y = card.top - box.height - 12;
-    if (y < top && card.bottom + 12 + box.height <= viewH - 12) y = card.bottom + 12;
-    y = Math.max(top, Math.min(y, viewH - box.height - 12));
-    aux.style.left = Math.max(12, Math.min(card.left, viewW - box.width - 12)) + 'px';
-    aux.style.top = y + 'px';
+    aux.style.left = (screen.left + 16) + 'px';
+    aux.style.top = (screen.top + 12) + 'px';
+    aux.style.maxHeight = Math.max(80, Math.min(screen.height * .46, card.top - screen.top - 24)) + 'px';
   }
   var auxFrame = false;
   function scheduleAux() {
@@ -340,12 +393,19 @@
       aux.setAttribute('aria-hidden', 'true'); aux.setAttribute('inert', ''); aux.hidden = true;
       aux.innerHTML = '<div class="fcr-preview__bar">▶ ' + esc(t(T.selection)) + '</div>' +
         '<div class="fcr-preview__body"></div><p class="fcr-preview__aux-hint">' + esc(t(T.openHint)) + '</p>';
-      // body 바로 아래에 두어 게임기의 overflow:hidden에 잘리지 않게 합니다.
+      // 고정 미리보기 좌표는 액정의 경계 안으로 제한합니다.
       document.body.appendChild(aux);
     }
     if (head && !document.querySelector('.fcr-preview--list')) {
       var pane = makePreview(false), grid = document.querySelector('[data-proj-grid]');
-      if (grid) grid.insertAdjacentElement('afterend', pane);
+      if (grid) {
+        var catalog = node('div', 'fcf-catalog'), shelf = node('div', 'fcf-shelf');
+        grid.parentNode.insertBefore(catalog, grid); catalog.appendChild(shelf); shelf.appendChild(grid);
+        var empty = document.querySelector('[data-proj-empty]'); if (empty) shelf.appendChild(empty);
+        catalog.appendChild(pane);
+        pane.hidden = false; pane.querySelector('.fcr-preview__body').textContent = t(T.prompt);
+        pane.querySelector('.fcr-preview__footer').hidden = true;
+      }
     }
     each('a.draw-card, a.proj-card', function (a) {
       var ids = (a.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
@@ -353,8 +413,7 @@
     });
   }
 
-  /* 420ms 이동 + 260ms 밀어 넣기. 로딩·중간 개요·전체 화면 켜기 없이 이동합니다.
-     800ms 타이머는 WAAPI 완료 이벤트가 누락되어도 링크가 멈추지 않도록 하는 상한입니다. */
+  /* 420ms 이동 + 200ms 삽입 + 80ms 액정 재점등 = 한 번 선택, 700ms 후 상세. */
   function cleanup() {
     var me = pending; pending = null;
     if (me) {
@@ -362,54 +421,47 @@
       (me.animations || []).forEach(function (a) { a.cancel(); });
       if (me.a) { me.a.style.visibility = ''; me.a.removeAttribute('aria-busy'); }
     }
-    each('.fc-fly, .fc-slot', function (el) { el.remove(); });
-    each('.hero.is-slot', function (el) { el.classList.remove('is-slot'); });
+    each('.fc-fly', function (el) { el.remove(); });
+    document.documentElement.classList.remove('fcf-reading');
+    var label = document.querySelector('.fcf-slot small'); if (label) label.textContent = t(T.ready);
   }
   function insert(a) {
+    if (pending) return;
     var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
-    if (!face || !face.animate) { window.location.assign(a.href); return; }
-    cleanup();
+    var slot = document.querySelector('.fcf-slot > span');
+    if (!face || !face.animate || !slot || reduced()) { window.location.assign(a.href); return; }
     var aux = document.querySelector('.fcr-preview--aux'); if (aux) aux.hidden = true;
-    var r = a.getBoundingClientRect(), hero = document.querySelector('.hero.fc-console');
-    var hr = hero && hero.getBoundingClientRect();
-    var useHero = !!(hr && hr.bottom > navH() + 30 && hr.bottom < window.innerHeight - 40);
-    var line, cx, slot;
-    if (useHero) {
-      hero.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
-    } else {
-      slot = node('div', 'fc-slot'); slot.setAttribute('aria-hidden', 'true');
-      slot.style.top = navH() - 12 + 'px'; slot.style.transform = 'translate(-50%, 0)';
-      document.body.appendChild(slot);
-      var sr = slot.getBoundingClientRect(); line = sr.bottom - 3; cx = sr.left + sr.width / 2;
-    }
+    var r = a.getBoundingClientRect(), sr = slot.getBoundingClientRect();
     var fly = node('div', 'fc-fly'); fly.setAttribute('aria-hidden', 'true'); fly.setAttribute('inert', '');
-    fly.style.cssText = 'position:' + (useHero ? 'absolute' : 'fixed') + ';left:' +
-      (r.left + (useHero ? window.pageXOffset : 0)) + 'px;top:' +
-      (r.top + (useHero ? window.pageYOffset : 0)) + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
+    fly.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
     var clone = face.cloneNode(true);
     clone.classList.remove('is-tilt', 'reveal', 'is-visible', 'is-fcr-preview'); clone.classList.add('fc-fly__card');
     clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('aria-describedby');
+    each('[id]', function (el) { el.removeAttribute('id'); }, clone);
     fly.appendChild(clone); document.body.appendChild(fly);
     a.style.visibility = 'hidden'; a.setAttribute('aria-busy', 'true');
     var me = pending = { a: a, animations: [] };
+    document.documentElement.classList.add('fcf-reading');
+    document.querySelector('.fcf-slot small').textContent = t(T.loading);
+    status().textContent = t(T.loading);
     function finish() {
       if (pending !== me) return;
       var url = a.href; cleanup(); window.location.assign(url);
     }
-    me.timer = setTimeout(finish, 800);
-    var dx = cx - r.left - r.width / 2, dy = line - r.top;
-    function at(x, y) { return 'translate(' + x + 'px,' + y + 'px)'; }
+    me.timer = setTimeout(finish, 750);
+    var scale = Math.min(.68, (sr.width - 16) / r.width);
+    var dx = sr.left + sr.width / 2 - r.left - r.width / 2;
+    var dy = sr.top - r.top - r.height * scale - (r.height * (1 - scale) / 2);
+    function at(x, y, sc) { return 'translate(' + x + 'px,' + y + 'px) scale(' + sc + ')'; }
     try {
-      if (slot) me.animations.push(slot.animate([
-        { transform: 'translate(-50%, -100%)' }, { transform: 'translate(-50%, 0)' }
-      ], { duration: 120, fill: 'forwards', easing: 'ease-out' }));
       var animation = fly.animate([
-        { transform: at(0, 0), clipPath: 'inset(0 0 0 0)', offset: 0 },
-        { transform: at(dx * .2, -20), clipPath: 'inset(0 0 0 0)', offset: .2 },
-        { transform: at(dx, dy), clipPath: 'inset(0 0 0 0)', offset: 420 / 680 },
-        { transform: at(dx, dy - r.height), clipPath: 'inset(100% 0 0 0)', offset: 1 }
-      ], { duration: 680, fill: 'forwards', easing: 'cubic-bezier(.3,.65,.3,1)' });
+        { transform: at(0, 0, 1), clipPath: 'inset(0)', offset: 0 },
+        { transform: at(dx, dy, scale), clipPath: 'inset(0)', offset: .6 },
+        { transform: at(dx, dy + r.height * scale, scale), clipPath: 'inset(0 0 100% 0)', offset: .886 },
+        { transform: at(dx, dy + r.height * scale, scale), clipPath: 'inset(0 0 100% 0)', offset: 1 }
+      ], { duration: 700, fill: 'forwards', easing: 'cubic-bezier(.3,.65,.3,1)' });
       me.animations.push(animation); animation.onfinish = finish;
+      me.animations.push(lcd().animate([{ opacity: 1 }, { opacity: .2 }, { opacity: 1 }], { duration: 80, delay: 620, fill: 'both' }));
     } catch (e) { finish(); }
   }
 
@@ -424,6 +476,18 @@
   });
   document.addEventListener('click', function (e) {
     if (!active() || !e.target.closest) return;
+    var toTop = e.target.closest('[data-to-top]');
+    var cue = e.target.closest('[data-fcf-scroll]');
+    var anchor = e.target.closest('a[href^="#"]');
+    if (toTop || cue || anchor) {
+      var target = cue ? document.querySelector('.draw') : anchor ? document.getElementById(anchor.hash.slice(1)) : null;
+      if (toTop || target) {
+        e.preventDefault(); e.stopImmediatePropagation();
+        if (toTop) scrollToY(0); else scrollToElement(target);
+        if (anchor && target) { target.setAttribute('tabindex', '-1'); target.focus({preventScroll:true}); }
+        return;
+      }
+    }
     if (e.target.closest('[data-draw]')) {
       var cards = document.querySelector('[data-draw-cards]');
       e.fcrDrawBefore = cards && cards.firstChild; return;
@@ -476,23 +540,35 @@
   window.addEventListener('scroll', scheduleAux, { passive: true });
   window.addEventListener('resize', scheduleAux);
   window.addEventListener('pageshow', function (e) { if (e.persisted) { cleanup(); resetPreview(false); } });
+  var mainObserver = null;
+  function unmount() {
+    var screen = lcd();
+    if (screen) {
+      while (screen.firstChild) screen.parentNode.insertBefore(screen.firstChild, screen);
+      screen.remove();
+    }
+    each('.fcf-shell, .fcf-bezel, .fc-grip, .fcr-preview--aux', function (el) { el.remove(); });
+  }
   function scan() {
+    var main = document.querySelector('[data-slot="main"]');
+    if (mainObserver) mainObserver.disconnect();
     cleanup(); resetPreview(false);
     each('.fcr-preview--aux', function (el) { el.remove(); });
     if (deckObserver) deckObserver.disconnect();
-    if (!active()) return;
-    var h = document.querySelector('.hero'); if (h) build(h);
-    menus(); setupSelection(); status();
+    if (!active()) { unmount(); return; }
+    build(); menus(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {
       deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
       deckObserver.observe(deck, { childList: true });
     }
+    if (main && mainObserver) mainObserver.observe(main, { childList: true });
   }
   function init() {
-    var main = document.querySelector('[data-slot="main"]');
-    if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
-    if (window.MutationObserver) new MutationObserver(scan).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    if (window.MutationObserver) {
+      mainObserver = new MutationObserver(scan);
+      new MutationObserver(scan).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    }
     scan();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
