@@ -189,7 +189,7 @@
     if (!sel) return { css: [], fonts: [], js: [] };
     var css = [ASSETS + 'css/themes/' + sel.theme.id + '.css', ASSETS + 'css/themes/' + sel.theme.id + '-' + sel.variant.id + '.css'];
     var fonts = (sel.theme.fonts || []).concat(sel.variant.fonts || []);
-    var js = (sel.theme.scripts || []).map(function (f) { return ASSETS + f; });   /* 홈 구성을 바꾸는 테마의 스크립트 */
+    var js = (sel.theme.scripts || []).concat(sel.variant.scripts || []).map(function (f) { return ASSETS + f; });   /* 홈 구성을 바꾸는 테마·시안의 스크립트 */
     return { css: css, fonts: fonts, js: js };
   }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
