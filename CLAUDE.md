@@ -46,7 +46,8 @@
 `pixel-fc-pixel` 은 제품 사진 안을 실제로 렌더해 **픽셀 아트로 변환한 그림**(`assets/img/themes/fc-pixel/*.png`)을 입힌 안입니다 —
 원본 그림이 바뀌면 `tools/fc-pixel/capture.js`(부품 따기) → `pixelize.py`(4px 격자·12색·외곽선) 두 줄로 다시 뽑습니다(사용법은 파일 맨 위 주석, 글자·사진은 변환하지 않음).
 `pixel-fc-classic`(정돈) · `pixel-fc-px3d`(3D 픽셀) · `pixel-fc-voxel`(복셀) 은 **원본 패미컴 디자인**을 공용 `assets/js/themes/fc-stage.js` 의 기울인 구도(왼쪽 큰 제목 · 오른쪽 기울어진 게임기 · 그 밑 같은 기울기의 카트리지 진열판 `.fcs-rig`)에 올린 안입니다(카트리지 꽂기·개요 흐름은 famicom.js 복제본 그대로).
-3D 픽셀·복셀의 그림은 `tools/fc-pixel/capture-fc.js` → `render3d.py bevel|voxel` 로 만들고, 게임기는 화면 높이에 따라 크기가 바뀌므로 9조각 border-image 로 붙이며 붙이는 CSS(`pixel-fc-<안>-parts.css`)도 자동 생성됩니다. 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
+3D 픽셀(`pixel-fc-px3d`)은 자동 변환이 아니라 `tools/fc-pixel/sprites.py` 가 도트를 규칙대로 찍어 만든 **스프라이트**이고(입체는 그림 안 3/4 시점 — 도트가 깨지지 않게 이 안만 판을 CSS 로 기울이지 않음, 도트 한 칸 = 4px),
+복셀의 그림은 `tools/fc-pixel/capture-fc.js` → `render3d.py voxel` 로 만들고, 게임기는 화면 높이에 따라 크기가 바뀌므로 9조각 border-image 로 붙이며 붙이는 CSS(`pixel-fc-<안>-parts.css`)도 자동 생성됩니다. 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).

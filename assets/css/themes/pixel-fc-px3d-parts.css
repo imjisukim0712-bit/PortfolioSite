@@ -1,10 +1,7 @@
-/* 자동 생성 — tools/fc-pixel/render3d.py (손으로 고치지 마세요). 원본 패미컴 부품을 pixel-fc-px3d 그림으로 붙입니다. */
-:root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console.png') 100 112 120 104 fill / 100px 112px 120px 104px / 28px 36px 38px 28px stretch; }
-@media (max-width: 700px) { :root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console-m.png') 52 64 144 52 fill / 52px 64px 144px 52px / 12px 23px 20px 12px stretch; } }
-:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-step="-1"]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-prev.png'); }
-:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-step="1"]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-next.png'); }
-:root[data-skin="pixel-fc-px3d"] .fc-key--mail::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-mail.png'); }
-:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-b]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-b.png'); }
-:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-a]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-a.png'); }
-:root[data-skin="pixel-fc-px3d"] .gcard::before { top: -7.246%; right: -13.171%; bottom: -9.783%; left: -9.756%; background-image: url('../../img/themes/fc-px3d/cart.png'); }
-:root[data-skin="pixel-fc-px3d"] .draw__deck::before { top: -7.447%; right: -13.744%; bottom: -9.574%; left: -9.953%; background-image: url('../../img/themes/fc-px3d/deck.png'); }
+/* 자동 생성 — tools/fc-pixel/sprites.py (손으로 고치지 마세요). 도트 스프라이트를 붙입니다. */
+:root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console.png') 72 96 60 76 fill / 72px 96px 60px 76px / 24px 24px 12px 4px stretch; }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console-m.png') 64 64 124 52 fill / 64px 64px 124px 52px / 16px 16px 12px 4px stretch; } }
+:root[data-skin="pixel-fc-px3d"] .fc-key::before { top: -11.111%; right: -11.111%; bottom: -22.222%; left: -11.111%; background-image: url('../../img/themes/fc-px3d/key.png'); }
+:root[data-skin="pixel-fc-px3d"] .gcard::before { top: -8.889%; right: -11.765%; bottom: -6.667%; left: -2.941%; background-image: url('../../img/themes/fc-px3d/cart.png'); }
+:root[data-skin="pixel-fc-px3d"] .draw__deck::before { top: -22.222%; right: -29.412%; bottom: -6.667%; left: -2.941%; background-image: url('../../img/themes/fc-px3d/deck.png'); }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .draw__stage { border-image: url('../../img/themes/fc-px3d/tray.png') 44 44 36 28 fill / 44px 44px 36px 28px / 20px 20px 12px 4px stretch; }

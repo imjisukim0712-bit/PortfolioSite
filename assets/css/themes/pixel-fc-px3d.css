@@ -535,3 +535,18 @@
 @media (min-width: 720px) {
   [data-skin="pixel-fc-px3d"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
 }
+
+/* ── 도트 스프라이트판 (tools/fc-pixel/sprites.py) ─────────────────────────
+   입체감은 그림 안에 3/4 시점(밝은 윗면 · 어두운 옆면)으로 넣었으므로 판을 CSS 로 기울이지 않습니다
+   — 돌리면 도트 격자가 깨집니다. 크기·여백은 도트 한 칸(4px)에 맞춥니다. */
+@media (min-width: 720px) {
+  [data-skin="pixel-fc-px3d"] .fcs-rig { transform: none !important; will-change: auto; }
+}
+[data-skin="pixel-fc-px3d"] .fcs-rig > .hero { --fc-bezel: 48px; --fc-grip-w: 72px; }
+:root[data-skin="pixel-fc-px3d"] .gcard, :root[data-skin="pixel-fc-px3d"] .gcard.is-tilt { transform: none !important; }
+[data-skin="pixel-fc-px3d"] .fcs-rig .draw__stage { background: none; box-shadow: none; border: 3px solid transparent; }
+[data-skin="pixel-fc-px3d"] .gcard__frame { border-radius: 0; }
+@media (max-width: 700px) {
+  [data-skin="pixel-fc-px3d"] .fc-grip { margin-top: 16px; min-height: 88px; }
+  [data-skin="pixel-fc-px3d"] .hero, [data-skin="pixel-fc-px3d"] .home-screen .hero { padding-bottom: 8px; }
+}
