@@ -16,7 +16,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 15개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 19개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -51,6 +51,11 @@
                   en: 'Art-style draft C: the same scene as an 80s magazine ad illustration, with airbrushed gradients, chrome glints and halftone, grainy paper.' },
           scripts: ['js/themes/pixel-fc-airbrush.js'],
           swatch: ['#f3e6cf', '#c71f2c', '#1d1a2b', '#f0b54a'] },
+        { id: 'fc-pixel', name: { ko: '패미컴 · 픽셀 변환', en: 'Famicom · Pixelated' },
+          desc: { ko: '그림체 안 D. 제품 사진 안의 고품질 그림을 그대로 렌더한 뒤 픽셀 아트로 변환해 입혔습니다. 계단처럼 끊긴 명암, 한 칸짜리 외곽선, 각진 도트 그림자.',
+                  en: 'Art-style draft D: the product-shot artwork rendered and converted into pixel art, with stepped shading, one-pixel outlines and hard pixel shadows.' },
+          scripts: ['js/themes/pixel-fc-pixel.js'],
+          swatch: ['#f4f1ec', '#c8202f', '#2a1a1c', '#e3b54f'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
           desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
                   en: 'Design draft 2: an 8-bit screen where everything from the console to the window frames and headings is drawn in pixels, with stepped corners, pixel shadows and retro dialog boxes.' },

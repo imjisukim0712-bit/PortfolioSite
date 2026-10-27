@@ -1,0 +1,65 @@
+{
+ "skin": "pixel-fc-3d",
+ "meta": [
+  {
+   "file": "console.png",
+   "w": 738,
+   "h": 386,
+   "pad": 40
+  },
+  {
+   "file": "key-prev.png",
+   "w": 30,
+   "h": 28,
+   "pad": 8
+  },
+  {
+   "file": "key-next.png",
+   "w": 30,
+   "h": 28,
+   "pad": 8
+  },
+  {
+   "file": "key-mail.png",
+   "w": 29,
+   "h": 22,
+   "pad": 8
+  },
+  {
+   "file": "key-b.png",
+   "w": 35,
+   "h": 35,
+   "pad": 8
+  },
+  {
+   "file": "key-a.png",
+   "w": 35,
+   "h": 35,
+   "pad": 8
+  },
+  {
+   "file": "cart.png",
+   "w": 129,
+   "h": 172,
+   "pad": 6
+  },
+  {
+   "file": "deck.png",
+   "w": 129,
+   "h": 172,
+   "pad": 16
+  },
+  {
+   "file": "tray.png",
+   "w": 738,
+   "h": 212,
+   "pad": 30
+  },
+  {
+   "file": "console-m.png",
+   "w": 341,
+   "h": 343,
+   "pad": 16
+  }
+ ]
+}

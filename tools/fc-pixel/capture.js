@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 const [base = 'http://localhost:8200', skin = 'pixel-fc-3d', out = 'fc-pixel-raw'] = process.argv.slice(2);
-const PAD = { console: 40, key: 8, cart: 12, deck: 16, tray: 30 };   /* 그림자까지 담으려고 상자 밖으로 넓게 땁니다 */
+const PAD = { console: 40, mobile: 16, key: 8, cart: 6, deck: 16, tray: 30 };   /* 그림자까지 담으려고 상자 밖으로 넓게 땁니다 */
 
 /* 따는 동안만 쓰는 스타일: 기울기를 풀고, 배경을 투명하게, 글자·사진·화면 속 내용은 숨깁니다 */
 const PREP = `
@@ -27,7 +27,8 @@ const PREP = `
 const HIDE = {
   console: `.hero .wrap > *, .fc-grip > *, .ps-device-mark, .draw, .ps-intro, .ps-caption { visibility: hidden !important; }
             .hero .wrap { background: transparent !important; box-shadow: none !important; }`,
-  keys:    `.hero > *:not(.fc-grip), .fc-lbl { visibility: hidden !important; }
+  keys:    `.hero > *:not(.fc-grip), .fc-lbl, .fc-key > * { visibility: hidden !important; }
+            .fc-key { color: transparent !important; }   /* 버튼 글자(A·B·화살표)는 그림에 넣지 않고 화면에서 도트 글꼴로 */
             .hero { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
             .hero::before, .hero::after { display: none !important; }`,
   carts:   `.gcard__frame, .draw__deck-face, .fcr-select-guide, .hero { visibility: hidden !important; }
@@ -66,6 +67,13 @@ async function shot(page, el, pad, file) {
     meta.push(await shot(page, await page.$('.draw__deck'), PAD.deck, 'deck.png'));
   });
   await step(HIDE.tray, async () => { meta.push(await shot(page, await page.$('.draw__stage'), PAD.tray, 'tray.png')); });
+
+  /* 모바일(390px)은 게임기 모양이 달라(손잡이 버튼이 아래 줄) 몸체만 따로 땁니다 */
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForTimeout(1200);
+  await page.addStyleTag({ content: PREP });
+  await step(HIDE.console, async () => { meta.push(await shot(page, await page.$('.hero'), PAD.mobile, 'console-m.png')); });
 
   fs.writeFileSync(path.join(out, 'meta.json'), JSON.stringify({ skin, meta }, null, 2));
   console.log(JSON.stringify(meta));

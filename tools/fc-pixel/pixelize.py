@@ -14,8 +14,8 @@ import sys
 
 from PIL import Image
 
-PX = 3            # 도트 한 칸 = 화면 3px (1440 데스크톱 기준)
-COLORS = 20       # 부품마다 쓰는 색 수
+PX = 4            # 도트 한 칸 = 화면 4px (1440 데스크톱 기준)
+COLORS = 12       # 부품마다 쓰는 색 수 (적을수록 명암이 계단처럼 끊김)
 SOLID = 110       # 이 알파 이상은 불투명
 SHADE = 28        # SHADE~SOLID 사이는 반투명 그림자 한 단계
 SHADE_A = 90      # 그 그림자의 알파
