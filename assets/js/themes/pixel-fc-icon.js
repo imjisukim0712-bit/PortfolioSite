@@ -1,5 +1,5 @@
 /* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-icon) 전용 스크립트
+   pixel-fc-icon.js — 참고 ① 픽셀 아이콘 시안 전용 스크립트
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-icon.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -368,12 +368,44 @@
   document.addEventListener('focusout', releaseKeys);
   window.addEventListener('blur', releaseKeys);
 
+  /* 참고 ①의 배경 장식. 공용 fc-stage가 만든 자리에는 손대지 않고,
+     absolute 장식만 넣습니다. 글자·사진·입력·슬롯 좌표계에는 관여하지 않습니다. */
+  function paintIcon() {
+    if (!active()) return;
+    var stage = document.querySelector('.fcs-stage');
+    if (stage && !stage.querySelector('.fci-scenery')) {
+      var scenery = document.createElement('div');
+      scenery.className = 'fci-scenery';
+      scenery.setAttribute('aria-hidden', 'true');
+      scenery.innerHTML = '<i class="fci-dither fci-dither--1"></i>' +
+        '<i class="fci-dither fci-dither--2"></i><i class="fci-dither fci-dither--3"></i>';
+      stage.appendChild(scenery);
+    }
+    /* 이미지가 없는 카드의 자동 생성 무늬만 단색 띠/큰 체크로 바꿉니다.
+       실제 프로젝트 이미지·프로필 사진과 카드 안쪽 cqw 칸은 그대로 둡니다.
+       SVG 12단위 격자는 가장 작은 홈 카드에서도 약 8px로 보입니다. */
+    Array.prototype.forEach.call(document.querySelectorAll('.gcard__gen:not([data-fci-painted])'), function (art) {
+      var svg = art.querySelector(':scope > svg');
+      if (!svg) return;
+      art.setAttribute('data-fci-painted', '1');
+      svg.innerHTML = '<rect width="100" height="100" fill="var(--fci-art-top)"/>' +
+        '<path d="M0 34h100v66H0z" fill="var(--fci-art-mid)"/>' +
+        '<path d="M0 60h100v40H0z" fill="var(--fci-art-floor)"/>' +
+        '<path d="M0 22h12v12H0zM24 22h12v12H24zM48 22h12v12H48zM72 22h12v12H72zM96 22h4v12H96z" fill="var(--fci-art-mid)"/>' +
+        '<path d="M12 48h12v12H12zM36 48h12v12H36zM60 48h12v12H60zM84 48h12v12H84z" fill="var(--fci-art-floor)"/>';
+    });
+  }
+
   /* 다시 그려질 때마다 붙입니다 (main 의 직접 자식이 바뀌면). */
   function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
     if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
     scan();
+    /* 카드를 뽑거나 언어/페이지가 바뀌어도 장식은 한 번만 칠합니다.
+       삽입 애니메이션의 scan/cleanup과 별개여서 카트리지를 꺼내지 않습니다. */
+    if (main && window.MutationObserver) new MutationObserver(paintIcon).observe(main, { childList: true, subtree: true });
+    paintIcon();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

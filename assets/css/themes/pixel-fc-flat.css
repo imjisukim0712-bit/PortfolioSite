@@ -1,58 +1,60 @@
 @charset "UTF-8";
-/* 패미컴 · 정돈 — 원본 기기/카트리지 치수와 슬롯 좌표계를 유지합니다.
-   선: 2px(내용) / 3px(기기·창) / 4px(강조). 그림자는 번짐 없이 4px. */
+/* 참고 ④ · 둥근 플랫 일러스트.
+   구도/치수/슬롯은 정돈 안 그대로. 아래 색 토큰과 표면 마감만 교체합니다.
+   하늘색 바탕 · 크림 플라스틱 · 빨간 띠 + 반투명 사선 두 줄 · 갈색 선.
+   질감/망점/도트 격자는 사용하지 않으며 그림자는 옅은 단색 한 겹입니다. */
 :root[data-skin="pixel-fc-flat"] {
-  --ink: #2b2b2b; --lo: #2b2b2b;
-  --bg: #efe6d2; --bg-elev: #e5dbc2; --surface: #f8f3e7; --surface-2: #e5dbc2;
-  --border: #2b2b2b; --border-2: #6b665c;
-  --text: #262626; --text-muted: #5f5a50; --heading: #161616;
-  --accent: #b8252b; --accent-soft: #d43a40;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --cta-hover: #eccbc0;
-  --ghost-c: #b8252b; --glow: rgb(184 37 43 / .2); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #f3dcd4; --buttercream: #f4e3b5; --blush: #f3dcd4; --cornflower: #2b2b2b; --mint: #b8252b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
-  --grade-r: #a3a3a3; --grade-sr: #e9b64a; --grade-ssr-a: #b8252b; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
+  --flat-sky: #bce6fa; --flat-cream: #eadfbc; --flat-paper: #fffbdd;
+  --flat-red: #c01e2e; --flat-red-hi: #d63b44; --flat-line: #613a15;
+  --flat-tan: #d8c79b; --flat-brown: #472c21;
+  --flat-shadow: rgb(97 58 21 / .16);
+  --flat-gloss: linear-gradient(128deg, transparent 0 34%, rgb(255 251 221 / .58) 34% 44%, transparent 44% 54%, rgb(255 251 221 / .58) 54% 61%, transparent 61%);
+  --ink: var(--flat-line); --lo: var(--flat-shadow);
+  --bg: var(--flat-sky); --bg-elev: #afd6e5; --surface: var(--flat-paper); --surface-2: var(--flat-cream);
+  --border: var(--flat-line); --border-2: #9b795d;
+  --text: #533627; --text-muted: #645444; --heading: var(--flat-brown);
+  --accent: var(--flat-red); --accent-soft: var(--flat-red-hi);
+  --cta: #f3d7c8; --cta-text: #a31c29; --cta-hover: #edc8b5;
+  --ghost-c: var(--flat-red); --glow: transparent; --btn-primary-text: var(--flat-paper);
+  --aubergine: var(--flat-red); --paper: var(--flat-paper); --periwinkle: var(--flat-tan);
+  --ghost-lavender: #f3d7c8; --buttercream: var(--flat-cream); --blush: #f3d7c8;
+  --cornflower: var(--flat-line); --mint: var(--flat-red);
+  --gen0: var(--flat-red); --gen1: var(--flat-line); --gen2: #b68c49;
+  --grade-r: #adc5c8; --grade-sr: var(--flat-tan); --grade-ssr-a: var(--flat-red); --grade-ssr-b: var(--flat-cream);
+  --title-shadow: none; --overlay: none; --deck-check: transparent;
+  --shadow-card: none; --shadow-sm: none;
+  --radius-card: 16px; --radius-pill: 10px; --radius-lg: 20px;
   color-scheme: light;
 }
 :root[data-skin="pixel-fc-flat"][data-theme="dark"] {
-  --ink: #efe6d2; --lo: #b8252b;
-  --bg: #232323; --bg-elev: #2c2c2c; --surface: #2a2a2a; --surface-2: #363636;
-  --border: #efe6d2; --border-2: #8a857a;
-  --text: #efe6d2; --text-muted: #b3ab9b; --heading: #fbf3e4;
-  --accent: #e0373d; --accent-soft: #ee5c61;
-  --cta: #3a2426; --cta-text: #f0a3a6; --cta-hover: #4a2c2e;
-  --ghost-c: #e0373d; --glow: rgb(224 55 61 / .35); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #3a2426; --buttercream: #3f3620; --blush: #3a2426; --cornflower: #e9b64a; --mint: #e0373d;
-  --gen0: #e0373d; --gen1: #efe6d2; --gen2: #e9b64a;
-  --grade-r: #8a857a; --grade-sr: #e9b64a; --grade-ssr-a: #e0373d; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
-  --shadow-card: none;
+  --flat-shadow: rgb(8 24 28 / .24);
+  --ink: #bfa783; --lo: var(--flat-shadow);
+  --bg: #243f4a; --bg-elev: #2b4a56; --surface: #314f59; --surface-2: #3d5b63;
+  --border: #bfa783; --border-2: #89a6ac;
+  --text: #eadfbc; --text-muted: #c3d5d8; --heading: #fffbdd;
+  --accent: #ff9a90; --accent-soft: #ffb1a5;
+  --cta: #643d3c; --cta-text: #fff0df; --cta-hover: #754747;
+  --ghost-c: #ff9a90; --gen0: #e97170; --gen1: #bce6fa; --gen2: #d8c79b;
+  --ghost-lavender: #643d3c; --buttercream: #64563d; --blush: #643d3c;
+  --cornflower: #bce6fa; --mint: #ff9a90;
   color-scheme: dark;
 }
-/* 카트리지 라벨 같은 금색 줄 */
-[data-skin="pixel-fc-flat"] .nav { border-bottom-color: #e9b64a; box-shadow: 0 3px 0 #2b2b2b; }
-[data-skin="pixel-fc-flat"] .nav__link.is-active { background: #fbf3e4; color: #b8252b; }
-[data-skin="pixel-fc-flat"] .lang-toggle__btn[aria-pressed="true"] { background: #e9b64a; color: #2b2b2b; }
-:root[data-skin="pixel-fc-flat"] .gcard[data-grade="SSR"] { --badge-fg: #fbf3e4; }
-[data-skin="pixel-fc-flat"] .tag--cornflower { color: #fbf3e4; }
-[data-skin="pixel-fc-flat"][data-theme="dark"] .tag--cornflower { color: #232323; }
-[data-skin="pixel-fc-flat"] .footer { background: #2b2b2b; border-top-color: #e9b64a; }
-[data-skin="pixel-fc-flat"][data-theme="dark"] .footer { background: #b8252b; }
+/* 참고 그림의 크림·빨강 띠 */
+[data-skin="pixel-fc-flat"] .nav { border-bottom-color: var(--flat-tan); box-shadow: 0 3px 0 var(--flat-line); }
+[data-skin="pixel-fc-flat"] .nav__link.is-active { background: var(--flat-paper); color: var(--flat-red); }
+[data-skin="pixel-fc-flat"] .lang-toggle__btn[aria-pressed="true"] { background: var(--flat-tan); color: var(--flat-line); }
+:root[data-skin="pixel-fc-flat"] .gcard[data-grade="SSR"] { --badge-fg: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] .tag--cornflower { color: var(--flat-paper); }
+[data-skin="pixel-fc-flat"][data-theme="dark"] .tag--cornflower { color: #243f4a; }
+[data-skin="pixel-fc-flat"] .footer { background: var(--flat-line); border-top-color: var(--flat-tan); }
+[data-skin="pixel-fc-flat"][data-theme="dark"] .footer { background: var(--flat-red); }
 [data-skin="pixel-fc-flat"] .section--elev { background: var(--bg-elev); }
 
 /* ── 카트리지 라벨 타이포 ────────────────────────────────────────────────
-   실제 패미컴 패키지도 라벨은 굵은 고딕, 화면 UI만 도트였습니다.
-   제목·본문은 굵은 고딕으로 읽히게 하고, 도트 글꼴은 시스템 UI(칩·라벨·수치)에만. */
+   제목부터 시스템 UI까지 둥글고 또렷한 고딕으로 통일합니다. */
 :root[data-skin="pixel-fc-flat"] {
-  --font-sans: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --font-display: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-sans: 'Arial Rounded MT Bold', 'Hiragino Maru Gothic ProN', 'Pretendard Variable', 'Noto Sans KR', ui-rounded, sans-serif;
+  --font-display: 'Arial Rounded MT Bold', 'Hiragino Maru Gothic ProN', 'Pretendard Variable', 'Noto Sans KR', ui-rounded, sans-serif;
   --tracking: -0.02em;
   --text-body: 16px; --text-body-sm: 15px; --text-caption: 12px;
   --text-subheading: clamp(17px, 1.2vw + 14px, 20px);
@@ -72,20 +74,20 @@
 [data-skin="pixel-fc-flat"] .hp-h, [data-skin="pixel-fc-flat"] .card__title, [data-skin="pixel-fc-flat"] .tl-role, [data-skin="pixel-fc-flat"] .play-card__name, [data-skin="pixel-fc-flat"] .pager__title, [data-skin="pixel-fc-flat"] .hpl-row__t, [data-skin="pixel-fc-flat"] .hp-game__t, [data-skin="pixel-fc-flat"] .portrait__nm, [data-skin="pixel-fc-flat"] .block__label, [data-skin="pixel-fc-flat"] .sheet__link, [data-skin="pixel-fc-flat"] .draw__deck-label { font-family: var(--font-display); font-weight: 800; }
 [data-skin="pixel-fc-flat"] .hp-h::before { content: none; }
 [data-skin="pixel-fc-flat"] .hp-h { border-bottom: 3px solid var(--ink); padding-bottom: 10px; }
-/* 도트 글꼴은 여기까지만 — 칩·라벨·수치 */
-[data-skin="pixel-fc-flat"] .nav__logo, [data-skin="pixel-fc-flat"] .gcard__cat, [data-skin="pixel-fc-flat"] .gcard__grade, [data-skin="pixel-fc-flat"] .gcard__go, [data-skin="pixel-fc-flat"] .gcard__period, [data-skin="pixel-fc-flat"] .badge, [data-skin="pixel-fc-flat"] .tag, [data-skin="pixel-fc-flat"] .lang-toggle__btn, [data-skin="pixel-fc-flat"] .tab, [data-skin="pixel-fc-flat"] .draw__deck-hint, [data-skin="pixel-fc-flat"] .play-card__hours, [data-skin="pixel-fc-flat"] .sheet__num { font-family: 'Galmuri11', 'Galmuri14', monospace; font-weight: 400; letter-spacing: 0; }
-[data-skin="pixel-fc-flat"] .hero__eyebrow, [data-skin="pixel-fc-flat"] .eyebrow, [data-skin="pixel-fc-flat"] .tl-date, [data-skin="pixel-fc-flat"] .profile__k, [data-skin="pixel-fc-flat"] .quest-strip__k, [data-skin="pixel-fc-flat"] .quest-strip__badge, [data-skin="pixel-fc-flat"] .detail__meta-k, [data-skin="pixel-fc-flat"] .pager__dir, [data-skin="pixel-fc-flat"] .block__label small, [data-skin="pixel-fc-flat"] .stat__label, [data-skin="pixel-fc-flat"] .footer__copy { font-family: 'Galmuri11', monospace; letter-spacing: 0; }
+/* 작은 UI까지 같은 고딕으로 통일합니다. */
+[data-skin="pixel-fc-flat"] .nav__logo, [data-skin="pixel-fc-flat"] .gcard__cat, [data-skin="pixel-fc-flat"] .gcard__grade, [data-skin="pixel-fc-flat"] .gcard__go, [data-skin="pixel-fc-flat"] .gcard__period, [data-skin="pixel-fc-flat"] .badge, [data-skin="pixel-fc-flat"] .tag, [data-skin="pixel-fc-flat"] .lang-toggle__btn, [data-skin="pixel-fc-flat"] .tab, [data-skin="pixel-fc-flat"] .draw__deck-hint, [data-skin="pixel-fc-flat"] .play-card__hours, [data-skin="pixel-fc-flat"] .sheet__num { font-family: var(--font-sans); font-weight: 400; letter-spacing: 0; }
+[data-skin="pixel-fc-flat"] .hero__eyebrow, [data-skin="pixel-fc-flat"] .eyebrow, [data-skin="pixel-fc-flat"] .tl-date, [data-skin="pixel-fc-flat"] .profile__k, [data-skin="pixel-fc-flat"] .quest-strip__k, [data-skin="pixel-fc-flat"] .quest-strip__badge, [data-skin="pixel-fc-flat"] .detail__meta-k, [data-skin="pixel-fc-flat"] .pager__dir, [data-skin="pixel-fc-flat"] .block__label small, [data-skin="pixel-fc-flat"] .stat__label, [data-skin="pixel-fc-flat"] .footer__copy { font-family: var(--font-sans); letter-spacing: 0; }
 [data-skin="pixel-fc-flat"] .hero__eyebrow, [data-skin="pixel-fc-flat"] .eyebrow { font-size: 11px; }
-[data-skin="pixel-fc-flat"] .stat__num { font-family: 'Press Start 2P', 'Galmuri11', monospace; }
+[data-skin="pixel-fc-flat"] .stat__num { font-family: var(--font-sans); }
 [data-skin="pixel-fc-flat"] .nav__logo { font-size: 13px; }
 [data-skin="pixel-fc-flat"] .nav__link { font-family: var(--font-sans); font-weight: 700; font-size: 14px; }
 
 /* ── 홈·이력서 상단 = 휴대용 게임기 본체 ───────────────────────────────
    색면 한 장 대신 게임기 한 대를 놓습니다. 화면(.wrap) 안에 본래의 히어로가 그대로 들어가고,
    양옆 손잡이와 화면 아래 채널 표시줄은 assets/js/themes/famicom.js 가 붙입니다.
-     · 본체     짙은 회색 둥근 셸 + 아래 두꺼운 그림자                     (.hero)
-     · 손잡이   양옆 자주색 그립, 화면과 맞닿는 금색 줄                     (.fc-grip)
-     · 화면     크림색 액정 + 검은 테. 위아래는 셸의 검은 베젤              (.hero > .wrap)
+     · 본체     크림색 둥근 셸 + 옅은 단색 그림자                     (.hero)
+     · 손잡이   양옆 빨간 그립, 화면과 맞닿는 갈색 선                     (.fc-grip)
+     · 화면     크림색 액정 + 갈색 테. 위아래는 크림 베젤              (.hero > .wrap)
      · 버튼     왼쪽 SELECT ◀ ▶(한마디) · 오른쪽 B(밝기) A(뽑기)          (.fc-key)
      · 슬롯     카드를 누르면 카트리지가 본체 아래 슬롯으로 들어갑니다        (.is-slot::after · .fc-fly · .fc-slot · .fc-boot)
    글자는 크림 화면 위에 놓이므로 본래의 어두운 색을 그대로 씁니다. 사진에는 손대지 않습니다.
@@ -93,26 +95,26 @@
    ────────────────────────────────────────────────────────────────────── */
 [data-skin="pixel-fc-flat"] {
   --hero-slab: transparent; --hero-slab-r: 0;
-  --fc-line: #2b2b2b; --fc-line-2: #161616;         /* 화면 테 · 본체 외곽선 */
-  --fc-shell: #2e2e2e; --fc-shell-hi: #3b3b3b;      /* 본체 */
-  --fc-grip: #8c1d22; --fc-grip-hi: #a3242a;        /* 손잡이 자주 */
-  --fc-gold: #e9b64a;                               /* 금색 줄 */
-  --fc-screen-a: #f8f1e1; --fc-screen-b: #ece2c9;   /* 액정 */
-  --fc-cream: #f6efe0;                              /* 손잡이 위 글자 */
-  --fc-key: #2b2b2b; --fc-key-hi: #505050; --fc-key-ring: #6d6d6d;  /* 버튼 */
+  --fc-line: var(--flat-line); --fc-line-2: var(--flat-brown);         /* 화면 테 · 본체 외곽선 */
+  --fc-shell: var(--flat-cream); --fc-shell-hi: var(--flat-paper);      /* 본체 */
+  --fc-grip: var(--flat-red); --fc-grip-hi: var(--flat-red-hi);        /* 손잡이 빨강 */
+  --fc-gold: var(--flat-tan);                               /* 따뜻한 크림 음영 */
+  --fc-screen-a: var(--flat-paper); --fc-screen-b: var(--flat-cream);   /* 액정 */
+  --fc-cream: var(--flat-paper);                              /* 손잡이 위 글자 */
+  --fc-key: var(--flat-line); --fc-key-hi: var(--flat-paper); --fc-key-ring: var(--flat-line);  /* 버튼 */
   --fc-grip-w: 72px;   /* 손잡이 폭 */
-  --fc-bezel: 46px;    /* 화면 위아래 검은 베젤 */
+  --fc-bezel: 46px;    /* 화면 위아래 베젤 */
   --fc-r: 64px;        /* 본체 모서리 */
   /* 본체 높이 — 홈이든 이력서든 같은 기기 한 대로 보이도록, 안에 든 내용이 아니라 화면 높이로 정합니다.
      (내용에 맡기면 사진이 있는 홈이 더 길어져 페이지마다 기기 크기가 달라집니다) */
   --fc-h: clamp(430px, calc(100svh - var(--nav-h) - 150px), 700px);
 }
 [data-skin="pixel-fc-flat"][data-theme="dark"] {
-  --fc-line: #0f0f0f; --fc-line-2: #050505;
-  --fc-shell: #1b1b1b; --fc-shell-hi: #262626;
-  --fc-grip: #6e161b; --fc-grip-hi: #841b21;
-  --fc-screen-a: #2d2d2d; --fc-screen-b: #1f1f1f;
-  --fc-key: #101010; --fc-key-hi: #3a3a3a; --fc-key-ring: #5a5a5a;
+  --fc-line: var(--flat-line); --fc-line-2: var(--flat-line);
+  --fc-shell: #d5c7a6; --fc-shell-hi: #533627;
+  --fc-grip: #b62132; --fc-grip-hi: #c01e2e;
+  --fc-screen-a: #314f59; --fc-screen-b: #3d5b63;
+  --fc-key: var(--flat-brown); --fc-key-hi: var(--flat-paper); --fc-key-ring: var(--flat-line);
 }
 
 /* 본체: 손잡이 | 화면 | 손잡이 */
@@ -134,10 +136,10 @@
 }
 [data-skin="pixel-fc-flat"] .fc-grip--l { border-right: 6px solid var(--fc-gold); }
 [data-skin="pixel-fc-flat"] .fc-grip--r { border-left: 6px solid var(--fc-gold); background: var(--fc-grip); }
-[data-skin="pixel-fc-flat"] .fc-lbl { font-family: 'Galmuri11', monospace; font-size: 9px; letter-spacing: .06em; color: var(--fc-cream); text-align: center; white-space: nowrap; }
+[data-skin="pixel-fc-flat"] .fc-lbl { font-family: var(--font-sans); font-size: 9px; letter-spacing: .06em; color: var(--fc-cream); text-align: center; white-space: nowrap; }
 [data-skin="pixel-fc-flat"] .fc-ab { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
-/* 버튼: 검은 원 + 회색 링 + 흰 글자, 누르면 내려앉음 */
+/* 버튼: 크림 원 + 갈색 링 + 갈색 글자, 누르면 내려앉음 */
 [data-skin="pixel-fc-flat"] .fc-key {
   display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; margin: 0;
   border: 3px solid var(--fc-key-ring); border-radius: 50%;
@@ -169,7 +171,7 @@
 
 /* 화면 위 글자 — 크림 바탕이므로 본래의 어두운 색 · 강조와 칩·버튼만 자주 */
 [data-skin="pixel-fc-flat"] .hero__title .accent { color: var(--fc-grip); background: none; }
-[data-skin="pixel-fc-flat"][data-theme="dark"] .hero__title .accent { color: #ff6b70; }
+[data-skin="pixel-fc-flat"][data-theme="dark"] .hero__title .accent { color: #ff9a90; }
 [data-skin="pixel-fc-flat"] .hero__eyebrow { background: var(--fc-grip); color: var(--fc-cream); border-color: var(--fc-line); box-shadow: 3px 3px 0 var(--fc-line); }
 [data-skin="pixel-fc-flat"] .hero__eyebrow .ghost { color: var(--fc-gold); }
 [data-skin="pixel-fc-flat"] .hero .btn--primary { background: var(--fc-grip); color: var(--fc-cream); border-color: var(--fc-line); box-shadow: 4px 4px 0 var(--fc-line); }
@@ -233,7 +235,7 @@
     display: block; content: ''; position: absolute; z-index: 3; inset: auto;
     top: 0; left: 50%; transform: translateX(-50%);
     width: min(168px, 44%); height: 13px;
-    background: #101010;
+    background: var(--flat-brown);
     border: 3px solid var(--fc-line-2); border-top: 0; border-radius: 0 0 11px 11px;
     box-shadow: inset 0 -2px 0 var(--fc-shell-hi);
   }
@@ -279,17 +281,17 @@
    치수는 자식(.gcard__frame)·가상 요소에서만 cqw 로 잽니다 — 카드 자신의 cqw 는 조상 컨테이너 기준이라 쓰지 않습니다.
    다크 모드에서도 라벨은 크림색 그대로이고, 라벨 안 글자색 토큰만 밝은 바탕용으로 다시 정합니다. */
 [data-skin="pixel-fc-flat"] {
-  --fc-cart: #383838; --fc-cart-hi: #474747;   /* 셸 */
+  --fc-cart: var(--flat-cream); --fc-cart-hi: var(--flat-paper);   /* 셸 */
   /* 정면 선택 반응과 함께 쓰는 단단한 셸 그림자 (기울기는 아래에서 고정). */
   --fc-cart-shadow: 4px 4px 0 var(--fc-line-2);
   --fc-cart-shadow-lift: 4px 6px 0 var(--fc-line-2);
-  --fc-label: #f8f3e7;                          /* 라벨 종이 */
+  --fc-label: var(--flat-paper);                          /* 라벨 종이 */
   --fc-check: rgb(255 255 255 / .07);           /* 뒷면 체크 */
 }
 [data-skin="pixel-fc-flat"][data-theme="dark"] {
-  --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a;
-  --fc-cart-shadow: 4px 4px 0 #050505;
-  --fc-cart-shadow-lift: 4px 6px 0 #050505;
+  --fc-cart: #d5c7a6; --fc-cart-hi: var(--flat-paper);
+  --fc-cart-shadow: 4px 4px 0 var(--flat-line);
+  --fc-cart-shadow-lift: 4px 6px 0 var(--flat-line);
 }
 [data-skin="pixel-fc-flat"] .gcard {
   --stripe: linear-gradient(var(--fc-grip), var(--fc-grip));
@@ -329,13 +331,13 @@
 :root[data-skin="pixel-fc-flat"] .gcard[data-grade="SSR"].is-tilt { box-shadow: var(--fc-cart-shadow-lift) !important; }
 /* 다크 모드: 라벨은 크림 그대로 → 라벨 안 글자·칩·그림 색을 밝은 바탕용으로 */
 [data-skin="pixel-fc-flat"][data-theme="dark"] .gcard__frame {
-  --heading: #161616; --text: #262626; --text-muted: #5f5a50; --accent: #b8252b;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --bg-elev: #e5dbc2; --surface-2: #e5dbc2; --ink: #2b2b2b; --border: #2b2b2b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
+  --heading: var(--flat-brown); --text: #533627; --text-muted: #645444; --accent: var(--flat-red);
+  --cta: #f3d7c8; --cta-text: #a31c29; --bg-elev: var(--flat-cream); --surface-2: var(--flat-cream); --ink: var(--flat-line); --border: var(--flat-line);
+  --gen0: var(--flat-red); --gen1: var(--flat-line); --gen2: var(--flat-tan);
 }
-:root[data-skin="pixel-fc-flat"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: #e5dbc2; --badge-fg: #262626; }
+:root[data-skin="pixel-fc-flat"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: var(--flat-cream); --badge-fg: #533627; }
 
-/* 뒷면(덱 · 뒤집기): 같은 셸 + 어두운 체크 라벨 */
+/* 뒷면(덱 · 뒤집기): 같은 셸 + 빨간 라벨 (맨 아래 마감에서 체크 제거) */
 [data-skin="pixel-fc-flat"] .card-back, [data-skin="pixel-fc-flat"] .draw__deck-card.card-back {
   overflow: visible; border: 3px solid var(--fc-line); border-radius: 0;
   background-color: var(--fc-cart); background-image: none; background-size: auto;
@@ -346,7 +348,7 @@
   background:
     linear-gradient(var(--fc-grip), var(--fc-grip)) 0 0 / 100% 3.4cqw no-repeat,
     repeating-conic-gradient(var(--fc-check) 0 25%, transparent 0 50%) 0 0 / 12px 12px,
-    #303030;
+    var(--flat-red);
 }
 [data-skin="pixel-fc-flat"] .draw__deck-face { color: var(--fc-cream); }
 [data-skin="pixel-fc-flat"] .draw__deck-hint { opacity: .7; }
@@ -368,8 +370,8 @@
 [data-skin="pixel-fc-flat"] .fc-fly .fc-fly__card { position: absolute; inset: 0; aspect-ratio: auto; transform: none; box-shadow: none; visibility: visible; }
 [data-skin="pixel-fc-flat"] .hero.fc-console.is-slot::after {
   content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 3;
-  width: min(300px, 36%); height: 18px; border: 3px solid #000; border-bottom: 0; border-radius: 4px 4px 0 0;
-  background: #101010; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
+  width: min(300px, 36%); height: 18px; border: 3px solid var(--flat-line); border-bottom: 0; border-radius: 4px 4px 0 0;
+  background: var(--flat-brown); box-shadow: inset 0 2px 0 var(--fc-shell-hi);
 }
 [data-skin="pixel-fc-flat"] .fc-slot {
   /* 상단바 바로 아래로 내려옵니다 (top 은 famicom.js 가 상단바 높이를 재서 넣습니다) —
@@ -388,12 +390,12 @@
 [data-skin="pixel-fc-flat"] .fc-boot {
   position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center;
   padding: 24px 32px; overflow: auto; color: var(--fc-cream);
-  background: #141414;
+  background: #314f59;
   animation: fcBootIn .18s steps(2, end);
 }
 [data-skin="pixel-fc-flat"] .fc-boot--full { position: fixed; z-index: 250; padding: 72px 24px 32px; }
 [data-skin="pixel-fc-flat"] .fc-boot.is-on { animation: fcOn .36s steps(3, end); }
-[data-skin="pixel-fc-flat"] .fc-boot__load { display: flex; gap: .4em; font-family: 'Galmuri11', monospace; font-size: clamp(14px, 1.6vw, 20px); letter-spacing: .04em; }
+[data-skin="pixel-fc-flat"] .fc-boot__load { display: flex; gap: .4em; font-family: var(--font-sans); font-size: clamp(14px, 1.6vw, 20px); letter-spacing: .04em; }
 [data-skin="pixel-fc-flat"] .fc-boot__c { animation: fcBlink .5s steps(1, end) infinite; }
 @keyframes fcBootIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes fcOn { 0% { opacity: .2; transform: scaleY(.04); } 50% { opacity: .7; transform: scaleY(1.02); } 100% { opacity: 1; transform: none; } }
@@ -406,38 +408,38 @@
 }
 [data-skin="pixel-fc-flat"] .fc-ov__art {
   position: relative; aspect-ratio: 3 / 2; overflow: hidden; container: gcard / inline-size;
-  border: 3px solid var(--fc-cream); background: #e5dbc2; box-shadow: 4px 4px 0 #000;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a; --ghost-c: #b8252b;
+  border: 3px solid var(--fc-cream); background: var(--flat-cream); box-shadow: 4px 4px 0 var(--flat-line);
+  --gen0: var(--flat-red); --gen1: var(--flat-line); --gen2: var(--flat-tan); --ghost-c: var(--flat-red);
 }
 [data-skin="pixel-fc-flat"] .fc-ov__art .gcard__gen svg { shape-rendering: crispEdges; }
-[data-skin="pixel-fc-flat"] .fc-ov__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-family: 'Galmuri11', monospace; font-size: 11px; letter-spacing: 0; }
+[data-skin="pixel-fc-flat"] .fc-ov__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0; }
 [data-skin="pixel-fc-flat"] .fc-ov__cat { padding: 3px 8px; border: 2px solid var(--fc-cream); }
-[data-skin="pixel-fc-flat"] .fc-ov__tag { color: #cfc6b0; }
-[data-skin="pixel-fc-flat"] .fc-ov__grade { padding: 3px 8px; background: #6b665c; color: #fff; }
-[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="R"] { background: #a3a3a3; color: #111; }
-[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="SR"] { background: var(--fc-gold); color: #111; }
-[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, #b8252b 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 #000; }
+[data-skin="pixel-fc-flat"] .fc-ov__tag { color: #c3d5d8; }
+[data-skin="pixel-fc-flat"] .fc-ov__grade { padding: 3px 8px; background: #9b795d; color: #fff; }
+[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="R"] { background: #adc5c8; color: var(--flat-brown); }
+[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="SR"] { background: var(--fc-gold); color: var(--flat-brown); }
+[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, var(--flat-red) 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 var(--flat-line); }
 [data-skin="pixel-fc-flat"] .fc-ov__t { margin: 10px 0 6px; font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 3vw, 40px); line-height: 1.12; letter-spacing: -.03em; color: var(--fc-cream); }
-[data-skin="pixel-fc-flat"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #d8d0bc; }
+[data-skin="pixel-fc-flat"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #eadfbc; }
 [data-skin="pixel-fc-flat"] .fc-ov__rows { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 16px 0 0; font-size: 13px; line-height: 1.4; }
-[data-skin="pixel-fc-flat"] .fc-ov__k { font-family: 'Galmuri11', monospace; font-size: 10px; letter-spacing: .06em; color: var(--fc-gold); align-self: center; }
+[data-skin="pixel-fc-flat"] .fc-ov__k { font-family: var(--font-sans); font-size: 10px; letter-spacing: .06em; color: var(--fc-gold); align-self: center; }
 [data-skin="pixel-fc-flat"] .fc-ov__v { color: var(--fc-cream); }
 [data-skin="pixel-fc-flat"] .fc-ov__q { margin: 14px 0 0; padding: 8px 12px; border-left: 3px solid var(--fc-gold); background: rgb(255 255 255 / .05); font-size: 13px; line-height: 1.5; color: var(--fc-cream); }
 [data-skin="pixel-fc-flat"] .fc-ov__q .fc-ov__k { margin-right: 6px; }
-[data-skin="pixel-fc-flat"] .fc-ov__arrow { color: #9c9484; }
-[data-skin="pixel-fc-flat"] .fc-ov__clear { margin-left: 6px; font-family: 'Galmuri11', monospace; font-size: 10px; color: #7ff0b0; }
+[data-skin="pixel-fc-flat"] .fc-ov__arrow { color: #c3d5d8; }
+[data-skin="pixel-fc-flat"] .fc-ov__clear { margin-left: 6px; font-family: var(--font-sans); font-size: 10px; color: #d8c79b; }
 [data-skin="pixel-fc-flat"] .fc-ov__btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 [data-skin="pixel-fc-flat"] .fc-ov__btn {
   display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; cursor: pointer;
   border: 3px solid var(--fc-cream); background: transparent; color: var(--fc-cream);
   font-family: var(--font-sans); font-size: 14px; font-weight: 700; letter-spacing: -.01em;
-  box-shadow: 4px 4px 0 #000; transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
+  box-shadow: 4px 4px 0 var(--flat-line); transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
 }
-[data-skin="pixel-fc-flat"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 0; background: var(--fc-cream); color: #111; font-family: 'Galmuri11', monospace; font-size: 10px; font-weight: 400; }
+[data-skin="pixel-fc-flat"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 0; background: var(--fc-cream); color: var(--flat-brown); font-family: var(--font-sans); font-size: 10px; font-weight: 400; }
 [data-skin="pixel-fc-flat"] .fc-ov__btn--go { background: var(--fc-grip); }
-[data-skin="pixel-fc-flat"] .fc-ov__btn:hover { background: var(--fc-cream); color: #111; }
+[data-skin="pixel-fc-flat"] .fc-ov__btn:hover { background: var(--fc-cream); color: var(--flat-brown); }
 [data-skin="pixel-fc-flat"] .fc-ov__btn--go:hover { background: var(--fc-grip-hi); color: var(--fc-cream); }
-[data-skin="pixel-fc-flat"] .fc-ov__btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+[data-skin="pixel-fc-flat"] .fc-ov__btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--flat-line); }
 [data-skin="pixel-fc-flat"] .fc-ov__btn:focus-visible { outline: 2px solid var(--fc-gold); outline-offset: 3px; }
 @media (max-width: 760px) {
   [data-skin="pixel-fc-flat"] .fc-boot { padding: 20px 18px; align-items: flex-start; }
@@ -448,9 +450,9 @@
 }
 @media (prefers-reduced-motion: reduce) { [data-skin="pixel-fc-flat"] .fc-boot, [data-skin="pixel-fc-flat"] .fc-boot.is-on { animation: none; } }
 
-/* ── 원본 패미컴 마감 ───────────────────────────────────────────────────
+/* ── 원본 패미컴 치수와 상호작용 ───────────────────────────────────────────────────
    물리 기기의 둥근 외곽·그립 폭·--fc-h·슬롯 위치는 위 규칙을 유지합니다.
-   화면 안 UI는 직각, 작은 조작 키는 4px 계단. 카드 안쪽 cqw 칸은 바꾸지 않습니다. */
+   아래에서 표면 마감을 덧입힙니다. 카드 안쪽 cqw 칸은 바꾸지 않습니다. */
 :root[data-skin="pixel-fc-flat"] {
   --bw: 3px;
   --fcc-edge: 2px;
@@ -462,7 +464,7 @@
 :root[data-skin="pixel-fc-flat"][data-theme="dark"] { --fcc-select: var(--fc-gold); }
 [data-skin="pixel-fc-flat"] :is(h1, h2, .proj-title) { font-weight: 900; }
 [data-skin="pixel-fc-flat"] :is(.strength__tag, .hpl-row__d, .hp-skill__t, .detail__period, .card__index, .steam__stats, .steam__table td, .sr-val) {
-  font-family: 'Galmuri11', 'Galmuri14', monospace;
+  font-family: var(--font-sans);
   font-variant-numeric: tabular-nums; letter-spacing: 0;
 }
 [data-skin="pixel-fc-flat"] :is(.badge, .tag, .tool, .store-link, .steam__sample, .play-card__hours, .fc-slot) { border-radius: 0; }
@@ -504,7 +506,7 @@
 /* 메뉴 선택: 위치가 흔들리지 않게 커서 자리를 미리 확보합니다.
    공통 클릭 핸들러와 카드 뽑기/꽂기 애니메이션은 그대로 둡니다. */
 [data-skin="pixel-fc-flat"] :is(a[href], button):not([aria-disabled="true"]):not(:disabled) {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%232b2b2b' d='M1 1h4v3h4v3h4v3h4v4h-4v3H9v3H5v3H1z'/%3E%3Cpath fill='%23f8f3e7' d='M3 4h2v3h4v3h4v4H9v3H5v3H3z'/%3E%3C/svg%3E") 1 1, pointer;
+  cursor: pointer;
 }
 [data-skin="pixel-fc-flat"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn) {
   position: relative; padding-inline: 24px 16px;
@@ -557,7 +559,7 @@
 }
 :root[data-skin="pixel-fc-flat"] .gcard::after {
   display: block; content: '▶'; position: absolute; inset: auto; right: 0; top: 1cqw; z-index: 2;
-  font: 400 5cqw 'Galmuri11', monospace; color: var(--fc-gold); background: var(--fc-cart);
+  font: 400 5cqw var(--font-sans); color: var(--fc-gold); background: var(--fc-cart);
   mix-blend-mode: normal; border-radius: 0; opacity: 0; transition: none;
 }
 [data-skin="pixel-fc-flat"] .proj-card:is(:hover, :focus-visible)::after,
@@ -606,7 +608,7 @@
 }
 [data-skin="pixel-fc-flat"] .hp-game__ic {
   grid-row: 1 / 3; position: relative; align-self: center; width: 60px; height: 72px; aspect-ratio: auto; margin: 0;
-  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: #b8252b;
+  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: var(--flat-red);
   box-shadow: 0 4px 0 var(--fc-line-2); overflow: visible;
 }
 [data-skin="pixel-fc-flat"] .hp-game__ic::before {
@@ -639,9 +641,9 @@
 [data-skin="pixel-fc-flat"] .play-card__top { flex-wrap: wrap; }
 [data-skin="pixel-fc-flat"] .play-card__hours { font-size: 11px; }
 [data-skin="pixel-fc-flat"] :is(.hero__grid > *, .strength, .play-card, .steam__body > *, .profile__row > *) { min-width: 0; }
-[data-skin="pixel-fc-flat"] .footer { background: #2b2b2b; border-top-width: 4px; }
-[data-skin="pixel-fc-flat"] .footer .btn { box-shadow: 4px 4px 0 #161616; }
-[data-skin="pixel-fc-flat"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 #161616; }
+[data-skin="pixel-fc-flat"] .footer { background: var(--flat-line); border-top-width: 4px; }
+[data-skin="pixel-fc-flat"] .footer .btn { box-shadow: 4px 4px 0 var(--flat-brown); }
+[data-skin="pixel-fc-flat"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 var(--flat-brown); }
 
 @media (max-width: 899px) {
   [data-skin="pixel-fc-flat"] .fcc-led { top: 4px; left: 28px; width: 6px; height: 6px; border-width: 0; }
@@ -692,7 +694,7 @@
 :root[data-skin="pixel-fc-flat"] .fcs-intro .hero__eyebrow { margin-bottom: 22px; }
 :root[data-skin="pixel-fc-flat"] .fcs-intro .hero__title { font-size: clamp(34px, 3.9vw + 4px, 60px); line-height: 1.14; letter-spacing: -.04em; word-break: keep-all; }
 :root[data-skin="pixel-fc-flat"] .fcs-intro .hero__sub { margin-top: 20px; }
-:root[data-skin="pixel-fc-flat"] .fcs-caption { margin: 30px 0 0; font: 400 11px/1.6 'Galmuri11', monospace; color: var(--text-muted); }
+:root[data-skin="pixel-fc-flat"] .fcs-caption { margin: 30px 0 0; font: 400 11px/1.6 var(--font-sans); color: var(--text-muted); }
 :root[data-skin="pixel-fc-flat"] .fcs-rig { position: relative; min-width: 0; transform-style: flat; }
 /* 게임기: 오른쪽 칸 폭에 맞춘 한 대 (원본은 화면 높이로 크기를 정하지만 여기선 고정) */
 :root[data-skin="pixel-fc-flat"] .fcs-rig > .hero { width: 100%; margin: 0; --fc-h: 380px; min-height: 380px; }
@@ -711,7 +713,7 @@
 /* 진열판: 게임기 바로 밑 */
 :root[data-skin="pixel-fc-flat"] .fcs-rig > .draw { padding: 0; margin-top: 30px; }
 :root[data-skin="pixel-fc-flat"] .fcs-rig > .draw > .wrap { width: 100%; max-width: none; padding: 0; }
-:root[data-skin="pixel-fc-flat"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, #ece2c9); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
+:root[data-skin="pixel-fc-flat"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, var(--flat-cream)); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
 @media (min-width: 900px) {
   :root[data-skin="pixel-fc-flat"] .fcs-stage { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.4fr); column-gap: 44px; align-items: start; }
   :root[data-skin="pixel-fc-flat"] .fcs-intro { margin: 0; padding-top: 110px; }
@@ -732,4 +734,179 @@
    투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
 @media (min-width: 720px) {
   [data-skin="pixel-fc-flat"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
+}
+
+/* ── 참고 ④ 표면 마감 ────────────────────────────────────────────────────
+   모든 기기 치수와 fcs-rig 변형은 위 원본 규칙에 둡니다.
+   사선은 반복 무늬가 아닌, 빨간 면마다 넓은 반투명 광택 두 줄입니다. */
+:root[data-skin="pixel-fc-flat"] {
+  --font-mono: var(--font-sans);
+  --fc-line: var(--flat-line); --fc-line-2: var(--flat-line);
+  --fc-shell: var(--flat-cream); --fc-shell-hi: var(--flat-paper);
+  --fc-grip: var(--flat-red); --fc-grip-hi: var(--flat-red-hi);
+  --fc-gold: var(--flat-tan); --fc-key: var(--flat-paper);
+  --fc-key-hi: var(--flat-cream); --fc-key-ring: var(--flat-line);
+  --fc-screen-a: var(--flat-paper); --fc-screen-b: var(--flat-cream);
+  --fc-cream: var(--flat-paper);
+  --fc-cart: var(--flat-cream); --fc-cart-hi: var(--flat-paper); --fc-label: var(--flat-paper);
+  --fcc-shadow: 3px 4px 0 var(--flat-shadow);
+  --deck-shadow: 3px 4px 0 var(--flat-shadow);
+  --fc-cart-shadow: 3px 4px 0 var(--flat-shadow);
+  --fc-cart-shadow-lift: 3px 6px 0 var(--flat-shadow);
+}
+:root[data-skin="pixel-fc-flat"][data-theme="dark"] {
+  --fc-line: var(--flat-line); --fc-line-2: var(--flat-line);
+  --fc-shell: #d5c7a6; --fc-shell-hi: var(--flat-cream);
+  --fc-grip: #b62132; --fc-grip-hi: var(--flat-red);
+  --fc-key: var(--flat-cream); --fc-key-hi: var(--flat-paper); --fc-key-ring: var(--flat-line);
+  --fc-cart: #d5c7a6; --fc-cart-hi: var(--flat-cream);
+  --fc-screen-a: #314f59; --fc-screen-b: #3d5b63;
+  --fc-cart-shadow: 3px 4px 0 var(--flat-shadow);
+  --fc-cart-shadow-lift: 3px 6px 0 var(--flat-shadow);
+}
+[data-skin="pixel-fc-flat"] :is(.nav__logo, .nav__logo-en, .fc-lbl, .fc-key, .fc-boot__load, .toast__mail, .sheet__num, .fcs-caption) {
+  font-family: var(--font-sans); font-weight: 600;
+}
+[data-skin="pixel-fc-flat"] :is(h1, h2, h3, h4, .gcard__name, .portrait__nm) { font-weight: 800; }
+:root[data-skin="pixel-fc-flat"] .fcs-caption { font-family: var(--font-sans); }
+[data-skin="pixel-fc-flat"] body::after { content: none; }
+[data-skin="pixel-fc-flat"] :is(.ghost svg, svg.ghost, .gcard__gen svg, .fc-ov__art .gcard__gen svg) { shape-rendering: geometricPrecision; stroke-linejoin: round; stroke-linecap: round; }
+
+/* 메뉴 · 버튼도 크림 플라스틱과 갈색 선. 하단 빨간 띠로 본체와 연결합니다. */
+[data-skin="pixel-fc-flat"] .nav {
+  background: var(--flat-cream); color: var(--flat-brown);
+  border-bottom: 3px solid var(--flat-line); box-shadow: 0 4px 0 rgb(97 58 21 / .12);
+}
+[data-skin="pixel-fc-flat"] :is(.nav__logo, .nav__link, .nav__logo-en, .icon-btn, .nav__burger, .lang-toggle__btn) { color: var(--flat-brown); }
+[data-skin="pixel-fc-flat"] .nav__logo .ghost { color: var(--flat-red); }
+[data-skin="pixel-fc-flat"] .nav__logo-en { opacity: .8; }
+[data-skin="pixel-fc-flat"] .nav__link { border-radius: 9px; }
+[data-skin="pixel-fc-flat"] .nav__link:is(:hover, :focus-visible) { background: #e9dabe; }
+[data-skin="pixel-fc-flat"] .nav__link.is-active {
+  color: var(--flat-paper); background: var(--flat-red); box-shadow: 0 2px 0 rgb(97 58 21 / .16);
+}
+[data-skin="pixel-fc-flat"] :is(.icon-btn, .nav__burger, .lang-toggle) { border: 2px solid var(--flat-line); border-radius: 9px; background: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] .lang-toggle__btn { border-radius: 6px; }
+[data-skin="pixel-fc-flat"] .lang-toggle__btn[aria-pressed="true"] { background: var(--flat-red); color: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] :is(.btn, .tab, .sheet__link, .fc-ov__btn, .fc-key, .icon-btn, .nav__burger, .lang-toggle__btn) {
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+[data-skin="pixel-fc-flat"] :is(.btn, .store-link, .link-more, .back-link, .to-top, .toast) { border-radius: 10px; }
+[data-skin="pixel-fc-flat"] :is(.badge, .tag, .tool, .play-card__hours, .quest-strip__badge, .steam__sample) { border-radius: 7px; }
+[data-skin="pixel-fc-flat"] .tabs { border-radius: 12px; overflow: hidden; box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-flat"] .tab { font-weight: 600; }
+[data-skin="pixel-fc-flat"] .tab.is-active { background: var(--accent); color: var(--bg); }
+[data-skin="pixel-fc-flat"] .sheet__panel { border-radius: 20px 0 0 20px; }
+[data-skin="pixel-fc-flat"] .sheet__link { border-bottom-style: solid; border-radius: 8px; }
+
+/* 기기 외곽의 곡률/크기, 버튼 위치는 그대로. 광택은 색면에만 그립니다. */
+:root[data-skin="pixel-fc-flat"] .hero,
+:root[data-skin="pixel-fc-flat"] .home-screen .hero {
+  box-shadow: 0 5px 0 var(--flat-shadow), inset 0 4px 0 var(--fc-shell-hi);
+}
+:root[data-skin="pixel-fc-flat"] .fc-grip { background: var(--flat-gloss) center / 100% 100% no-repeat, var(--fc-grip); }
+[data-skin="pixel-fc-flat"] .fc-grip--l { border-right-color: var(--flat-line); }
+[data-skin="pixel-fc-flat"] .fc-grip--r { border-left-color: var(--flat-line); }
+[data-skin="pixel-fc-flat"] .fc-grip::before,
+[data-skin="pixel-fc-flat"] .fc-grip::after { border-radius: 50%; background: var(--flat-line); border-color: #a34e43; }
+[data-skin="pixel-fc-flat"] .fcc-led { border-radius: 50%; background: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] .fcc-speaker i { border-radius: 2px; }
+[data-skin="pixel-fc-flat"] .fcf-band {
+  position: absolute; left: calc(var(--fc-grip-w) + 12px); right: calc(var(--fc-grip-w) + 12px);
+  height: 18px; border: 2px solid var(--flat-line); border-radius: 5px;
+  background: var(--flat-gloss) center / 100% 100% no-repeat, var(--fc-grip);
+}
+[data-skin="pixel-fc-flat"] .fcf-band--top { top: 12px; }
+[data-skin="pixel-fc-flat"] .fcf-band--bottom { bottom: 13px; height: 12px; right: calc(var(--fc-grip-w) + 72px); }
+:root[data-skin="pixel-fc-flat"] .fc-key { color: var(--flat-line); box-shadow: 0 3px 0 rgb(97 58 21 / .3); }
+:root[data-skin="pixel-fc-flat"] .fc-key:hover { background: var(--flat-cream); border-color: var(--flat-line); color: var(--flat-red); }
+:root[data-skin="pixel-fc-flat"] .fc-key:is(:active, .fcc-pressed) { box-shadow: 0 1px 0 rgb(97 58 21 / .3); }
+:root[data-skin="pixel-fc-flat"] .hero > .wrap { border-radius: 9px; }
+[data-skin="pixel-fc-flat"] :is(.hero__portrait, .portrait, .quip) { border-radius: 10px; }
+[data-skin="pixel-fc-flat"] .hero__eyebrow { border-radius: 9px; box-shadow: var(--fcc-shadow); }
+:root[data-skin="pixel-fc-flat"] .hero .btn { border-radius: 9px; box-shadow: 2px 3px 0 var(--flat-shadow); }
+:root[data-skin="pixel-fc-flat"] .hero .btn:is(:active, .fcc-pressed) { box-shadow: 1px 1px 0 var(--flat-shadow); }
+:root[data-skin="pixel-fc-flat"] .fcs-rig .draw__stage {
+  background: var(--fc-shell); border-radius: 13px; box-shadow: 4px 5px 0 var(--flat-shadow);
+}
+
+/* 카트리지: 단자/귀/라벨 칸(cqw)은 유지. 모든 등급의 띠는 빨강 + 광택 두 줄.
+   등급 구분은 기존 배지 색/문자로 유지합니다. 단자 간격은 장식이 아닌 부품입니다. */
+:root[data-skin="pixel-fc-flat"] .gcard,
+:root[data-skin="pixel-fc-flat"] .gcard:is([data-grade="A"], [data-grade="R"], [data-grade="SR"], [data-grade="SSR"]) {
+  --stripe: var(--flat-gloss), linear-gradient(var(--fc-grip), var(--fc-grip));
+  --badge-bg: var(--flat-cream); --badge-fg: var(--flat-brown);
+  border-radius: 7px;
+}
+:root[data-skin="pixel-fc-flat"] .gcard[data-grade="R"] { --badge-bg: #adc5c8; }
+:root[data-skin="pixel-fc-flat"] .gcard[data-grade="SR"] { --badge-bg: var(--flat-tan); }
+:root[data-skin="pixel-fc-flat"] .gcard[data-grade="SSR"] { --badge-bg: var(--flat-red); --badge-fg: var(--flat-paper); }
+:root[data-skin="pixel-fc-flat"] .gcard__frame {
+  --heading: var(--flat-brown); --text: #533627; --text-muted: #645444;
+  --accent: var(--flat-red); --ink: var(--flat-line); --border: var(--flat-line);
+  --cta: #f3d7c8; --cta-text: #a31c29; --bg-elev: var(--flat-cream); --surface-2: var(--flat-cream);
+  --gen0: var(--flat-red); --gen1: var(--flat-line); --gen2: #b68c49;
+  border-radius: 4cqw;
+  background: var(--flat-gloss) 0 0 / 100% 3.4cqw no-repeat,
+    linear-gradient(var(--fc-grip), var(--fc-grip)) 0 0 / 100% 3.4cqw no-repeat, var(--fc-label);
+}
+[data-skin="pixel-fc-flat"] :is(.gcard__art, .gcard__cat, .gcard__grade) { border-radius: 2.5cqw; }
+[data-skin="pixel-fc-flat"] .gcard__name { font-weight: 800; }
+:root[data-skin="pixel-fc-flat"] .card-back,
+:root[data-skin="pixel-fc-flat"] .draw__deck-card.card-back { border-radius: 7px; }
+:root[data-skin="pixel-fc-flat"] .card-back::before {
+  border-radius: 4cqw;
+  background: var(--flat-gloss) 0 0 / 100% 3.4cqw no-repeat,
+    linear-gradient(var(--flat-cream), var(--flat-cream)) 0 0 / 100% 3.4cqw no-repeat, var(--fc-grip);
+}
+[data-skin="pixel-fc-flat"] .draw__deck-face { color: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] .draw__deck-face .ghost { color: var(--flat-paper); }
+[data-skin="pixel-fc-flat"] .draw__deck-hint { opacity: .9; }
+:root[data-skin="pixel-fc-flat"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible),
+[data-skin="pixel-fc-flat"] .draw-card:is(:hover, :focus-visible) .gcard { animation: none; }
+
+/* 절 카드와 모든 하위 페이지: 같은 갈색 선 + 둥근 모서리 + 옅은 단색 그림자. */
+[data-skin="pixel-fc-flat"] :is(.card, .profile, .strength, .play-card, .pager__item, .quest-strip, .media-box, .steam, .hpl, .hp-skills, .hp-game, .cover-block, .detail__learned, .stat) {
+  border-radius: 15px; box-shadow: var(--fcc-shadow);
+}
+[data-skin="pixel-fc-flat"] .hpl-row:first-child { border-radius: 13px 13px 0 0; }
+[data-skin="pixel-fc-flat"] .hpl-row:last-child { border-radius: 0 0 13px 13px; }
+[data-skin="pixel-fc-flat"] :is(.hp-thumb, .hp-skill__ic, .tool__ic, .play-card__icon, .hp-game__ic) { border-radius: 9px; box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-flat"] .hp-game__ic { color: var(--flat-red); }
+[data-skin="pixel-fc-flat"] :is(.hp-h, .section__head, .proj-head) { border-bottom-color: var(--border); }
+[data-skin="pixel-fc-flat"] .hp-h::before { width: 9px; height: 15px; border-radius: 5px; background: var(--accent); box-shadow: none; }
+[data-skin="pixel-fc-flat"] .timeline::before { background: var(--border); border-radius: 2px; }
+[data-skin="pixel-fc-flat"] .tl-item::before { border-radius: 50%; }
+[data-skin="pixel-fc-flat"] .play-card__note { border-top-style: solid; }
+[data-skin="pixel-fc-flat"] :is(.media-box, .ghost-art) { background-image: none; }
+[data-skin="pixel-fc-flat"] .ghost-art::before { content: none; }
+
+/* 슬롯/부팅: 좌표와 층은 그대로 두고 색과 마감만 통일합니다. */
+[data-skin="pixel-fc-flat"] .fc-slot { border-radius: 0 0 26px 26px; box-shadow: 0 5px 0 var(--flat-shadow); }
+[data-skin="pixel-fc-flat"] .fc-slot::before,
+[data-skin="pixel-fc-flat"] .fc-slot::after { background: var(--flat-gloss), var(--fc-grip); border-color: var(--flat-line); }
+[data-skin="pixel-fc-flat"] .fc-boot { background: #314f59; animation-timing-function: ease-out; }
+[data-skin="pixel-fc-flat"] .fc-boot.is-on { animation-timing-function: ease-out; }
+[data-skin="pixel-fc-flat"] .fc-ov__art { border-radius: 10px; box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-flat"] :is(.fc-ov__cat, .fc-ov__grade) { border-radius: 6px; }
+[data-skin="pixel-fc-flat"] .fc-ov__grade[data-grade="SSR"] { background: var(--flat-red); text-shadow: none; }
+[data-skin="pixel-fc-flat"] .fc-ov__btn { border-color: var(--flat-tan); box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-flat"] .fc-ov__btn b { border-radius: 50%; }
+[data-skin="pixel-fc-flat"] .fc-ov__q { background: #3d5b63; border-radius: 5px; }
+:root[data-skin="pixel-fc-flat"] .footer {
+  background: var(--flat-cream); border-top: 4px solid var(--flat-red); color: var(--flat-brown);
+}
+[data-skin="pixel-fc-flat"] :is(.footer__brand, .footer__tagline, .footer__copy) { color: var(--flat-brown); opacity: 1; }
+:root[data-skin="pixel-fc-flat"] .footer .btn--outline {
+  background: var(--flat-paper); border-color: var(--flat-line); color: var(--flat-brown); box-shadow: var(--fcc-shadow);
+}
+@media (max-width: 899px) {
+  /* 기존 세로 휴대기 배치에서는 베젤이 얇으므로 사선은 아래 손잡이에 둡니다. */
+  [data-skin="pixel-fc-flat"] .fcf-band { display: none; }
+  [data-skin="pixel-fc-flat"] .fc-grip { border-top-color: var(--flat-line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="pixel-fc-flat"] *,
+  [data-skin="pixel-fc-flat"] *::before,
+  [data-skin="pixel-fc-flat"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

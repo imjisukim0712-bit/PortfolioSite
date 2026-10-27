@@ -1,5 +1,5 @@
 /* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-dot) 전용 스크립트
+   pixel-fc-dot.js — 참고 그림 ②의 패미컴 도트 시안
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-dot.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -95,7 +95,10 @@
     var hardware = document.createElement('span');
     hardware.className = 'fcc-hardware';
     hardware.setAttribute('aria-hidden', 'true');
-    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    /* 색면 장식만 추가합니다. 슬롯/버튼/사진/기울인 판의 좌표에는 관여하지 않습니다.
+       그림의 흰 계단 하이라이트, 검은 통풍구, 진홍·주황 띠를 베젤 안에 그립니다. */
+    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>' +
+      '<span class="fcd-highlight"></span><span class="fcd-vents"></span><span class="fcd-band"></span>';
     hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */

@@ -46,7 +46,12 @@
     status: { ko: '상태',          en: 'Status' },
     quest:  { ko: '퀘스트',        en: 'Quest' },
     cleared:{ ko: '달성',          en: 'Cleared' },
-    play:   { ko: '게임플레이',    en: 'Gameplay' }
+    play:   { ko: '게임플레이',    en: 'Gameplay' },
+    bpSelect: { ko: 'SELECT ◀▶ · 한마디', en: 'SELECT ◀▶ · QUIP' },
+    bpSections: { ko: 'SELECT ◀▶ · 절 이동', en: 'SELECT ◀▶ · SECTIONS' },
+    bpSlot: { ko: '카트리지 슬롯', en: 'CARTRIDGE SLOT' },
+    bpDeck: { ko: '01 · 프로젝트 덱', en: '01 · PROJECT DECK' },
+    bpTray: { ko: '02 · 카트리지 진열판', en: '02 · CARTRIDGE TRAY' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
@@ -103,6 +108,83 @@
     var la = document.querySelector('[data-fc-lbl="a"]'), lb = document.querySelector('[data-fc-lbl="b"]');
     if (la) { if (!la.getAttribute('data-orig')) la.setAttribute('data-orig', la.textContent); la.textContent = a || la.getAttribute('data-orig'); }
     if (lb) { if (!lb.getAttribute('data-orig')) lb.setAttribute('data-orig', lb.textContent); lb.textContent = b || lb.getAttribute('data-orig'); }
+    var label = document.querySelector('[data-bp-a]');
+    if (label) label.textContent = 'A · ' + (la ? la.textContent : t(T.draw));
+  }
+
+  /* 지시선은 기울인 판 안의 로컬 좌표로 잽니다. 슬롯/비행 좌표와 본체 치수에는
+     관여하지 않으며, 공용 fc-stage.js 가 배치를 마친 다음 프레임에 붙입니다. */
+  var blueprintRig = null, blueprintResize = null, blueprintFrame = 0;
+  function blueprint() {
+    if (!active()) return;
+    var rig = document.querySelector('.fcs-rig'), hero = rig && rig.querySelector('.hero');
+    if (!hero) return;
+    if (blueprintRig !== rig) {
+      if (blueprintResize) blueprintResize.disconnect();
+      blueprintRig = rig;
+      if (window.ResizeObserver) {
+        blueprintResize = new ResizeObserver(queueBlueprint);
+        blueprintResize.observe(rig);
+      }
+    }
+    var layer = rig.querySelector('.bp-diagram');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'bp-diagram';
+      layer.setAttribute('aria-hidden', 'true');
+      layer.innerHTML = '<svg class="bp-leaders" xmlns="http://www.w3.org/2000/svg"></svg>' +
+        '<span class="bp-note bp-note--select"></span><span class="bp-note bp-note--a" data-bp-a></span>' +
+        '<span class="bp-note bp-note--slot"></span><span class="bp-note bp-note--deck"></span>' +
+        '<span class="bp-note bp-note--tray"></span><span class="bp-year"><span>19</span><span>83</span></span>';
+      rig.appendChild(layer);
+    }
+    /* offsetParent 를 따라가므로 CSS perspective 로 변형된 화면 좌표를 역산하지 않습니다. */
+    function point(el, px, py) {
+      var x = el.offsetWidth * px, y = el.offsetHeight * py;
+      while (el && el !== rig) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+      return { x: x, y: y };
+    }
+    var w = rig.clientWidth, h = rig.clientHeight;
+    var mobile = window.innerWidth < 900;
+    var select = point(hero.querySelector('[data-fc-step]'), .5, .5);
+    var aKey = point(hero.querySelector('[data-fc-a]'), .5, .5);
+    var slot = point(hero, .5, 1);
+    var tray = rig.querySelector('.draw__stage'), deck = rig.querySelector('[data-draw]');
+    var paths = [];
+    function leader(p, bendX, endX, endY) {
+      paths.push('<path d="M' + p.x + ' ' + p.y + ' H' + bendX + ' V' + endY + ' H' + endX + '"/>' +
+        '<rect x="' + (p.x - 2) + '" y="' + (p.y - 2) + '" width="4" height="4"/>');
+    }
+    function note(cls, text, x, y) {
+      var el = layer.querySelector('.bp-note--' + cls);
+      el.textContent = text; el.style.left = x + 'px'; el.style.top = y + 'px';
+    }
+    note('select', t(hero.querySelector('[data-quip]') ? T.bpSelect : T.bpSections), 14, mobile ? -26 : -44);
+    note('a', 'A · ' + hero.querySelector('[data-fc-lbl="a"]').textContent, mobile ? w - 98 : w - 208, mobile ? -26 : -44);
+    leader(select, mobile ? 6 : -14, 34, mobile ? -10 : -27);
+    leader(aKey, mobile ? w - 6 : w + 8, mobile ? w - 38 : w - 140, mobile ? -10 : -27);
+    layer.querySelector('.bp-note--slot').hidden = !tray;
+    if (tray) {
+      note('slot', t(T.bpSlot), slot.x + 16, slot.y + 7);
+      leader(slot, slot.x, slot.x + 10, slot.y + 14);
+      var trayPoint = point(tray, .9, 1);
+      note('tray', t(T.bpTray), mobile ? Math.max(100, w - 210) : w - 220, h + 12);
+      leader(trayPoint, trayPoint.x, mobile ? w - 84 : w - 70, h + 28);
+      note('deck', t(T.bpDeck), 12, h + 12);
+      if (deck) leader(point(deck, .45, 1), mobile ? 16 : 8, 42, h + 28);
+    }
+    layer.querySelector('.bp-note--deck').hidden = !deck;
+    layer.querySelector('.bp-note--tray').hidden = !tray;
+    var year = layer.querySelector('.bp-year');
+    year.style.left = (w - (mobile ? 50 : 82)) + 'px';
+    year.style.top = (mobile ? h + 4 : -76) + 'px';
+    var svg = layer.querySelector('svg');
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.innerHTML = paths.join('');
+  }
+  function queueBlueprint() {
+    if (blueprintFrame) cancelAnimationFrame(blueprintFrame);
+    blueprintFrame = requestAnimationFrame(function () { blueprintFrame = 0; blueprint(); });
   }
 
   /* 페이지의 절(section) 목록 — 히어로를 뺀 나머지 */
@@ -369,11 +451,13 @@
   window.addEventListener('blur', releaseKeys);
 
   /* 다시 그려질 때마다 붙입니다 (main 의 직접 자식이 바뀌면). */
-  function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); }
+  function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); queueBlueprint(); }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
     if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
     scan();
+    window.addEventListener('resize', queueBlueprint);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueBlueprint);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

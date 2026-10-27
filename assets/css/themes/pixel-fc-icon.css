@@ -1,50 +1,60 @@
 @charset "UTF-8";
-/* 패미컴 · 정돈 — 원본 기기/카트리지 치수와 슬롯 좌표계를 유지합니다.
-   선: 2px(내용) / 3px(기기·창) / 4px(강조). 그림자는 번짐 없이 4px. */
+/* 패미컴 · 픽셀 아이콘 — 참고 ①의 칠과 선을 정돈 안의 구조 위에 입힙니다.
+   원본 기기·카트리지 치수, fcs-rig transform, 슬롯 좌표계는 유지합니다.
+   팔레트는 첨부 도트 그림의 대표색을 샘플링한 값. 명암은 단색 2~3단계,
+   체크 경계는 6px 이상. 사진에는 테두리 외의 효과를 적용하지 않습니다. */
 :root[data-skin="pixel-fc-icon"] {
-  --ink: #2b2b2b; --lo: #2b2b2b;
-  --bg: #efe6d2; --bg-elev: #e5dbc2; --surface: #f8f3e7; --surface-2: #e5dbc2;
-  --border: #2b2b2b; --border-2: #6b665c;
-  --text: #262626; --text-muted: #5f5a50; --heading: #161616;
-  --accent: #b8252b; --accent-soft: #d43a40;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --cta-hover: #eccbc0;
-  --ghost-c: #b8252b; --glow: rgb(184 37 43 / .2); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #f3dcd4; --buttercream: #f4e3b5; --blush: #f3dcd4; --cornflower: #2b2b2b; --mint: #b8252b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
-  --grade-r: #a3a3a3; --grade-sr: #e9b64a; --grade-ssr-a: #b8252b; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
+  --fci-navy: #050a24; --fci-blue: #0e1c35;
+  --fci-slate: #5e8994; --fci-slate-shade: #547782;
+  --fci-cream: #fae8c0; --fci-paper: #f4e8c5;
+  --fci-red: #b32634; --fci-red-shade: #86222b;
+  --fci-rust: #d0422e; --fci-orange: #f88e2f; --fci-peach: #f7bc7c;
+  --ink: var(--fci-navy); --lo: var(--fci-navy);
+  --bg: var(--fci-paper); --bg-elev: #e4d2a9;
+  --surface: var(--fci-cream); --surface-2: #e4d2a9;
+  --border: var(--fci-navy); --border-2: var(--fci-slate-shade);
+  --text: var(--fci-blue); --text-muted: #465665; --heading: var(--fci-navy);
+  --accent: var(--fci-red); --accent-soft: var(--fci-rust);
+  --cta: var(--fci-peach); --cta-text: var(--fci-red-shade); --cta-hover: var(--fci-orange);
+  --ghost-c: var(--fci-red); --glow: rgb(248 142 47 / .2); --btn-primary-text: var(--fci-cream);
+  --aubergine: var(--fci-red); --paper: var(--fci-cream); --periwinkle: var(--fci-orange);
+  --ghost-lavender: var(--fci-peach); --buttercream: var(--fci-cream); --blush: var(--fci-peach);
+  --cornflower: var(--fci-blue); --mint: var(--fci-red);
+  --gen0: var(--fci-red); --gen1: var(--fci-blue); --gen2: var(--fci-orange);
+  --grade-r: var(--fci-slate); --grade-sr: var(--fci-orange);
+  --grade-ssr-a: var(--fci-red); --grade-ssr-b: var(--fci-orange);
+  --title-shadow: none; --overlay: none; --deck-check: rgb(250 232 192 / .12);
+  --fci-sky-1: var(--fci-red); --fci-sky-2: var(--fci-rust);
+  --fci-sky-3: var(--fci-orange); --fci-sky-4: var(--fci-peach);
+  --fci-stage-ink: var(--fci-navy); --fci-stage-muted: var(--fci-blue);
   color-scheme: light;
 }
 :root[data-skin="pixel-fc-icon"][data-theme="dark"] {
-  --ink: #efe6d2; --lo: #b8252b;
-  --bg: #232323; --bg-elev: #2c2c2c; --surface: #2a2a2a; --surface-2: #363636;
-  --border: #efe6d2; --border-2: #8a857a;
-  --text: #efe6d2; --text-muted: #b3ab9b; --heading: #fbf3e4;
-  --accent: #e0373d; --accent-soft: #ee5c61;
-  --cta: #3a2426; --cta-text: #f0a3a6; --cta-hover: #4a2c2e;
-  --ghost-c: #e0373d; --glow: rgb(224 55 61 / .35); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #3a2426; --buttercream: #3f3620; --blush: #3a2426; --cornflower: #e9b64a; --mint: #e0373d;
-  --gen0: #e0373d; --gen1: #efe6d2; --gen2: #e9b64a;
-  --grade-r: #8a857a; --grade-sr: #e9b64a; --grade-ssr-a: #e0373d; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
+  --bg: var(--fci-blue); --bg-elev: #243c50;
+  --surface: #243c50; --surface-2: #315266;
+  --border: var(--fci-navy); --border-2: var(--fci-slate);
+  --text: var(--fci-cream); --text-muted: #c0cdd0; --heading: var(--fci-cream);
+  --accent: var(--fci-peach); --accent-soft: var(--fci-orange);
+  --cta: var(--fci-red-shade); --cta-text: var(--fci-cream); --cta-hover: var(--fci-red);
+  --ghost-c: var(--fci-orange); --glow: rgb(248 142 47 / .25);
+  --ghost-lavender: var(--fci-red-shade); --buttercream: #315266; --blush: var(--fci-red-shade);
+  --cornflower: var(--fci-peach); --mint: var(--fci-orange);
+  --gen0: var(--fci-orange); --gen1: var(--fci-cream); --gen2: var(--fci-slate);
+  --fci-sky-1: var(--fci-navy); --fci-sky-2: var(--fci-red-shade);
+  --fci-sky-3: var(--fci-red); --fci-sky-4: var(--fci-rust);
+  --fci-stage-ink: var(--fci-cream); --fci-stage-muted: var(--fci-cream);
   --shadow-card: none;
   color-scheme: dark;
 }
 /* 카트리지 라벨 같은 금색 줄 */
-[data-skin="pixel-fc-icon"] .nav { border-bottom-color: #e9b64a; box-shadow: 0 3px 0 #2b2b2b; }
-[data-skin="pixel-fc-icon"] .nav__link.is-active { background: #fbf3e4; color: #b8252b; }
-[data-skin="pixel-fc-icon"] .lang-toggle__btn[aria-pressed="true"] { background: #e9b64a; color: #2b2b2b; }
-:root[data-skin="pixel-fc-icon"] .gcard[data-grade="SSR"] { --badge-fg: #fbf3e4; }
-[data-skin="pixel-fc-icon"] .tag--cornflower { color: #fbf3e4; }
-[data-skin="pixel-fc-icon"][data-theme="dark"] .tag--cornflower { color: #232323; }
-[data-skin="pixel-fc-icon"] .footer { background: #2b2b2b; border-top-color: #e9b64a; }
-[data-skin="pixel-fc-icon"][data-theme="dark"] .footer { background: #b8252b; }
+[data-skin="pixel-fc-icon"] .nav { border-bottom-color: #f88e2f; box-shadow: 0 3px 0 #050a24; }
+[data-skin="pixel-fc-icon"] .nav__link.is-active { background: #fae8c0; color: #b32634; }
+[data-skin="pixel-fc-icon"] .lang-toggle__btn[aria-pressed="true"] { background: #f88e2f; color: #050a24; }
+:root[data-skin="pixel-fc-icon"] .gcard[data-grade="SSR"] { --badge-fg: #fae8c0; }
+[data-skin="pixel-fc-icon"] .tag--cornflower { color: #fae8c0; }
+[data-skin="pixel-fc-icon"][data-theme="dark"] .tag--cornflower { color: #0e1c35; }
+[data-skin="pixel-fc-icon"] .footer { background: #050a24; border-top-color: #f88e2f; }
+[data-skin="pixel-fc-icon"][data-theme="dark"] .footer { background: #b32634; }
 [data-skin="pixel-fc-icon"] .section--elev { background: var(--bg-elev); }
 
 /* ── 카트리지 라벨 타이포 ────────────────────────────────────────────────
@@ -93,13 +103,13 @@
    ────────────────────────────────────────────────────────────────────── */
 [data-skin="pixel-fc-icon"] {
   --hero-slab: transparent; --hero-slab-r: 0;
-  --fc-line: #2b2b2b; --fc-line-2: #161616;         /* 화면 테 · 본체 외곽선 */
-  --fc-shell: #2e2e2e; --fc-shell-hi: #3b3b3b;      /* 본체 */
-  --fc-grip: #8c1d22; --fc-grip-hi: #a3242a;        /* 손잡이 자주 */
-  --fc-gold: #e9b64a;                               /* 금색 줄 */
-  --fc-screen-a: #f8f1e1; --fc-screen-b: #ece2c9;   /* 액정 */
-  --fc-cream: #f6efe0;                              /* 손잡이 위 글자 */
-  --fc-key: #2b2b2b; --fc-key-hi: #505050; --fc-key-ring: #6d6d6d;  /* 버튼 */
+  --fc-line: #050a24; --fc-line-2: #050a24;         /* 화면 테 · 본체 외곽선 */
+  --fc-shell: var(--fci-cream); --fc-shell-hi: var(--fci-paper);      /* 본체 */
+  --fc-grip: #b32634; --fc-grip-hi: #d0422e;        /* 손잡이 자주 */
+  --fc-gold: #f88e2f;                               /* 금색 줄 */
+  --fc-screen-a: #f4e8c5; --fc-screen-b: #e4d2a9;   /* 액정 */
+  --fc-cream: #fae8c0;                              /* 손잡이 위 글자 */
+  --fc-key: #050a24; --fc-key-hi: #547782; --fc-key-ring: #5e8994;  /* 버튼 */
   --fc-grip-w: 72px;   /* 손잡이 폭 */
   --fc-bezel: 46px;    /* 화면 위아래 검은 베젤 */
   --fc-r: 64px;        /* 본체 모서리 */
@@ -108,11 +118,11 @@
   --fc-h: clamp(430px, calc(100svh - var(--nav-h) - 150px), 700px);
 }
 [data-skin="pixel-fc-icon"][data-theme="dark"] {
-  --fc-line: #0f0f0f; --fc-line-2: #050505;
-  --fc-shell: #1b1b1b; --fc-shell-hi: #262626;
-  --fc-grip: #6e161b; --fc-grip-hi: #841b21;
-  --fc-screen-a: #2d2d2d; --fc-screen-b: #1f1f1f;
-  --fc-key: #101010; --fc-key-hi: #3a3a3a; --fc-key-ring: #5a5a5a;
+  --fc-line: #050a24; --fc-line-2: #050a24;
+  --fc-shell: var(--fci-slate-shade); --fc-shell-hi: var(--fci-slate);
+  --fc-grip: #86222b; --fc-grip-hi: #b32634;
+  --fc-screen-a: #243c50; --fc-screen-b: #0e1c35;
+  --fc-key: #050a24; --fc-key-hi: #315266; --fc-key-ring: #5e8994;
 }
 
 /* 본체: 손잡이 | 화면 | 손잡이 */
@@ -169,7 +179,7 @@
 
 /* 화면 위 글자 — 크림 바탕이므로 본래의 어두운 색 · 강조와 칩·버튼만 자주 */
 [data-skin="pixel-fc-icon"] .hero__title .accent { color: var(--fc-grip); background: none; }
-[data-skin="pixel-fc-icon"][data-theme="dark"] .hero__title .accent { color: #ff6b70; }
+[data-skin="pixel-fc-icon"][data-theme="dark"] .hero__title .accent { color: #f7bc7c; }
 [data-skin="pixel-fc-icon"] .hero__eyebrow { background: var(--fc-grip); color: var(--fc-cream); border-color: var(--fc-line); box-shadow: 3px 3px 0 var(--fc-line); }
 [data-skin="pixel-fc-icon"] .hero__eyebrow .ghost { color: var(--fc-gold); }
 [data-skin="pixel-fc-icon"] .hero .btn--primary { background: var(--fc-grip); color: var(--fc-cream); border-color: var(--fc-line); box-shadow: 4px 4px 0 var(--fc-line); }
@@ -233,7 +243,7 @@
     display: block; content: ''; position: absolute; z-index: 3; inset: auto;
     top: 0; left: 50%; transform: translateX(-50%);
     width: min(168px, 44%); height: 13px;
-    background: #101010;
+    background: #050a24;
     border: 3px solid var(--fc-line-2); border-top: 0; border-radius: 0 0 11px 11px;
     box-shadow: inset 0 -2px 0 var(--fc-shell-hi);
   }
@@ -279,17 +289,17 @@
    치수는 자식(.gcard__frame)·가상 요소에서만 cqw 로 잽니다 — 카드 자신의 cqw 는 조상 컨테이너 기준이라 쓰지 않습니다.
    다크 모드에서도 라벨은 크림색 그대로이고, 라벨 안 글자색 토큰만 밝은 바탕용으로 다시 정합니다. */
 [data-skin="pixel-fc-icon"] {
-  --fc-cart: #383838; --fc-cart-hi: #474747;   /* 셸 */
+  --fc-cart: #547782; --fc-cart-hi: #5e8994;   /* 셸 */
   /* 정면 선택 반응과 함께 쓰는 단단한 셸 그림자 (기울기는 아래에서 고정). */
   --fc-cart-shadow: 4px 4px 0 var(--fc-line-2);
   --fc-cart-shadow-lift: 4px 6px 0 var(--fc-line-2);
-  --fc-label: #f8f3e7;                          /* 라벨 종이 */
+  --fc-label: #fae8c0;                          /* 라벨 종이 */
   --fc-check: rgb(255 255 255 / .07);           /* 뒷면 체크 */
 }
 [data-skin="pixel-fc-icon"][data-theme="dark"] {
-  --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a;
-  --fc-cart-shadow: 4px 4px 0 #050505;
-  --fc-cart-shadow-lift: 4px 6px 0 #050505;
+  --fc-cart: #315266; --fc-cart-hi: #315266;
+  --fc-cart-shadow: 4px 4px 0 #050a24;
+  --fc-cart-shadow-lift: 4px 6px 0 #050a24;
 }
 [data-skin="pixel-fc-icon"] .gcard {
   --stripe: linear-gradient(var(--fc-grip), var(--fc-grip));
@@ -329,11 +339,11 @@
 :root[data-skin="pixel-fc-icon"] .gcard[data-grade="SSR"].is-tilt { box-shadow: var(--fc-cart-shadow-lift) !important; }
 /* 다크 모드: 라벨은 크림 그대로 → 라벨 안 글자·칩·그림 색을 밝은 바탕용으로 */
 [data-skin="pixel-fc-icon"][data-theme="dark"] .gcard__frame {
-  --heading: #161616; --text: #262626; --text-muted: #5f5a50; --accent: #b8252b;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --bg-elev: #e5dbc2; --surface-2: #e5dbc2; --ink: #2b2b2b; --border: #2b2b2b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
+  --heading: #050a24; --text: #0e1c35; --text-muted: #465665; --accent: #b32634;
+  --cta: #f7bc7c; --cta-text: #86222b; --bg-elev: #e4d2a9; --surface-2: #e4d2a9; --ink: #050a24; --border: #050a24;
+  --gen0: #b32634; --gen1: #050a24; --gen2: #f88e2f;
 }
-:root[data-skin="pixel-fc-icon"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: #e5dbc2; --badge-fg: #262626; }
+:root[data-skin="pixel-fc-icon"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: #e4d2a9; --badge-fg: #0e1c35; }
 
 /* 뒷면(덱 · 뒤집기): 같은 셸 + 어두운 체크 라벨 */
 [data-skin="pixel-fc-icon"] .card-back, [data-skin="pixel-fc-icon"] .draw__deck-card.card-back {
@@ -346,7 +356,7 @@
   background:
     linear-gradient(var(--fc-grip), var(--fc-grip)) 0 0 / 100% 3.4cqw no-repeat,
     repeating-conic-gradient(var(--fc-check) 0 25%, transparent 0 50%) 0 0 / 12px 12px,
-    #303030;
+    #0e1c35;
 }
 [data-skin="pixel-fc-icon"] .draw__deck-face { color: var(--fc-cream); }
 [data-skin="pixel-fc-icon"] .draw__deck-hint { opacity: .7; }
@@ -369,7 +379,7 @@
 [data-skin="pixel-fc-icon"] .hero.fc-console.is-slot::after {
   content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 3;
   width: min(300px, 36%); height: 18px; border: 3px solid #000; border-bottom: 0; border-radius: 4px 4px 0 0;
-  background: #101010; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
+  background: #050a24; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
 }
 [data-skin="pixel-fc-icon"] .fc-slot {
   /* 상단바 바로 아래로 내려옵니다 (top 은 famicom.js 가 상단바 높이를 재서 넣습니다) —
@@ -388,7 +398,7 @@
 [data-skin="pixel-fc-icon"] .fc-boot {
   position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center;
   padding: 24px 32px; overflow: auto; color: var(--fc-cream);
-  background: #141414;
+  background: #0e1c35;
   animation: fcBootIn .18s steps(2, end);
 }
 [data-skin="pixel-fc-icon"] .fc-boot--full { position: fixed; z-index: 250; padding: 72px 24px 32px; }
@@ -406,26 +416,26 @@
 }
 [data-skin="pixel-fc-icon"] .fc-ov__art {
   position: relative; aspect-ratio: 3 / 2; overflow: hidden; container: gcard / inline-size;
-  border: 3px solid var(--fc-cream); background: #e5dbc2; box-shadow: 4px 4px 0 #000;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a; --ghost-c: #b8252b;
+  border: 3px solid var(--fc-cream); background: #e4d2a9; box-shadow: 4px 4px 0 #000;
+  --gen0: #b32634; --gen1: #050a24; --gen2: #f88e2f; --ghost-c: #b32634;
 }
 [data-skin="pixel-fc-icon"] .fc-ov__art .gcard__gen svg { shape-rendering: crispEdges; }
 [data-skin="pixel-fc-icon"] .fc-ov__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-family: 'Galmuri11', monospace; font-size: 11px; letter-spacing: 0; }
 [data-skin="pixel-fc-icon"] .fc-ov__cat { padding: 3px 8px; border: 2px solid var(--fc-cream); }
-[data-skin="pixel-fc-icon"] .fc-ov__tag { color: #cfc6b0; }
-[data-skin="pixel-fc-icon"] .fc-ov__grade { padding: 3px 8px; background: #6b665c; color: #fff; }
-[data-skin="pixel-fc-icon"] .fc-ov__grade[data-grade="R"] { background: #a3a3a3; color: #111; }
+[data-skin="pixel-fc-icon"] .fc-ov__tag { color: #c0cdd0; }
+[data-skin="pixel-fc-icon"] .fc-ov__grade { padding: 3px 8px; background: #547782; color: #fff; }
+[data-skin="pixel-fc-icon"] .fc-ov__grade[data-grade="R"] { background: #5e8994; color: #111; }
 [data-skin="pixel-fc-icon"] .fc-ov__grade[data-grade="SR"] { background: var(--fc-gold); color: #111; }
-[data-skin="pixel-fc-icon"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, #b8252b 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 #000; }
+[data-skin="pixel-fc-icon"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, #b32634 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 #000; }
 [data-skin="pixel-fc-icon"] .fc-ov__t { margin: 10px 0 6px; font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 3vw, 40px); line-height: 1.12; letter-spacing: -.03em; color: var(--fc-cream); }
-[data-skin="pixel-fc-icon"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #d8d0bc; }
+[data-skin="pixel-fc-icon"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #fae8c0; }
 [data-skin="pixel-fc-icon"] .fc-ov__rows { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 16px 0 0; font-size: 13px; line-height: 1.4; }
 [data-skin="pixel-fc-icon"] .fc-ov__k { font-family: 'Galmuri11', monospace; font-size: 10px; letter-spacing: .06em; color: var(--fc-gold); align-self: center; }
 [data-skin="pixel-fc-icon"] .fc-ov__v { color: var(--fc-cream); }
 [data-skin="pixel-fc-icon"] .fc-ov__q { margin: 14px 0 0; padding: 8px 12px; border-left: 3px solid var(--fc-gold); background: rgb(255 255 255 / .05); font-size: 13px; line-height: 1.5; color: var(--fc-cream); }
 [data-skin="pixel-fc-icon"] .fc-ov__q .fc-ov__k { margin-right: 6px; }
-[data-skin="pixel-fc-icon"] .fc-ov__arrow { color: #9c9484; }
-[data-skin="pixel-fc-icon"] .fc-ov__clear { margin-left: 6px; font-family: 'Galmuri11', monospace; font-size: 10px; color: #7ff0b0; }
+[data-skin="pixel-fc-icon"] .fc-ov__arrow { color: #5e8994; }
+[data-skin="pixel-fc-icon"] .fc-ov__clear { margin-left: 6px; font-family: 'Galmuri11', monospace; font-size: 10px; color: #f7bc7c; }
 [data-skin="pixel-fc-icon"] .fc-ov__btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 [data-skin="pixel-fc-icon"] .fc-ov__btn {
   display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; cursor: pointer;
@@ -606,7 +616,7 @@
 }
 [data-skin="pixel-fc-icon"] .hp-game__ic {
   grid-row: 1 / 3; position: relative; align-self: center; width: 60px; height: 72px; aspect-ratio: auto; margin: 0;
-  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: #b8252b;
+  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: #b32634;
   box-shadow: 0 4px 0 var(--fc-line-2); overflow: visible;
 }
 [data-skin="pixel-fc-icon"] .hp-game__ic::before {
@@ -639,9 +649,9 @@
 [data-skin="pixel-fc-icon"] .play-card__top { flex-wrap: wrap; }
 [data-skin="pixel-fc-icon"] .play-card__hours { font-size: 11px; }
 [data-skin="pixel-fc-icon"] :is(.hero__grid > *, .strength, .play-card, .steam__body > *, .profile__row > *) { min-width: 0; }
-[data-skin="pixel-fc-icon"] .footer { background: #2b2b2b; border-top-width: 4px; }
-[data-skin="pixel-fc-icon"] .footer .btn { box-shadow: 4px 4px 0 #161616; }
-[data-skin="pixel-fc-icon"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 #161616; }
+[data-skin="pixel-fc-icon"] .footer { background: #050a24; border-top-width: 4px; }
+[data-skin="pixel-fc-icon"] .footer .btn { box-shadow: 4px 4px 0 #050a24; }
+[data-skin="pixel-fc-icon"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 #050a24; }
 
 @media (max-width: 899px) {
   [data-skin="pixel-fc-icon"] .fcc-led { top: 4px; left: 28px; width: 6px; height: 6px; border-width: 0; }
@@ -711,7 +721,7 @@
 /* 진열판: 게임기 바로 밑 */
 :root[data-skin="pixel-fc-icon"] .fcs-rig > .draw { padding: 0; margin-top: 30px; }
 :root[data-skin="pixel-fc-icon"] .fcs-rig > .draw > .wrap { width: 100%; max-width: none; padding: 0; }
-:root[data-skin="pixel-fc-icon"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, #ece2c9); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
+:root[data-skin="pixel-fc-icon"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, #e4d2a9); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
 @media (min-width: 900px) {
   :root[data-skin="pixel-fc-icon"] .fcs-stage { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.4fr); column-gap: 44px; align-items: start; }
   :root[data-skin="pixel-fc-icon"] .fcs-intro { margin: 0; padding-top: 110px; }
@@ -732,4 +742,242 @@
    투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
 @media (min-width: 720px) {
   [data-skin="pixel-fc-icon"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
+}
+
+/* =======================================================================
+   참고 ① 마감 — 칠·테두리·큰 도트만 변경. 구도/슬롯/카드 칸은 위 규칙 유지.
+   장식은 전부 비상호작용 요소이며 게임기 판의 바깥에 있습니다.
+   ======================================================================= */
+[data-skin="pixel-fc-icon"] body {
+  background: var(--bg);
+}
+
+/* 노을 무대: 보간 없는 네 색 띠 + 6px 체크 디더 + 청회색 액자.
+   frame은 absolute라 stage의 그리드, 높이, 기울기 계산에 참여하지 않습니다. */
+[data-skin="pixel-fc-icon"] .fcs-stage { isolation: isolate; }
+[data-skin="pixel-fc-icon"] .fci-scenery {
+  position: absolute; inset: 18px -24px 6px; z-index: -1;
+  overflow: hidden; pointer-events: none;
+  background: linear-gradient(to bottom,
+    var(--fci-sky-1) 0 22%, var(--fci-sky-2) 22% 40%,
+    var(--fci-sky-3) 40% 68%, var(--fci-sky-4) 68% 100%);
+  box-shadow: inset 0 0 0 4px var(--fci-navy),
+    inset 0 0 0 8px var(--fci-cream),
+    inset 0 0 0 12px var(--fci-slate),
+    inset 0 0 0 16px var(--fci-navy);
+  clip-path: polygon(0 24px, 8px 24px, 8px 8px, 24px 8px, 24px 0,
+    calc(100% - 24px) 0, calc(100% - 24px) 8px, calc(100% - 8px) 8px,
+    calc(100% - 8px) 24px, 100% 24px, 100% calc(100% - 24px),
+    calc(100% - 8px) calc(100% - 24px), calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 24px) calc(100% - 8px), calc(100% - 24px) 100%,
+    24px 100%, 24px calc(100% - 8px), 8px calc(100% - 8px),
+    8px calc(100% - 24px), 0 calc(100% - 24px));
+}
+[data-skin="pixel-fc-icon"] .fci-dither {
+  position: absolute; left: 16px; right: 16px; height: 24px;
+  background: repeating-conic-gradient(var(--fci-band) 0 25%, transparent 0 50%) 0 0 / 12px 12px;
+}
+[data-skin="pixel-fc-icon"] .fci-dither--1 { top: calc(22% - 24px); --fci-band: var(--fci-sky-2); }
+[data-skin="pixel-fc-icon"] .fci-dither--2 { top: calc(40% - 24px); --fci-band: var(--fci-sky-3); }
+[data-skin="pixel-fc-icon"] .fci-dither--3 { top: calc(68% - 24px); --fci-band: var(--fci-sky-4); }
+[data-skin="pixel-fc-icon"] .fcs-intro {
+  --heading: var(--fci-stage-ink); --text: var(--fci-stage-ink);
+  --text-muted: var(--fci-stage-muted);
+}
+[data-skin="pixel-fc-icon"] .fcs-intro .hero__title { text-shadow: 0 3px 0 var(--fci-peach); }
+[data-skin="pixel-fc-icon"] .fcs-intro .hero__title .accent {
+  color: var(--fci-cream); text-shadow: 3px 3px 0 var(--fci-navy);
+}
+[data-skin="pixel-fc-icon"][data-theme="dark"] .fcs-intro .hero__title { text-shadow: 3px 3px 0 var(--fci-navy); }
+[data-skin="pixel-fc-icon"] .fcs-intro .hero__eyebrow {
+  background: var(--fci-navy); color: var(--fci-cream);
+  border-color: var(--fci-navy); box-shadow: 4px 4px 0 var(--fci-orange);
+}
+[data-skin="pixel-fc-icon"] .fcs-caption { color: var(--fci-stage-muted); }
+
+/* 액자의 크림 테와 청회색 음영을 메뉴·하단에도 이어 줍니다. */
+[data-skin="pixel-fc-icon"] .nav {
+  background: var(--fci-navy); color: var(--fci-cream);
+  border-bottom-color: var(--fci-slate);
+  box-shadow: 0 4px 0 var(--fci-cream), 0 8px 0 var(--fci-navy);
+}
+[data-skin="pixel-fc-icon"] .nav__link { color: var(--fci-cream); }
+[data-skin="pixel-fc-icon"] .nav__link.is-active {
+  background: var(--fci-red); color: var(--fci-cream);
+  box-shadow: inset 0 -4px 0 var(--fci-orange);
+}
+[data-skin="pixel-fc-icon"] .nav :is(.lang-toggle, .icon-btn, .nav__burger) { border-color: var(--fci-slate); }
+[data-skin="pixel-fc-icon"] .lang-toggle__btn[aria-pressed="true"] {
+  background: var(--fci-orange); color: var(--fci-navy);
+}
+
+/* 같은 셸·그립·버튼에 크림/주홍/주황의 면 명암만 입힙니다. */
+[data-skin="pixel-fc-icon"] .hero,
+[data-skin="pixel-fc-icon"] .home-screen .hero {
+  box-shadow: 0 8px 0 var(--fci-navy),
+    inset 0 6px 0 var(--fc-shell-hi), inset 0 -10px 0 var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] .fc-grip {
+  background:
+    repeating-conic-gradient(var(--fci-orange) 0 25%, transparent 0 50%)
+      0 78% / 12px 12px repeat-x,
+    linear-gradient(to bottom, var(--fc-grip) 0 58%, var(--fci-rust) 58% 80%, var(--fci-orange) 80% 100%);
+  box-shadow: inset 6px 0 0 var(--fci-rust), inset -6px 0 0 var(--fci-red-shade), inset 0 -8px 0 var(--fci-red-shade);
+}
+[data-skin="pixel-fc-icon"] .fc-grip--r {
+  background:
+    repeating-conic-gradient(var(--fci-orange) 0 25%, transparent 0 50%)
+      0 58% / 12px 12px repeat-x,
+    linear-gradient(to bottom, var(--fc-grip) 0 32%, var(--fci-rust) 32% 60%, var(--fci-orange) 60% 100%);
+}
+[data-skin="pixel-fc-icon"] .fc-grip .fc-lbl {
+  background: var(--fci-navy); color: var(--fci-cream);
+  box-shadow: 3px 0 0 var(--fci-navy), -3px 0 0 var(--fci-navy);
+}
+[data-skin="pixel-fc-icon"] .fc-key { color: var(--fci-cream); background: var(--fci-blue); }
+[data-skin="pixel-fc-icon"] .fc-key:hover { background: var(--fci-navy); }
+[data-skin="pixel-fc-icon"] .hero > .wrap {
+  box-shadow: inset 0 0 0 4px var(--fc-screen-b), inset 0 8px 0 var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"][data-theme="dark"] .hero > .wrap {
+  box-shadow: inset 0 0 0 4px var(--fc-screen-b), inset 0 8px 0 var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] .portrait {
+  border-color: var(--fci-navy);
+  box-shadow: 4px 4px 0 var(--fci-navy), 0 0 0 4px var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] .hero__portrait .portrait {
+  box-shadow: 0 0 0 4px var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] .quip {
+  border-color: var(--fci-navy); background: var(--surface);
+  box-shadow: 4px 4px 0 var(--fci-navy), inset 0 4px 0 var(--fci-peach);
+}
+[data-skin="pixel-fc-icon"] .hero .btn {
+  background: var(--fci-red); color: var(--fci-cream);
+  box-shadow: 4px 4px 0 var(--fci-navy), inset 0 -4px 0 var(--fci-red-shade);
+}
+[data-skin="pixel-fc-icon"] .hero .btn:hover { background: var(--fci-red-shade); }
+[data-skin="pixel-fc-icon"] .fcc-led { background: var(--fci-orange); }
+
+/* 진열판·덱·카트리지: 청회색 셸과 크림 라벨, 단자와 귀는 원래 모양. */
+:root[data-skin="pixel-fc-icon"] .fcs-rig .draw__stage {
+  background: var(--fci-slate);
+  box-shadow: 6px 6px 0 var(--fci-navy), inset 0 6px 0 var(--fci-cream), inset 0 -8px 0 var(--fci-slate-shade);
+}
+[data-skin="pixel-fc-icon"] .gcard,
+[data-skin="pixel-fc-icon"] .card-back {
+  background-color: var(--fc-cart);
+  background-image: linear-gradient(90deg, var(--fc-cart-hi) 0 6px, transparent 6px calc(100% - 6px), var(--fci-blue) calc(100% - 6px));
+}
+:root[data-skin="pixel-fc-icon"] .gcard__frame {
+  --heading: var(--fci-navy); --text: var(--fci-blue); --text-muted: #465665;
+  --accent: var(--fci-red); --cta: var(--fci-peach); --cta-text: var(--fci-red-shade);
+  --bg-elev: #e4d2a9; --surface-2: #e4d2a9;
+  --ink: var(--fci-navy); --border: var(--fci-navy);
+  --gen0: var(--fci-red); --gen1: var(--fci-blue); --gen2: var(--fci-orange);
+}
+[data-skin="pixel-fc-icon"] .gcard__art { background: var(--fci-orange); }
+[data-skin="pixel-fc-icon"] .gcard__gen > svg {
+  --fci-art-top: var(--fci-red); --fci-art-mid: var(--fci-rust); --fci-art-floor: var(--fci-orange);
+}
+[data-skin="pixel-fc-icon"] .gcard__gen--1 > svg { --fci-art-top: var(--fci-blue); --fci-art-mid: var(--fci-slate-shade); --fci-art-floor: var(--fci-slate); }
+[data-skin="pixel-fc-icon"] .gcard__gen--2 > svg { --fci-art-top: var(--fci-rust); --fci-art-mid: var(--fci-orange); --fci-art-floor: var(--fci-peach); }
+[data-skin="pixel-fc-icon"] .gcard__mark { color: var(--fci-navy); opacity: 1; }
+[data-skin="pixel-fc-icon"] .card-back::before {
+  background:
+    linear-gradient(var(--fci-orange), var(--fci-orange)) 0 0 / 100% 3.4cqw no-repeat,
+    repeating-conic-gradient(var(--fc-check) 0 25%, transparent 0 50%) 0 0 / 16px 16px,
+    var(--fci-blue);
+  box-shadow: inset 0 0 0 4px var(--fci-slate-shade);
+}
+[data-skin="pixel-fc-icon"] .draw__deck-face .ghost { color: var(--fci-orange); }
+[data-skin="pixel-fc-icon"] .draw__deck-hint { opacity: 1; color: var(--fci-cream); }
+:root[data-skin="pixel-fc-icon"] .gcard[data-grade="R"] { --badge-bg: var(--fci-slate); --badge-fg: var(--fci-navy); }
+:root[data-skin="pixel-fc-icon"] .gcard[data-grade="SR"] { --badge-bg: var(--fci-orange); --badge-fg: var(--fci-navy); }
+:root[data-skin="pixel-fc-icon"] .gcard[data-grade="SSR"] { --badge-bg: var(--fci-red); --badge-fg: var(--fci-cream); }
+
+/* 절·정보 카드·하위 페이지에도 액자 테와 두 단계 명암을 반복합니다. */
+[data-skin="pixel-fc-icon"] :is(.hpl, .hp-skills, .strength, .hp-game, .card, .profile, .play-card, .pager__item, .cover-block, .detail__learned, .steam, .sheet__panel) {
+  background-color: var(--surface); border-color: var(--fci-navy);
+  box-shadow: 4px 4px 0 var(--fci-navy), inset 0 5px 0 var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] :is(.hp-h, .section__head, .proj-head) { border-bottom-color: var(--fci-slate); }
+[data-skin="pixel-fc-icon"] :is(.section__head, .proj-head) {
+  background: linear-gradient(90deg, var(--fci-red) 0 34%, var(--fci-rust) 34% 66%, var(--fci-orange) 66%)
+    left bottom / 100% 6px no-repeat;
+}
+[data-skin="pixel-fc-icon"] .hp-h::before {
+  background: var(--fci-red); box-shadow: 4px -4px 0 var(--fci-orange), -4px 4px 0 var(--fci-navy);
+}
+[data-skin="pixel-fc-icon"] :is(.hp-thumb, .play-card__icon) {
+  background: var(--fci-peach); border-color: var(--fci-navy); color: var(--fci-red);
+}
+[data-skin="pixel-fc-icon"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
+[data-skin="pixel-fc-icon"] .strength__tag { border-bottom-color: var(--fci-slate); }
+[data-skin="pixel-fc-icon"] :is(.btn--primary, .hp-more) {
+  background: var(--fci-red); color: var(--fci-cream); border-color: var(--fci-navy);
+  box-shadow: 4px 4px 0 var(--fci-navy), inset 0 -4px 0 var(--fci-red-shade);
+}
+[data-skin="pixel-fc-icon"] :is(.btn--primary, .hp-more):hover { background: var(--fci-red-shade); color: var(--fci-cream); }
+[data-skin="pixel-fc-icon"] .tab.is-active { background: var(--fci-red); color: var(--fci-cream); }
+[data-skin="pixel-fc-icon"] .quest-strip__k { background: var(--fci-red); color: var(--fci-cream); }
+[data-skin="pixel-fc-icon"] .quest-strip__badge { background: var(--fci-orange); color: var(--fci-navy); }
+[data-skin="pixel-fc-icon"] .fc-boot {
+  background: var(--fci-blue);
+  box-shadow: inset 0 0 0 4px var(--fci-slate);
+}
+[data-skin="pixel-fc-icon"] .fc-ov__art {
+  background: var(--fci-peach); border-color: var(--fci-slate);
+  box-shadow: 4px 4px 0 var(--fci-navy);
+}
+[data-skin="pixel-fc-icon"] .fc-ov__btn--go { background: var(--fci-red); }
+[data-skin="pixel-fc-icon"] .footer,
+[data-skin="pixel-fc-icon"][data-theme="dark"] .footer {
+  background: var(--fci-blue); border-top-color: var(--fci-slate);
+  box-shadow: 0 -4px 0 var(--fci-navy), inset 0 4px 0 var(--fci-cream);
+}
+[data-skin="pixel-fc-icon"] .footer .ghost { color: var(--fci-orange); }
+[data-skin="pixel-fc-icon"] .footer .btn { background: var(--fci-navy); border-color: var(--fci-slate); }
+[data-skin="pixel-fc-icon"] .to-top { background: var(--fci-red); color: var(--fci-cream); border-color: var(--fci-navy); }
+
+@media (min-width: 900px) {
+  /* 참고 컨트롤러 위의 주황 창과 빨간 두 줄을 베젤의 인쇄 패널로.
+     셸 내부 장식이며 본체 실루엣·슬롯·전원등을 건드리지 않습니다. */
+  [data-skin="pixel-fc-icon"] .hero::before {
+    display: block; content: ''; position: absolute; z-index: 2;
+    inset: 12px auto auto 50%; transform: translateX(-50%);
+    width: 108px; height: 22px; pointer-events: none;
+    border: 3px solid var(--fci-navy); border-radius: 0;
+    background:
+      linear-gradient(var(--fci-rust), var(--fci-rust)) 50% 3px / 72px 4px no-repeat,
+      linear-gradient(var(--fci-red-shade), var(--fci-red-shade)) 50% 10px / 72px 4px no-repeat,
+      var(--fci-orange);
+    box-shadow: 4px 4px 0 var(--fci-slate);
+  }
+}
+@media (max-width: 899px) {
+  /* 접히는 조작부도 기존 정돈 안의 치수·자리를 유지합니다. */
+  [data-skin="pixel-fc-icon"] .fc-grip {
+    background: linear-gradient(to bottom, var(--fc-grip) 0 50%, var(--fci-rust) 50% 78%, var(--fci-orange) 78%);
+  }
+}
+@media (max-width: 700px) {
+  [data-skin="pixel-fc-icon"] .fci-scenery {
+    inset: 10px 4px 6px;
+    box-shadow: inset 0 0 0 4px var(--fci-navy), inset 0 0 0 8px var(--fci-cream),
+      inset 0 0 0 12px var(--fci-slate), inset 0 0 0 16px var(--fci-navy);
+    clip-path: polygon(0 12px, 4px 12px, 4px 4px, 12px 4px, 12px 0,
+      calc(100% - 12px) 0, calc(100% - 12px) 4px, calc(100% - 4px) 4px,
+      calc(100% - 4px) 12px, 100% 12px, 100% calc(100% - 12px),
+      calc(100% - 4px) calc(100% - 12px), calc(100% - 4px) calc(100% - 4px),
+      calc(100% - 12px) calc(100% - 4px), calc(100% - 12px) 100%,
+      12px 100%, 12px calc(100% - 4px), 4px calc(100% - 4px),
+      4px calc(100% - 12px), 0 calc(100% - 12px));
+  }
+  [data-skin="pixel-fc-icon"] .fci-dither { left: 16px; right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="pixel-fc-icon"] :is(.hero__portrait, .hp-more, .to-top) { transition: none; }
+  [data-skin="pixel-fc-icon"] .fc-boot { animation: none; }
 }

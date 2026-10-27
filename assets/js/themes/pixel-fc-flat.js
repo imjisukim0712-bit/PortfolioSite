@@ -1,5 +1,5 @@
 /* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-flat) 전용 스크립트
+   pixel-fc-flat.js — 참고 ④ 둥근 플랫 일러스트 시안 전용 스크립트
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-flat.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -51,7 +51,7 @@
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
   var MAIL_SVG = '<svg viewBox="0 0 18 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">' +
-    '<rect x="1" y="1.6" width="16" height="11" /><path d="m1.6 2.4 7.4 5.6 7.4-5.6" stroke-linejoin="round"/></svg>';
+    '<rect x="1" y="1.6" width="16" height="11" rx="2" /><path d="m1.6 2.4 7.4 5.6 7.4-5.6" stroke-linejoin="round"/></svg>';
 
   function lang() {
     var v = window.PortfolioApp && window.PortfolioApp.getLang ? window.PortfolioApp.getLang() : document.documentElement.getAttribute('lang');
@@ -95,7 +95,8 @@
     var hardware = document.createElement('span');
     hardware.className = 'fcc-hardware';
     hardware.setAttribute('aria-hidden', 'true');
-    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    /* 베젤 위 색 띠: aria-hidden 부모 안의 비상호작용 장식이며 슬롯/좌표는 건드리지 않습니다. */
+    hardware.innerHTML = '<span class="fcf-band fcf-band--top"></span><span class="fcf-band fcf-band--bottom"></span><span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
     hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */
