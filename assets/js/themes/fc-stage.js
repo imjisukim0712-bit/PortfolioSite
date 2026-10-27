@@ -14,7 +14,8 @@
   'use strict';
   if (window.__portfolioFcStage) return;
   window.__portfolioFcStage = true;
-  var SKINS = { 'pixel-fc-classic': 1, 'pixel-fc-px3d': 1, 'pixel-fc-voxel': 1 };
+  var SKINS = { 'pixel-fc-classic': 1, 'pixel-fc-px3d': 1, 'pixel-fc-voxel': 1,
+                'pixel-fc-icon': 1, 'pixel-fc-dot': 1, 'pixel-fc-blueprint': 1, 'pixel-fc-flat': 1, 'pixel-fc-ukiyo': 1 };
   var CAPTION = { ko: '카트리지를 골라 꽂으면 게임기 화면에 프로젝트가 켜집니다', en: 'Pick a cartridge and slot it in to boot the project on screen' };
 
   function active() { return !!SKINS[document.documentElement.getAttribute('data-skin')]; }
