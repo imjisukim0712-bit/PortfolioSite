@@ -109,21 +109,42 @@
     } });
   }
 
-  /* ── ⑨ 크라프트: 기념 포스터의 2색 평면 — 크림 몸통, 진홍 손잡이 면, 진홍 화면 테 ── */
+  /* ── ⑨ 크라프트: 기념 포스터의 2색 — 크림 몸통, 진홍 손잡이 · 화면 테.
+     평면만으로는 크라프트 바탕에 묻혀서 입체를 더했습니다: 아래로 두께 한 겹(viewBox 밖 500–528, svg overflow 로 보임) ·
+     윗면 밝은 띠 · 손잡이 둥근 면 그늘 · 화면이 안으로 들어간 그늘. 바닥 그림자는 CSS(drop-shadow). ── */
   function kraftArt() {
-    var CR = '#f5ebd6', LIP = '#e5cda8', RD = '#a3203a', SC = '#fffaf0';
-    var s = '<defs><clipPath id="fcb-k-body"><rect x="0" y="0" width="1000" height="500" rx="96"/></clipPath></defs>';
-    s += '<rect x="0" y="0" width="1000" height="500" rx="96" fill="' + CR + '"/>';
+    var CR = '#f5ebd6', CR_HI = '#fffaf0', CR_SH = '#dcc6a0', SIDE = '#b9996e', SIDE_RD = '#6e1426',
+      RD = '#a3203a', RD_HI = '#c8394f', RD_SH = '#7f1830', SC = '#fffaf0', SC_SH = '#eadfc8';
+    var s = '<defs>' +
+      '<clipPath id="fcb-k-body"><rect x="0" y="0" width="1000" height="500" rx="96"/></clipPath>' +
+      '<clipPath id="fcb-k-side"><rect x="0" y="28" width="1000" height="500" rx="96"/></clipPath>' +
+      '<linearGradient id="fcb-k-grip" x1="0" x2="0" y1="0" y2="1">' +
+        '<stop offset="0" stop-color="' + RD_HI + '"/><stop offset=".18" stop-color="' + RD + '"/>' +
+        '<stop offset=".82" stop-color="' + RD + '"/><stop offset="1" stop-color="' + RD_SH + '"/></linearGradient>' +
+      '<linearGradient id="fcb-k-shell" x1="0" x2="0" y1="0" y2="1">' +
+        '<stop offset="0" stop-color="' + CR_HI + '"/><stop offset=".12" stop-color="' + CR + '"/>' +
+        '<stop offset=".9" stop-color="' + CR + '"/><stop offset="1" stop-color="' + CR_SH + '"/></linearGradient>' +
+      '</defs>';
+    /* 두께: 몸통을 28 아래로 한 장 더 — 크림 옆면 + 손잡이 자리는 짙은 진홍 */
+    s += '<g clip-path="url(#fcb-k-side)"><rect x="0" y="28" width="1000" height="500" fill="' + SIDE + '"/>' +
+      '<rect x="0" y="28" width="130" height="500" fill="' + SIDE_RD + '"/><rect x="870" y="28" width="130" height="500" fill="' + SIDE_RD + '"/></g>';
+    /* 몸통 앞면 */
     s += '<g clip-path="url(#fcb-k-body)">' +
-      '<rect x="0" y="480" width="1000" height="20" fill="' + LIP + '"/>' +            /* 아래 두께 한 줄 */
-      '<rect x="0" y="0" width="130" height="500" fill="' + RD + '"/>' +
-      '<rect x="870" y="0" width="130" height="500" fill="' + RD + '"/>' +
+      '<rect x="0" y="0" width="1000" height="500" fill="url(#fcb-k-shell)"/>' +
+      '<rect x="0" y="0" width="130" height="500" fill="url(#fcb-k-grip)"/>' +
+      '<rect x="870" y="0" width="130" height="500" fill="url(#fcb-k-grip)"/>' +
+      '<rect x="122" y="0" width="8" height="500" fill="' + RD_SH + '" opacity=".55"/>' +     /* 손잡이 · 몸통 이음 그늘 */
+      '<rect x="870" y="0" width="8" height="500" fill="' + RD_SH + '" opacity=".55"/>' +
+      '<rect x="0" y="0" width="1000" height="500" rx="96" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6"/>' +
       '</g>';
+    /* 화면 테(볼록) + 액정(오목) */
+    s += '<rect x="150" y="44" width="700" height="420" rx="30" fill="' + RD_SH + '"/>';
     s += '<rect x="150" y="40" width="700" height="420" rx="30" fill="' + RD + '"/>';
-    s += '<rect x="166" y="56" width="668" height="388" rx="18" fill="' + SC + '"/>';
-    s += '<circle cx="186" cy="20" r="6" fill="' + RD + '"/>';                                  /* 전원등 */
+    s += '<rect x="166" y="56" width="668" height="388" rx="18" fill="' + SC_SH + '"/>';
+    s += '<rect x="166" y="64" width="668" height="380" rx="18" fill="' + SC + '"/>';
+    s += '<circle cx="186" cy="20" r="6" fill="' + RD + '"/><circle cx="184" cy="18" r="2" fill="#fff" opacity=".6"/>';   /* 전원등 */
     var i;
-    for (i = 0; i < 5; i++) s += '<circle cx="' + (742 + i * 18) + '" cy="474" r="4.5" fill="' + RD + '"/>';
+    for (i = 0; i < 5; i++) s += '<circle cx="' + (742 + i * 18) + '" cy="476" r="4.5" fill="' + RD_SH + '"/>';      /* 스피커 */
     return '<svg class="fcb-art" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true" focusable="false">' + s + '</svg>';
   }
 

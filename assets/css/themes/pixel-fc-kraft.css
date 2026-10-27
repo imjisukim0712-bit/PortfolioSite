@@ -1208,3 +1208,19 @@
   :root[data-skin="pixel-fc-kraft"] .fcs-rig .fc-ov__btns { margin-top: 1.4cqw; gap: 1cqw; }
   :root[data-skin="pixel-fc-kraft"] .fcs-rig .fc-ov__btn { min-height: 0; padding: .8cqw 1.6cqw; font-size: 1.4cqw; }
 }
+
+/* 입체감: 게임기 바닥 그림자 · 버튼 볼록 · 진열판 두께와 그림자 (평면이라 크라프트 바탕에 묻히던 것) */
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig > .hero > .fcb-art { filter: drop-shadow(0 22px 18px rgb(60 35 12 / .28)) drop-shadow(0 4px 3px rgb(60 35 12 / .25)); }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig .fc-key {
+    background: radial-gradient(circle at 38% 30%, #fffaf0 0 30%, #f0e2c6 70%);
+    box-shadow: 0 3px 0 #6e1426, 0 5px 6px rgb(0 0 0 / .25), inset 0 -2px 0 rgb(0 0 0 / .08);
+  }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig .fc-key:is(:active, .fcc-pressed) { transform: translateY(2px); box-shadow: 0 1px 0 #6e1426, inset 0 2px 3px rgb(0 0 0 / .15); }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig .draw__stage {
+    box-shadow: 0 10px 0 #b9996e, 0 26px 22px rgb(60 35 12 / .28), inset 0 3px 0 rgb(255 255 255 / .45);
+  }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig :is(.gcard, .card-back) { box-shadow: 0 4px 0 #6e1426, 0 10px 12px rgb(60 35 12 / .25); }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig .hero__portrait .portrait { box-shadow: inset 0 0 0 0 transparent, 0 3px 0 #6e1426; }
+  :root[data-skin="pixel-fc-kraft"] .fcs-rig .fcs-info .btn { box-shadow: 0 3px 0 #6e1426; }
+}
