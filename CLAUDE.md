@@ -41,7 +41,7 @@
 
 기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 15개.
 (`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
-`pixel-fc-split`(고정 게임기) · `pixel-fc-frame`(화면 전체가 게임기) · `pixel-fc-menu`(게임 선택 메뉴) 는 패미컴을 복제해 페이지 구조를 바꾼 **레이아웃 안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js` 가 DOM 을 재배치, 원본 `famicom.js` 와 별개). 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
+`pixel-fc-3d`(제품 사진) · `pixel-fc-8bit`(도트 아트) · `pixel-fc-boxart`(박스아트) 는 패미컴 콘셉트(게임기 화면·카트리지 꽂기·빨강)는 지키고 **디자인 언어를 새로 만든 안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js`, 원본 `famicom.js` 와 별개 · 카트리지 1클릭 꽂기 후 바로 상세). 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).

@@ -1,13 +1,17 @@
-/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
+/* 8-BIT · 도트 스프라이트 하드웨어와 RPG 창. 데이터와 편집 앵커를 보존합니다.
    hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
    main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
 (function () {
   'use strict';
-  if (window.__portfolioFCRefined) return;
-  window.__portfolioFCRefined = true;
+  if (window.__portfolioFC8Bit) return;
+  window.__portfolioFC8Bit = true;
   var SKIN = 'pixel-fc-8bit';
   var T = {
     select: 'SELECT',
+    player: { ko: '1P', en: '1P' },
+    world: { ko: '기획자의 모험', en: 'DESIGNER’S QUEST' },
+    command: { ko: '무엇을 할까요?', en: 'CHOOSE A COMMAND' },
+    slot: { ko: '카트리지 슬롯', en: 'CARTRIDGE SLOT' },
     prevQ: { ko: '이전 한마디', en: 'Previous quip' },
     nextQ: { ko: '다음 한마디', en: 'Next quip' },
     prevS: { ko: '이전 절로', en: 'Previous section' },
@@ -81,6 +85,35 @@
     hero.classList.add('fc-console');
     hero.insertBefore(left, wrap);
     hero.appendChild(right);
+    var hud = node('div', 'p8-screen-hud');
+    hud.innerHTML = '<span>' + esc(t(T.player) + ' · ' + t(content().meta && content().meta.name)) + '</span><span>' + esc(t(T.world)) + '</span><span aria-hidden="true">♥ ♥ ♥</span>';
+    wrap.insertBefore(hud, wrap.firstChild);
+    var grid = wrap.querySelector('.hero__grid');
+    if (grid) {
+      var lead = grid.firstElementChild, media = grid.querySelector('.hero__media');
+      if (lead) lead.classList.add('p8-title-stage');
+      var lower = node('div', 'p8-lower');
+      if (media) {
+        media.classList.add('p8-dialogue');
+        var speech = node('div', 'p8-dialogue-text');
+        var quip = media.querySelector('[data-quip]');
+        var note = lead && lead.querySelector('.hero__note');
+        if (quip) speech.appendChild(quip);
+        if (note) speech.appendChild(note);
+        media.appendChild(speech); lower.appendChild(media);
+      }
+      var buttons = lead && lead.querySelector('.btn-row');
+      if (buttons) {
+        var commands = node('div', 'p8-commands');
+        commands.appendChild(node('p', 'p8-command-label', t(T.command)));
+        commands.appendChild(buttons); lower.appendChild(commands);
+      }
+      grid.appendChild(lower);
+    }
+    var slot = node('div', 'p8-slot');
+    slot.setAttribute('aria-hidden', 'true');
+    slot.innerHTML = '<span>' + esc(t(T.slot)) + '</span><i></i>';
+    hero.appendChild(slot);
   }
 
   function sections() {
@@ -200,6 +233,39 @@
     });
   }
 
+  var SPRITES = [
+    ['........g.......', '.......gwg......', '......gwwwg.....', '.....gwwwg......', '....gwwwg.......', '...gwwwg........', '..gwwwg.........', '.gwwwg..........', '..ggg...........', '.g.g.g..........', 'g..g..g.........', '...g............'],
+    ['..r.........r...', '..rr...r...rr...', '..rgr.rgr.rgr...', '..rgggggggggr...', '...rgggggggr....', '...rwwwwwwwr....', '...rrrrrrrrr....', '....ggggggg.....', '.....ggggg......', '......ggg.......', '.....ggggg......', '....ggggggg.....'],
+    ['..www.....www...', '..wgw.....wgw...', '..www.....www...', '..wwwwwwwwwww...', '...wwwwwwwww....', '...wwrwwrwww....', '...wwwwwwwww....', '...wwwwwwwww....', '...wwwwrwwww....', '...wwwrrrwww....', '...wwwrrrwww....', '..wwwwrrrwwww...']
+  ];
+  function spriteHtml(index) {
+    var colors = { r: '#d82800', g: '#fca044', w: '#fcfcfc' };
+    var out = '<svg class="p8-art" viewBox="0 0 40 25" aria-hidden="true" shape-rendering="crispEdges"><path fill="#080808" d="M0 0h40v25H0z"/>';
+    [[3,3],[34,5],[7,14],[29,2],[36,16],[18,2]].forEach(function (p) { out += '<path fill="#fca044" d="M' + p[0] + ' ' + p[1] + 'h1v1h-1z"/>'; });
+    SPRITES[index % SPRITES.length].forEach(function (row, y) {
+      row.split('').forEach(function (c, x) {
+        if (colors[c]) out += '<path fill="' + colors[c] + '" d="M' + (x + 12) + ' ' + (y + 5) + 'h1v1h-1z"/>';
+      });
+    });
+    for (var x = 0; x < 40; x += 5) out += '<path fill="#902800" d="M' + x + ' 22h4v2h-4zM' + (x - 2) + ' 25h4v1h-4z"/>';
+    return out + '</svg>';
+  }
+  function sprites() {
+    each('.draw__deck .card-back__seal', function (seal) {
+      if (seal.getAttribute('data-p8-sprite')) return;
+      seal.innerHTML = spriteHtml(1); seal.setAttribute('data-p8-sprite', 'true');
+    });
+    each('.gcard__gen', function (art, i) {
+      if (art.getAttribute('data-p8-sprite')) return;
+      var card = art.closest('a.draw-card, a.proj-card');
+      var p = card && projectOf(card);
+      var items = (content().projects && content().projects.items) || [];
+      var index = p ? items.indexOf(p) : i;
+      art.innerHTML = spriteHtml(Math.max(0, index));
+      art.setAttribute('data-p8-sprite', 'true');
+    });
+  }
+
   var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
   function projectOf(a) {
     var m = (a.getAttribute('href') || '').match(/[?&]p=([^&#]+)/), id;
@@ -253,7 +319,7 @@
     if (label) label.textContent = t(enabled ? T.insert : draw ? T.draw : T.down);
   }
   function fadePreview(el) {
-    if (el && el.animate && !reduced()) el.animate([{ opacity: .7 }, { opacity: 1 }], { duration: 140, easing: 'ease-out' });
+    if (el && el.animate && !reduced()) el.animate([{ opacity: .7 }, { opacity: 1 }], { duration: 120, easing: 'steps(3, end)' });
   }
   function resetPreview(returnFocus, switching) {
     var old = selected; selected = null;
@@ -408,7 +474,7 @@
         { transform: at(dx * .2, -20), clipPath: 'inset(0 0 0 0)', offset: .2 },
         { transform: at(dx, dy), clipPath: 'inset(0 0 0 0)', offset: 420 / 680 },
         { transform: at(dx, dy - r.height), clipPath: 'inset(100% 0 0 0)', offset: 1 }
-      ], { duration: 680, fill: 'forwards', easing: 'cubic-bezier(.3,.65,.3,1)' });
+      ], { duration: 680, fill: 'forwards', easing: 'steps(10, end)' });
       me.animations.push(animation); animation.onfinish = finish;
     } catch (e) { finish(); }
   }
@@ -482,10 +548,10 @@
     if (deckObserver) deckObserver.disconnect();
     if (!active()) return;
     var h = document.querySelector('.hero'); if (h) build(h);
-    menus(); setupSelection(); status();
+    menus(); sprites(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {
-      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
+      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); sprites(); setupSelection(); });
       deckObserver.observe(deck, { childList: true });
     }
   }

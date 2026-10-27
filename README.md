@@ -100,7 +100,7 @@ python3 -m http.server 8000   # http://localhost:8000
 
 | 테마 | 시안 id |
 |---|---|
-| 레트로 픽셀 아케이드 | `pixel-famicom` · 레이아웃 안 `pixel-fc-split` · `pixel-fc-frame` · `pixel-fc-menu` |
+| 레트로 픽셀 아케이드 | `pixel-famicom` · 디자인 안 `pixel-fc-3d` · `pixel-fc-8bit` · `pixel-fc-boxart` |
 | 네오 브루탈리즘 | `brutal-cyberpunk` · `brutal-newsprint` |
 | 브랜드 홈페이지 | `brand-keynote` · `brand-bento` |
 | 컨셉 무대 | `concept-spec` · `concept-patch` · `concept-tabletop` |

@@ -1,10 +1,8 @@
-/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
-   hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
-   main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
+/* Product Shot · glossy injection-moulded hardware; one-click 680ms cartridge insertion. */
 (function () {
   'use strict';
-  if (window.__portfolioFCRefined) return;
-  window.__portfolioFCRefined = true;
+  if (window.__portfolioFCProductShot) return;
+  window.__portfolioFCProductShot = true;
   var SKIN = 'pixel-fc-3d';
   var T = {
     select: 'SELECT',
@@ -117,87 +115,67 @@
     if (value !== undefined) el.textContent = value;
     return el;
   }
-  function titlebar(el, code) {
-    if (!el || el.classList.contains('fcr-title')) return;
-    el.classList.add('fcr-title');
-    var label = node('span', 'fcr-title__label');
-    while (el.firstChild) label.appendChild(el.firstChild);
-    el.appendChild(label);
-    if (code) el.appendChild(node('span', 'fcr-code', code));
-  }
-  function panelAround(wrap) {
-    if (!wrap || wrap.querySelector(':scope > .fcr-page-window')) return;
-    var panel = node('div', 'fcr-window fcr-page-window');
-    while (wrap.firstChild) panel.appendChild(wrap.firstChild);
-    wrap.appendChild(panel);
-    var head = panel.querySelector('.section__head');
-    if (head) {
-      head.classList.add('fcr-titlebar');
-      var lead = head.querySelector('.section__lead');
-      if (lead) head.insertAdjacentElement('afterend', lead);
-    }
-  }
-
-  /* 메뉴 창: 원래 데이터·편집 앵커·브랜드 로고를 보존하며 바깥 구조만 정돈합니다. */
+  /* Product specification sections use their original content and edit anchors. */
   function menus() {
-    each('.hp-block', function (block) {
-      block.classList.add('fcr-window');
-      titlebar(block.querySelector('.hp-h'), t(block.querySelector('.hpl') ? T.saves : block.querySelector('.hp-skills') ? T.inventory : T.status));
+    each('.hp-block, .cover-block, .skill-card, .play-card, .detail__blocks .block', function (el, i) {
+      el.setAttribute('data-ps-number', ('0' + (i + 1)).slice(-2));
     });
-    var activities = document.querySelector('.hp .hpl');
-    if (activities) activities.closest('.wrap').classList.add('fcr-home-resume');
-    each('.hpl-row', function (row, i) {
-      var thumb = row.querySelector('.hp-thumb');
-      if (thumb) thumb.setAttribute('data-fcr-slot', ('0' + (i + 1)).slice(-2));
-    });
-    each('.hp-skills', function (grid) {
-      if (!grid.querySelector('.fcr-inventory-empty')) {
-        var empty = node('span', 'fcr-inventory-empty');
-        empty.setAttribute('aria-hidden', 'true'); grid.appendChild(empty);
-      }
-    });
-    each('.cl-summary', function (summary) {
-      summary.classList.add('fcr-window'); titlebar(summary.querySelector('.cl-summary__t'), t(T.status));
-    });
-    each('.cover-block', function (block, i) {
-      block.classList.add('fcr-window', 'fcr-story');
-      titlebar(block.querySelector('h3'), ('0' + (i + 1)).slice(-2) + ' / ' + t(T.record));
+    each('.hp > .wrap', function (wrap) {
+      var activities = wrap.querySelector(':scope > .hp-block .hpl');
+      var skills = wrap.querySelector(':scope > .hp-block .hp-skills');
+      if (!activities || !skills) return;
+      wrap.classList.add('ps-capabilities');
+      [activities, skills].forEach(function (body, i) {
+        var block = body.closest('.hp-block');
+        block.classList.add('ps-feature-card');
+        if (!block.querySelector('.ps-feature-label')) {
+          var label = i === 0 ? { ko: '01 / 경험', en: '01 / EXPERIENCE' } : { ko: '02 / 도구', en: '02 / TOOLKIT' };
+          block.insertBefore(node('p', 'ps-feature-label', t(label)), block.firstChild);
+        }
+      });
     });
     each('.hp-games', function (games) {
-      if (games.parentNode.classList.contains('fcr-play-window')) return;
-      var panel = node('div', 'fcr-window fcr-play-window');
-      var heading = node('h2', 'hp-h', t(content().play && content().play.title));
-      titlebar(heading, t(T.record));
-      games.parentNode.insertBefore(panel, games); panel.appendChild(heading); panel.appendChild(games);
-      var items = (content().play && content().play.cards) || [];
+      games.classList.add('ps-play-spec');
+      if (!games.parentNode.querySelector('.ps-play-heading')) {
+        var heading = node('h2', 'hp-h ps-play-heading', t(content().play && content().play.title));
+        games.parentNode.insertBefore(heading, games);
+      }
       each('.hp-game', function (game, i) {
-        var body = node('div', 'fcr-game-body');
-        var title = game.querySelector('.hp-game__t'), sub = game.querySelector('.hp-game__b');
-        if (title) body.appendChild(title);
-        if (sub) body.appendChild(sub);
-        if (items[i] && t(items[i].note)) body.appendChild(node('p', 'fcr-game-note', t(items[i].note)));
-        game.appendChild(body);
+        var item = content().play && content().play.cards && content().play.cards[i];
+        if (item && t(item.note) && !game.querySelector('.ps-game-note')) {
+          var note = node('p', 'ps-game-note', t(item.note));
+          note.title = t(item.note); game.appendChild(note);
+        }
       }, games);
     });
-    if (document.body.getAttribute('data-page') === 'resume') {
-      each('main > .section', function (section) {
-        if (section.querySelector('.section__head')) panelAround(section.querySelector('.wrap'));
-      });
+  }
+
+  function productShot(hero) {
+    if (!hero || hero.closest('.ps-stage')) return;
+    var grid = hero.querySelector('.hero__grid'), lead = grid && grid.firstElementChild;
+    if (!lead) return;
+    var stage = node('div', 'ps-stage'), intro = node('div', 'ps-intro');
+    hero.parentNode.insertBefore(stage, hero); stage.appendChild(intro); stage.appendChild(hero);
+    var actions = lead.querySelector('.btn-row');
+    while (lead.firstChild) intro.appendChild(lead.firstChild);
+    lead.className = 'ps-lcd-info';
+    var portrait = hero.querySelector('.hero__portrait');
+    if (portrait) {
+      var quip = portrait.querySelector('.quip'), more = portrait.querySelector('.quip__more'), cap = portrait.querySelector('.portrait__cap');
+      if (cap) lead.appendChild(cap);
+      if (quip) lead.appendChild(quip);
+      if (more) lead.appendChild(more);
+    } else {
+      lead.appendChild(node('p', 'portrait__nm', t(content().meta.name)));
+      lead.appendChild(node('p', 'portrait__role', t(content().meta.role)));
+      var note = intro.querySelector('.hero__note'); if (note) lead.appendChild(note);
     }
-    each('.skill-card, .play-card', function (card, i) {
-      card.classList.add('fcr-item-window');
-      card.setAttribute('data-fcr-number', ('0' + (i + 1)).slice(-2));
-    });
-    each('.detail__learned', function (box) {
-      box.classList.add('fcr-window', 'fcr-learned'); titlebar(box.querySelector('.detail__learned-title'), t(T.record));
-    });
-    each('.detail__media', function (box) {
-      if (box.classList.contains('fcr-window')) return;
-      box.classList.add('fcr-window');
-      var media = box.querySelector('.media-box');
-      var heading = node('h2', 'fcr-media-title', t(media && media.classList.contains('media-box--empty') ? T.emptyMedia : T.media));
-      titlebar(heading); box.insertBefore(heading, box.firstChild);
-    });
+    if (actions) lead.appendChild(actions);
+    hero.appendChild(node('div', 'ps-speaker'));
+    var mark = node('span', 'ps-device-mark', 'KJS / 01'); mark.setAttribute('aria-hidden', 'true'); hero.appendChild(mark);
+    var slot = node('div', 'ps-socket'); slot.setAttribute('aria-hidden', 'true'); hero.appendChild(slot);
+    var caption = node('p', 'ps-caption', t({ko:'김지수의 포트폴리오 · 프로젝트를 꽂아 시작하세요',en:'JISU KIM’S PORTFOLIO · INSERT A PROJECT TO START'}));
+    stage.appendChild(caption);
   }
 
   var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
@@ -375,7 +353,10 @@
     var useHero = !!(hr && hr.bottom > navH() + 30 && hr.bottom < window.innerHeight - 40);
     var line, cx, slot;
     if (useHero) {
-      hero.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
+      hero.classList.add('is-slot');
+      var socket = hero.querySelector('.ps-socket');
+      var socketRect = socket ? socket.getBoundingClientRect() : hr;
+      line = socketRect.bottom - 3; cx = socketRect.left + socketRect.width / 2;
     } else {
       slot = node('div', 'fc-slot'); slot.setAttribute('aria-hidden', 'true');
       slot.style.top = navH() - 12 + 'px'; slot.style.transform = 'translate(-50%, 0)';
@@ -476,12 +457,21 @@
   window.addEventListener('scroll', scheduleAux, { passive: true });
   window.addEventListener('resize', scheduleAux);
   window.addEventListener('pageshow', function (e) { if (e.persisted) { cleanup(); resetPreview(false); } });
+  var applied = false;
   function scan() {
+    if (!active()) {
+      if (applied) {
+        cleanup(); resetPreview(false);
+        each('.fcr-preview--aux', function (el) { el.remove(); });
+        if (deckObserver) deckObserver.disconnect();
+      }
+      applied = false; return;
+    }
+    applied = true;
     cleanup(); resetPreview(false);
     each('.fcr-preview--aux', function (el) { el.remove(); });
     if (deckObserver) deckObserver.disconnect();
-    if (!active()) return;
-    var h = document.querySelector('.hero'); if (h) build(h);
+    var h = document.querySelector('.hero'); if (h) { build(h); productShot(h); }
     menus(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {

@@ -1,10 +1,9 @@
-/* 개선안 A · 정돈판. 원본의 게임기/카트리지를 보존하고 메뉴 창과 선택 동작만 확장합니다.
-   hover/focus = 액정 미리보기, click/Enter/touch = 680ms 꽂기 → 상세 직행.
-   main.js의 렌더·무작위 뽑기는 그대로 사용합니다. 다른 시안에서는 동작하지 않습니다. */
+/* Box Art: flat package graphics. All DOM changes are scoped to this skin.
+   Existing single-click 680ms cartridge insertion and content APIs are preserved. */
 (function () {
   'use strict';
-  if (window.__portfolioFCRefined) return;
-  window.__portfolioFCRefined = true;
+  if (window.__portfolioFCBoxArt) return;
+  window.__portfolioFCBoxArt = true;
   var SKIN = 'pixel-fc-boxart';
   var T = {
     select: 'SELECT',
@@ -117,87 +116,69 @@
     if (value !== undefined) el.textContent = value;
     return el;
   }
-  function titlebar(el, code) {
-    if (!el || el.classList.contains('fcr-title')) return;
-    el.classList.add('fcr-title');
-    var label = node('span', 'fcr-title__label');
-    while (el.firstChild) label.appendChild(el.firstChild);
-    el.appendChild(label);
-    if (code) el.appendChild(node('span', 'fcr-code', code));
+  // The package front and the device are separate planes; no window chrome.
+  function packageHero(hero) {
+    if (hero.querySelector('.ba-console')) return;
+    var wrap = hero.querySelector('.wrap'), title = hero.querySelector('.hero__title');
+    if (!wrap || !title) return;
+    var mast = node('div', 'ba-masthead');
+    var series = node('div', 'ba-series');
+    series.innerHTML = '<span>' + esc(t({ko:'기획자 시리즈',en:'DESIGNER SERIES'})) + '</span><span>01 / KIM JISU</span>';
+    mast.appendChild(series); mast.appendChild(title);
+    var seal = node('span', 'ba-seal', t({ko:'정면 돌파\n액션 시리즈',en:'HEAD-ON\nACTION SERIES'}));
+    mast.appendChild(seal);
+    var device = node('div', 'ba-console');
+    var left = hero.querySelector('.fc-grip--l'), right = hero.querySelector('.fc-grip--r');
+    hero.appendChild(mast); hero.appendChild(device);
+    if (left) device.appendChild(left); device.appendChild(wrap); if (right) device.appendChild(right);
+    var cap = hero.querySelector('.portrait__cap'), quip = hero.querySelector('.quip');
+    var info = wrap.querySelector('.hero__grid > div');
+    if (cap && info) info.insertBefore(cap, info.querySelector('.btn-row'));
+    if (quip && info) info.insertBefore(quip, info.querySelector('.btn-row'));
+    var stripe = node('div', 'ba-device-brand');
+    stripe.innerHTML = '<span>' + esc(t({ko:'패미컴 · 기획자의 기록',en:'FAMILY COMPUTER · DESIGN ARCHIVE'})) + '</span><span>● PORTFOLIO / 01</span>';
+    device.appendChild(stripe);
   }
-  function panelAround(wrap) {
-    if (!wrap || wrap.querySelector(':scope > .fcr-page-window')) return;
-    var panel = node('div', 'fcr-window fcr-page-window');
-    while (wrap.firstChild) panel.appendChild(wrap.firstChild);
-    wrap.appendChild(panel);
-    var head = panel.querySelector('.section__head');
-    if (head) {
-      head.classList.add('fcr-titlebar');
-      var lead = head.querySelector('.section__lead');
-      if (lead) head.insertAdjacentElement('afterend', lead);
-    }
+  function artSvg(index) {
+    // Original project-specific vector drawings, using only the package inks.
+    var scenes = [
+      '<circle cx="200" cy="80" r="66" fill="#edbb4a"/><path d="M0 148 75 80 115 126 170 65 260 150 320 96V200H0Z" fill="#941f2b"/>' +
+      '<path d="M45 166V88H64V108H82V88H101V166M220 167V73H239V94H257V73H276V167" fill="#f8efd8" stroke="#211b19" stroke-width="5"/>' +
+      '<path d="m121 180 25-62 30-15 30 15 24 62Z" fill="#211b19"/><path d="m153 112 23-53 23 53-23 19Z" fill="#f8efd8" stroke="#211b19" stroke-width="5"/><path d="m175 144 35-58 8 5-32 61" fill="#edbb4a"/>',
+      '<path d="M0 0H320V200H0Z" fill="#211b19"/><circle cx="175" cy="105" r="67" fill="#b92432" stroke="#f8efd8" stroke-width="4"/><ellipse cx="175" cy="105" rx="122" ry="25" transform="rotate(-27 175 105)" fill="none" stroke="#edbb4a" stroke-width="16"/><path d="m70 33 30 43-28-7-16 26Z" fill="#f8efd8" stroke="#211b19" stroke-width="4"/><path d="m40 143 4 10 12 3-11 5-3 12-4-12-11-4 11-3M274 22l5 12 12 3-12 4-5 13-4-13-13-4 13-3" fill="#edbb4a"/>',
+      '<circle cx="244" cy="50" r="35" fill="#b92432"/><path d="M0 180 90 45 155 146 207 89 320 200H0Z" fill="#211b19"/><path d="m65 84 25-39 26 40-25-10Z" fill="#f8efd8"/><path d="M0 196q130-85 206-37l-12 41H0" fill="#edbb4a"/><path d="m156 158 15-61 17-9 17 11-8 62Z" fill="#b92432" stroke="#f8efd8" stroke-width="4"/><circle cx="183" cy="75" r="12" fill="#f8efd8" stroke="#211b19" stroke-width="4"/>',
+      '<path d="M0 0H320V200H0Z" fill="#b92432"/><path d="m10 180 100-156 54 49 89-61 59 75-110 112Z" fill="#edbb4a"/><path d="m89 144 12-61 28-18 13-33 23 6 2 37 22-32 20 12-13 42 27-23 18 17-26 37 17-8 14 21-49 44-48-1Z" fill="#f8efd8" stroke="#211b19" stroke-width="7"/><path d="m134 112 69 39" stroke="#b92432" stroke-width="7"/>',
+      '<path d="M0 0H320V200H0Z" fill="#edbb4a"/><path d="M0 180 320 20M0 220 320 60" stroke="#f8efd8" stroke-width="22"/><path d="M58 152V99H99V152M126 152V65H167V152M194 152V30H235V152" fill="#b92432" stroke="#211b19" stroke-width="5"/><circle cx="251" cy="138" r="42" fill="#f8efd8" stroke="#211b19" stroke-width="5"/><path d="M251 112v51m14-42c-30-17-39 17-12 17s18 28-15 14" fill="none" stroke="#211b19" stroke-width="6"/>'
+    ];
+    return '<svg class="ba-art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#f8efd8" d="M0 0h320v200H0z"/>' + scenes[index % scenes.length] + '</svg>';
   }
-
-  /* 메뉴 창: 원래 데이터·편집 앵커·브랜드 로고를 보존하며 바깥 구조만 정돈합니다. */
+  function cartridgeArt() {
+    var items = (content().projects && content().projects.items) || [];
+    each('a.draw-card, a.proj-card', function (a) {
+      var p = projectOf(a), index = items.indexOf(p), face = a.querySelector('.gcard') || a;
+      face.setAttribute('data-ba-series', t({ko:'기획자 시리즈',en:'DESIGNER SERIES'}) + ' / ' + ('0' + (index + 1)).slice(-2));
+      var art = a.querySelector('.gcard__art');
+      if (art && !art.querySelector('img') && !art.querySelector('.ba-art')) art.innerHTML = artSvg(Math.max(0, index));
+    });
+  }
+  function playPreviewArt() {
+    // Small decorative stickers only; preserve supplied game icons and all copy.
+    var scenes = [
+      '<path fill="#211b19" d="M0 0h80v80H0z"/><circle cx="42" cy="40" r="22" fill="#b92432" stroke="#f8efd8" stroke-width="2"/><ellipse cx="42" cy="40" rx="35" ry="9" transform="rotate(-30 42 40)" fill="none" stroke="#edbb4a" stroke-width="6"/><path d="m13 10 2 5 5 2-5 2-2 5-2-5-5-2 5-2" fill="#f8efd8"/>',
+      '<path fill="#b92432" d="M0 0h80v80H0z"/><path d="M20 66V12h40v54" fill="#211b19" stroke="#f8efd8" stroke-width="3"/><circle cx="46" cy="34" r="8" fill="none" stroke="#edbb4a" stroke-width="4"/><path d="M46 42v16m0-4h8M0 68h80m-80 7h80" stroke="#edbb4a" stroke-width="4"/>',
+      '<path fill="#edbb4a" d="M0 0h80v80H0z"/><path d="M0 10h80M0 70h80" stroke="#211b19" stroke-width="5"/><path d="M40 23v34M23 40h34" stroke="#b92432" stroke-width="7"/>'
+    ];
+    each('.hp-games .hp-game__ic', function (icon, i) {
+      if (icon.querySelector('img, .ba-play-art')) return;
+      icon.innerHTML = '<svg class="ba-play-art" viewBox="0 0 80 80" aria-hidden="true">' + scenes[i % scenes.length] + '</svg>';
+    });
+  }
   function menus() {
-    each('.hp-block', function (block) {
-      block.classList.add('fcr-window');
-      titlebar(block.querySelector('.hp-h'), t(block.querySelector('.hpl') ? T.saves : block.querySelector('.hp-skills') ? T.inventory : T.status));
+    each('.hero', packageHero);
+    each('.hp-h, .section__title, .cover-block h3, .cl-summary__t, .block__label', function (heading, i) {
+      heading.setAttribute('data-ba-number', ('0' + (i + 1)).slice(-2));
     });
-    var activities = document.querySelector('.hp .hpl');
-    if (activities) activities.closest('.wrap').classList.add('fcr-home-resume');
-    each('.hpl-row', function (row, i) {
-      var thumb = row.querySelector('.hp-thumb');
-      if (thumb) thumb.setAttribute('data-fcr-slot', ('0' + (i + 1)).slice(-2));
-    });
-    each('.hp-skills', function (grid) {
-      if (!grid.querySelector('.fcr-inventory-empty')) {
-        var empty = node('span', 'fcr-inventory-empty');
-        empty.setAttribute('aria-hidden', 'true'); grid.appendChild(empty);
-      }
-    });
-    each('.cl-summary', function (summary) {
-      summary.classList.add('fcr-window'); titlebar(summary.querySelector('.cl-summary__t'), t(T.status));
-    });
-    each('.cover-block', function (block, i) {
-      block.classList.add('fcr-window', 'fcr-story');
-      titlebar(block.querySelector('h3'), ('0' + (i + 1)).slice(-2) + ' / ' + t(T.record));
-    });
-    each('.hp-games', function (games) {
-      if (games.parentNode.classList.contains('fcr-play-window')) return;
-      var panel = node('div', 'fcr-window fcr-play-window');
-      var heading = node('h2', 'hp-h', t(content().play && content().play.title));
-      titlebar(heading, t(T.record));
-      games.parentNode.insertBefore(panel, games); panel.appendChild(heading); panel.appendChild(games);
-      var items = (content().play && content().play.cards) || [];
-      each('.hp-game', function (game, i) {
-        var body = node('div', 'fcr-game-body');
-        var title = game.querySelector('.hp-game__t'), sub = game.querySelector('.hp-game__b');
-        if (title) body.appendChild(title);
-        if (sub) body.appendChild(sub);
-        if (items[i] && t(items[i].note)) body.appendChild(node('p', 'fcr-game-note', t(items[i].note)));
-        game.appendChild(body);
-      }, games);
-    });
-    if (document.body.getAttribute('data-page') === 'resume') {
-      each('main > .section', function (section) {
-        if (section.querySelector('.section__head')) panelAround(section.querySelector('.wrap'));
-      });
-    }
-    each('.skill-card, .play-card', function (card, i) {
-      card.classList.add('fcr-item-window');
-      card.setAttribute('data-fcr-number', ('0' + (i + 1)).slice(-2));
-    });
-    each('.detail__learned', function (box) {
-      box.classList.add('fcr-window', 'fcr-learned'); titlebar(box.querySelector('.detail__learned-title'), t(T.record));
-    });
-    each('.detail__media', function (box) {
-      if (box.classList.contains('fcr-window')) return;
-      box.classList.add('fcr-window');
-      var media = box.querySelector('.media-box');
-      var heading = node('h2', 'fcr-media-title', t(media && media.classList.contains('media-box--empty') ? T.emptyMedia : T.media));
-      titlebar(heading); box.insertBefore(heading, box.firstChild);
-    });
+    cartridgeArt(); playPreviewArt();
   }
 
   var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
@@ -333,7 +314,7 @@
         row.appendChild(link); draw.insertBefore(row, draw.firstChild);
       } else head.insertAdjacentElement('afterend', row);
     }
-    var heroWrap = document.querySelector('.hero > .wrap');
+    var heroWrap = document.querySelector('.ba-console > .wrap');
     if (heroWrap && !heroWrap.querySelector('.fcr-preview')) heroWrap.appendChild(makePreview(true));
     if (heroWrap && !document.querySelector('.fcr-preview--aux')) {
       var aux = node('div', 'fcr-preview fcr-preview--aux fcr-window');
@@ -363,7 +344,7 @@
       if (me.a) { me.a.style.visibility = ''; me.a.removeAttribute('aria-busy'); }
     }
     each('.fc-fly, .fc-slot', function (el) { el.remove(); });
-    each('.hero.is-slot', function (el) { el.classList.remove('is-slot'); });
+    each('.ba-console.is-slot', function (el) { el.classList.remove('is-slot'); });
   }
   function insert(a) {
     var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
@@ -371,11 +352,12 @@
     cleanup();
     var aux = document.querySelector('.fcr-preview--aux'); if (aux) aux.hidden = true;
     var r = a.getBoundingClientRect(), hero = document.querySelector('.hero.fc-console');
-    var hr = hero && hero.getBoundingClientRect();
+    var device = hero && hero.querySelector('.ba-console');
+    var hr = device && device.getBoundingClientRect();
     var useHero = !!(hr && hr.bottom > navH() + 30 && hr.bottom < window.innerHeight - 40);
     var line, cx, slot;
     if (useHero) {
-      hero.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
+      device.classList.add('is-slot'); line = hr.bottom - 3; cx = hr.left + hr.width / 2;
     } else {
       slot = node('div', 'fc-slot'); slot.setAttribute('aria-hidden', 'true');
       slot.style.top = navH() - 12 + 'px'; slot.style.transform = 'translate(-50%, 0)';
@@ -485,7 +467,7 @@
     menus(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {
-      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
+      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); cartridgeArt(); setupSelection(); });
       deckObserver.observe(deck, { childList: true });
     }
   }
