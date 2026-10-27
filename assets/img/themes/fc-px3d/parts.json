@@ -1,0 +1,146 @@
+{
+ "console.png": {
+  "w": 1408,
+  "h": 760,
+  "out": {
+   "top": 28,
+   "right": 36,
+   "bottom": 38,
+   "left": 28
+  },
+  "slice": {
+   "top": 100,
+   "right": 112,
+   "bottom": 120,
+   "left": 104
+  }
+ },
+ "key-prev.png": {
+  "w": 60,
+  "h": 60,
+  "out": {
+   "top": 9,
+   "right": 15,
+   "bottom": 15,
+   "left": 9
+  },
+  "inset": {
+   "top": 25.0,
+   "right": 41.667,
+   "bottom": 41.667,
+   "left": 25.0
+  }
+ },
+ "key-next.png": {
+  "w": 60,
+  "h": 60,
+  "out": {
+   "top": 9,
+   "right": 15,
+   "bottom": 15,
+   "left": 9
+  },
+  "inset": {
+   "top": 25.0,
+   "right": 41.667,
+   "bottom": 41.667,
+   "left": 25.0
+  }
+ },
+ "key-mail.png": {
+  "w": 60,
+  "h": 60,
+  "out": {
+   "top": 9,
+   "right": 15,
+   "bottom": 15,
+   "left": 9
+  },
+  "inset": {
+   "top": 25.0,
+   "right": 41.667,
+   "bottom": 41.667,
+   "left": 25.0
+  }
+ },
+ "key-b.png": {
+  "w": 60,
+  "h": 60,
+  "out": {
+   "top": 9,
+   "right": 15,
+   "bottom": 15,
+   "left": 9
+  },
+  "inset": {
+   "top": 25.0,
+   "right": 41.667,
+   "bottom": 41.667,
+   "left": 25.0
+  }
+ },
+ "key-a.png": {
+  "w": 60,
+  "h": 60,
+  "out": {
+   "top": 9,
+   "right": 15,
+   "bottom": 15,
+   "left": 9
+  },
+  "inset": {
+   "top": 25.0,
+   "right": 41.667,
+   "bottom": 41.667,
+   "left": 25.0
+  }
+ },
+ "cart.png": {
+  "w": 252,
+  "h": 309,
+  "out": {
+   "top": 17,
+   "right": 24,
+   "bottom": 24,
+   "left": 17
+  },
+  "inset": {
+   "top": 7.246,
+   "right": 13.171,
+   "bottom": 9.783,
+   "left": 9.756
+  }
+ },
+ "deck.png": {
+  "w": 261,
+  "h": 312,
+  "out": {
+   "top": 21,
+   "right": 29,
+   "bottom": 27,
+   "left": 21
+  },
+  "inset": {
+   "top": 7.447,
+   "right": 13.744,
+   "bottom": 9.574,
+   "left": 9.953
+  }
+ },
+ "console-m.png": {
+  "w": 392,
+  "h": 828,
+  "out": {
+   "top": 12,
+   "right": 23,
+   "bottom": 20,
+   "left": 12
+  },
+  "slice": {
+   "top": 52,
+   "right": 64,
+   "bottom": 144,
+   "left": 52
+  }
+ }
+}

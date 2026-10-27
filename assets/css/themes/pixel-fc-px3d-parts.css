@@ -1,0 +1,10 @@
+/* 자동 생성 — tools/fc-pixel/render3d.py (손으로 고치지 마세요). 원본 패미컴 부품을 pixel-fc-px3d 그림으로 붙입니다. */
+:root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console.png') 100 112 120 104 fill / 100px 112px 120px 104px / 28px 36px 38px 28px stretch; }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { border-image: url('../../img/themes/fc-px3d/console-m.png') 52 64 144 52 fill / 52px 64px 144px 52px / 12px 23px 20px 12px stretch; } }
+:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-step="-1"]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-prev.png'); }
+:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-step="1"]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-next.png'); }
+:root[data-skin="pixel-fc-px3d"] .fc-key--mail::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-mail.png'); }
+:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-b]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-b.png'); }
+:root[data-skin="pixel-fc-px3d"] .fc-key[data-fc-a]::before { top: -25.0%; right: -41.667%; bottom: -41.667%; left: -25.0%; background-image: url('../../img/themes/fc-px3d/key-a.png'); }
+:root[data-skin="pixel-fc-px3d"] .gcard::before { top: -7.246%; right: -13.171%; bottom: -9.783%; left: -9.756%; background-image: url('../../img/themes/fc-px3d/cart.png'); }
+:root[data-skin="pixel-fc-px3d"] .draw__deck::before { top: -7.447%; right: -13.744%; bottom: -9.574%; left: -9.953%; background-image: url('../../img/themes/fc-px3d/deck.png'); }

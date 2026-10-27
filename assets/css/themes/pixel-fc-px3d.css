@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('pixel-fc-px3d-parts.css');   /* 게임기·버튼·카트리지 그림 붙이기 — tools/fc-pixel/render3d.py 가 만듦 */
 /* 레트로 픽셀 · 시안 C — 패미컴 (크림 본체 · 빨강 · 짙은 회색 · 금색 포인트)
    라이트 = 크림 본체 · 다크 = 검정 본체에 빨간 그림자 */
 :root[data-skin="pixel-fc-px3d"] {
@@ -455,3 +456,29 @@
   [data-skin="pixel-fc-px3d"] .fc-ov__sub { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { [data-skin="pixel-fc-px3d"] .fc-boot, [data-skin="pixel-fc-px3d"] .fc-boot.is-on { animation: none; } }
+
+
+/* ==========================================================================
+   3D 픽셀 — 원본 패미컴 게임기·버튼·카트리지를 렌더해 3D 픽셀 그림으로 바꿔 붙인 판
+   그림과 붙이는 자리(9조각 border-image · 바깥 여백)는 pixel-fc-px3d-parts.css (자동 생성).
+   여기서는 원본이 직접 그리던 색·테두리·그림자를 비워 그림이 보이게만 합니다. 글자·사진은 그대로.
+   ========================================================================== */
+:root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { background: none; border-color: transparent; box-shadow: none; }
+:root[data-skin="pixel-fc-px3d"] .fc-grip { background: none; border-color: transparent; }
+:root[data-skin="pixel-fc-px3d"] .hero::before { display: none; }
+:root[data-skin="pixel-fc-px3d"] .fc-key { position: relative; background: none; border-color: transparent; box-shadow: none; }
+:root[data-skin="pixel-fc-px3d"] .fc-key:active { transform: translateY(2px); box-shadow: none; }
+:root[data-skin="pixel-fc-px3d"] .fc-key::before { content: ''; position: absolute; z-index: -1; pointer-events: none; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+:root[data-skin="pixel-fc-px3d"] .gcard, :root[data-skin="pixel-fc-px3d"] .gcard[data-grade], :root[data-skin="pixel-fc-px3d"] .gcard:hover, :root[data-skin="pixel-fc-px3d"] .gcard.is-tilt, :root[data-skin="pixel-fc-px3d"] .gcard[data-grade="SSR"]:hover, :root[data-skin="pixel-fc-px3d"] .gcard[data-grade="SSR"].is-tilt { background: none; border-color: transparent; box-shadow: none !important; }
+:root[data-skin="pixel-fc-px3d"] .gcard::before { content: ''; position: absolute; height: auto; z-index: 0; pointer-events: none; background-color: transparent; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+:root[data-skin="pixel-fc-px3d"] .gcard__frame { position: relative; z-index: 1; }
+:root[data-skin="pixel-fc-px3d"] .draw__deck { position: relative; }
+:root[data-skin="pixel-fc-px3d"] .draw__deck::before { content: ''; position: absolute; z-index: 0; pointer-events: none; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+:root[data-skin="pixel-fc-px3d"] .draw__deck .card-back, :root[data-skin="pixel-fc-px3d"] .draw__deck-card.card-back { background: none; border-color: transparent; box-shadow: none; }
+:root[data-skin="pixel-fc-px3d"] .draw__deck .card-back::before, :root[data-skin="pixel-fc-px3d"] .draw__deck .card-back::after { content: none; }
+:root[data-skin="pixel-fc-px3d"] .draw__deck-card { z-index: 1; }
+:root[data-skin="pixel-fc-px3d"] .hero { image-rendering: pixelated; }
+:root[data-skin="pixel-fc-px3d"] [data-slot="main"] { overflow-x: clip; }
+@media (max-width: 700px) {
+  :root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { width: calc(100% - 44px); }
+}
