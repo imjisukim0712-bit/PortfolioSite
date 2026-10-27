@@ -16,7 +16,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 32개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 35개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -126,6 +126,24 @@
                   en: 'Reference ⑩: the whole page as one game level — a HUD-style top bar (WORLD 1-1), scores popping out of question blocks, brick panels and ground-block terrain.' },
           scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           swatch: ['#5c94fc', '#c84c0c', '#fca044', '#00a800'] },
+        { id: 'fc-gold', name: { ko: '패미컴 · 기념판', en: 'Famicom · Anniversary Edition' },
+          desc: { ko: '기념판 패키지 감성. 칠기 같은 진홍 바탕에 금박 테두리와 월계관 엠블럼, 상아색 증서 같은 카드, 세리프 제목.',
+                  en: 'An anniversary-edition package feel: lacquer red, gold-foil borders and a laurel emblem, ivory certificate-like cards and serif headings.' },
+          scripts: ['js/themes/pixel-fc-gold.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          fonts: [G + 'Noto+Serif+KR:wght@600;900'],
+          swatch: ['#a8121c', '#e8c766', '#fbf4e2', '#2a2224'] },
+        { id: 'fc-metal', name: { ko: '패미컴 · 하드웨어', en: 'Famicom · Hardware' },
+          desc: { ko: '80년대 휴대용 게임기 하드웨어. 헤어라인 알루미늄 전면판과 빨강 플라스틱, 나사 · 인쇄 라벨, 숫자는 LCD 표시창.',
+                  en: '1980s handheld hardware: hairline brushed-aluminium faceplates on red plastic, screws and printed labels, with numbers on LCD readouts.' },
+          scripts: ['js/themes/pixel-fc-metal.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          fonts: [G + 'Share+Tech+Mono&family=IBM+Plex+Sans+KR:wght@400;600;700'],
+          swatch: ['#c8202c', '#d3d7da', '#1d1f22', '#a9b39a'] },
+        { id: 'fc-museum', name: { ko: '패미컴 · 전시', en: 'Famicom · Exhibition' },
+          desc: { ko: '게임 박물관의 전시실. 흰 벽에 조명을 받은 진홍 게임기, 작품 설명 캡션 · 전시실 번호, 절제된 글자와 넓은 여백.',
+                  en: 'A game museum gallery: a spot-lit crimson console on white walls, object caption labels and room numbers, restrained type and generous space.' },
+          scripts: ['js/themes/pixel-fc-museum.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          fonts: [G + 'Noto+Serif+KR:wght@400;700'],
+          swatch: ['#f4f2ee', '#c8202c', '#1a1a1a', '#b9a88a'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
           desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
                   en: 'Design draft 2: an 8-bit screen where everything from the console to the window frames and headings is drawn in pixels, with stepped corners, pixel shadows and retro dialog boxes.' },

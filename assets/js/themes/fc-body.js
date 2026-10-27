@@ -1,5 +1,5 @@
 /* ============================================================================
-   fc-body.js — 기울인 구도 시안의 게임기 '그림' (도트 · 크라프트 · 스테이지 안이 함께 씀)
+   fc-body.js — 기울인 구도 시안의 게임기 '그림' (도트 · 크라프트 · 스테이지 · 기념판 · 하드웨어 · 전시 안이 함께 씀)
    ----------------------------------------------------------------------------
    예전에는 게임기 몸통을 상자 여러 개(셸 · 손잡이 · 화면 테 · 두께 조각)로 쌓아 그렸는데,
    판을 기울이면 조각마다 계단 모서리가 따로 틀어져 깨져 보였습니다. 이제 몸통은 SVG 그림 한 장
@@ -148,7 +148,78 @@
     return '<svg class="fcb-art" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true" focusable="false">' + s + '</svg>';
   }
 
-  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': levelArt, 'pixel-fc-kraft': kraftArt };
+  /* 벡터 몸통 공통 자리(크라프트와 같음): 손잡이 0–130 · 870–1000, 화면 166–834 × 56–444 */
+  function svgWrap(defs, body) {
+    return '<svg class="fcb-art" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs>' + defs + '</defs>' + body + '</svg>';
+  }
+
+  /* ── 기념판(gold): 칠기 같은 진홍 몸통 + 금박 테두리 · 금박 이음선, 검은 유광 베젤, 상아 액정 ── */
+  function goldArt() {
+    var d = '<linearGradient id="fg-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5303b"/><stop offset=".45" stop-color="#b3141f"/><stop offset="1" stop-color="#7e0b14"/></linearGradient>' +
+      '<linearGradient id="fg-foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a651c"/><stop offset=".28" stop-color="#e8c766"/><stop offset=".42" stop-color="#fff2bf"/><stop offset=".58" stop-color="#c99b39"/><stop offset=".8" stop-color="#f0d27a"/><stop offset="1" stop-color="#8a651c"/></linearGradient>' +
+      '<linearGradient id="fg-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<linearGradient id="fg-bezel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2224"/><stop offset="1" stop-color="#0f0b0c"/></linearGradient>' +
+      '<clipPath id="fg-body"><rect width="1000" height="500" rx="92"/></clipPath>';
+    var b = '<rect x="0" y="26" width="1000" height="500" rx="92" fill="#5c0710"/>' +                       /* 두께 */
+      '<rect width="1000" height="500" rx="92" fill="url(#fg-red)"/>' +
+      '<g clip-path="url(#fg-body)"><rect x="0" y="0" width="1000" height="200" fill="url(#fg-gloss)"/>' +
+      '<rect x="128" y="0" width="5" height="500" fill="url(#fg-foil)"/><rect x="867" y="0" width="5" height="500" fill="url(#fg-foil)"/></g>' +
+      '<rect x="7" y="7" width="986" height="486" rx="86" fill="none" stroke="url(#fg-foil)" stroke-width="5"/>' +   /* 금박 테 */
+      '<rect x="150" y="38" width="700" height="424" rx="26" fill="url(#fg-bezel)"/>' +
+      '<rect x="156" y="44" width="688" height="412" rx="22" fill="none" stroke="url(#fg-foil)" stroke-width="3"/>' +
+      '<rect x="166" y="56" width="668" height="388" rx="14" fill="#fbf4e2"/>' +
+      '<rect x="166" y="56" width="668" height="10" rx="5" fill="#000" opacity=".08"/>' +
+      '<circle cx="186" cy="22" r="6" fill="url(#fg-foil)"/>';
+    for (var i = 0; i < 6; i++) b += '<rect x="' + (730 + i * 16) + '" y="470" width="7" height="18" rx="3.5" fill="#5c0710"/>';
+    return svgWrap(d, b);
+  }
+
+  /* ── 하드웨어(metal): 빨강 플라스틱 테 + 헤어라인 브러시드 알루미늄 전면판, 인쇄된 검은 화면 테 · 나사 · 스피커 ── */
+  function metalArt() {
+    var d = '<linearGradient id="fm-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8333c"/><stop offset="1" stop-color="#9c1720"/></linearGradient>' +
+      '<linearGradient id="fm-al" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef0f1"/><stop offset=".35" stop-color="#c9ced2"/><stop offset=".5" stop-color="#f4f6f7"/><stop offset=".7" stop-color="#b9bfc4"/><stop offset="1" stop-color="#dfe3e6"/></linearGradient>' +
+      '<pattern id="fm-hair" width="1000" height="3" patternUnits="userSpaceOnUse"><rect width="1000" height="1" fill="#fff" opacity=".35"/><rect y="2" width="1000" height="1" fill="#6d757c" opacity=".12"/></pattern>' +
+      '<radialGradient id="fm-screw" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#9aa2a8"/><stop offset="1" stop-color="#5e666c"/></radialGradient>';
+    var b = '<rect x="0" y="22" width="1000" height="500" rx="70" fill="#6e0f16"/>' +
+      '<rect width="1000" height="500" rx="70" fill="url(#fm-red)"/>' +
+      '<rect x="22" y="20" width="956" height="460" rx="52" fill="url(#fm-al)"/>' +
+      '<rect x="22" y="20" width="956" height="460" rx="52" fill="url(#fm-hair)"/>' +
+      '<rect x="22" y="20" width="956" height="460" rx="52" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>' +
+      '<rect x="146" y="36" width="708" height="428" rx="16" fill="#1d1f22"/>' +
+      '<rect x="156" y="46" width="688" height="408" rx="10" fill="none" stroke="#c8202c" stroke-width="3"/>' +
+      '<rect x="166" y="56" width="668" height="388" rx="6" fill="#eef0e6"/>' +
+      '<text x="162" y="30" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#1d1f22">KJS-01 · PORTFOLIO</text>' +
+      '<text x="852" y="30" text-anchor="end" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#c8202c">GAME PLANNER</text>';
+    [[52, 48], [948, 48], [52, 452], [948, 452]].forEach(function (c) {
+      b += '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="9" fill="url(#fm-screw)"/><rect x="' + (c[0] - 6) + '" y="' + (c[1] - 1) + '" width="12" height="2" fill="#4a5258" transform="rotate(35 ' + c[0] + ' ' + c[1] + ')"/>';
+    });
+    for (var i = 0; i < 7; i++) b += '<rect x="' + (700 + i * 18) + '" y="470" width="8" height="2" fill="#3b4045" opacity="0"/>';
+    for (i = 0; i < 4; i++) b += '<rect x="' + (905 + 0) + '" y="' + (380 + i * 14) + '" width="40" height="5" rx="2.5" fill="#5e666c"/>';
+    return svgWrap(d, b);
+  }
+
+  /* ── 전시(museum): 사실적인 진홍 기기 — 부드러운 곡면 음영, 유리 같은 화면 반사, 무광 손잡이 ── */
+  function museumArt() {
+    var d = '<linearGradient id="fu-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3434b"/><stop offset=".2" stop-color="#c8202c"/><stop offset=".85" stop-color="#a5161f"/><stop offset="1" stop-color="#7f0f17"/></linearGradient>' +
+      '<linearGradient id="fu-grip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8f1219"/><stop offset=".35" stop-color="#b81c26"/><stop offset="1" stop-color="#9b141d"/></linearGradient>' +
+      '<linearGradient id="fu-gripr" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#8f1219"/><stop offset=".35" stop-color="#b81c26"/><stop offset="1" stop-color="#9b141d"/></linearGradient>' +
+      '<linearGradient id="fu-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<clipPath id="fu-clip"><rect width="1000" height="500" rx="110"/></clipPath>';
+    var b = '<rect x="6" y="18" width="988" height="500" rx="110" fill="#5a0a10"/>' +
+      '<rect width="1000" height="500" rx="110" fill="url(#fu-body)"/>' +
+      '<g clip-path="url(#fu-clip)"><rect x="0" y="0" width="134" height="500" fill="url(#fu-grip)"/><rect x="866" y="0" width="134" height="500" fill="url(#fu-gripr)"/>' +
+      '<rect x="134" y="0" width="2" height="500" fill="#000" opacity=".25"/><rect x="864" y="0" width="2" height="500" fill="#000" opacity=".25"/>' +
+      '<rect x="40" y="10" width="920" height="6" rx="3" fill="#fff" opacity=".35"/></g>' +
+      '<rect x="148" y="36" width="704" height="428" rx="30" fill="#151515"/>' +
+      '<rect x="166" y="56" width="668" height="388" rx="16" fill="#faf8f4"/>' +
+      '<rect x="148" y="36" width="704" height="428" rx="30" fill="url(#fu-glass)"/>' +
+      '<circle cx="190" cy="22" r="5" fill="#ff6b6b"/><circle cx="190" cy="22" r="10" fill="#ff6b6b" opacity=".18"/>';
+    for (var i = 0; i < 5; i++) b += '<circle cx="' + (760 + i * 16) + '" cy="478" r="4" fill="#5a0a10"/>';
+    return svgWrap(d, b);
+  }
+
+  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': levelArt, 'pixel-fc-kraft': kraftArt,
+              'pixel-fc-gold': goldArt, 'pixel-fc-metal': metalArt, 'pixel-fc-museum': museumArt };
 
   function skin() { return document.documentElement.getAttribute('data-skin'); }
   function paint() {
