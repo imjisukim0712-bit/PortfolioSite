@@ -379,3 +379,83 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* Decoration only. The controller/slot/overview implementation above is intact.
+   Surfaces are empty, noninteractive siblings of the original content. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-snes', queued = false;
+  var WORDS = {
+    records: { ko: '01 / 모험 기록', en: '01 / QUEST LOG' },
+    items: { ko: '02 / 아이템 목록', en: '02 / INVENTORY' },
+    skills: { ko: '03 / 스킬 목록', en: '03 / SKILL LIST' },
+    status: { ko: '▶ 스테이터스', en: '▶ STATUS' }
+  };
+  var PIXEL_GHOST = '<path fill="currentColor" d="M12 0h8v4h8v8h4v24h-8v-4h-4v4h-8v-4H8v4H0V12h4V4h8z"/>' +
+    '<path fill="#252934" d="M8 12h4v8H8zm12 0h4v8h-4z"/>';
+  function word(key) {
+    var app = window.PortfolioApp;
+    var l = app && app.getLang ? app.getLang() : document.documentElement.lang;
+    return WORDS[key][l === 'en' ? 'en' : 'ko'];
+  }
+  function each(selector, callback) { Array.prototype.forEach.call(document.querySelectorAll(selector), callback); }
+  function surface(el) {
+    if (el.querySelector(':scope > .snes-surface')) return;
+    el.classList.add('snes-object');
+    var decoration = document.createElement('span');
+    decoration.className = 'snes-surface';
+    decoration.setAttribute('aria-hidden', 'true');
+    decoration.innerHTML = '<span class="snes-surface__shadow"></span><span class="snes-surface__rim"></span><span class="snes-surface__face"></span>';
+    el.insertBefore(decoration, el.firstChild);
+  }
+  function kicker(el, key, cls) {
+    var label = el.querySelector('.' + cls);
+    if (!label) {
+      label = document.createElement('span');
+      label.className = cls;
+      label.setAttribute('aria-hidden', 'true');
+      el.insertBefore(label, el.firstChild);
+    }
+    var next = word(key);
+    if (label.textContent !== next) label.textContent = next;
+  }
+  function decorate() {
+    queued = false;
+    if (document.documentElement.getAttribute('data-skin') !== SKIN) return;
+    each('.hero.fc-console, .draw__stage, .gcard, .card-back, .hp-block, .hp-game, .strength, .section__head, .proj-head, .stat-grid, .profile, .card, .tl-item, .cover-block, .block, .detail__meta, .detail__learned, .quest-strip, .pager__item, .play-card, .steam, .sheet__panel', surface);
+    each('.section__head, .proj-head, .stat-grid, .detail__meta, .sheet__panel, .hp--summary .hp-block', function (el) { el.classList.add('snes-menu'); });
+    each('.strength', function (el) { el.classList.add('snes-paper'); });
+    each('.hp-block', function (el) {
+      if (el.querySelector('.hpl')) {
+        el.classList.add('snes-menu'); kicker(el, 'records', 'snes-kicker');
+      } else if (el.querySelector('.hp-skills')) {
+        kicker(el, 'items', 'snes-kicker');
+      } else if (el.querySelector('.strengths')) {
+        kicker(el, 'skills', 'snes-kicker');
+      }
+    });
+    each('.stat-grid', function (el) { kicker(el, 'status', 'snes-status-title'); });
+    each('svg.ghost:not(.snes-ghost)', function (el) {
+      el.classList.add('snes-ghost');
+      el.innerHTML = PIXEL_GHOST;
+    });
+  }
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(decorate);
+  }
+  function start() {
+    schedule();
+    // A second, idempotent pass observes late dealt cards and gallery rerenders.
+    if (!window.MutationObserver) return;
+    var main = document.querySelector('[data-slot="main"]');
+    if (main) new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
+    ['nav', 'sheet', 'footer'].forEach(function (slot) {
+      var el = document.querySelector('[data-slot="' + slot + '"]');
+      if (el) new MutationObserver(schedule).observe(el, { childList: true, subtree: true });
+    });
+    new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'data-skin'] });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();

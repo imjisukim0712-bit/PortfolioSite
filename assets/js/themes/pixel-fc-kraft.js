@@ -378,19 +378,21 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* 크라프트 포스터의 케이블: 기울인 판 바깥의 독립 배경층입니다.
-   기존 손잡이·카트리지·슬롯 핸들러와 좌표계에는 관여하지 않습니다. */
+/* 4차 기념 포스터 장식. 위 IIFE의 입력/슬롯/꽂기 코드는 변경하지 않습니다.
+   main 뒤의 단일 SVG만 실측하며 콘텐츠·링크·변환 좌표계에는 관여하지 않습니다. */
 (function () {
   'use strict';
   var SKIN = 'pixel-fc-kraft', NS = 'http://www.w3.org/2000/svg';
-  var frame = 0, observedStage = null, resize = null;
+  var frame = 0, resize = null, observed = [];
+  var STAR = 'M8 0h8v8h8v8h-8v8H8v-8H0V8h8Z';
+  var HEART = 'M0 4h4V0h8v4h4V0h8v4h4v12h-4v4h-4v4h-4v4h-4v-4H8v-4H4v-4H0Z';
+  var COIN = 'M8 0h12v4h4v4h4v12h-4v4h-4v4H8v-4H4v-4H0V8h4V4h4Zm4 8v12h4V8Z';
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
-  function svgNode(tag, attrs) {
+  function node(tag, attrs) {
     var el = document.createElementNS(NS, tag);
     Object.keys(attrs).forEach(function (key) { el.setAttribute(key, attrs[key]); });
     return el;
   }
-  /* 반경을 구간 길이에 맞춰 줄여 좁은 화면에서도 교차하지 않는 둥근 직각 경로. */
   function rounded(points) {
     var d = 'M' + points[0].join(' ');
     for (var i = 1; i < points.length - 1; i++) {
@@ -398,77 +400,124 @@
       var ab = Math.hypot(b[0] - a[0], b[1] - a[1]);
       var bc = Math.hypot(c[0] - b[0], c[1] - b[1]);
       if (!ab || !bc) continue;
-      var r = Math.min(20, ab / 2, bc / 2);
+      var r = Math.min(28, ab / 2, bc / 2);
       d += 'L' + (b[0] + (a[0] - b[0]) * r / ab) + ' ' + (b[1] + (a[1] - b[1]) * r / ab);
       d += 'Q' + b.join(' ') + ' ' + (b[0] + (c[0] - b[0]) * r / bc) + ' ' + (b[1] + (c[1] - b[1]) * r / bc);
     }
     return d + 'L' + points[points.length - 1].join(' ');
   }
+  /* 직접 그린 두 컨트롤러. 글자 없는 비상호작용 기념 스티커입니다. */
+  function memento(intro) {
+    if (!intro || intro.querySelector('.kf-memento')) return;
+    var art = document.createElement('span');
+    art.className = 'kf-memento'; art.setAttribute('aria-hidden', 'true');
+    var svg = node('svg', { viewBox: '0 0 160 56', focusable: 'false' });
+    svg.appendChild(node('path', { d: 'M24 6V2H136V6', fill: 'none', stroke: 'var(--kf-cable)', 'stroke-width': '4', 'stroke-linejoin': 'round' }));
+    [0, 84].forEach(function (x) {
+      var g = node('g', { transform: 'translate(' + x + ' 8)' });
+      g.appendChild(node('rect', { width: '76', height: '42', rx: '12', fill: '#a3203a' }));
+      g.appendChild(node('rect', { x: '6', y: '6', width: '64', height: '30', rx: '6', fill: '#f5ebd6' }));
+      g.appendChild(node('path', { d: 'M16 12h8v6h6v8h-6v6h-8v-6h-6v-8h6Z', fill: '#26221d' }));
+      g.appendChild(node('circle', { cx: '49', cy: '26', r: '5', fill: '#a3203a' }));
+      g.appendChild(node('circle', { cx: '62', cy: '18', r: '5', fill: '#a3203a' }));
+      svg.appendChild(g);
+    });
+    art.appendChild(svg); intro.appendChild(art);
+  }
+  function observe(elements) {
+    if (!resize) return;
+    if (elements.length === observed.length && elements.every(function (el, i) { return observed[i] === el; })) return;
+    resize.disconnect(); observed = elements;
+    elements.forEach(function (el) { resize.observe(el); });
+  }
   function paint() {
     frame = 0;
     if (!active()) {
-      document.querySelectorAll('.kf-cables').forEach(function (el) { el.remove(); });
+      document.querySelectorAll('.kf-cables, .kf-memento').forEach(function (el) { el.remove(); });
       if (resize) resize.disconnect();
-      observedStage = null;
+      observed = [];
       return;
     }
-    var stage = document.querySelector('.fcs-stage');
-    if (!stage) {
-      if (resize) resize.disconnect();
-      observedStage = null;
-      return;
-    }
-    if (observedStage !== stage) {
-      if (resize) resize.disconnect();
-      observedStage = stage;
-      if (resize) {
-        resize.observe(stage);
-        stage.querySelectorAll('.fcs-intro, .hero, .draw').forEach(function (el) { resize.observe(el); });
-      }
-    }
-    var svg = stage.querySelector('.kf-cables');
+    var main = document.querySelector('[data-slot="main"]');
+    if (!main) return;
+    var stage = main.querySelector('.fcs-stage');
+    var intro = stage && stage.querySelector('.fcs-intro');
+    memento(intro);
+    var headings = Array.prototype.slice.call(main.querySelectorAll('.hp-h, .section__head, .proj-head, .detail__title, .cl-summary__t'));
+    var svg = main.querySelector(':scope > .kf-cables');
     if (!svg) {
-      svg = svgNode('svg', { 'class': 'kf-cables', 'aria-hidden': 'true', 'focusable': 'false' });
-      svg.appendChild(svgNode('path', { 'class': 'kf-cables__wire' }));
-      svg.appendChild(svgNode('path', { 'class': 'kf-cables__wire' }));
-      svg.appendChild(svgNode('rect', { 'class': 'kf-cables__plug', width: '12', height: '12', rx: '4' }));
-      // 직접 만든 별: 한 칸 4px, 세로·가로 20px. 안내 문구를 추가하지 않는 순수 장식.
-      svg.appendChild(svgNode('path', { 'class': 'kf-cables__star', d: 'M8 0h4v4h4v4h4v4h-4v4h-4v4H8v-4H4v-4H0V8h4V4h4Z' }));
-      stage.insertBefore(svg, stage.firstChild);
+      svg = node('svg', { 'class': 'kf-cables', 'aria-hidden': 'true', focusable: 'false' });
+      svg.appendChild(node('path', { 'class': 'kf-cables__wire' }));
+      svg.appendChild(node('path', { 'class': 'kf-cables__wire' }));
+      svg.appendChild(node('g', { 'class': 'kf-cables__sockets' }));
+      [STAR, HEART, COIN].forEach(function (d) { svg.appendChild(node('path', { 'class': 'kf-cables__sprite', d: d, 'fill-rule': 'evenodd' })); });
+      main.insertBefore(svg, main.firstChild);
     }
-    if (window.innerWidth < 900) return; // 작은 화면에는 gutter 케이블만 남김.
-    var intro = stage.querySelector('.fcs-intro'), hero = stage.querySelector('.hero');
-    if (!intro || !hero) return;
-    var tray = stage.querySelector('.draw__stage');
-    var box = stage.getBoundingClientRect(), title = intro.getBoundingClientRect();
-    var machine = hero.getBoundingClientRect(), shelf = (tray || hero).getBoundingClientRect();
-    if (!box.width || !box.height) return;
-    function x(value) { return Math.max(8, Math.min(box.width - 8, value - box.left)); }
-    function y(value) { return Math.max(8, Math.min(box.height - 8, value - box.top)); }
-    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
-    var startX = x(title.left + 16), startY = y(title.bottom + 22);
-    var gutter = x(title.right + 18), top = y(machine.top - 22);
-    var right = x(Math.max(machine.right, shelf.right) + 18);
-    var bottom = y(shelf.bottom + 24), port = x(machine.left + machine.width * .76);
-    var paths = svg.querySelectorAll('.kf-cables__wire');
-    paths[0].setAttribute('d', rounded([[startX, startY], [gutter, startY], [gutter, top], [x(machine.left + 70), top], [x(machine.left + 70), y(machine.top + 8)]]));
-    paths[1].setAttribute('d', rounded([[port, y(machine.top + 8)], [port, top], [right, top], [right, bottom], [x(shelf.left + 44), bottom], [x(shelf.left + 44), y(shelf.bottom - 3)]]));
-    var plug = svg.querySelector('.kf-cables__plug');
-    plug.setAttribute('x', startX - 6); plug.setAttribute('y', startY - 6);
-    svg.querySelector('.kf-cables__star').setAttribute('transform', 'translate(' + x(title.left + 12) + ' ' + y(machine.top + 6) + ')');
+    var paper = main.getBoundingClientRect(), W = paper.width, H = paper.height;
+    if (!W || !H) return;
+    var mobile = W < 900;
+    function x(v) { return Math.max(16, Math.min(W - 16, v - paper.left)); }
+    function y(v) { return Math.max(12, Math.min(H - 12, v - paper.top)); }
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    var firstWrap = main.querySelector('.section > .wrap');
+    var left = firstWrap ? firstWrap.getBoundingClientRect().left + parseFloat(getComputedStyle(firstWrap).paddingLeft) : paper.left + 38;
+    var spine = Math.max(16, x(left) - 26), end = H - 22;
+    var wires = svg.querySelectorAll('.kf-cables__wire');
+    var start = stage ? y(stage.getBoundingClientRect().bottom + 12) : 20;
+    var hero = stage && stage.querySelector('.hero');
+    if (stage && intro && hero && !mobile) {
+      var st = stage.getBoundingClientRect(), title = intro.getBoundingClientRect();
+      var machine = hero.getBoundingClientRect();
+      var tray = stage.querySelector('.draw__stage'), shelf = (tray || hero).getBoundingClientRect();
+      var top = y(Math.min(machine.top - 22, st.top + 20));
+      var right = x(Math.max(machine.right, shelf.right) + 24);
+      var gutter = x(title.right + 18);
+      /* memento 아래 → 제목 오른쪽 → 게임기 윗면/오른쪽 → 진열판 아래 → 본문 선로. */
+      wires[0].setAttribute('d', rounded([
+        [x(title.left + 18), y(title.bottom + 18)], [gutter, y(title.bottom + 18)],
+        [gutter, top], [right, top], [right, y(Math.max(shelf.bottom, title.bottom) + 28)],
+        [spine, y(Math.max(shelf.bottom, title.bottom) + 28)], [spine, end]
+      ]));
+    } else {
+      /* 모바일은 글자 바깥의 왼쪽 여백을 쓴다. 기기 구도와 터치 영역은 그대로. */
+      var from = stage ? y(stage.getBoundingClientRect().top + 16) : 18;
+      wires[0].setAttribute('d', rounded([[spine + 12, from], [spine, from], [spine, end]]));
+    }
+    var sockets = svg.querySelector('.kf-cables__sockets');
+    while (sockets.children.length > headings.length) sockets.lastElementChild.remove();
+    var branches = '';
+    headings.forEach(function (heading, i) {
+      var r = heading.getBoundingClientRect(), cx = Math.max(16, x(r.left) - 24);
+      var cy = y(r.top + Math.min(18, r.height / 2));
+      var circle = sockets.children[i];
+      if (!circle) { circle = node('circle', { 'class': 'kf-cables__socket', r: '9' }); sockets.appendChild(circle); }
+      circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+      /* 먼 열의 제목은 문장 가로지르지 않게 제목 위 빈 여백으로 분기. */
+      branches += rounded([[spine, y(r.top - 22)], [cx, y(r.top - 22)], [cx, cy]]) + ' ';
+    });
+    wires[1].setAttribute('d', branches);
+    var sprites = svg.querySelectorAll('.kf-cables__sprite');
+    var stageTop = stage ? y(stage.getBoundingClientRect().top + 12) : 12;
+    var spots = [[W - 48, stageTop], [Math.max(20, spine - 48), Math.min(end - 36, start + 24)], [W - 48, end - 28]];
+    sprites.forEach(function (el, i) { el.setAttribute('transform', 'translate(' + spots[i].join(' ') + ')'); });
+    observe([main].concat(stage ? [stage, intro, hero] : [], headings, Array.prototype.slice.call(main.querySelectorAll('.draw__stage, .strengths, .steam'))).filter(Boolean));
   }
   function schedule() { if (!frame) frame = window.requestAnimationFrame(paint); }
   function init() {
     if (window.ResizeObserver) resize = new ResizeObserver(schedule);
     var main = document.querySelector('[data-slot="main"]');
     if (window.MutationObserver) {
-      // 공용 fc-stage의 DOM 이동, 언어 재렌더, 뽑힌 카드로 생긴 진열판 높이를 모두 반영.
-      if (main) new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
-      new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'lang'] });
+      if (main) new MutationObserver(function (records) {
+        // SVG 자체의 타공 추가는 다음 측정을 요구하지 않습니다.
+        if (records.some(function (r) { return !(r.target.closest && r.target.closest('.kf-cables')); })) schedule();
+      }).observe(main, { childList: true, subtree: true });
+      new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'data-theme', 'lang'] });
     }
     window.addEventListener('resize', schedule, { passive: true });
     window.addEventListener('pageshow', schedule);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    // 사진 로드로 레이아웃이 바뀌는 환경도 처리 (사진 픽셀에는 손대지 않음).
+    if (main) main.addEventListener('load', schedule, true);
     schedule();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

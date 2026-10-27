@@ -96,7 +96,7 @@
     hardware.className = 'fcc-hardware';
     hardware.setAttribute('aria-hidden', 'true');
     /* 베젤 위 색 띠: aria-hidden 부모 안의 비상호작용 장식이며 슬롯/좌표는 건드리지 않습니다. */
-    hardware.innerHTML = '<span class="fcf-band fcf-band--top"></span><span class="fcf-band fcf-band--bottom"></span><span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    hardware.innerHTML = '<span class="fcf-band fcf-band--top"></span><span class="flat-bezel-shine"></span><span class="fcf-band fcf-band--bottom"></span><span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
     hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */

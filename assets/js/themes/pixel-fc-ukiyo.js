@@ -378,21 +378,50 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* 판화 조판: 원본 제목에 접근성 트리 밖의 작은 판 번호만 더합니다.
-   화면 재렌더/언어 전환에도 멱등. 기기·슬롯·기울기·좌표에는 관여하지 않습니다. */
+/* 목판 조판 장식만 추가. 위의 버튼·카트리지 동작 코드는 그대로 둡니다.
+   색판/구름은 절대 배치, 번호/낙관/제첨은 aria-hidden. 좌표 측정 없음. */
 (function () {
   'use strict';
   var SKIN = 'pixel-fc-ukiyo';
+  var COPY = {
+    rail: { ko: '포트폴리오', en: 'PORTFOLIO' },
+    seal: { ko: '김', en: 'K' }
+  };
   var queued = false;
+  function ornament(parent, cls, label) {
+    var el = parent.querySelector('.' + cls);
+    if (!el) {
+      el = document.createElement('span');
+      el.className = cls;
+      el.setAttribute('aria-hidden', 'true');
+      parent.appendChild(el);
+    }
+    if (typeof label === 'string' && el.textContent !== label) el.textContent = label;
+    return el;
+  }
   function decorate() {
     queued = false;
     var main = document.querySelector('[data-slot="main"]');
     if (!main) return;
     if (document.documentElement.getAttribute('data-skin') !== SKIN) {
-      Array.prototype.forEach.call(main.querySelectorAll('.uku-index'), function (stamp) { stamp.parentNode.removeChild(stamp); });
+      Array.prototype.forEach.call(main.querySelectorAll('.uku-index, .uku-title-rail, .uku-seal, .uku-shell-print, .uku-bezel'), function (stamp) { stamp.parentNode.removeChild(stamp); });
       Array.prototype.forEach.call(main.querySelectorAll('.uku-heading'), function (heading) { heading.classList.remove('uku-heading'); });
       return;
     }
+    var language = window.PortfolioApp && window.PortfolioApp.getLang ? window.PortfolioApp.getLang() : document.documentElement.lang;
+    language = language === 'en' ? 'en' : 'ko';
+    var intro = main.querySelector('.fcs-intro');
+    if (intro) {
+      ornament(intro, 'uku-title-rail', COPY.rail[language]);
+      var seal = ornament(intro, 'uku-seal', COPY.seal[language]);
+      var caption = intro.querySelector('.fcs-caption');
+      if (caption && seal.nextSibling !== caption) intro.insertBefore(seal, caption);
+    }
+    Array.prototype.forEach.call(main.querySelectorAll('.hero.fc-console'), function (hero) {
+      ornament(hero, 'uku-shell-print');
+      var hardware = hero.querySelector('.fcc-hardware');
+      if (hardware) ornament(hardware, 'uku-bezel');
+    });
     var headings = main.querySelectorAll('.hp-h, .section__title, .proj-title, .cl-summary__t, .detail__title');
     Array.prototype.forEach.call(headings, function (heading, i) {
       var stamp = heading.querySelector('.uku-index');

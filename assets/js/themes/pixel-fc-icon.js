@@ -368,28 +368,53 @@
   document.addEventListener('focusout', releaseKeys);
   window.addEventListener('blur', releaseKeys);
 
-  /* 참고 ①의 작은 아이콘 타일. 공용 fc-stage가 만든 자리에는 손대지 않고,
-     absolute 장식만 넣습니다. 글자·사진·입력·슬롯 좌표계에는 관여하지 않습니다. */
+  /* ROUND 4: decorative tiles only. No events, layout moves, slot measurements,
+     timers or interaction state below. Attribute guards make rerenders idempotent. */
+  var ICONS = [
+    '<path d="M4 4h16v4H4zM4 12h4v8H4zM12 12h8v4h-8zM12 20h8v4h-8z"/>',
+    '<path d="M0 0h8v8H0zM16 0h8v8h-8zM0 16h8v8H0zM16 16h8v8h-8z"/>',
+    '<path d="M8 0h8v8h8v8h-8v8H8v-8H0V8h8z"/>',
+    '<path d="M4 0h16v4h4v16h-4v4H4v-4H0V4h4z"/><path fill="#101f36" d="M8 4h4v4h4v8h-4v4H8z"/>'
+  ];
+  function decorativeSpan(cls) {
+    var el = document.createElement('span');
+    el.className = cls;
+    el.setAttribute('aria-hidden', 'true');
+    return el;
+  }
   function paintIcon() {
     if (!active()) return;
-    var stage = document.querySelector('.fcs-stage');
-    if (stage && !stage.querySelector('.fci-scenery')) {
-      var scenery = document.createElement('div');
-      scenery.className = 'fci-scenery';
-      scenery.setAttribute('aria-hidden', 'true');
-      /* Empty decorative tile: its four flat bands live entirely in CSS. */
-      stage.appendChild(scenery);
+    var hero = document.querySelector('.hero.fc-console');
+    if (hero && !hero.querySelector('.fci-console-frame')) {
+      hero.appendChild(decorativeSpan('fci-console-frame'));
+      hero.appendChild(decorativeSpan('fci-dither'));
     }
-    /* 실제 미디어는 보존. 이미지가 없는 칸에만 청회색 액자 + 작은 노을 띠.
-       100단위 좌표의 12단위 블록은 가장 작은 진열 카드에서도 4px 이상입니다. */
+    /* All source text, editable anchors, links, images and DOM order stay intact.
+       The numbers are separate ornaments, not prefixes in the editable text. */
+    Array.prototype.forEach.call(document.querySelectorAll('.strength'), function (tile, i) {
+      if (tile.querySelector('.fci-slot-number')) return;
+      var number = decorativeSpan('fci-slot-number');
+      number.textContent = ('0' + (i % 3 + 1)).slice(-2);
+      tile.insertBefore(number, tile.firstChild);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.hp-h, .cl-summary__t, .section__head'), function (heading, i) {
+      if (heading.querySelector('.fci-section-icon')) return;
+      var icon = decorativeSpan('fci-section-icon');
+      icon.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor">' + ICONS[i % ICONS.length] + '</svg>';
+      heading.insertBefore(icon, heading.firstChild);
+    });
+    /* Procedural placeholder art only. Uploaded artwork and profile photographs
+       are never selected or changed. Blocks are 12 units (>=4px in the tray). */
     Array.prototype.forEach.call(document.querySelectorAll('.gcard__gen:not([data-fci-painted])'), function (art) {
       var svg = art.querySelector(':scope > svg');
       if (!svg) return;
       art.setAttribute('data-fci-painted', '1');
+      svg.setAttribute('shape-rendering', 'crispEdges');
       svg.innerHTML = '<rect width="100" height="100" fill="var(--fci-art-paper)"/>' +
-        '<path d="M0 0h100v12H0zM0 88h100v12H0z" fill="var(--fci-art-frame)"/>' +
-        '<path d="M0 64h100v12H0z" fill="var(--fci-red)"/>' +
-        '<path d="M0 76h100v12H0z" fill="var(--fci-orange)"/>';
+        '<path d="M12 0h76v12h12v76H88v12H12V88H0V12h12z" fill="var(--fci-art-frame)"/>' +
+        '<path d="M24 12h52v12h12v52H76v12H24V76H12V24h12z" fill="var(--fci-art-paper)"/>' +
+        '<path d="M12 64h76v12H12z" fill="var(--fci-red)"/>' +
+        '<path d="M24 76h52v12H24z" fill="var(--fci-orange)"/>';
     });
   }
 

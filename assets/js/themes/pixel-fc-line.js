@@ -377,3 +377,150 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* LINE / 04: 장식 전용. 위의 입력·슬롯·좌표계·꽂기 상태에는 관여하지 않습니다. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-line';
+  var NS = 'http://www.w3.org/2000/svg';
+  var frame = 0;
+  var main;
+  var resize;
+  var started = false;
+
+  function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
+  function list(selector) { return Array.prototype.slice.call(main.querySelectorAll(selector)); }
+  function svgNode(tag) { return document.createElementNS(NS, tag); }
+  function number(n) { return n < 10 ? '0' + n : String(n); }
+  function schedule() {
+    if (!frame) frame = window.requestAnimationFrame(function () { frame = 0; decorate(); });
+  }
+
+  /* 직교 경로의 법선 방향으로 각각 평행 이동합니다.
+     모서리는 회전 방향에 맞춰 반지름도 증감시켜 네 선의 간격을 일정하게 유지합니다. */
+  function parallelPath(points, offset) {
+    var dirs = [], normals = [], shifted = [], i;
+    for (i = 1; i < points.length; i++) {
+      var dx = points[i][0] - points[i - 1][0];
+      var dy = points[i][1] - points[i - 1][1];
+      var length = Math.sqrt(dx * dx + dy * dy);
+      if (!length) return '';
+      dirs.push([dx / length, dy / length]);
+      normals.push([-dy / length, dx / length]);
+    }
+    for (i = 0; i < points.length; i++) {
+      var a = normals[Math.max(0, i - 1)];
+      var b = normals[Math.min(normals.length - 1, i)];
+      shifted.push([
+        points[i][0] + (i && i < points.length - 1 ? a[0] + b[0] : b[0]) * offset,
+        points[i][1] + (i && i < points.length - 1 ? a[1] + b[1] : b[1]) * offset
+      ]);
+    }
+    function xy(p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+    var d = 'M ' + xy(shifted[0]);
+    for (i = 1; i < shifted.length - 1; i++) {
+      var before = dirs[i - 1], after = dirs[i], p = shifted[i];
+      var turn = before[0] * after[1] - before[1] * after[0];
+      var radius = 28 - turn * offset;
+      var lengthIn = Math.hypot(p[0] - shifted[i - 1][0], p[1] - shifted[i - 1][1]);
+      var lengthOut = Math.hypot(shifted[i + 1][0] - p[0], shifted[i + 1][1] - p[1]);
+      radius = Math.min(radius, lengthIn / 2, lengthOut / 2);
+      var entry = [p[0] - before[0] * radius, p[1] - before[1] * radius];
+      var exit = [p[0] + after[0] * radius, p[1] + after[1] * radius];
+      d += ' L ' + xy(entry) + ' A ' + radius.toFixed(1) + ' ' + radius.toFixed(1) +
+        ' 0 0 ' + (turn > 0 ? '1' : '0') + ' ' + xy(exit);
+    }
+    return d + ' L ' + xy(shifted[shifted.length - 1]);
+  }
+
+  function decorate() {
+    if (!main) return;
+    var svg = main.querySelector('.fcl-cable');
+    if (!active()) { if (svg) svg.remove(); return; }
+
+    /* 숫자만 더하고 기존 제목·내용·링크·DOM 순서는 그대로 둡니다. */
+    list('.hp-h, .section__head, .proj-head, .cl-summary__t, .block__label').forEach(function (head, i) {
+      head.setAttribute('data-fcl-number', number(i + 1));
+      if (head.classList.contains('section__head')) {
+        var section = head.closest('.section');
+        if (section) section.classList.add('fcl-page-section');
+      }
+    });
+    var games = main.querySelector('.hp-games');
+    if (games) games.parentNode.classList.add('fcl-play-wrap');
+    var stats = main.querySelector('.stat-grid');
+    if (stats) stats.closest('.section').classList.add('fcl-stats-section');
+
+    if (!svg) {
+      svg = svgNode('svg');
+      svg.setAttribute('class', 'fcl-cable');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('focusable', 'false');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      for (var i = 0; i < 4; i++) svg.appendChild(svgNode('path'));
+      main.appendChild(svg);
+    }
+    var box = main.getBoundingClientRect();
+    var width = main.clientWidth, height = main.offsetHeight;
+    if (!width || !height) return;
+    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+
+    var page = document.body.getAttribute('data-page') || 'home';
+    var selectors = {
+      home: '.hp-block, .fcc-play-heading',
+      resume: '.fcl-stats-section > .wrap, .fcl-page-section > .wrap',
+      cover: '.cl-summary, .cover-block',
+      projects: '.proj-grid',
+      play: '.steam, .play',
+      detail: '.detail, .block, .pager'
+    };
+    var stops = list(selectors[page] || '.section__head, .block');
+    var wrap = main.querySelector('.hp > .wrap') || main.querySelector('.section > .wrap');
+    if (!stops.length || !wrap) return;
+    var bounds = wrap.getBoundingClientRect();
+    var left = Math.max(14, bounds.left - box.left - 32);
+    var right = Math.min(width - 14, bounds.right - box.left + 32);
+    var firstY = Math.max(48, stops[0].getBoundingClientRect().top - box.top - 46);
+    var intro = main.querySelector('.fcs-intro');
+    var caption = intro && (intro.querySelector('.fcs-caption') || intro.querySelector('.hero__title'));
+    var startY = caption ? Math.min(firstY - 70, caption.getBoundingClientRect().bottom - box.top + 28) : Math.max(14, firstY - 64);
+    var startX = intro ? intro.getBoundingClientRect().left - box.left + 140 : left + Math.min(180, (right - left) / 2);
+    var points = [[startX, startY], [left, startY]];
+    var side = left, previous = startY;
+    stops.forEach(function (stop) {
+      var y = Math.max(firstY, stop.getBoundingClientRect().top - box.top - 46);
+      if (y - previous < 60) return;
+      points.push([side, y]);
+      side = side === left ? right : left;
+      points.push([side, y]);
+      previous = y;
+    });
+    var endY = Math.max(previous + 70, height - 25);
+    points.push([side, endY]);
+    points.push([side === left ? left + 100 : right - 100, endY]);
+    Array.prototype.forEach.call(svg.children, function (path, index) {
+      path.setAttribute('d', parallelPath(points, (index - 1.5) * 7));
+    });
+  }
+
+  function init() {
+    if (started) return;
+    main = document.querySelector('[data-slot="main"]');
+    if (!main) return;
+    started = true;
+    /* 다음 프레임이면 fc-stage가 제목·게임기·진열판을 옮긴 뒤의 위치입니다. */
+    if (window.MutationObserver) {
+      new MutationObserver(schedule).observe(main, { childList: true });
+      new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    }
+    if (window.ResizeObserver) {
+      resize = new ResizeObserver(schedule);
+      resize.observe(main);
+    }
+    window.addEventListener('resize', schedule, { passive: true });
+    document.addEventListener('load', function (event) { if (event.target.tagName === 'IMG') schedule(); }, true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    schedule();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

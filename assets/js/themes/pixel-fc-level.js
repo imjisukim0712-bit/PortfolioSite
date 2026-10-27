@@ -379,3 +379,64 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* ROUND 4 — decoration only. The cartridge/controller code above is unchanged.
+   Keep the HUD in sync with the native render cycle without replacing content,
+   moving links, changing focus or introducing another interaction. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-level';
+  var WORLDS = {
+    home:     { number: '1-1', ko: '홈',             en: 'Home' },
+    resume:   { number: '1-2', ko: '이력서',         en: 'Résumé' },
+    cover:    { number: '1-3', ko: '자기소개서',     en: 'About me' },
+    projects: { number: '1-4', ko: '프로젝트',       en: 'Projects' },
+    play:     { number: '1-5', ko: '게임플레이',     en: 'Gameplay' },
+    detail:   { number: '1-4', ko: '프로젝트 상세',  en: 'Project details' }
+  };
+  function paint() {
+    if (document.documentElement.getAttribute('data-skin') !== SKIN) return;
+    var app = window.PortfolioApp;
+    var language = app && app.getLang ? app.getLang() : document.documentElement.lang;
+    var en = language === 'en';
+    var world = WORLDS[document.body.getAttribute('data-page')] || WORLDS.home;
+    var nav = document.querySelector('[data-slot="nav"]');
+    if (nav) {
+      var hud = nav.querySelector('.level-hud-world');
+      if (!hud) {
+        hud = document.createElement('span');
+        hud.className = 'level-hud-world';
+        hud.setAttribute('aria-hidden', 'true');
+        var number = document.createElement('b');
+        var name = document.createElement('span');
+        hud.appendChild(number); hud.appendChild(name); nav.appendChild(hud);
+      }
+      var numberText = 'WORLD ' + world.number;
+      var pageText = en ? world.en : world.ko;
+      if (hud.firstElementChild.textContent !== numberText) hud.firstElementChild.textContent = numberText;
+      if (hud.lastElementChild.textContent !== pageText) hud.lastElementChild.textContent = pageText;
+    }
+    var footer = document.querySelector('[data-slot="footer"]');
+    if (footer) {
+      var end = footer.querySelector('.level-end');
+      if (!end) {
+        end = document.createElement('p'); end.className = 'level-end';
+        end.setAttribute('aria-hidden', 'true'); footer.insertBefore(end, footer.firstChild);
+      }
+      var label = en ? 'THANKS FOR PLAYING' : '플레이해 주셔서 감사합니다';
+      if (end.textContent !== label) end.textContent = label;
+    }
+  }
+  function initStageDecor() {
+    paint();
+    if (!window.MutationObserver) return;
+    var observer = new MutationObserver(paint);
+    ['nav', 'main', 'footer'].forEach(function (slot) {
+      var target = document.querySelector('[data-slot="' + slot + '"]');
+      if (target) observer.observe(target, { childList: true });
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'data-skin'] });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStageDecor);
+  else initStageDecor();
+})();

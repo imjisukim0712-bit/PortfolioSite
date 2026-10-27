@@ -96,7 +96,7 @@
     var hardware = document.createElement('span');
     hardware.className = 'fcc-hardware';
     hardware.setAttribute('aria-hidden', 'true');
-    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    hardware.innerHTML = '<span class="iso-shine"></span><span class="iso-screw"></span><span class="iso-screw iso-screw--r"></span><span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
     hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */
@@ -378,4 +378,33 @@
     scan();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* Decoration only. Number badges are attributes rather than new text nodes:
+   original headings, editing anchors, content order and controls stay intact.
+   A queued pass also covers fc-stage moving the hero after the initial render. */
+(function () {
+  'use strict';
+  var queued = false;
+  function decorate() {
+    queued = false;
+    if (document.documentElement.getAttribute('data-skin') !== 'pixel-fc-iso') return;
+    var headings = document.querySelectorAll('[data-slot="main"] .hp-h, [data-slot="main"] .section__title, [data-slot="main"] .proj-title, [data-slot="main"] .cl-summary__t');
+    Array.prototype.forEach.call(headings, function (heading, index) {
+      heading.setAttribute('data-iso-no', ('0' + (index + 1)).slice(-2));
+    });
+  }
+  function queue() {
+    if (queued) return;
+    queued = true;
+    if (window.requestAnimationFrame) window.requestAnimationFrame(decorate);
+    else setTimeout(decorate, 0);
+  }
+  function start() {
+    var main = document.querySelector('[data-slot="main"]');
+    if (main && window.MutationObserver) new MutationObserver(queue).observe(main, { childList: true, subtree: true });
+    if (window.MutationObserver) new MutationObserver(queue).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    queue();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
