@@ -620,3 +620,9 @@
   [data-skin="pixel-fc-airbrush"] .ab-glint--a { top: 0; left: 7%; font-size: 27px; }
   [data-skin="pixel-fc-airbrush"] .ab-glint--b { bottom: 3%; right: 3%; font-size: 18px; }
 }
+
+/* 기울인 판의 가장자리 계단 현상 방지 — 판을 합성 레이어로 올리고(will-change) 뒷면을 숨기며,
+   투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
+@media (min-width: 720px) {
+  [data-skin="pixel-fc-airbrush"] .ps-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
+}

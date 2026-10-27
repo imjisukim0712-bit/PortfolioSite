@@ -495,8 +495,8 @@
 }
 [data-skin="pixel-fc-classic"] .fcc-speaker i { width: 4px; height: 4px; background: var(--fc-line-2); box-shadow: 0 -8px 0 var(--fc-line-2); }
 [data-skin="pixel-fc-classic"] .fc-key {
-  border-radius: 0;
-  clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
+  border-radius: 50%;   /* 원본처럼 둥근 버튼 — 계단 모서리는 도트 시안이 아니면 깨진 것처럼 보임 */
+  clip-path: none;
   transition: transform 80ms steps(2, end), border-color 80ms steps(1, end);
 }
 [data-skin="pixel-fc-classic"] .fc-key:focus-visible { border-color: var(--fc-gold); background: var(--fc-key-hi); }
@@ -512,7 +512,7 @@
 }
 [data-skin="pixel-fc-classic"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn)::before {
   content: ''; position: absolute; left: 8px; top: calc(50% - 5px); width: 8px; height: 10px;
-  background: currentColor; clip-path: polygon(0 0, 3px 0, 3px 2px, 5px 2px, 5px 4px, 8px 4px, 8px 6px, 5px 6px, 5px 8px, 3px 8px, 3px 10px, 0 10px);
+  background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%);
   opacity: 0; pointer-events: none;
 }
 [data-skin="pixel-fc-classic"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn):is(:hover, :focus-visible)::before,
@@ -726,4 +726,10 @@
   :root[data-skin="pixel-fc-classic"] .fcs-rig .hero__grid { grid-template-columns: auto minmax(0, 1fr); gap: 14px; }
   :root[data-skin="pixel-fc-classic"] .fcs-rig .hero .portrait { width: 104px; }
   :root[data-skin="pixel-fc-classic"] .fcs-rig > .draw { margin: 22px 12px 0; }
+}
+
+/* 기울인 판의 가장자리 계단 현상 방지 — 판을 합성 레이어로 올리고(will-change) 뒷면을 숨기며,
+   투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
+@media (min-width: 720px) {
+  [data-skin="pixel-fc-classic"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
 }
