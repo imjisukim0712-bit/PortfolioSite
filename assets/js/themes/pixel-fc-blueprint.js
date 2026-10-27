@@ -50,7 +50,17 @@
     bpSelect: { ko: '한마디 선택', en: 'Select a quip' },
     bpSections: { ko: '절 이동', en: 'Browse sections' },
     bpScreen: { ko: '개요 화면', en: 'Overview display' },
-    bpTray: { ko: '프로젝트 카트리지', en: 'Project cartridges' }
+    bpTray: { ko: '프로젝트 카트리지', en: 'Project cartridges' },
+    bpManual: { ko: '기획자 사용 설명서', en: 'PLANNER FIELD MANUAL' },
+    bpSpecs: { ko: '주요 사양', en: 'SPECIFICATIONS' },
+    bpActivity: { ko: '활동 기록', en: 'ACTIVITY RECORD' },
+    bpTools: { ko: '도구 목록', en: 'TOOL INVENTORY' },
+    bpMethod: { ko: '작업 방식', en: 'WORKING METHOD' },
+    bpRecord: { ko: '플레이 기록', en: 'PLAY RECORD' },
+    bpContents: { ko: '본문 도면', en: 'DOCUMENT SHEET' },
+    bpAuthor: { ko: '작성', en: 'DRAWN BY' },
+    bpRevision: { ko: '개정', en: 'REVISION' },
+    bpSheet: { ko: '문서', en: 'DOCUMENT' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
@@ -130,6 +140,7 @@
       layer.className = 'bp-diagram';
       layer.setAttribute('aria-hidden', 'true');
       layer.innerHTML = '<svg class="bp-leaders" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>' +
+        '<span class="bp-dimension">W 320 · REF.</span>' +
         '<span class="bp-note bp-note--select"></span><span class="bp-note bp-note--screen"></span>' +
         '<span class="bp-note bp-note--tray"></span>';
       rig.appendChild(layer);
@@ -150,7 +161,7 @@
     var paths = [];
     function leader(p, bendX, endX, endY) {
       paths.push('<path d="M' + p.x + ' ' + p.y + ' H' + bendX + ' V' + endY + ' H' + endX + '"/>' +
-        '<rect x="' + (p.x - 2) + '" y="' + (p.y - 2) + '" width="4" height="4"/>');
+        '<circle cx="' + p.x + '" cy="' + p.y + '" r="3"/>');
     }
     function note(cls, text, x, y) {
       var el = layer.querySelector('.bp-note--' + cls);
@@ -158,11 +169,18 @@
     }
     /* Two short right-angle paths stay within the rig width. On touch screens
        they become a quiet legend below the hardware, never over its controls. */
-    note('select', '① ' + t(hero.querySelector('[data-quip]') ? T.bpSelect : T.bpSections), 12, -38);
-    note('screen', '② ' + t(T.bpScreen), Math.max(150, w - 192), -38);
+    note('select', '① ' + t(hero.querySelector('[data-quip]') ? T.bpSelect : T.bpSections), 12, -32);
+    note('screen', '② ' + t(T.bpScreen), Math.max(150, w - 192), -32);
     if (!mobile) {
-      leader(select, 8, 26, -18);
-      leader(screen, screen.x, w - 180, -18);
+      leader(select, 8, 26, -12);
+      leader(screen, screen.x, w - 180, -12);
+      /* Nominal drawing dimensions, not CSS pixel measurements. Extension lines
+         and centre marks sit outside the display, clear of text and the photo. */
+      paths.push('<path class="bp-measure" d="M8 -42 V-66 M' + (w - 8) + ' -42 V-66 M8 -56 H' + (w - 8) +
+        ' M8 -56 l8 -4 m-8 4 l8 4 M' + (w - 8) + ' -56 l-8 -4 m8 4 l-8 4"/>');
+      var edge = point(hero, .5, 1);
+      paths.push('<path class="bp-axis" d="M0 ' + (edge.y + 14) + ' H' + w +
+        ' M' + (w / 2) + ' -42 V-4 M' + (w / 2) + ' ' + (edge.y + 4) + ' v20"/>');
     }
     if (tray) {
       note('tray', '③ ' + t(T.bpTray), Math.max(12, w - 224), h + 14);
@@ -198,14 +216,50 @@
     if (!active()) return;
     var main = document.querySelector('[data-slot="main"]');
     if (!main) return;
-    Array.prototype.forEach.call(main.querySelectorAll('.hp-h, .section__title, .proj-title, .cl-summary__t, .cover-block h3, .block__label, .steam__t, .detail__learned-title'), function (heading, i) {
-      heading.setAttribute('data-bp-fig', 'FIG. ' + pad(i + 1));
+    /* Attributes supply margin furniture without moving or replacing content. */
+    var sectionIndex = 0;
+    function margin(el, label) {
+      if (!el) return;
+      sectionIndex += 1;
+      el.setAttribute('data-bp-section', sectionIndex + '.0');
+      el.setAttribute('data-bp-caption', t(label));
+    }
+    Array.prototype.forEach.call(main.querySelectorAll('.hp-block'), function (el) {
+      margin(el, el.querySelector('.hpl') ? T.bpActivity : el.querySelector('.hp-skills') ? T.bpTools : T.bpMethod);
     });
+    var games = main.querySelector('.hp-games');
+    if (games) margin(games.parentNode, T.bpRecord);
+    Array.prototype.forEach.call(main.querySelectorAll('.section > .wrap'), function (el) {
+      if (el.parentNode.classList.contains('hp')) return;
+      var eyebrow = el.querySelector('.eyebrow');
+      margin(el, el.querySelector('.stat-grid') ? T.bpSpecs : eyebrow ? eyebrow.textContent : T.bpContents);
+    });
+    var intro = main.querySelector('.fcs-intro');
+    if (intro && !intro.querySelector('.bp-docline')) {
+      var docline = document.createElement('p');
+      docline.className = 'bp-docline';
+      docline.textContent = 'DOC. KJS-01 · REV.2026 / ' + t(T.bpManual);
+      intro.insertBefore(docline, intro.firstChild);
+    }
     [['.stat', 'SPEC'], ['.strength', 'SKL'], ['.skill-card', 'TOOL'], ['.play-card', 'LOG']].forEach(function (group) {
       Array.prototype.forEach.call(main.querySelectorAll(group[0]), function (el, i) {
         el.setAttribute('data-bp-part', group[1] + '-' + pad(i + 1));
       });
     });
+    [['.strength', T.bpMethod], ['.skill-card', T.bpTools], ['.play-card', T.bpRecord], ['.media-box', T.bpContents]].forEach(function (group) {
+      Array.prototype.forEach.call(main.querySelectorAll(group[0]), function (el, i) {
+        el.setAttribute('data-bp-figure', 'FIG. ' + pad(i + 1) + ' — ' + t(group[1]));
+      });
+    });
+    var footer = document.querySelector('.footer__inner');
+    if (footer && !footer.querySelector('.bp-titleblock')) {
+      var titleblock = document.createElement('div');
+      titleblock.className = 'bp-titleblock';
+      titleblock.innerHTML = '<span>' + esc(t(T.bpSheet)) + '<b>KJS—01</b></span>' +
+        '<span>' + esc(t(T.bpAuthor)) + '<b>' + esc(t(content().meta.name)) + '</b></span>' +
+        '<span>' + esc(t(T.bpRevision)) + '<b>2026 · R04</b></span>';
+      footer.appendChild(titleblock);
+    }
     var detail = main.querySelector('.detail__title');
     if (detail) {
       var anchor = detail.getAttribute('data-e') || '';

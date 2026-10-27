@@ -363,7 +363,59 @@
     games.setAttribute('role', 'group');
     games.setAttribute('aria-labelledby', title.id);
   }
-  /* 링크의 Enter 입력에도 버튼과 같은 2px 눌림. 기본 키 동작은 유지합니다. */
+  /* 4차 장식 전용. 내용/링크/편집 앵커와 카드 내부 cqw 칸은 이동하지 않습니다.
+     volume은 face 밖의 회색 두께 면, shell은 기기의 4px 계단 외곽입니다. */
+  function decoration(parent, cls, text) {
+    var found = Array.prototype.some.call(parent.children, function (el) { return el.classList.contains(cls); });
+    if (found) return;
+    var el = document.createElement('span');
+    el.className = cls;
+    el.setAttribute('aria-hidden', 'true');
+    if (text) el.textContent = text;
+    parent.appendChild(el);
+  }
+  function decorateParts() {
+    if (!active()) return;
+    var main = document.querySelector('[data-slot="main"]');
+    if (!main) return;
+    var hero = main.querySelector('.hero.fc-console');
+    if (hero) decoration(hero, 'fcd-shell');
+    var parts = main.querySelectorAll('.hp-block, .hp-games');
+    if (!parts.length) parts = main.querySelectorAll('.section > .wrap');
+    Array.prototype.forEach.call(parts, function (part, i) {
+      if (part.classList.contains('hp-games')) part = part.parentNode;
+      part.classList.add('fcd-part');
+      decoration(part, 'fcd-part-no', ('0' + (i + 1)).slice(-2));
+    });
+    var faces = document.querySelectorAll('.fcd-part, .hero.fc-console, .draw__stage, .gcard, .card-back, ' +
+      '.stat, .card, .strength, .hp-game, .profile, .tl-item, .cover-block, .play-card, .steam, ' +
+      '.quest-strip, .detail__learned, .block, .pager__item, .media-box, .cover-empty, .proj-empty, ' +
+      '.sheet__panel, .toast, .btn, .tab, .fc-key, .tag, .badge, .back-link, .store-link, ' +
+      '.icon-btn, .nav__burger, .lang-toggle, .nav__link, .hp-skill__ic, .tool__ic, .hp-thumb, .hp-game__ic, ' +
+      '.hero__eyebrow, .hero__portrait, .hero__photo, .quip, .fc-ov__btn, .fc-slot');
+    Array.prototype.forEach.call(faces, function (face) {
+      face.classList.add('fcd-solid');
+      decoration(face, 'fcd-volume');
+    });
+  }
+  /* Watch nested stage assembly, dealt cards and nav/footer rerenders too.
+     Only added non-decoration nodes queue work, so our own spans cannot loop.
+     This observer never calls scan/cleanup and cannot interrupt insertion. */
+  function watchDecoration() {
+    if (!window.MutationObserver) return;
+    var queued = false;
+    new MutationObserver(function (records) {
+      var added = records.some(function (record) {
+        return Array.prototype.some.call(record.addedNodes, function (el) {
+          return el.nodeType === 1 && !/^fcd-(volume|shell|part-no)$/.test(el.className || '');
+        });
+      });
+      if (!added || queued || !active()) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; decorateParts(); });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+  /* 링크의 Enter 입력에도 버튼과 같은 눌림. 기본 키 동작은 유지합니다. */
   function releaseKeys() {
     Array.prototype.forEach.call(document.querySelectorAll('.fcc-pressed'), function (el) { el.classList.remove('fcc-pressed'); });
   }
@@ -377,11 +429,12 @@
   window.addEventListener('blur', releaseKeys);
 
   /* 다시 그려질 때마다 붙입니다 (main 의 직접 자식이 바뀌면). */
-  function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); }
+  function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); decorateParts(); }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
     if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
     scan();
+    watchDecoration();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
