@@ -498,8 +498,17 @@
     wires[1].setAttribute('d', branches);
     var sprites = svg.querySelectorAll('.kf-cables__sprite');
     var stageTop = stage ? y(stage.getBoundingClientRect().top + 12) : 12;
-    var spots = [[W - 48, stageTop], [Math.max(20, spine - 48), Math.min(end - 36, start + 24)], [W - 48, end - 28]];
-    sprites.forEach(function (el, i) { el.setAttribute('transform', 'translate(' + spots[i].join(' ') + ')'); });
+    /* 소품은 오른쪽 바깥 여백에만, 세 높이에 나눠 둡니다(글·케이블과 겹치지 않게). 좁은 화면에서는 숨김. */
+    var mx = W - Math.max(40, (W - 1120) / 4) - 14;
+    var spots = [[mx, Math.min(end - 40, start + 90)], [mx - 6, Math.round(start + (end - start) * .5)], [mx, end - 120]];
+    sprites.forEach(function (el, i) {
+      el.style.display = mobile || W < 1240 ? 'none' : '';
+      el.setAttribute('transform', 'translate(' + spots[i].join(' ') + ')');
+    });
+    /* 선로 끝 = 둥근 플러그 하나 (끊긴 선처럼 보이지 않게) */
+    var plug = svg.querySelector('.kf-cables__plug');
+    if (!plug) { plug = node('circle', { 'class': 'kf-cables__plug', r: '10' }); svg.appendChild(plug); }
+    plug.setAttribute('cx', spine); plug.setAttribute('cy', end);
     observe([main].concat(stage ? [stage, intro, hero] : [], headings, Array.prototype.slice.call(main.querySelectorAll('.draw__stage, .strengths, .steam'))).filter(Boolean));
   }
   function schedule() { if (!frame) frame = window.requestAnimationFrame(paint); }

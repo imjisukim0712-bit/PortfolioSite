@@ -486,7 +486,8 @@
 
 /* ── 실제 두께: 검정 L형 외곽 + 안쪽 회색 L형 면. JS는 이 장식만 덧붙임.
    두 평행사변형은 우측/하단을 이어 같은 12px 깊이를 가짐. 부모 그림자와 무관. */
-[data-skin="pixel-fc-dot"] :where(.fcd-solid) { position: relative; }
+/* 두께 면을 붙일 기준점 — 원래 absolute 로 자리를 잡는 카트리지 앞·뒷면·슬롯은 건드리지 않습니다(덮어쓰면 카드가 정사각으로 눌려 그림 칸이 사라짐) */
+[data-skin="pixel-fc-dot"] :where(.fcd-solid:not(.gcard):not(.card-back):not(.fc-slot)) { position: relative; }
 :root[data-skin="pixel-fc-dot"] .fcd-solid {
   --fcd-depth: 12px; isolation: isolate; overflow: visible; box-shadow: none !important;
 }
@@ -543,8 +544,8 @@
 
 /* ── Typography: bold dot headings, readable proportional body text. */
 :root[data-skin="pixel-fc-dot"] .fcs-intro .hero__title {
-  font: 700 clamp(34px, 3.75vw, 56px)/1.45 var(--font-display);
-  text-shadow: 4px 4px 0 #000;
+  font: 700 44px/1.5 var(--font-display);
+  text-shadow: 4px 4px 0 #d6d6d6;
   letter-spacing: 0; color: var(--heading); word-break: keep-all; overflow-wrap: anywhere;
 }
 [data-skin="pixel-fc-dot"] .hero__title .accent {
@@ -981,3 +982,14 @@
   }
   :root[data-skin="pixel-fc-dot"] :is(.btn,.tab,.fc-key,.gcard,.proj-card,.back-link,.store-link) { translate: none !important; }
 }
+
+/* ── 5차 손질 ─────────────────────────────────────────────────────────────
+   큰 제목: 도트 글꼴(Galmuri11)은 11px 격자라 11의 배수(44 · 55px)에서만 또렷합니다. 검은 그림자 대신
+   옅은 회색 한 칸 그림자 = 아이소 두께. 제목 칸 폭에 맞춰 44px(두 줄). */
+@media (max-width: 899px) { :root[data-skin="pixel-fc-dot"] .fcs-intro .hero__title { font-size: 33px; text-shadow: 3px 3px 0 #d6d6d6; } }
+[data-skin="pixel-fc-dot"][data-theme="dark"] .fcs-intro .hero__title { text-shadow: 4px 4px 0 #3a3f4b; }
+/* 게임기 윗면의 들쭉날쭉한 흰 하이라이트 조각은 빼고, 셸 윗줄 8px 흰 면 하나로 */
+[data-skin="pixel-fc-dot"] .fcd-highlight { display: none; }
+/* 숫자 칸은 계단처럼 엇갈리지 않고 한 줄로 정렬(엇갈림이 정돈되지 않아 보임), 상자 아래 빈 자리도 줄임 */
+[data-skin="pixel-fc-dot"] .stat:nth-child(n) { margin-top: 0; }
+[data-skin="pixel-fc-dot"] .stat-grid { padding-bottom: 12px; align-items: stretch; }

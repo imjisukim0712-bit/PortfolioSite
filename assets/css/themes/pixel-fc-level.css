@@ -20,7 +20,7 @@
   --level-shadow: 4px 4px 0 var(--lo);
   --level-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='32' viewBox='0 0 64 32'%3E%3Cpath fill='%23c84c0c' d='M0 0h64v32H0z'/%3E%3Cpath fill='%23fca044' d='M0 4h64v4H0zM4 20h24v4H4zM36 20h24v4H36z'/%3E%3Cpath fill='%233b281f' d='M0 0h64v4H0zM0 16h64v4H0zM0 28h64v4H0zM28 16h4v16h-4zM60 0h4v32h-4z'/%3E%3C/svg%3E");
   --level-question: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23202737' d='M0 0h32v32H0z'/%3E%3Cpath fill='%23fca044' d='M4 4h24v24H4z'/%3E%3Cpath fill='%23c84c0c' d='M24 4h4v24H4v-4h20z'/%3E%3Cpath fill='%23202737' d='M8 8h12v4h4v8h-8v4h-4v-8h8v-4H8zM12 24h4v4h-4z'/%3E%3C/svg%3E");
-  --font-sans: 'Galmuri11', 'Noto Sans KR', sans-serif;
+  --font-sans: 'Pretendard Variable', Pretendard, 'Noto Sans KR', sans-serif;   /* 본문은 읽히는 글꼴 — 도트 글꼴은 큰 제목·숫자에만 */
   --font-display: 'Galmuri14', 'Galmuri11', monospace; --font-mono: 'Press Start 2P', 'Galmuri11', monospace;
   --text-body: 16px; --text-body-sm: 15px; --text-caption: 13px;
   --text-subheading: clamp(17px, 1.2vw + 14px, 20px);
@@ -797,3 +797,44 @@
   :root[data-skin="pixel-fc-level"] .gcard.is-tilt,
   :root[data-skin="pixel-fc-level"] .gcard.reveal.is-visible.is-tilt { transform: none; }
 }
+
+/* ── 5차 손질 ─────────────────────────────────────────────────────────────
+   도트 글꼴은 설계 격자의 정수배에서만 또렷합니다 — Galmuri14 = 28 · 42px, Press Start 2P = 16 · 24px.
+   그 밖(카드 제목·작은 머리글)은 본문 고딕 굵게로 바꿔 흐릿한 글자를 없앱니다. */
+:root[data-skin="pixel-fc-level"] .fcs-intro .hero__title { font-size: 42px; line-height: 1.55; }
+@media (max-width: 899px) { :root[data-skin="pixel-fc-level"] .fcs-intro .hero__title { font-size: 28px; } }
+:root[data-skin="pixel-fc-level"] :is(.hp-h,.cl-summary__t) { font-size: 28px; }
+:root[data-skin="pixel-fc-level"] :is(.section__title,.proj-title) { font-size: 42px; }
+:root[data-skin="pixel-fc-level"] .detail__title { font-size: 42px; line-height: 1.4; }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-level"] :is(.section__title,.proj-title,.detail__title) { font-size: 28px; } }
+:root[data-skin="pixel-fc-level"] :is(.card__title,.hpl-row__t,.strength__t,.hp-game__t,.play-card__name,.tl-role,.pager__title,.block__label,.portrait__nm,.draw__deck-label,.sheet__link,.footer__brand) {
+  font-family: var(--font-sans); font-weight: 800; letter-spacing: -.01em;
+}
+:root[data-skin="pixel-fc-level"] .gcard__name { font-family: var(--font-sans); font-weight: 800; }
+:root[data-skin="pixel-fc-level"] .stat__num { font-size: 24px; line-height: 1.6; }
+:root[data-skin="pixel-fc-level"] .stat__num .unit { font-size: 15px; font-weight: 700; }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-level"] .stat__num { font-size: 16px; } }
+/* 게임 HUD 한 줄: 남색 띠 위에 [이름] [메뉴] [WORLD] [언어·모드] — 세 덩어리 상자와 두 줄 머리를 한 줄로 */
+:root[data-skin="pixel-fc-level"] .nav-wrap { background: var(--level-hud); border-bottom: 4px solid #0b1430; }
+:root[data-skin="pixel-fc-level"] .nav {
+  display: flex; align-items: center; gap: 18px; min-height: 60px;
+  padding: 8px max(20px, calc((100vw - 1240px) / 2)); background: var(--level-hud); border: 0;
+}
+:root[data-skin="pixel-fc-level"] .nav__logo { order: 0; padding: 0; background: none; flex-wrap: nowrap; align-items: center; gap: 8px; }
+:root[data-skin="pixel-fc-level"] .nav__logo::before { content: 'KIM JISU'; flex-basis: auto; order: 2; font: 8px/1 var(--font-mono); color: #ffdc90; }
+:root[data-skin="pixel-fc-level"] .nav__menu { order: 1; margin: 0 auto; gap: 6px; }
+:root[data-skin="pixel-fc-level"] .nav__link { padding: 6px 12px; background: transparent; font: 600 14px/1.4 var(--font-sans); }
+:root[data-skin="pixel-fc-level"] .nav__link:hover { background: rgb(255 255 255 / .1); }
+:root[data-skin="pixel-fc-level"] .level-hud-world { order: 2; display: flex; align-items: baseline; gap: 8px; padding: 0; background: none; margin-left: auto; }
+@media (min-width: 1000px) { :root[data-skin="pixel-fc-level"] .level-hud-world { margin-left: 0; } }
+:root[data-skin="pixel-fc-level"] .level-hud-world b { font: 8px/1 var(--font-mono); color: #ffdc90; }
+:root[data-skin="pixel-fc-level"] .level-hud-world span { font: 600 12px/1 var(--font-sans); color: #fffdf3; }
+:root[data-skin="pixel-fc-level"] .nav__actions { order: 3; padding: 0; background: none; }
+@media (max-width: 560px) {
+  :root[data-skin="pixel-fc-level"] .level-hud-world { display: none; }
+  :root[data-skin="pixel-fc-level"] .nav__logo::before { display: none; }
+}
+/* 짧은 페이지에서 푸터 아래가 검게 비지 않게: 문서 바탕 = 땅속 남색 */
+:root[data-skin="pixel-fc-level"] { background: var(--level-hud); }
+:root[data-skin="pixel-fc-level"] .nav__link.is-active { background: #fff8e4; color: #8b1928; box-shadow: inset 0 -4px #fca044; }
+:root[data-skin="pixel-fc-level"] .nav__link.is-active::before { color: #8b1928; }
