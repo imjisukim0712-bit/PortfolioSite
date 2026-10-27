@@ -84,6 +84,17 @@
 - 시각 편집기에서 카드 그림을 누르면 `projects.items.<i>.thumb` 슬롯으로 연결됩니다
   (`visual-editor.js` 의 `photoSlotFor()`).
 
+## 프로젝트 문서 보기 (상세 페이지)
+
+- `projects.items[].docs[]` 가 상세 정보 아래 '문서 보기'를 그립니다 (`render.js` 의 `docViewer()` · `slideViewer()`).
+  필드: `title`·`note`(`{ko,en}`) · `slides`·`pages` · `file` · `url` · `shape`.
+- **기본은 슬라이드 보기**: 큰 그림 + 늘 펼쳐진 쪽 목록(넓으면 오른쪽 세로줄, 좁으면 아래 가로줄) · ‹ › · 방향키 · 휴대폰 밀기.
+  브라우저 내장 PDF 뷰어는 쪽 목록이 닫혀 있는 경우가 많고(엣지·웨일·닫았던 상태를 기억하는 크롬) 휴대폰에서는 안 보이므로 쓰지 않습니다.
+  PDF 를 `assets/docs/<id>/` 에 두고 `python3 tools/pdf-slides.py <PDF>` 를 돌리면 옆에 `slides/01.jpg`(1600px)·`slides/thumb/01.jpg`(320px)가
+  생기고 넣을 `slides`·`pages` 값을 알려 줍니다. PDF 를 바꾸면 다시 돌리세요. 넘기기 동작은 `main.js` 의 `svShow()` 입니다.
+- `file`(PDF)은 'PDF 원본 열기' 링크가 됩니다. `url`(구글 드라이브 공유 링크)은 `slides`·`file` 로 못 보여 줄 때 드라이브 미리보기로 쓰고,
+  `embedUrl()` 이 공유 링크를 미리보기 주소로 바꿉니다. 큰 PDF 는 올리기 전에 이미지 재압축으로 줄여 두세요.
+
 ## 도구 로고 (보유 기술)
 
 - 이력서 '핵심역량' 카드와 홈 개요의 도구 표시는 **실제 브랜드 로고**입니다 — `assets/img/tools/` 안의 파일

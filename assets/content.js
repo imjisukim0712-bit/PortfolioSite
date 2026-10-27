@@ -220,9 +220,11 @@ window.PORTFOLIO_CONTENT = {
      id 는 상세 페이지 주소가 됩니다 (영문 소문자·하이픈 권장).
      detail 의 problem·approach·retrospective 를 비우면 "작성 예정"으로 표시됩니다.
      media: 상세 페이지 우측 큰 영역. embed 에 URL 을 넣으면 그대로 삽입, 비우면 안내 문구.
-     docs: 상세 정보 아래 '문서 보기' (선택). [{ title:{ko,en}, note:{ko,en}, file, url, shape }]
-           file 은 사이트에 올린 PDF 경로 (assets/docs/…) — PC 에서는 브라우저 PDF 뷰어(왼쪽 쪽 목록)로 바로 뜹니다.
-           url 은 구글 드라이브·문서·슬라이드 공유 링크 — file 이 없거나 휴대폰일 때 드라이브 미리보기로 대신 뜹니다.
+     docs: 상세 정보 아래 '문서 보기' (선택). [{ title:{ko,en}, note:{ko,en}, slides, pages, file, url, shape }]
+           slides·pages 는 슬라이드 그림 폴더와 쪽 수 — `python3 tools/pdf-slides.py <PDF>` 가 만들고 값을 알려 줍니다.
+                 있으면 큰 그림 + 늘 펼쳐진 쪽 목록으로 보여 줍니다 (어느 브라우저·휴대폰에서든 같음).
+           file 은 사이트에 올린 PDF 경로 (assets/docs/…) — 'PDF 원본 열기' 링크. slides 가 없으면 PC 에서 브라우저 PDF 뷰어로 뜹니다.
+           url 은 구글 드라이브·문서·슬라이드 공유 링크 — 위 둘로 못 보여 줄 때 드라이브 미리보기로 대신 뜹니다.
            (공유 링크를 그대로 붙여도 되고, 드라이브 공유는 '링크가 있는 모든 사용자 — 뷰어' 여야 보입니다.)
            shape: 드라이브 미리보기 칸 모양 "slide"(가로 발표 자료, 기본) · "page"(세로 A4 문서)
      ────────────────────────────────────────────────────────────────────── */
@@ -280,6 +282,7 @@ window.PORTFOLIO_CONTENT = {
           { title: { ko: "최종 발표 자료", en: "Final presentation" },
             note:  { ko: "팀 소개부터 시장조사·마일스톤·개발 과정·회고까지, 3개월 프로젝트를 정리한 최종 발표 자료입니다.",
                      en: "The final presentation of the 3-month project — team, market research, milestones, development, and retrospective." },
+            slides: "assets/docs/comstock/slides", pages: 32,
             file: "assets/docs/comstock/final-presentation.pdf",
             url: "https://drive.google.com/file/d/1h6oa-_rYccWpe98_pOtKuiHan23THFKm/view?usp=drive_link",
             shape: "slide" }

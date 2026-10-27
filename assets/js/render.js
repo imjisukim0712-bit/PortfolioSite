@@ -470,31 +470,60 @@
       return !(window.matchMedia && matchMedia('(pointer: coarse)').matches);
     } catch (e) { return true; }
   }
-  /* 문서 보기 — projects.items[].docs[]{ title, note, file, url, shape }
-     file: 사이트에 올린 PDF (assets/docs/…) → PC 는 브라우저 PDF 뷰어로 바로 띄웁니다.
-     url:  구글 드라이브·문서·슬라이드 링크 → file 이 없거나 휴대폰일 때 드라이브 미리보기로 띄웁니다.
+  /* 문서 보기 — projects.items[].docs[]{ title, note, slides, pages, file, url, shape }
+     slides·pages: tools/pdf-slides.py 가 만든 슬라이드 그림 폴더와 쪽 수 → 큰 그림 + 늘 펼쳐진 쪽 목록 (어느 브라우저·휴대폰이든 같음).
+     file:  사이트에 올린 PDF (assets/docs/…) → '원본 열기' 링크. slides 가 없으면 PC 는 브라우저 PDF 뷰어로 띄웁니다.
+     url:   구글 드라이브·문서·슬라이드 링크 → 위 둘이 없거나(휴대폰에서 file 만 있을 때) 드라이브 미리보기로 띄웁니다.
      shape: 드라이브 미리보기 칸 모양 'slide'(가로, 기본) · 'page'(세로 A4) */
+  function slideViewer(lang, base, title, dir, n) {
+    dir = base + dir.replace(/\/+$/, '');
+    var num = function (i) { return (i < 9 ? '0' : '') + (i + 1) + '.jpg'; };
+    var list = '';
+    for (var i = 0; i < n; i++) {
+      list += '<button type="button" class="sv__thumb' + (i ? '' : ' is-on') + '" data-sv-go="' + i + '"' + (i ? '' : ' aria-current="true"') +
+        ' aria-label="' + (lang==='en' ? 'Slide ' + (i + 1) : (i + 1) + '쪽') + '">' +
+        '<img src="' + esc(dir + '/thumb/' + num(i)) + '" alt="" loading="lazy" decoding="async"><span>' + (i + 1) + '</span></button>';
+    }
+    return '<div class="sv" data-sv="' + esc(dir) + '" data-sv-n="' + n + '" data-sv-i="0" tabindex="0" role="group" aria-roledescription="' + (lang==='en'?'slides':'슬라이드') + '" aria-label="' + esc(title) + '">' +
+      '<div class="sv__stage">' +
+        '<img class="sv__img" src="' + esc(dir + '/' + num(0)) + '" alt="' + esc(title) + ' 1 / ' + n + '" data-sv-title="' + esc(title) + '">' +
+        '<button type="button" class="sv__nav sv__nav--prev" data-sv-step="-1" aria-label="' + (lang==='en'?'Previous slide':'이전 슬라이드') + '" disabled>‹</button>' +
+        '<button type="button" class="sv__nav sv__nav--next" data-sv-step="1" aria-label="' + (lang==='en'?'Next slide':'다음 슬라이드') + '">›</button>' +
+        '<span class="sv__count" aria-live="polite"><b>1</b> / ' + n + '</span>' +
+      '</div>' +
+      '<div class="sv__side"><div class="sv__list" aria-label="' + (lang==='en'?'Slide list':'슬라이드 목록') + '">' + list + '</div></div>' +
+    '</div>';
+  }
   function docViewer(lang, base, idx, docs) {
-    docs = arr(docs).filter(function (d) { return (d.file || '').trim() || (d.url || '').trim(); });
+    docs = arr(docs).filter(function (d) { return (d.slides || '').trim() || (d.file || '').trim() || (d.url || '').trim(); });
     if (!docs.length) return '';
     var native = inlinePdfOk();
     return '<div class="doc-list">' + docs.map(function (d, j) {
       var title = t(d.title, lang), note = t(d.note, lang), path = 'projects.items.'+idx+'.docs.'+j;
       var file = (d.file || '').trim() ? base + d.file.trim() : '';
       var url = (d.url || '').trim();
-      var pdf = file && (native || !url);
-      var frame = pdf
-        ? '<div class="media-box doc__frame doc__frame--pdf"><iframe src="' + esc(file) + '" title="' + esc(title) + '" loading="lazy"></iframe></div>'
-        : '<div class="media-box doc__frame doc__frame--' + (d.shape === 'page' ? 'page' : 'slide') + '">' +
-            '<iframe src="' + esc(embedUrl(url)) + '" title="' + esc(title) + '" loading="lazy" allow="autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
+      var slides = (d.slides || '').trim() && +d.pages > 0;
+      var pdf = !slides && file && (native || !url);
+      var frame, hint = '';
+      if (slides) {
+        frame = slideViewer(lang, base, title, d.slides.trim(), +d.pages);
+        hint = lang==='en' ? '※ Pick a slide from the list, or use the ‹ › buttons and arrow keys.' : '※ 목록에서 슬라이드를 고르거나, ‹ › 버튼·키보드 방향키로 넘겨 볼 수 있어요.';
+      } else if (pdf) {
+        frame = '<div class="media-box doc__frame doc__frame--pdf"><iframe src="' + esc(file) + '" title="' + esc(title) + '" loading="lazy"></iframe></div>';
+        hint = lang==='en' ? '※ Scroll inside the viewer to read the whole document.' : '※ 뷰어 안에서 마우스 휠을 내리면 전체 문서를 볼 수 있어요.';
+      } else {
+        frame = '<div class="media-box doc__frame doc__frame--' + (d.shape === 'page' ? 'page' : 'slide') + '">' +
+          '<iframe src="' + esc(embedUrl(url)) + '" title="' + esc(title) + '" loading="lazy" allow="autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
+      }
+      var open = file || url;
       return '<figure class="doc reveal">' +
         '<figcaption class="doc__bar">' +
           '<span class="doc__k">' + (lang==='en'?'DOCUMENT':'문서') + ' ' + String(j + 1).padStart(2, '0') + '</span>' +
           '<span class="doc__title"' + ep(path+'.title') + '>' + esc(title) + '</span>' +
-          '<a class="doc__open" href="' + esc(file || url) + '" target="_blank" rel="noopener noreferrer">' + (lang==='en'?'Open in new tab':'새 창에서 열기') + ' <span aria-hidden="true">↗</span></a>' +
+          (open ? '<a class="doc__open" href="' + esc(open) + '" target="_blank" rel="noopener noreferrer">' + (file ? (lang==='en'?'Open PDF':'PDF 원본 열기') : (lang==='en'?'Open in new tab':'새 창에서 열기')) + ' <span aria-hidden="true">↗</span></a>' : '') +
         '</figcaption>' +
         (note ? '<p class="doc__note"' + ep(path+'.note') + '>' + esc(note) + '</p>' : '') +
-        (pdf ? '<p class="doc__hint">' + (lang==='en'?'※ Scroll inside the viewer to read the whole document. Pages are listed on the left.':'※ 뷰어 안에서 마우스 휠을 내리면 전체 문서를 볼 수 있어요. 왼쪽 목록에서 쪽을 골라 넘길 수도 있어요.') + '</p>' : '') +
+        (hint ? '<p class="doc__hint">' + hint + '</p>' : '') +
         frame +
       '</figure>';
     }).join('') + '</div>';

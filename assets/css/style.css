@@ -911,6 +911,35 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .doc__note { margin: -4px 0 6px; font-size: var(--text-body-sm); line-height: 1.6; color: var(--text); }
 .doc__hint { margin-bottom: 14px; font-size: var(--text-caption); color: var(--text-muted); }
 .doc__frame--pdf { height: min(780px, 85vh); }   /* 브라우저 PDF 뷰어 — 그 안에서 스크롤 */
+
+/* 슬라이드 보기 — 큰 그림 + 늘 펼쳐진 쪽 목록. 넓으면 목록이 오른쪽 세로줄, 좁으면 그림 아래 가로줄 */
+.sv { display: grid; gap: 12px; outline: none; }
+.sv:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.sv__stage { position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-card); background: #16181b; }
+.sv__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
+.sv__nav { position: absolute; top: 50%; translate: 0 -50%; width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%;
+  background: rgb(0 0 0 / .55); color: #fff; font-size: 28px; line-height: 1; cursor: pointer; opacity: .85; transition: opacity .15s ease, background .15s ease; }
+.sv__nav:hover { opacity: 1; background: rgb(0 0 0 / .75); }
+.sv__nav:disabled { opacity: 0; pointer-events: none; }
+.sv__nav--prev { left: 12px; }
+.sv__nav--next { right: 12px; }
+.sv__count { position: absolute; right: 12px; bottom: 12px; padding: 4px 10px; border-radius: var(--radius-pill); background: rgb(0 0 0 / .6); color: #fff;
+  font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.sv__count b { font-weight: 600; }
+.sv__side { position: relative; min-width: 0; }
+.sv__list { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 8px; scroll-snap-type: x proximity; }
+.sv__thumb { position: relative; flex: none; width: 120px; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: var(--surface-2);
+  cursor: pointer; scroll-snap-align: start; opacity: .7; transition: opacity .15s ease, border-color .15s ease; }
+.sv__thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.sv__thumb span { position: absolute; left: 4px; bottom: 4px; min-width: 20px; padding: 1px 5px; border-radius: 4px; background: rgb(0 0 0 / .6); color: #fff;
+  font-family: var(--font-mono); font-size: 10px; text-align: center; }
+.sv__thumb:hover { opacity: 1; }
+.sv__thumb.is-on { opacity: 1; border-color: var(--accent); }
+@media (min-width: 860px) {
+  .sv { grid-template-columns: 1fr 168px; }
+  .sv__list { position: absolute; inset: 0; flex-direction: column; overflow-x: hidden; overflow-y: auto; padding: 2px 6px 2px 2px; scroll-snap-type: y proximity; }
+  .sv__thumb { width: 100%; }
+}
 .doc__frame--slide { aspect-ratio: 16 / 10; }   /* 발표 자료 — 아래 쪽 넘김 막대 자리까지 */
 .doc__frame--page { aspect-ratio: 1 / 1.3; max-height: 88vh; }
 

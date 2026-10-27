@@ -246,6 +246,9 @@
 }
 [data-skin-theme="pixel"] .doc__k { letter-spacing: 0; }
 [data-skin-theme="pixel"] .doc__title { font-family: var(--font-display); }
+[data-skin-theme="pixel"] .sv__stage { border: var(--bw) solid var(--ink); border-radius: 0; box-shadow: 6px 6px 0 var(--lo); }
+[data-skin-theme="pixel"] .sv__nav, [data-skin-theme="pixel"] .sv__count, [data-skin-theme="pixel"] .sv__thumb, [data-skin-theme="pixel"] .sv__thumb span { border-radius: 0; }
+[data-skin-theme="pixel"] .sv__thumb.is-on { border-color: var(--ink); box-shadow: 3px 3px 0 var(--accent); }
 [data-skin-theme="pixel"] .block__label { font-family: var(--font-display); }
 [data-skin-theme="pixel"] .block__label small { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0; }
 [data-skin-theme="pixel"] .pager__item { border: var(--bw) solid var(--ink); border-radius: 0; box-shadow: 4px 4px 0 var(--lo); }
