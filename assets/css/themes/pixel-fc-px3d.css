@@ -482,3 +482,50 @@
 @media (max-width: 700px) {
   :root[data-skin="pixel-fc-px3d"] .hero, :root[data-skin="pixel-fc-px3d"] .home-screen .hero { width: calc(100% - 44px); }
 }
+
+
+/* ==========================================================================
+   구도 — 왼쪽 큰 제목 · 오른쪽 살짝 기울어진 게임기 · 그 바로 밑 같은 기울기의 카트리지 진열판
+   (자리 옮기기는 assets/js/themes/fc-stage.js). 판(.fcs-rig)은 transform-style: flat 이어야
+   기울인 카드가 클릭·호버에 제대로 반응합니다. 좁은 화면(<900px)은 평평하게 쌓습니다.
+   ========================================================================== */
+:root[data-skin="pixel-fc-px3d"] .fcs-stage { position: relative; width: min(100% - 48px, 1240px); margin: 0 auto; padding: 48px 0 56px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-intro { position: relative; z-index: 2; min-width: 0; margin-bottom: 36px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-intro .hero__eyebrow { margin-bottom: 22px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-intro .hero__title { font-size: clamp(34px, 3.9vw + 4px, 60px); line-height: 1.14; letter-spacing: -.04em; word-break: keep-all; }
+:root[data-skin="pixel-fc-px3d"] .fcs-intro .hero__sub { margin-top: 20px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-caption { margin: 30px 0 0; font: 400 11px/1.6 'Galmuri11', monospace; color: var(--text-muted); }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig { position: relative; min-width: 0; transform-style: flat; }
+/* 게임기: 오른쪽 칸 폭에 맞춘 한 대 (원본은 화면 높이로 크기를 정하지만 여기선 고정) */
+:root[data-skin="pixel-fc-px3d"] .fcs-rig > .hero { width: 100%; margin: 0; --fc-h: 380px; min-height: 380px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .hero__grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 26px; align-items: center; height: 100%; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .hero__media { order: -1; width: auto; padding: 0 !important; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .hero .portrait { width: clamp(130px, 13vw, 190px); }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .hero__portrait { padding: 0; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info { min-width: 0; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .portrait__cap { align-items: flex-start; text-align: left; margin: 0 0 12px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .quip { position: static; inset: auto; transform: none; max-width: none; width: auto; margin: 0 0 8px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .quip::after, :root[data-skin="pixel-fc-px3d"] .fcs-info .quip::before { display: none; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .quip__more { position: static; transform: none; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; max-width: none; }
+:root[data-skin="pixel-fc-px3d"] .fcs-info .btn { min-height: 40px; padding: 9px 16px; font-size: 13px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig > .hero > .wrap { padding: 22px 26px; }
+/* 진열판: 게임기 바로 밑 */
+:root[data-skin="pixel-fc-px3d"] .fcs-rig > .draw { padding: 0; margin-top: 30px; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig > .draw > .wrap { width: 100%; max-width: none; padding: 0; }
+:root[data-skin="pixel-fc-px3d"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, #ece2c9); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-px3d"] .fcs-stage { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.4fr); column-gap: 44px; align-items: start; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-intro { margin: 0; padding-top: 110px; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-rig { transform: perspective(1300px) rotateX(7deg) rotateY(-12deg) rotateZ(3deg); transform-origin: 50% 35%; }
+}
+@media (max-width: 899px) {
+  :root[data-skin="pixel-fc-px3d"] .fcs-rig > .hero { min-height: 0; }
+}
+@media (max-width: 700px) {
+  :root[data-skin="pixel-fc-px3d"] .fcs-stage { width: 100%; padding-top: 28px; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-intro { padding: 0 22px; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-rig .hero__grid { grid-template-columns: auto minmax(0, 1fr); gap: 14px; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-rig .hero .portrait { width: 104px; }
+  :root[data-skin="pixel-fc-px3d"] .fcs-rig > .draw { margin: 22px 12px 0; }
+}
