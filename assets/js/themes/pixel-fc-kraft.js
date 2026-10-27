@@ -377,3 +377,99 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* 크라프트 포스터의 케이블: 기울인 판 바깥의 독립 배경층입니다.
+   기존 손잡이·카트리지·슬롯 핸들러와 좌표계에는 관여하지 않습니다. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-kraft', NS = 'http://www.w3.org/2000/svg';
+  var frame = 0, observedStage = null, resize = null;
+  function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
+  function svgNode(tag, attrs) {
+    var el = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (key) { el.setAttribute(key, attrs[key]); });
+    return el;
+  }
+  /* 반경을 구간 길이에 맞춰 줄여 좁은 화면에서도 교차하지 않는 둥근 직각 경로. */
+  function rounded(points) {
+    var d = 'M' + points[0].join(' ');
+    for (var i = 1; i < points.length - 1; i++) {
+      var a = points[i - 1], b = points[i], c = points[i + 1];
+      var ab = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      var bc = Math.hypot(c[0] - b[0], c[1] - b[1]);
+      if (!ab || !bc) continue;
+      var r = Math.min(20, ab / 2, bc / 2);
+      d += 'L' + (b[0] + (a[0] - b[0]) * r / ab) + ' ' + (b[1] + (a[1] - b[1]) * r / ab);
+      d += 'Q' + b.join(' ') + ' ' + (b[0] + (c[0] - b[0]) * r / bc) + ' ' + (b[1] + (c[1] - b[1]) * r / bc);
+    }
+    return d + 'L' + points[points.length - 1].join(' ');
+  }
+  function paint() {
+    frame = 0;
+    if (!active()) {
+      document.querySelectorAll('.kf-cables').forEach(function (el) { el.remove(); });
+      if (resize) resize.disconnect();
+      observedStage = null;
+      return;
+    }
+    var stage = document.querySelector('.fcs-stage');
+    if (!stage) {
+      if (resize) resize.disconnect();
+      observedStage = null;
+      return;
+    }
+    if (observedStage !== stage) {
+      if (resize) resize.disconnect();
+      observedStage = stage;
+      if (resize) {
+        resize.observe(stage);
+        stage.querySelectorAll('.fcs-intro, .hero, .draw').forEach(function (el) { resize.observe(el); });
+      }
+    }
+    var svg = stage.querySelector('.kf-cables');
+    if (!svg) {
+      svg = svgNode('svg', { 'class': 'kf-cables', 'aria-hidden': 'true', 'focusable': 'false' });
+      svg.appendChild(svgNode('path', { 'class': 'kf-cables__wire' }));
+      svg.appendChild(svgNode('path', { 'class': 'kf-cables__wire' }));
+      svg.appendChild(svgNode('rect', { 'class': 'kf-cables__plug', width: '12', height: '12', rx: '4' }));
+      // 직접 만든 별: 한 칸 4px, 세로·가로 20px. 안내 문구를 추가하지 않는 순수 장식.
+      svg.appendChild(svgNode('path', { 'class': 'kf-cables__star', d: 'M8 0h4v4h4v4h4v4h-4v4h-4v4H8v-4H4v-4H0V8h4V4h4Z' }));
+      stage.insertBefore(svg, stage.firstChild);
+    }
+    if (window.innerWidth < 900) return; // 작은 화면에는 gutter 케이블만 남김.
+    var intro = stage.querySelector('.fcs-intro'), hero = stage.querySelector('.hero');
+    if (!intro || !hero) return;
+    var tray = stage.querySelector('.draw__stage');
+    var box = stage.getBoundingClientRect(), title = intro.getBoundingClientRect();
+    var machine = hero.getBoundingClientRect(), shelf = (tray || hero).getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    function x(value) { return Math.max(8, Math.min(box.width - 8, value - box.left)); }
+    function y(value) { return Math.max(8, Math.min(box.height - 8, value - box.top)); }
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    var startX = x(title.left + 16), startY = y(title.bottom + 22);
+    var gutter = x(title.right + 18), top = y(machine.top - 22);
+    var right = x(Math.max(machine.right, shelf.right) + 18);
+    var bottom = y(shelf.bottom + 24), port = x(machine.left + machine.width * .76);
+    var paths = svg.querySelectorAll('.kf-cables__wire');
+    paths[0].setAttribute('d', rounded([[startX, startY], [gutter, startY], [gutter, top], [x(machine.left + 70), top], [x(machine.left + 70), y(machine.top + 8)]]));
+    paths[1].setAttribute('d', rounded([[port, y(machine.top + 8)], [port, top], [right, top], [right, bottom], [x(shelf.left + 44), bottom], [x(shelf.left + 44), y(shelf.bottom - 3)]]));
+    var plug = svg.querySelector('.kf-cables__plug');
+    plug.setAttribute('x', startX - 6); plug.setAttribute('y', startY - 6);
+    svg.querySelector('.kf-cables__star').setAttribute('transform', 'translate(' + x(title.left + 12) + ' ' + y(machine.top + 6) + ')');
+  }
+  function schedule() { if (!frame) frame = window.requestAnimationFrame(paint); }
+  function init() {
+    if (window.ResizeObserver) resize = new ResizeObserver(schedule);
+    var main = document.querySelector('[data-slot="main"]');
+    if (window.MutationObserver) {
+      // 공용 fc-stage의 DOM 이동, 언어 재렌더, 뽑힌 카드로 생긴 진열판 높이를 모두 반영.
+      if (main) new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
+      new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'lang'] });
+    }
+    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('pageshow', schedule);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    schedule();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

@@ -378,76 +378,50 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* 참고 ⑤의 색판 장식. 공용 fc-stage가 배치를 끝낸 뒤, 판의 바깥에만 액자를 추가합니다.
-   카드/인물/슬롯/WAAPI 좌표와 레이어에는 관여하지 않습니다. 새 읽을 문구는 없습니다. */
+/* 판화 조판: 원본 제목에 접근성 트리 밖의 작은 판 번호만 더합니다.
+   화면 재렌더/언어 전환에도 멱등. 기기·슬롯·기울기·좌표에는 관여하지 않습니다. */
 (function () {
   'use strict';
   var SKIN = 'pixel-fc-ukiyo';
-  /* 낮은 파노라마: 게임기 위에 실제로 드러나는 높이 안에 산/해/구름을 모두 조판합니다. */
-  var scene =
-    '<svg viewBox="0 0 680 100" preserveAspectRatio="xMaxYMin meet" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path class="uku-scene__paper" d="M4 4h672v92H4z"/>' +
-      /* 청록 산과 흰 설관. 꼭대기와 산기슭이 모두 노출 영역 안에 있습니다. */
-      '<path class="uku-scene__mountain" d="M120 82c44-17 82-41 116-68h18c35 29 78 50 123 68Z"/>' +
-      '<path class="uku-scene__shade" d="M246 14h8c35 29 78 50 123 68h-71c-23-22-42-44-60-68Z" stroke="none"/>' +
-      '<path class="uku-scene__snow" d="m212 33 24-19h18l25 20-15-1-4 11-13-11-10 10-7-13-9 10Z"/>' +
-      '<path d="m204 47-22 13m45-14-12 17m39-14 12 14m16-14 25 16" stroke-width="3"/>' +
-      /* 5px 격자의 계단 해와 산호/주황 체크. 밤에는 크림 초승달로 교체합니다. */
-      '<g class="uku-scene__day">' +
-        '<path class="uku-scene__sun" d="M520 14h25v5h10v5h5v10h5v15h-5v10h-5v5h-10v5h-25v-5h-10v-5h-5V49h-5V34h5V24h5v-5h10Z"/>' +
-        '<path class="uku-scene__sun-dots" stroke="none" d="M505 39h5v5h-5zm5 10h5v5h-5zm5 10h5v5h-5zm5-10h5v5h-5zm5 10h5v5h-5zm5 5h5v5h-5zm5-10h5v5h-5zm10 5h5v5h-5zm5-10h5v5h-5zm5-10h5v5h-5z"/>' +
-        '<path class="uku-scene__sun-orange" stroke="none" d="M510 44h5v5h-5zm5 10h5v5h-5zm10 0h5v5h-5zm5 5h5v5h-5zm10 0h5v5h-5zm5-5h5v5h-5zm10-10h5v5h-5z"/>' +
-      '</g>' +
-      '<path class="uku-scene__moon" d="M546 15a27 27 0 1 0 17 45 27 27 0 0 1-17-45Z"/>' +
-      /* 둥근 끝과 평행한 획이 돌아나가는 소용돌이 구름 띠. */
-      '<path class="uku-scene__cloud" d="M44 24h64c10 0 10-10 0-10H91c-10 0-10-6 0-6h81c10 0 10 10 0 10h-28c-10 0-10 10 0 10h18c10 0 10 10 0 10H89c-10 0-10 10 0 10H45c-10 0-10-10 0-10h24c10 0 10-8 0-8H44Z"/>' +
-      '<path class="uku-scene__cloud" d="M350 26h45c10 0 10-10 0-10h-14c-10 0-10-8 0-8h86c10 0 10 10 0 10h-30c-10 0-10 10 0 10h17c10 0 10 10 0 10h-54c-10 0-10 8 0 8h-31c-10 0-10-8 0-8h-19c-10 0-10-12 0-12Z"/>' +
-      '<path class="uku-scene__cloud" d="M575 38h65c10 0 10 10 0 10h-17c-10 0-10 10 0 10h-54c-10 0-10-10 0-10h6c10 0 10-10 0-10Z"/>' +
-      /* 액자 아래의 청록 언덕과 금빛 굽이. */
-      '<path class="uku-scene__mountain" d="M6 76Q54 48 103 72t90 5 99-7 99 7 97-8 85 7 101-6v24H6Z"/>' +
-      '<path class="uku-scene__shade" d="M6 89q52-17 100-1t92-2 95 0 98 2 97-5 90 5 96-7v15H6Z" stroke="none"/>' +
-      '<path d="M20 79q38-12 76 1m230 0q28-12 60 0m105-2q29-10 57 1m52 1 42-6" stroke="#efdaa5" stroke-width="4"/>' +
-    '</svg>';
-  var cloud = '<svg class="uku-bezel-art uku-bezel-art--cloud" viewBox="0 0 260 28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="M4 18h58c10 0 10-10 0-10H43c-8 0-8-6 0-6h80c9 0 9 8 0 8H97c-9 0-9 8 0 8h40c9 0 9 8 0 8H37m119-12h98m-75 9h42"/></svg>';
-  var wave = '<svg class="uku-bezel-art uku-bezel-art--wave" viewBox="0 0 300 28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">' +
-    '<path d="M0 20Q35-5 70 12t70 0 70 0 90-2M0 27Q35 2 70 19t70 0 70 0 90-2"/></svg>';
-  var observed = null, resize = null;
-  function place() {
-    if (!observed || !observed.isConnected) return;
-    var rig = observed.querySelector('.fcs-rig');
-    if (!rig) return;
-    var nav = document.querySelector('.nav');
-    var navHeight = nav ? nav.getBoundingClientRect().height : 56;
-    var stageTop = observed.getBoundingClientRect().top + (window.pageYOffset || 0);
-    /* 액자만 올립니다. 상단 메뉴 아래 여백을 확보하고, 게임기에는 손대지 않습니다. */
-    observed.style.setProperty('--uku-scene-top', Math.max(navHeight + 12 - stageTop, rig.offsetTop - 160) + 'px');
-  }
+  var queued = false;
   function decorate() {
-    if (document.documentElement.getAttribute('data-skin') !== SKIN) return;
-    var stage = document.querySelector('.fcs-stage');
-    if (stage && !stage.querySelector('.uku-scene')) {
-      var art = document.createElement('div'); art.className = 'uku-scene';
-      art.setAttribute('aria-hidden', 'true'); art.innerHTML = scene;
-      stage.appendChild(art);
+    queued = false;
+    var main = document.querySelector('[data-slot="main"]');
+    if (!main) return;
+    if (document.documentElement.getAttribute('data-skin') !== SKIN) {
+      Array.prototype.forEach.call(main.querySelectorAll('.uku-index'), function (stamp) { stamp.parentNode.removeChild(stamp); });
+      Array.prototype.forEach.call(main.querySelectorAll('.uku-heading'), function (heading) { heading.classList.remove('uku-heading'); });
+      return;
     }
-    if (stage !== observed) {
-      if (resize) resize.disconnect();
-      observed = stage;
-      if (stage && window.ResizeObserver) {
-        resize = new ResizeObserver(place); resize.observe(stage);
-        var intro = stage.querySelector('.fcs-intro'); if (intro) resize.observe(intro);
+    var headings = main.querySelectorAll('.hp-h, .section__title, .proj-title, .cl-summary__t, .detail__title');
+    Array.prototype.forEach.call(headings, function (heading, i) {
+      var stamp = heading.querySelector('.uku-index');
+      if (!stamp) {
+        stamp = document.createElement('span');
+        stamp.className = 'uku-index';
+        stamp.setAttribute('aria-hidden', 'true');
+        heading.insertBefore(stamp, heading.firstChild);
+        heading.classList.add('uku-heading');
       }
-    }
-    var hardware = document.querySelector('.fcc-hardware');
-    if (hardware && !hardware.querySelector('.uku-bezel-art')) hardware.insertAdjacentHTML('beforeend', cloud + wave);
-    place();
+      var number = ('0' + (i + 1)).slice(-2);
+      if (stamp.textContent !== number) stamp.textContent = number;
+    });
+  }
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    // Coalesce render + shared stage mutations, without measuring layout.
+    Promise.resolve().then(decorate);
   }
   function start() {
     var main = document.querySelector('[data-slot="main"]');
-    if (main && window.MutationObserver) new MutationObserver(decorate).observe(main, { childList: true, subtree: true });
-    window.addEventListener('resize', place);
-    decorate();
+    if (main && window.MutationObserver) {
+      new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
+      new MutationObserver(schedule).observe(document.documentElement, {
+        attributes: true, attributeFilter: ['data-skin', 'lang']
+      });
+    }
+    schedule();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

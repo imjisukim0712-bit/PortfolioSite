@@ -1,6 +1,6 @@
 @charset "UTF-8";
-/* 패미컴 · 정돈 — 원본 기기/카트리지 치수와 슬롯 좌표계를 유지합니다.
-   선: 2px(내용) / 3px(기기·창) / 4px(강조). 그림자는 번짐 없이 4px. */
+/* pixel-fc-line · 평행 윤곽선.
+   기기·카트리지·슬롯·기울기 치수는 유지하고, 아래 LINE / 03에서 전체 UI의 마감을 정의합니다. */
 :root[data-skin="pixel-fc-line"] {
   --ink: #2b2b2b; --lo: #2b2b2b;
   --bg: #efe6d2; --bg-elev: #e5dbc2; --surface: #f8f3e7; --surface-2: #e5dbc2;
@@ -732,4 +732,363 @@
    투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
 @media (min-width: 720px) {
   [data-skin="pixel-fc-line"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
+}
+
+/* ============================================================================
+   LINE / 03 — 패키지의 조형 언어를 전체 사이트에 적용합니다.
+   회색 80% · 무채색 활자 15% · 색선 5%. 면의 음영 대신 간격을 둔 평행선.
+   위의 기기 치수·카트리지 cqw·슬롯·rig 좌표는 유지합니다.
+   선 3px / 간격 4px / 모서리 16px / 배지 999px / 여백 8px 배수.
+   노랑·파랑은 장식선 전용. 본문·보조 글자는 별도 고대비 토큰을 씁니다.
+   ========================================================================== */
+:root[data-skin="pixel-fc-line"] {
+  --line-red: #e60012; --line-yellow: #f5c000; --line-blue: #0068b7; --line-green: #009944;
+  --bg: #e4e4e2; --bg-elev: #dcdcd9; --surface: #fafaf8; --surface-2: #ededea;
+  --ink: #202124; --lo: #202124; --heading: #191a1c; --text: #292b2e; --text-muted: #56595e;
+  --border: #777b80; --border-2: #a2a5a7;
+  --accent: #bb0010; --accent-soft: #bb0010; --cta: #fafaf8; --cta-text: #bb0010; --cta-hover: #ededea;
+  --aubergine: #202124; --paper: #fafaf8; --periwinkle: #f5c000;
+  --ghost-lavender: #fafaf8; --buttercream: #fafaf8; --blush: #fafaf8; --cornflower: #202124; --mint: #bb0010;
+  --ghost-c: #bb0010; --gen0: #bb0010; --gen1: #0068b7; --gen2: #166b42;
+  --grade-r: #0068b7; --grade-sr: #f5c000; --grade-ssr-a: #bb0010; --grade-ssr-b: #f5c000;
+  --glow: transparent; --btn-primary-text: #fff; --overlay: none; --title-shadow: none;
+  --radius-card: 16px; --radius-lg: 24px; --radius-pill: 999px; --bw: 3px;
+  --shadow-card: none; --shadow-sm: none; --fcc-shadow: none; --deck-shadow: none;
+  --fc-line: #e60012; --fc-line-2: #bb0010;
+  --fc-shell: #e4e4e2; --fc-shell-hi: #fafaf8; --fc-grip: #e4e4e2; --fc-grip-hi: #fafaf8;
+  --fc-screen-a: #fafaf8; --fc-screen-b: #ededea; --fc-gold: #f5c000; --fc-cream: #202124;
+  --fc-key: #fafaf8; --fc-key-hi: #ededea; --fc-key-ring: #e60012;
+  --fc-cart: #e4e4e2; --fc-cart-hi: #fafaf8; --fc-label: #fafaf8;
+  --fc-cart-shadow: none; --fc-cart-shadow-lift: 0 0 0 3px var(--surface), 0 0 0 6px var(--line-red);
+  --fcc-select: #0068b7;
+  --font-sans: 'Pretendard Variable', Pretendard, 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-display: var(--font-sans); --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --text-body: 16px; --text-body-sm: 15px; --text-caption: 13px;
+  --section-pad-y: clamp(48px, 6vw, 88px); --card-pad: 24px;
+  color-scheme: light;
+}
+:root[data-skin="pixel-fc-line"][data-theme="dark"] {
+  --bg: #181a1d; --bg-elev: #202328; --surface: #23262b; --surface-2: #2d3035;
+  --ink: #f3f3ee; --lo: #f3f3ee; --heading: #fafaf8; --text: #e9e9e5; --text-muted: #b9bdc3;
+  --border: #878d96; --border-2: #646b75;
+  --accent: #ff8992; --accent-soft: #ff8992; --cta: #23262b; --cta-text: #ff8992; --cta-hover: #2d3035;
+  --ghost-lavender: #23262b; --buttercream: #23262b; --blush: #23262b;
+  --ghost-c: #ff8992; --gen0: #ff8992; --gen1: #83c5ff; --gen2: #85d6a7;
+  --mint: #ff8992; --btn-primary-text: #181a1d; --fcc-select: #83c5ff;
+  /* 윤곽의 빨강은 유지하고, 어두운 바탕의 파랑만 밝힙니다. */
+  --line-red: #ff5667; --line-blue: #61b4f4; --line-green: #52c786;
+  --fc-line: #ff5667; --fc-line-2: #ff5667;
+  --fc-shell: #202328; --fc-shell-hi: #2d3035; --fc-grip: #202328; --fc-grip-hi: #2d3035;
+  --fc-screen-a: #23262b; --fc-screen-b: #2d3035; --fc-cream: #e9e9e5;
+  --fc-key: #23262b; --fc-key-hi: #2d3035; --fc-key-ring: #ff5667;
+  --fc-cart: #202328; --fc-cart-hi: #2d3035; --fc-label: #23262b;
+  --fc-cart-shadow: none; --fc-cart-shadow-lift: 0 0 0 3px var(--surface), 0 0 0 6px var(--line-red);
+  color-scheme: dark;
+}
+:root[data-skin="pixel-fc-line"] body { font-family: var(--font-sans); font-size: 16px; line-height: 1.75; }
+:root[data-skin="pixel-fc-line"] :is(.nav__logo, .badge, .tag, .tab, .lang-toggle__btn, .eyebrow, .hero__eyebrow,
+  .tl-date, .profile__k, .quest-strip__k, .quest-strip__badge, .detail__meta-k, .pager__dir, .block__label small,
+  .stat__label, .stat__num, .footer__copy, .strength__tag, .hpl-row__d, .hp-skill__t, .detail__period, .card__index,
+  .steam__stats, .steam__table td, .sr-val, .play-card__hours, .sheet__num, .draw__deck-hint, .fcs-caption,
+  .fc-lbl, .fc-boot__load, .fc-ov__meta, .fc-ov__k, .fc-ov__clear, .fc-ov__btn b) {
+  font-family: var(--font-sans); letter-spacing: 0;
+}
+:root[data-skin="pixel-fc-line"] :is(h1, h2, h3, h4) { text-shadow: none; font-weight: 800; }
+:root[data-skin="pixel-fc-line"] :is(.hero__title, .proj-title, .detail__title, .section__title) { font-weight: 850; }
+:root[data-skin="pixel-fc-line"] .hero__title .accent { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .fcs-caption { font-size: 13px; line-height: 1.7; }
+:root[data-skin="pixel-fc-line"] :is(.hero__sub, .section__lead) { color: var(--text-muted); }
+:root[data-skin="pixel-fc-line"] :is(a[href], button):not(:disabled):not([aria-disabled="true"]) { cursor: pointer; }
+:root[data-skin="pixel-fc-line"] :is(a, button, input, textarea, select):focus-visible { outline: 3px solid var(--fcc-select); outline-offset: 4px; }
+:root[data-skin="pixel-fc-line"] :is(.nav, .fc-grip, .footer, .fc-boot) :is(a[href], button):focus-visible { outline-color: var(--fcc-select); }
+:root[data-skin="pixel-fc-line"] ::selection { background: var(--ink); color: var(--bg); }
+
+/* 상단 메뉴: 흰 정보 띠 + 빨강/노랑의 평행 밑줄. */
+:root[data-skin="pixel-fc-line"] .nav {
+  color: var(--text); background: var(--surface); border-bottom: 3px solid var(--line-red);
+  box-shadow: 0 4px 0 var(--bg), 0 7px 0 var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] :is(.nav__logo, .nav__link, .icon-btn, .nav__burger, .lang-toggle__btn) { color: var(--text); }
+:root[data-skin="pixel-fc-line"] .nav__logo { font-weight: 800; }
+:root[data-skin="pixel-fc-line"] .nav__logo .ghost { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .nav__logo-en { color: var(--text-muted); opacity: 1; }
+:root[data-skin="pixel-fc-line"] .nav__link { border-radius: 999px; padding: 9px 16px; }
+:root[data-skin="pixel-fc-line"] .nav__link:hover { background: var(--surface-2); }
+:root[data-skin="pixel-fc-line"] .nav__link.is-active { background: #202124; color: #fff; }
+:root[data-skin="pixel-fc-line"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn)::before { content: none; }
+:root[data-skin="pixel-fc-line"] :is(.icon-btn, .nav__burger) {
+  border: 2px solid var(--border); border-radius: 12px; background: var(--surface); min-width: 40px; height: 40px;
+}
+:root[data-skin="pixel-fc-line"] :is(.icon-btn, .nav__burger):hover { background: var(--surface-2); }
+:root[data-skin="pixel-fc-line"] .lang-toggle { border: 2px solid var(--border); border-radius: 999px; overflow: hidden; }
+:root[data-skin="pixel-fc-line"] .lang-toggle__btn { min-height: 36px; min-width: 34px; font-size: 12px; }
+:root[data-skin="pixel-fc-line"] .lang-toggle__btn[aria-pressed="true"] { background: #202124; color: #fff; }
+:root[data-skin="pixel-fc-line"] .nav__burger-lines,
+:root[data-skin="pixel-fc-line"] .nav__burger-lines::before,
+:root[data-skin="pixel-fc-line"] .nav__burger-lines::after { background: currentColor; }
+:root[data-skin="pixel-fc-line"] .sheet__panel {
+  background: var(--surface); border: 3px solid var(--line-red); border-radius: 24px 24px 0 0;
+  box-shadow: 0 -4px 0 var(--bg), 0 -7px 0 var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] .sheet__link { padding: 18px 8px; border-bottom: 2px solid var(--border-2); color: var(--text); }
+:root[data-skin="pixel-fc-line"] .sheet__link.is-active { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .sheet__num { font-size: 13px; color: var(--text-muted); }
+
+/* 기기 면은 비우고 빨강 주선 바깥에 노랑·파랑 선을 일정 간격으로 둡니다. */
+:root[data-skin="pixel-fc-line"] .hero,
+:root[data-skin="pixel-fc-line"] .home-screen .hero {
+  background: var(--fc-shell); border-color: transparent; box-shadow: none;
+}
+:root[data-skin="pixel-fc-line"] .fcl-contours {
+  position: absolute; z-index: 2; inset: 13px; pointer-events: none;
+  border: 4px solid var(--line-red); border-radius: calc(var(--fc-r) - 13px);
+  box-shadow: 0 0 0 4px var(--fc-shell), 0 0 0 7px var(--line-yellow),
+    0 0 0 11px var(--fc-shell), 0 0 0 14px var(--line-blue);
+}
+:root[data-skin="pixel-fc-line"] .fc-grip { background: transparent; z-index: 1; }
+:root[data-skin="pixel-fc-line"] .fcc-hardware { z-index: 0; }
+:root[data-skin="pixel-fc-line"] .fc-grip--l { border-right: 3px solid var(--line-red); }
+:root[data-skin="pixel-fc-line"] .fc-grip--r { border-left: 3px solid var(--line-red); }
+:root[data-skin="pixel-fc-line"] .fc-grip::before,
+:root[data-skin="pixel-fc-line"] .fc-grip::after { background: var(--fc-shell); border: 2px solid var(--line-red); border-radius: 50%; }
+:root[data-skin="pixel-fc-line"] .fc-lbl { color: var(--text); font-size: 10px; }
+:root[data-skin="pixel-fc-line"] .fc-key {
+  color: var(--text); border-color: var(--line-red); background: var(--fc-key);
+  box-shadow: none; transition: background-color .15s ease, transform .15s ease;
+}
+:root[data-skin="pixel-fc-line"] .fc-key:hover { color: var(--text); border-color: var(--line-red); background: var(--fc-key-hi); }
+:root[data-skin="pixel-fc-line"] .fc-key:active { box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .fc-key:focus-visible { background: var(--surface); border-color: var(--line-red); }
+:root[data-skin="pixel-fc-line"] .hero > .wrap {
+  background: var(--fc-screen-a); border: 3px solid var(--line-red); border-radius: 16px; box-shadow: none; z-index: 1;
+}
+:root[data-skin="pixel-fc-line"] .fcc-led { border: 0; border-radius: 50%; background: var(--line-red); }
+:root[data-skin="pixel-fc-line"] .fcc-speaker i { background: var(--line-red); box-shadow: 0 -8px 0 var(--line-red); border-radius: 2px; }
+:root[data-skin="pixel-fc-line"] :is(.hero__portrait, .portrait, .ghost-art, .quip) { box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .hero__portrait { --pose-rest: 0deg; }
+:root[data-skin="pixel-fc-line"] .portrait { border: 3px solid var(--ink); border-radius: 10px; }
+:root[data-skin="pixel-fc-line"] .portrait::after { content: none; }
+:root[data-skin="pixel-fc-line"] .portrait__nm { font-size: 21px; }
+:root[data-skin="pixel-fc-line"] .portrait__role { font-size: 13px; color: var(--text-muted); }
+:root[data-skin="pixel-fc-line"] .quip {
+  padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; color: var(--text); background: var(--surface);
+  font-size: 15px; line-height: 1.55;
+}
+
+/* 정보 딱지: 검은 알약은 제한적으로, 핵심 동작은 채우지 않은 빨강 윤곽. */
+:root[data-skin="pixel-fc-line"] :is(.eyebrow, .hero__eyebrow, .badge, .play-card__hours, .quest-strip__badge, .steam__sample) {
+  border: 0; border-radius: 999px; background: #202124; color: #fff; box-shadow: none;
+  padding: 7px 13px; font-size: 12px; font-weight: 650; line-height: 1.4;
+}
+:root[data-skin="pixel-fc-line"] .hero__eyebrow .ghost { color: #fff; }
+:root[data-skin="pixel-fc-line"] :is(.btn, .hero .btn, .hero .btn--outline, .hero .btn--primary, .fc-ov__btn,
+  .back-link, .link-more, .store-link) {
+  border: 3px solid var(--line-red); border-radius: 12px; box-shadow: none;
+  color: var(--accent); background: var(--surface); padding: 11px 18px; font-size: 14px; font-weight: 750;
+  transition: box-shadow .15s ease, background-color .15s ease;
+}
+:root[data-skin="pixel-fc-line"] :is(.btn, .hero .btn, .fc-ov__btn, .back-link, .link-more, .store-link):hover {
+  transform: none; color: var(--accent); background: var(--surface);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] :is(.btn, .hero .btn, .pager__item, .store-link, .fc-ov__btn):is(:active, .fcc-pressed) { transform: none; box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .store-link { padding: 8px; }
+:root[data-skin="pixel-fc-line"] .btn--sm { min-height: 40px; font-size: 13px; padding: 9px 16px; }
+:root[data-skin="pixel-fc-line"] :is(.tag, .tag--cornflower, .tag--butter, .tag--blush, .tag--lavender) {
+  border: 2px solid var(--border); border-radius: 999px; color: var(--text); background: transparent; padding: 5px 11px; font-size: 12px;
+}
+:root[data-skin="pixel-fc-line"] .tabs { border: 3px solid var(--line-red); border-radius: 16px; padding: 5px; gap: 5px; box-shadow: none; background: var(--surface); }
+:root[data-skin="pixel-fc-line"] .tab { border: 2px solid transparent; border-radius: 10px; padding: 11px 14px; min-height: 40px; color: var(--text); font-size: 14px; font-weight: 700; }
+:root[data-skin="pixel-fc-line"] .tab:last-child { border-right: 2px solid transparent; }
+:root[data-skin="pixel-fc-line"] .tab.is-active { border-color: var(--line-red); background: var(--surface); color: var(--accent); box-shadow: inset 0 -3px 0 var(--line-yellow); }
+:root[data-skin="pixel-fc-line"] .tab:hover { background: var(--surface-2); }
+
+/* 카트리지: 단자·귀·고정 cqw 칸을 보존. 색선은 셸과 라벨 사이에만 둡니다. */
+:root[data-skin="pixel-fc-line"] :is(.gcard, .card-back, .draw__deck-card.card-back) { border-color: var(--line-red); border-radius: 8px; background: var(--fc-cart); }
+:root[data-skin="pixel-fc-line"] .gcard__frame {
+  --heading: var(--text); --ink: var(--text); --border: #777b80;
+  --text: #292b2e; --text-muted: #56595e; --accent: #bb0010; --cta: #fafaf8; --cta-text: #bb0010;
+  --bg-elev: #ededea; --surface-2: #ededea; --gen0: #bb0010; --gen1: #0068b7; --gen2: #166b42;
+  border: 2px solid var(--line-red); border-radius: 5cqw;
+  background: var(--stripe) 0 0 / 100% 3.4cqw no-repeat, var(--fc-label);
+  box-shadow: 0 0 0 1.2cqw var(--fc-cart), 0 0 0 2.2cqw var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"][data-theme="dark"] .gcard__frame {
+  --text: #e9e9e5; --text-muted: #b9bdc3; --accent: #ff8992; --cta: #23262b; --cta-text: #ff8992;
+  --bg-elev: #2d3035; --surface-2: #2d3035; --gen0: #ff8992; --gen1: #83c5ff; --gen2: #85d6a7;
+}
+:root[data-skin="pixel-fc-line"] :is(.gcard__cat, .gcard__grade, .gcard__go, .gcard__period, .gcard__name, .gcard__desc) { font-family: var(--font-sans); }
+:root[data-skin="pixel-fc-line"] .gcard__cat { border: .7cqw solid var(--border); border-radius: 3cqw; background: transparent; color: var(--text); }
+:root[data-skin="pixel-fc-line"] .gcard__grade { border: 0; border-radius: 999px; background: #202124; color: #fff; }
+:root[data-skin="pixel-fc-line"] .gcard__art { border: 2px solid var(--border); border-radius: 3cqw; background: var(--bg-elev); }
+:root[data-skin="pixel-fc-line"] .gcard__gen > svg { display: none; }
+:root[data-skin="pixel-fc-line"] .gcard__gen::before {
+  content: ''; position: absolute; inset: 16%; border: 3px solid var(--line-red); border-radius: 16px;
+  box-shadow: 0 0 0 4px var(--bg-elev), 0 0 0 7px var(--line-yellow), 0 0 0 11px var(--bg-elev), 0 0 0 14px var(--line-blue);
+}
+:root[data-skin="pixel-fc-line"] .gcard__mark { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .gcard__go { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .gcard::after { display: none; }
+:root[data-skin="pixel-fc-line"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible),
+:root[data-skin="pixel-fc-line"] .draw-card:is(:hover, :focus-visible) .gcard { animation: none; }
+:root[data-skin="pixel-fc-line"] .proj-card:is(:active, .fcc-pressed),
+:root[data-skin="pixel-fc-line"] .draw-card:is(:active, .fcc-pressed) .gcard {
+  --fc-cart-shadow: none; --fc-cart-shadow-lift: none;
+}
+:root[data-skin="pixel-fc-line"] .card-back::before {
+  display: block; border: 2px solid var(--line-red); border-radius: 5cqw; background: var(--fc-label);
+  box-shadow: 0 0 0 1.2cqw var(--fc-cart), 0 0 0 2.2cqw var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] .draw__deck-face { color: var(--text); padding: 0 7cqw; }
+:root[data-skin="pixel-fc-line"] .card-back__seal .ghost { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .draw__deck-hint { opacity: 1; color: var(--text-muted); font-size: 7cqw; }
+:root[data-skin="pixel-fc-line"] .draw__deck-label { font-size: 8.5cqw; }
+:root[data-skin="pixel-fc-line"] .fcs-rig .draw__stage {
+  border: 3px solid var(--line-red); border-radius: 18px; background: var(--surface-2);
+  box-shadow: inset 0 0 0 4px var(--surface-2), inset 0 0 0 7px var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] :is(.draw__empty, .proj-empty) { border: 2px dashed var(--border); border-radius: 12px; }
+
+/* 절 제목 = 끝이 둥근 세 평행선. 가로질러 채우지 않고 제목 옆 작은 기호로. */
+:root[data-skin="pixel-fc-line"] :is(.hp-h, .cl-summary__t, .section__title, .proj-title) {
+  position: relative; padding-left: 28px; border: 0; padding-bottom: 0; line-height: 1.3;
+}
+:root[data-skin="pixel-fc-line"] :is(.hp-h, .cl-summary__t, .section__title, .proj-title)::before {
+  content: ''; position: absolute; left: 0; top: .24em; width: 4px; height: .85em;
+  border-radius: 999px; background: var(--line-red); box-shadow: 8px 0 0 var(--line-yellow), 16px 0 0 var(--line-blue);
+}
+:root[data-skin="pixel-fc-line"] :is(.section__head, .proj-head) { border-bottom: 2px solid var(--border-2); padding-bottom: 28px; }
+:root[data-skin="pixel-fc-line"] .hp--sep { border-top: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] .hp { padding-block: 48px; }
+:root[data-skin="pixel-fc-line"] .hp-block { margin-bottom: 40px; }
+:root[data-skin="pixel-fc-line"] :is(.card, .stat, .profile, .strength, .play-card, .pager__item, .hpl, .hp-skills, .hp-game,
+  .detail__learned, .cover-block, .quest-strip, .media-box, .steam, .block) {
+  border: 3px solid var(--line-red); border-radius: 16px; background: var(--surface); box-shadow: none;
+}
+:root[data-skin="pixel-fc-line"] :is(.card, .strength, .play-card, .stat, .pager__item, .hp-game) {
+  box-shadow: inset 0 0 0 4px var(--surface), inset 0 0 0 6px var(--line-yellow);
+}
+:root[data-skin="pixel-fc-line"] .section--elev { border-block: 2px solid var(--border-2); background: var(--bg-elev); }
+:root[data-skin="pixel-fc-line"] .stat { padding: 24px; }
+:root[data-skin="pixel-fc-line"] .stat__num { font-size: clamp(27px, 3vw, 40px); font-weight: 850; color: var(--heading); line-height: 1.2; }
+:root[data-skin="pixel-fc-line"] .stat__num .unit { color: var(--text-muted); }
+:root[data-skin="pixel-fc-line"] :is(.stat__label, .profile__k, .detail__meta-k, .pager__dir, .hpl-row__d, .tl-date) { color: var(--text-muted); font-size: 13px; }
+:root[data-skin="pixel-fc-line"] .hpl-row,
+:root[data-skin="pixel-fc-line"] .hpl-row:first-child { padding: 20px; border-top: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] .hpl-row:first-child { border-top: 0; }
+:root[data-skin="pixel-fc-line"] .hp-thumb { border: 2px solid var(--border); border-radius: 12px; }
+:root[data-skin="pixel-fc-line"] .hp-skills { padding: 24px; gap: 24px; }
+:root[data-skin="pixel-fc-line"] :is(.tool__ic, .hp-skill__ic) { border: 2px solid #777b80; border-radius: 12px; box-shadow: none; }
+:root[data-skin="pixel-fc-line"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
+:root[data-skin="pixel-fc-line"] :is(.hp-skill__t, .tool__nm) { font-size: 13px; line-height: 1.5; }
+:root[data-skin="pixel-fc-line"] .strength { padding: 24px; }
+:root[data-skin="pixel-fc-line"] .strength__tag { display: inline-block; border: 0; border-radius: 999px; padding: 5px 10px; color: #fff; background: #202124; font-size: 12px; }
+:root[data-skin="pixel-fc-line"] .strength__b { color: var(--text-muted); font-size: 15px; }
+:root[data-skin="pixel-fc-line"] .hp-game { padding: 24px; }
+:root[data-skin="pixel-fc-line"] .hp-game__ic { border-color: var(--line-red); border-radius: 6px; color: var(--accent); box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .hp-game__b { font-size: 13px; }
+:root[data-skin="pixel-fc-line"] .profile__row { border-color: var(--border-2); padding-block: 18px; }
+:root[data-skin="pixel-fc-line"] .profile__v { overflow-wrap: anywhere; }
+:root[data-skin="pixel-fc-line"] .timeline::before { width: 3px; border-radius: 999px; background: var(--line-red); }
+:root[data-skin="pixel-fc-line"] .tl-item { padding: 0 0 24px 12px; }
+:root[data-skin="pixel-fc-line"] .tl-item::before { border: 3px solid var(--line-red); border-radius: 50%; background: var(--bg-elev); box-shadow: 0 0 0 3px var(--bg-elev), 0 0 0 5px var(--line-yellow); }
+:root[data-skin="pixel-fc-line"] .tl-item--now::before { background: var(--line-red); }
+:root[data-skin="pixel-fc-line"] .tl-org { color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .cl-summary { border: 0; padding-top: 0; }
+:root[data-skin="pixel-fc-line"] .cover-block { padding: 32px; }
+:root[data-skin="pixel-fc-line"] .cover-block h3 { border-bottom: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] .cover-block p { line-height: 1.85; }
+:root[data-skin="pixel-fc-line"] .quest-strip { padding: 20px; gap: 12px; }
+:root[data-skin="pixel-fc-line"] .quest-strip__k { font-size: 12px; }
+:root[data-skin="pixel-fc-line"] .detail__meta-row { padding: 10px 16px; border-left: 3px solid var(--line-red); }
+:root[data-skin="pixel-fc-line"] .detail__learned { padding: 24px; }
+:root[data-skin="pixel-fc-line"] .block { padding: 28px; }
+:root[data-skin="pixel-fc-line"] .block__label small { font-size: 12px; color: var(--text-muted); }
+:root[data-skin="pixel-fc-line"] .media-box--empty { background: var(--surface-2); }
+:root[data-skin="pixel-fc-line"] .pager__item:hover { transform: none; border-color: var(--line-blue); box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .play-card { padding: 24px; }
+:root[data-skin="pixel-fc-line"] .play-card__note { border-top: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] .play-card__icon { border: 2px solid var(--border); border-radius: 12px; }
+:root[data-skin="pixel-fc-line"] .steam { padding: 28px; }
+:root[data-skin="pixel-fc-line"] .steam__head { padding-bottom: 20px; border-bottom: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] .steam__table :is(th, td) { padding: 12px 8px; border-color: var(--border-2); }
+:root[data-skin="pixel-fc-line"] .steam__table thead { background: var(--surface-2); }
+:root[data-skin="pixel-fc-line"] .sr-grid { stroke-width: 1.5; opacity: .7; }
+:root[data-skin="pixel-fc-line"] .sr-spoke { opacity: .6; }
+:root[data-skin="pixel-fc-line"] .sr-area { fill-opacity: .06; stroke-width: 3; stroke-linecap: round; }
+
+/* 꽂기 화면도 같은 중립 면과 윤곽선. 슬롯의 좌표·층은 원본 유지. */
+:root[data-skin="pixel-fc-line"] .fc-slot { border-color: var(--line-red); border-radius: 0 0 26px 26px; box-shadow: 0 4px 0 var(--bg), 0 7px 0 var(--line-yellow); }
+:root[data-skin="pixel-fc-line"] .fc-slot::before,
+:root[data-skin="pixel-fc-line"] .fc-slot::after { background: var(--fc-grip); border-color: var(--line-red); }
+:root[data-skin="pixel-fc-line"] .fc-boot { background: var(--surface); color: var(--text); border-radius: 12px; }
+:root[data-skin="pixel-fc-line"] .fc-boot--full { border-radius: 0; }
+:root[data-skin="pixel-fc-line"] .fc-ov__art { border: 3px solid var(--line-red); border-radius: 16px; background: var(--surface-2); box-shadow: none; }
+:root[data-skin="pixel-fc-line"] :is(.fc-ov__t, .fc-ov__v, .fc-ov__q) { color: var(--text); }
+:root[data-skin="pixel-fc-line"] :is(.fc-ov__tag, .fc-ov__sub, .fc-ov__k, .fc-ov__arrow) { color: var(--text-muted); }
+:root[data-skin="pixel-fc-line"] .fc-ov__cat { border: 2px solid var(--border); border-radius: 999px; color: var(--text); }
+:root[data-skin="pixel-fc-line"] .fc-ov__grade,
+:root[data-skin="pixel-fc-line"] .fc-ov__grade[data-grade] { background: #202124; color: #fff; text-shadow: none; border-radius: 999px; }
+:root[data-skin="pixel-fc-line"] .fc-ov__k { font-size: 12px; }
+:root[data-skin="pixel-fc-line"] .fc-ov__q { border-color: var(--line-red); background: var(--surface-2); border-radius: 0 12px 12px 0; }
+:root[data-skin="pixel-fc-line"] .fc-ov__clear { color: var(--accent); font-size: 12px; }
+:root[data-skin="pixel-fc-line"] .fc-ov__btn b { border-radius: 50%; color: #fff; background: #202124; }
+
+/* 푸터·알림·입력칸까지 동일한 마감. */
+:root[data-skin="pixel-fc-line"] .footer {
+  background: var(--surface); color: var(--text); border-top: 3px solid var(--line-red);
+  box-shadow: 0 -4px 0 var(--bg), 0 -7px 0 var(--line-yellow), 0 -11px 0 var(--bg), 0 -14px 0 var(--line-blue);
+}
+:root[data-skin="pixel-fc-line"] .footer__brand { color: var(--heading); font-weight: 800; }
+:root[data-skin="pixel-fc-line"] :is(.footer__tagline, .footer__copy) { color: var(--text-muted); opacity: 1; }
+:root[data-skin="pixel-fc-line"] .footer .btn { color: var(--text); border-color: var(--border); background: transparent; box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .footer .btn:hover { border-color: var(--line-red); color: var(--accent); }
+:root[data-skin="pixel-fc-line"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: none; }
+:root[data-skin="pixel-fc-line"] :is(.to-top, .nav-handle, .skip-link) { border: 2px solid var(--line-red); border-radius: 12px; background: var(--surface); color: var(--accent); box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .toast { border: 2px solid var(--line-red); border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: none; }
+:root[data-skin="pixel-fc-line"] .toast__mail { font-family: var(--font-sans); font-size: 14px; }
+:root[data-skin="pixel-fc-line"] :is(input:not([type="checkbox"]):not([type="radio"]), textarea, select) {
+  max-width: 100%; border: 2px solid var(--border); border-radius: 12px; padding: 12px;
+  font: inherit; color: var(--text); background: var(--surface); accent-color: var(--accent);
+}
+:root[data-skin="pixel-fc-line"] :is(input, textarea)::placeholder { color: var(--text-muted); opacity: 1; }
+:root[data-skin="pixel-fc-line"] hr { border: 0; border-top: 2px solid var(--border-2); }
+:root[data-skin="pixel-fc-line"] :is(.pf-blk--img img, .pf-blk--box) { border: 3px solid var(--line-red); border-radius: 16px; }
+
+@media (max-width: 899px) {
+  :root[data-skin="pixel-fc-line"] :is(.fc-grip--l, .fc-grip--r) { border-inline: 0; border-top: 3px solid var(--line-red); }
+  :root[data-skin="pixel-fc-line"] .fcc-speaker i { box-shadow: none; }
+}
+@media (max-width: 700px) {
+  :root[data-skin="pixel-fc-line"] .hero > .wrap { border-radius: 12px; }
+  :root[data-skin="pixel-fc-line"] .fcs-rig .hero__portrait { max-width: 100%; }
+  :root[data-skin="pixel-fc-line"] .fcs-rig .hero > .wrap { padding: 18px 14px; }
+}
+@media (max-width: 520px) {
+  :root[data-skin="pixel-fc-line"] { --gutter: 20px; }
+  :root[data-skin="pixel-fc-line"] .nav { gap: 8px; padding-inline: 10px; }
+  :root[data-skin="pixel-fc-line"] .nav__actions { gap: 6px; }
+  :root[data-skin="pixel-fc-line"] .nav__logo { gap: 6px; font-size: 13px; }
+  :root[data-skin="pixel-fc-line"] .nav__logo-en { display: none; }
+  :root[data-skin="pixel-fc-line"] :is(.section__head, .proj-head) { padding-bottom: 24px; margin-bottom: 32px; }
+  :root[data-skin="pixel-fc-line"] :is(.card, .stat, .strength, .cover-block, .steam, .block, .detail__learned, .play-card, .quest-strip) { padding: 20px; }
+  :root[data-skin="pixel-fc-line"] .hp-h { font-size: 24px; }
+  :root[data-skin="pixel-fc-line"] .hpl-row,
+  :root[data-skin="pixel-fc-line"] .hpl-row:first-child { padding: 16px; gap: 12px; }
+  :root[data-skin="pixel-fc-line"] .hpl-row__d { white-space: normal; }
+  :root[data-skin="pixel-fc-line"] .hp-skills { padding: 20px 12px; gap: 24px 12px; }
+  :root[data-skin="pixel-fc-line"] .hp-game { padding: 20px; }
+  :root[data-skin="pixel-fc-line"] .profile__row { grid-template-columns: minmax(0, 5.5em) minmax(0, 1fr); padding: 14px; }
+  :root[data-skin="pixel-fc-line"] .fcs-info .btn { padding: 9px 10px; }
+  :root[data-skin="pixel-fc-line"] .portrait__nm { font-size: 19px; }
+  :root[data-skin="pixel-fc-line"] .quip { font-size: 14px; padding: 10px; }
+  :root[data-skin="pixel-fc-line"] .tab { padding-inline: 11px; }
+  :root[data-skin="pixel-fc-line"] .steam__table { table-layout: fixed; font-size: 13px; }
+  :root[data-skin="pixel-fc-line"] .steam__table :is(th, td) { padding: 10px 4px; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin="pixel-fc-line"] { scroll-behavior: auto; }
+  :root[data-skin="pixel-fc-line"] *, :root[data-skin="pixel-fc-line"] *::before, :root[data-skin="pixel-fc-line"] *::after {
+    animation: none !important; transition: none !important; scroll-behavior: auto !important;
+  }
 }

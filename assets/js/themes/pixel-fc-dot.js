@@ -1,5 +1,5 @@
 /* ============================================================================
-   pixel-fc-dot.js — 참고 그림 ②의 패미컴 도트 시안
+   pixel-fc-dot.js — 참고 그림 ② 재해석 · 아이소 도트 부품
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-dot.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -340,7 +340,7 @@
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest) return;
+    if (!active() || !e.target.closest) return;
     if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
     if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
     var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }
@@ -348,15 +348,20 @@
     if (e.target.closest('[data-fc-b]')) { e.preventDefault(); pressB(); }
   });
 
-  /* 언어 전환 시에도 원본 내용/편집 앵커는 그대로 두고 제목 한 줄만 덧붙입니다. */
+  /* 공통 부품 제목. 원본 내용/편집 앵커를 보존하고 KO/EN 재렌더에도 중복하지 않습니다. */
   function finishMenus() {
     var games = document.querySelector('.hp-games');
-    if (games && !document.querySelector('.fcc-play-heading')) {
-      var title = document.createElement('h2');
+    if (!games) return;
+    var title = games.parentNode.querySelector('.fcc-play-heading');
+    if (!title) {
+      title = document.createElement('h2');
       title.className = 'hp-h fcc-play-heading';
-      title.textContent = t(T.play);
+      title.id = 'fcd-play-heading';
       games.parentNode.insertBefore(title, games);
     }
+    title.textContent = t(T.play);
+    games.setAttribute('role', 'group');
+    games.setAttribute('aria-labelledby', title.id);
   }
   /* 링크의 Enter 입력에도 버튼과 같은 2px 눌림. 기본 키 동작은 유지합니다. */
   function releaseKeys() {

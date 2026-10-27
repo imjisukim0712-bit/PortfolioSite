@@ -39,7 +39,7 @@
 
 ## 디자인 테마(스킨) — `assets/js/themes.js` · `assets/css/themes/`
 
-기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 27개.
+기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 32개.
 (`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
 `pixel-fc-3d`(제품 사진) · `pixel-fc-8bit`(도트 아트) · `pixel-fc-boxart`(박스아트) 는 패미컴 콘셉트(게임기 화면·카트리지 꽂기·빨강)는 지키고 **디자인 언어를 새로 만든 안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js`, 원본 `famicom.js` 와 별개 · 카트리지 1클릭 꽂기 후 바로 상세).
 `pixel-fc-clay` · `pixel-fc-toon` · `pixel-fc-airbrush` 는 제품 사진 안과 같은 구도(기울어진 게임기 + 그 밑 같은 기울기의 카트리지 진열판 `.ps-rig`)에 그림체만 바꾼 안이고,
@@ -48,7 +48,7 @@
 `pixel-fc-classic`(정돈) · `pixel-fc-px3d`(3D 픽셀) · `pixel-fc-voxel`(복셀) 은 **원본 패미컴 디자인**을 공용 `assets/js/themes/fc-stage.js` 의 기울인 구도(왼쪽 큰 제목 · 오른쪽 기울어진 게임기 · 그 밑 같은 기울기의 카트리지 진열판 `.fcs-rig`)에 올린 안입니다(카트리지 꽂기·개요 흐름은 famicom.js 복제본 그대로).
 3D 픽셀(`pixel-fc-px3d`)은 자동 변환이 아니라 `tools/fc-pixel/sprites.py` 가 도트를 규칙대로 찍어 만든 **스프라이트**이고(입체는 그림 안 3/4 시점 — 도트가 깨지지 않게 이 안만 판을 CSS 로 기울이지 않음, 도트 한 칸 = 4px),
 복셀의 그림은 `tools/fc-pixel/capture-fc.js` → `render3d.py voxel` 로 만들고, 게임기는 화면 높이에 따라 크기가 바뀌므로 9조각 border-image 로 붙이며 붙이는 CSS(`pixel-fc-<안>-parts.css`)도 자동 생성됩니다. 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
-`pixel-fc-icon`(픽셀 아이콘) · `pixel-fc-dot`(도트) · `pixel-fc-blueprint`(분해도) · `pixel-fc-flat`(플랫 일러스트) · `pixel-fc-ukiyo`(레트로 판화) 는 정돈 안을 복제해 **사용자가 준 참고 그림 한 장씩의 색·화풍**만 입힌 안입니다 — 구도(fc-stage.js 의 기울인 판)·패미컴 실루엣·꽂기 동작은 그대로, 장식(지시선·풍경 등)은 각 안의 JS 가 시안 id 일 때만 붙입니다.
+`pixel-fc-icon`(픽셀 아이콘) · `pixel-fc-dot`(도트) · `pixel-fc-blueprint`(설명서) · `pixel-fc-flat`(플랫 일러스트) · `pixel-fc-ukiyo`(레트로 판화) · `pixel-fc-iso`(아이소) · `pixel-fc-line`(컬러 선화) · `pixel-fc-snes`(고해상 도트) · `pixel-fc-kraft`(크라프트) · `pixel-fc-level`(스테이지) 는 정돈 안을 복제해 **사용자가 준 참고 그림 한 장씩의 색·화풍**을 입힌 안입니다 — 구도(fc-stage.js 의 기울인 판)·패미컴 실루엣·빨강 중심 색·꽂기 동작은 그대로이고, 화풍은 첫 화면만이 아니라 메뉴·절·카드·표·푸터·하위 페이지까지 **사이트 전체의 디자인 규칙**으로 입힙니다(그림 속 소품을 그대로 붙이지 않음 · 상표/기존 게임 캐릭터 금지). 장식 DOM 은 각 안의 JS 가 시안 id 일 때만 붙입니다.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).

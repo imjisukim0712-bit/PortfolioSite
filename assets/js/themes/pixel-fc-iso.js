@@ -1,5 +1,5 @@
 /* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-iso) 전용 스크립트
+   pixel-fc-iso.js — 아이소 일러스트 시안 전용 스크립트
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-iso.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -46,7 +46,8 @@
     status: { ko: '상태',          en: 'Status' },
     quest:  { ko: '퀘스트',        en: 'Quest' },
     cleared:{ ko: '달성',          en: 'Cleared' },
-    play:   { ko: '게임플레이',    en: 'Gameplay' }
+    play:   { ko: '게임플레이',    en: 'Gameplay' },
+    overview: { ko: '프로젝트 개요', en: 'Project overview' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
@@ -171,7 +172,8 @@
   /* 개요(타이틀 화면) 마크업 */
   function overviewHtml(a, p) {
     var c = content(), tabs = (c.projects && c.projects.tabs) || {};
-    if (!p) return '<div class="fc-ov"><h2 class="fc-ov__t">' + esc(cardTitle(a)) + '</h2>' + buttons() + '</div>';
+    var region = '<div class="fc-ov" role="region" aria-label="' + esc(t(T.overview)) + '">';
+    if (!p) return region + '<h2 class="fc-ov__t">' + esc(cardTitle(a)) + '</h2>' + buttons() + '</div>';
     var grade = GRADES[p.grade] ? p.grade : 'A';
     var art = a.querySelector('.gcard__art');
     var rows = [[T.period, p.period], [T.team, p.headcount], [T.role, p.myRole], [T.status, p.status]].filter(function (r) { return t(r[1]); })
@@ -180,7 +182,7 @@
     var quest = t(q.goal) ? '<p class="fc-ov__q"><span class="fc-ov__k">' + esc(t(T.quest)) + '</span> ' + esc(t(q.goal)) +
       (t(q.result) ? ' <span class="fc-ov__arrow" aria-hidden="true">→</span> <b>' + esc(t(q.result)) + '</b>' : '') +
       (q.cleared ? ' <span class="fc-ov__clear">✓ ' + esc(t(T.cleared)) + '</span>' : '') + '</p>' : '';
-    return '<div class="fc-ov">' +
+    return region +
       '<div class="fc-ov__art" aria-hidden="true">' + (art ? art.innerHTML : '') + '</div>' +
       '<div class="fc-ov__body">' +
         '<p class="fc-ov__meta"><span class="fc-ov__cat">' + esc(t(tabs[p.category]) || '') + '</span><span class="fc-ov__tag">' + esc(t(p.tag)) + '</span><span class="fc-ov__grade" data-grade="' + grade + '">' + grade + '</span></p>' +
@@ -265,7 +267,7 @@
         if (body) body.animate([{ transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }, { transform: useHero ? 'translateY(4px)' : 'translate(-50%,4px)' }, { transform: useHero ? 'translateY(0)' : 'translate(-50%,0)' }], { duration: 220, easing: 'ease-out', fill: useHero ? 'none' : 'forwards' });
         /* ⑤ 화면 켜짐: 검은 화면 + '읽는 중' → ⑥ 개요 */
         var boot = document.createElement('div'); boot.className = 'fc-boot' + (useHero ? '' : ' fc-boot--full');
-        boot.innerHTML = '<div class="fc-boot__load"><span>▶ ' + esc(t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
+        boot.innerHTML = '<div class="fc-boot__load" role="status"><span>▶ ' + esc(t(T.boot)) + '</span><span class="fc-boot__c" aria-hidden="true">_</span></div>';
         (useHero ? hero.querySelector('.wrap') : document.body).appendChild(boot);
         setTimeout(function () {
           if (pending !== me) return;
@@ -337,7 +339,7 @@
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest) return;
+    if (!active() || !e.target.closest) return;
     if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
     if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
     var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }
@@ -347,8 +349,8 @@
 
   /* 언어 전환 시에도 원본 내용/편집 앵커는 그대로 두고 제목 한 줄만 덧붙입니다. */
   function finishMenus() {
-    var games = document.querySelector('.hp-games');
-    if (games && !document.querySelector('.fcc-play-heading')) {
+    var games = document.querySelector('[data-slot="main"] .hp-games');
+    if (games && !games.parentNode.querySelector('.fcc-play-heading')) {
       var title = document.createElement('h2');
       title.className = 'hp-h fcc-play-heading';
       title.textContent = t(T.play);

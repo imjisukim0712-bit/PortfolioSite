@@ -1,5 +1,5 @@
 /* ============================================================================
-   famicom.js — 패미컴 시안(pixel-fc-line) 전용 스크립트
+   pixel-fc-line.js — 평행 윤곽선 시안 전용 스크립트
    ----------------------------------------------------------------------------
    홈·이력서 상단(.hero)을 휴대용 게임기 한 대로 만듭니다. CSS(pixel-fc-line.css)가
    본체·그립·화면을 그리고, 이 파일은 손잡이의 버튼과 카트리지 꽂기 연출을 맡습니다.
@@ -95,7 +95,7 @@
     var hardware = document.createElement('span');
     hardware.className = 'fcc-hardware';
     hardware.setAttribute('aria-hidden', 'true');
-    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    hardware.innerHTML = '<span class="fcl-contours"></span><span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
     hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */

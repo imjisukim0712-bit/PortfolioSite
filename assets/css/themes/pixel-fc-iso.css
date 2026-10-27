@@ -1,119 +1,76 @@
 @charset "UTF-8";
-/* 패미컴 · 정돈 — 원본 기기/카트리지 치수와 슬롯 좌표계를 유지합니다.
-   선: 2px(내용) / 3px(기기·창) / 4px(강조). 그림자는 번짐 없이 4px. */
+/* pixel-fc-iso — flat illustration, round navy outlines, one solid depth plane.
+   Scope: this skin only. Shared stage angles, cartridge cqw cells and slot geometry stay intact.
+   Palette colors describe objects; semantic tokens keep text readable in both modes. */
 :root[data-skin="pixel-fc-iso"] {
-  --ink: #2b2b2b; --lo: #2b2b2b;
-  --bg: #efe6d2; --bg-elev: #e5dbc2; --surface: #f8f3e7; --surface-2: #e5dbc2;
-  --border: #2b2b2b; --border-2: #6b665c;
-  --text: #262626; --text-muted: #5f5a50; --heading: #161616;
-  --accent: #b8252b; --accent-soft: #d43a40;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --cta-hover: #eccbc0;
-  --ghost-c: #b8252b; --glow: rgb(184 37 43 / .2); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #f3dcd4; --buttercream: #f4e3b5; --blush: #f3dcd4; --cornflower: #2b2b2b; --mint: #b8252b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
-  --grade-r: #a3a3a3; --grade-sr: #e9b64a; --grade-ssr-a: #b8252b; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
-  color-scheme: light;
-}
-:root[data-skin="pixel-fc-iso"][data-theme="dark"] {
-  --ink: #efe6d2; --lo: #b8252b;
-  --bg: #232323; --bg-elev: #2c2c2c; --surface: #2a2a2a; --surface-2: #363636;
-  --border: #efe6d2; --border-2: #8a857a;
-  --text: #efe6d2; --text-muted: #b3ab9b; --heading: #fbf3e4;
-  --accent: #e0373d; --accent-soft: #ee5c61;
-  --cta: #3a2426; --cta-text: #f0a3a6; --cta-hover: #4a2c2e;
-  --ghost-c: #e0373d; --glow: rgb(224 55 61 / .35); --btn-primary-text: #fbf3e4;
-  --aubergine: #b8252b; --paper: #fbf3e4; --periwinkle: #e9b64a;
-  --ghost-lavender: #3a2426; --buttercream: #3f3620; --blush: #3a2426; --cornflower: #e9b64a; --mint: #e0373d;
-  --gen0: #e0373d; --gen1: #efe6d2; --gen2: #e9b64a;
-  --grade-r: #8a857a; --grade-sr: #e9b64a; --grade-ssr-a: #e0373d; --grade-ssr-b: #e9b64a;
-  --title-shadow: none;
-  --overlay: none;
-  --deck-check: rgb(255 255 255 / .09);
-  --shadow-card: none;
-  color-scheme: dark;
-}
-/* 카트리지 라벨 같은 금색 줄 */
-[data-skin="pixel-fc-iso"] .nav { border-bottom-color: #e9b64a; box-shadow: 0 3px 0 #2b2b2b; }
-[data-skin="pixel-fc-iso"] .nav__link.is-active { background: #fbf3e4; color: #b8252b; }
-[data-skin="pixel-fc-iso"] .lang-toggle__btn[aria-pressed="true"] { background: #e9b64a; color: #2b2b2b; }
-:root[data-skin="pixel-fc-iso"] .gcard[data-grade="SSR"] { --badge-fg: #fbf3e4; }
-[data-skin="pixel-fc-iso"] .tag--cornflower { color: #fbf3e4; }
-[data-skin="pixel-fc-iso"][data-theme="dark"] .tag--cornflower { color: #232323; }
-[data-skin="pixel-fc-iso"] .footer { background: #2b2b2b; border-top-color: #e9b64a; }
-[data-skin="pixel-fc-iso"][data-theme="dark"] .footer { background: #b8252b; }
-[data-skin="pixel-fc-iso"] .section--elev { background: var(--bg-elev); }
-
-/* ── 카트리지 라벨 타이포 ────────────────────────────────────────────────
-   실제 패미컴 패키지도 라벨은 굵은 고딕, 화면 UI만 도트였습니다.
-   제목·본문은 굵은 고딕으로 읽히게 하고, 도트 글꼴은 시스템 UI(칩·라벨·수치)에만. */
-:root[data-skin="pixel-fc-iso"] {
-  --font-sans: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --font-display: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --tracking: -0.02em;
-  --text-body: 16px; --text-body-sm: 15px; --text-caption: 12px;
+  --iso-line: #29384f; --iso-blue: #4a5a7a; --iso-red: #b5413a;
+  --iso-sage: #8fb58a; --iso-apricot: #e8b98a; --iso-tan: #f2d4a8;
+  --iso-yellow: #e9c46a; --iso-cream: #f6efe2;
+  --bg: #fffdf8; --bg-elev: #f6efe2; --surface: #fffdf8; --surface-2: #f2e5cf;
+  --heading: #29384f; --text: #29384f; --text-muted: #4a5870;
+  --border: #29384f; --border-2: #768198; --ink: #29384f; --lo: #29384f;
+  --accent: #a53630; --accent-soft: #a53630;
+  --cta: #f5ddd3; --cta-text: #8b2d29; --cta-hover: #efd0c2;
+  --btn-primary-text: #fffdf8; --ghost-c: #b5413a;
+  --aubergine: #b5413a; --paper: #fffdf8; --periwinkle: #e9c46a;
+  --ghost-lavender: #e1ecdc; --buttercream: #f2d4a8; --blush: #f5ddd3;
+  --cornflower: #4a5a7a; --mint: #37613e; --gold: #e9c46a;
+  --gen0: #b5413a; --gen1: #37613e; --gen2: #4a5a7a;
+  --grade-r: #d3deeb; --grade-sr: #e9c46a; --grade-ssr-a: #b5413a; --grade-ssr-b: #e9c46a;
+  --iso-depth: #4a5a7a; --iso-top: #8fb58a; --iso-panel: #f2d4a8;
+  --iso-shadow: 4px 5px 0 var(--iso-depth), 6px 7px 0 var(--iso-line);
+  --shadow-card: var(--iso-shadow); --shadow-sm: 3px 4px 0 var(--iso-line);
+  --radius-card: 20px; --radius-lg: 28px; --radius-pill: 12px; --bw: 3px;
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-display: var(--font-sans); --font-mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --tracking: -.02em; --text-body: 16px; --text-body-sm: 15px; --text-caption: 13px;
   --text-subheading: clamp(17px, 1.2vw + 14px, 20px);
   --text-heading-sm: clamp(19px, 1.3vw + 14px, 23px);
   --text-heading: clamp(25px, 2.4vw + 16px, 34px);
   --text-heading-lg: clamp(32px, 4.4vw + 14px, 58px);
   --text-display: clamp(36px, 5vw + 14px, 76px);
-}
-[data-skin="pixel-fc-iso"] body { line-height: 1.65; letter-spacing: -.01em; }
-[data-skin="pixel-fc-iso"] h1, [data-skin="pixel-fc-iso"] h2, [data-skin="pixel-fc-iso"] h3, [data-skin="pixel-fc-iso"] h4 { font-weight: 800; letter-spacing: -.03em; }
-[data-skin="pixel-fc-iso"] .hero__title { font-weight: 900; line-height: 1.14; letter-spacing: -.04em; text-shadow: none; }
-[data-skin="pixel-fc-iso"] .hero__title::after { content: none; }
-[data-skin="pixel-fc-iso"] .hero__sub { font-size: var(--text-subheading); line-height: 1.75; color: var(--text); max-width: 33rem; }
-[data-skin="pixel-fc-iso"] .section__title, [data-skin="pixel-fc-iso"] .proj-title, [data-skin="pixel-fc-iso"] .detail__title { font-weight: 900; text-shadow: none; line-height: 1.16; }
-[data-skin="pixel-fc-iso"] .gcard__name { font-weight: 800; font-size: 6.6cqw; line-height: 1.28; }
-[data-skin="pixel-fc-iso"] .gcard__desc { font-size: 5.4cqw; line-height: 1.45; }
-[data-skin="pixel-fc-iso"] .hp-h, [data-skin="pixel-fc-iso"] .card__title, [data-skin="pixel-fc-iso"] .tl-role, [data-skin="pixel-fc-iso"] .play-card__name, [data-skin="pixel-fc-iso"] .pager__title, [data-skin="pixel-fc-iso"] .hpl-row__t, [data-skin="pixel-fc-iso"] .hp-game__t, [data-skin="pixel-fc-iso"] .portrait__nm, [data-skin="pixel-fc-iso"] .block__label, [data-skin="pixel-fc-iso"] .sheet__link, [data-skin="pixel-fc-iso"] .draw__deck-label { font-family: var(--font-display); font-weight: 800; }
-[data-skin="pixel-fc-iso"] .hp-h::before { content: none; }
-[data-skin="pixel-fc-iso"] .hp-h { border-bottom: 3px solid var(--ink); padding-bottom: 10px; }
-/* 도트 글꼴은 여기까지만 — 칩·라벨·수치 */
-[data-skin="pixel-fc-iso"] .nav__logo, [data-skin="pixel-fc-iso"] .gcard__cat, [data-skin="pixel-fc-iso"] .gcard__grade, [data-skin="pixel-fc-iso"] .gcard__go, [data-skin="pixel-fc-iso"] .gcard__period, [data-skin="pixel-fc-iso"] .badge, [data-skin="pixel-fc-iso"] .tag, [data-skin="pixel-fc-iso"] .lang-toggle__btn, [data-skin="pixel-fc-iso"] .tab, [data-skin="pixel-fc-iso"] .draw__deck-hint, [data-skin="pixel-fc-iso"] .play-card__hours, [data-skin="pixel-fc-iso"] .sheet__num { font-family: 'Galmuri11', 'Galmuri14', monospace; font-weight: 400; letter-spacing: 0; }
-[data-skin="pixel-fc-iso"] .hero__eyebrow, [data-skin="pixel-fc-iso"] .eyebrow, [data-skin="pixel-fc-iso"] .tl-date, [data-skin="pixel-fc-iso"] .profile__k, [data-skin="pixel-fc-iso"] .quest-strip__k, [data-skin="pixel-fc-iso"] .quest-strip__badge, [data-skin="pixel-fc-iso"] .detail__meta-k, [data-skin="pixel-fc-iso"] .pager__dir, [data-skin="pixel-fc-iso"] .block__label small, [data-skin="pixel-fc-iso"] .stat__label, [data-skin="pixel-fc-iso"] .footer__copy { font-family: 'Galmuri11', monospace; letter-spacing: 0; }
-[data-skin="pixel-fc-iso"] .hero__eyebrow, [data-skin="pixel-fc-iso"] .eyebrow { font-size: 11px; }
-[data-skin="pixel-fc-iso"] .stat__num { font-family: 'Press Start 2P', 'Galmuri11', monospace; }
-[data-skin="pixel-fc-iso"] .nav__logo { font-size: 13px; }
-[data-skin="pixel-fc-iso"] .nav__link { font-family: var(--font-sans); font-weight: 700; font-size: 14px; }
-
-/* ── 홈·이력서 상단 = 휴대용 게임기 본체 ───────────────────────────────
-   색면 한 장 대신 게임기 한 대를 놓습니다. 화면(.wrap) 안에 본래의 히어로가 그대로 들어가고,
-   양옆 손잡이와 화면 아래 채널 표시줄은 assets/js/themes/famicom.js 가 붙입니다.
-     · 본체     짙은 회색 둥근 셸 + 아래 두꺼운 그림자                     (.hero)
-     · 손잡이   양옆 자주색 그립, 화면과 맞닿는 금색 줄                     (.fc-grip)
-     · 화면     크림색 액정 + 검은 테. 위아래는 셸의 검은 베젤              (.hero > .wrap)
-     · 버튼     왼쪽 SELECT ◀ ▶(한마디) · 오른쪽 B(밝기) A(뽑기)          (.fc-key)
-     · 슬롯     카드를 누르면 카트리지가 본체 아래 슬롯으로 들어갑니다        (.is-slot::after · .fc-fly · .fc-slot · .fc-boot)
-   글자는 크림 화면 위에 놓이므로 본래의 어두운 색을 그대로 씁니다. 사진에는 손대지 않습니다.
-   좁은 화면(≤700px)에서는 세로 잡는 휴대기처럼 버튼 띠가 화면 아래로 내려옵니다.
-   ────────────────────────────────────────────────────────────────────── */
-[data-skin="pixel-fc-iso"] {
+  --section-pad-y: 64px; --gutter: 24px; --card-pad: 24px;
+  --title-shadow: none; --overlay: none; --glow: transparent; --deck-check: transparent;
   --hero-slab: transparent; --hero-slab-r: 0;
-  --fc-line: #2b2b2b; --fc-line-2: #161616;         /* 화면 테 · 본체 외곽선 */
-  --fc-shell: #2e2e2e; --fc-shell-hi: #3b3b3b;      /* 본체 */
-  --fc-grip: #8c1d22; --fc-grip-hi: #a3242a;        /* 손잡이 자주 */
-  --fc-gold: #e9b64a;                               /* 금색 줄 */
-  --fc-screen-a: #f8f1e1; --fc-screen-b: #ece2c9;   /* 액정 */
-  --fc-cream: #f6efe0;                              /* 손잡이 위 글자 */
-  --fc-key: #2b2b2b; --fc-key-hi: #505050; --fc-key-ring: #6d6d6d;  /* 버튼 */
-  --fc-grip-w: 72px;   /* 손잡이 폭 */
-  --fc-bezel: 46px;    /* 화면 위아래 검은 베젤 */
-  --fc-r: 64px;        /* 본체 모서리 */
-  /* 본체 높이 — 홈이든 이력서든 같은 기기 한 대로 보이도록, 안에 든 내용이 아니라 화면 높이로 정합니다.
-     (내용에 맡기면 사진이 있는 홈이 더 길어져 페이지마다 기기 크기가 달라집니다) */
+  --fc-line: #29384f; --fc-line-2: #29384f;
+  --fc-shell: #e8b98a; --fc-shell-hi: #8fb58a;
+  --fc-grip: #b5413a; --fc-grip-hi: #9c352f; --fc-gold: #e9c46a;
+  --fc-screen-a: #fffdf8; --fc-screen-b: #f2d4a8; --fc-cream: #fffdf8;
+  --fc-key: #f2d4a8; --fc-key-hi: #f6efe2; --fc-key-ring: #29384f;
+  --fc-grip-w: 72px; --fc-bezel: 46px; --fc-r: 64px;
   --fc-h: clamp(430px, calc(100svh - var(--nav-h) - 150px), 700px);
+  --fc-quip-x: 36px; --fc-quip-y: 68px;
+  --fc-cart: #4a5a7a; --fc-cart-hi: #6c7d9b; --fc-label: #f6efe2;
+  --fc-cart-shadow: 3px 4px 0 #29384f; --fc-cart-shadow-lift: 4px 6px 0 #29384f;
+  --fc-check: transparent; --deck-shadow: 3px 4px 0 #29384f;
+  color-scheme: light;
 }
-[data-skin="pixel-fc-iso"][data-theme="dark"] {
-  --fc-line: #0f0f0f; --fc-line-2: #050505;
-  --fc-shell: #1b1b1b; --fc-shell-hi: #262626;
-  --fc-grip: #6e161b; --fc-grip-hi: #841b21;
-  --fc-screen-a: #2d2d2d; --fc-screen-b: #1f1f1f;
-  --fc-key: #101010; --fc-key-hi: #3a3a3a; --fc-key-ring: #5a5a5a;
+:root[data-skin="pixel-fc-iso"][data-theme="dark"] {
+  --bg: #1c2737; --bg-elev: #253448; --surface: #2b3b50; --surface-2: #35485f;
+  --heading: #fff4df; --text: #f6efe2; --text-muted: #ccd6df;
+  --border: #a0afc2; --border-2: #8395aa; --ink: #a0afc2; --lo: #111b29;
+  --accent: #ffa79a; --accent-soft: #ffa79a;
+  --cta: #453b46; --cta-text: #ffbeb0; --cta-hover: #554353;
+  --ghost-lavender: #354b43; --buttercream: #514730; --blush: #453b46;
+  --cornflower: #d3deeb; --mint: #a8cea0; --ghost-c: #ffa79a;
+  --iso-depth: #162131; --iso-top: #405d4e; --iso-panel: #35485f;
+  --iso-shadow: 4px 5px 0 #162131, 6px 7px 0 #a0afc2;
+  --fc-shell: #cf9e75; --fc-shell-hi: #8fb58a;
+  /* The illustrated console and its paper labels keep their own light palette. */
+  color-scheme: dark;
 }
+[data-skin="pixel-fc-iso"] body { line-height: 1.7; letter-spacing: -.01em; }
+[data-skin="pixel-fc-iso"] body::after { display: none; }
+[data-skin="pixel-fc-iso"] :is(h1, h2, h3, h4) { font-family: var(--font-display); font-weight: 800; letter-spacing: -.035em; text-shadow: none; }
+[data-skin="pixel-fc-iso"] :is(.hero__title, .section__title, .proj-title, .detail__title) { font-weight: 850; line-height: 1.18; text-shadow: none; }
+[data-skin="pixel-fc-iso"] .hero__title::after { content: none; }
+[data-skin="pixel-fc-iso"] .hero__sub { font-size: var(--text-subheading); line-height: 1.75; color: var(--text-muted); }
+[data-skin="pixel-fc-iso"] :is(.hp-h, .card__title, .tl-role, .play-card__name, .pager__title, .hpl-row__t, .hp-game__t, .portrait__nm, .block__label, .sheet__link, .draw__deck-label) { font-family: var(--font-display); font-weight: 750; }
+[data-skin="pixel-fc-iso"] :is(.badge, .tag, .eyebrow, .hero__eyebrow, .tab, .nav__logo, .lang-toggle__btn, .profile__k, .tl-date, .detail__meta-k, .quest-strip__k, .quest-strip__badge, .pager__dir, .block__label small, .play-card__hours, .sheet__num, .strength__tag, .footer__copy) { font-family: var(--font-sans); font-size: 13px; letter-spacing: 0; }
+[data-skin="pixel-fc-iso"] .reveal { opacity: 1; transform: none; transition: none; }
+[data-skin="pixel-fc-iso"] :is(.ghost--float, .badge__dot, .hero__note svg) { animation: none; }
+[data-skin="pixel-fc-iso"] ::selection { background: var(--iso-yellow); color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
 
 /* 본체: 손잡이 | 화면 | 손잡이 */
 [data-skin="pixel-fc-iso"] .hero, [data-skin="pixel-fc-iso"] .home-screen .hero {
@@ -233,7 +190,7 @@
     display: block; content: ''; position: absolute; z-index: 3; inset: auto;
     top: 0; left: 50%; transform: translateX(-50%);
     width: min(168px, 44%); height: 13px;
-    background: #101010;
+    background: #29384f;
     border: 3px solid var(--fc-line-2); border-top: 0; border-radius: 0 0 11px 11px;
     box-shadow: inset 0 -2px 0 var(--fc-shell-hi);
   }
@@ -278,19 +235,6 @@
    덱·뒤집기 뒷면(.card-back)은 같은 셸에 어두운 체크무늬 라벨.
    치수는 자식(.gcard__frame)·가상 요소에서만 cqw 로 잽니다 — 카드 자신의 cqw 는 조상 컨테이너 기준이라 쓰지 않습니다.
    다크 모드에서도 라벨은 크림색 그대로이고, 라벨 안 글자색 토큰만 밝은 바탕용으로 다시 정합니다. */
-[data-skin="pixel-fc-iso"] {
-  --fc-cart: #383838; --fc-cart-hi: #474747;   /* 셸 */
-  /* 정면 선택 반응과 함께 쓰는 단단한 셸 그림자 (기울기는 아래에서 고정). */
-  --fc-cart-shadow: 4px 4px 0 var(--fc-line-2);
-  --fc-cart-shadow-lift: 4px 6px 0 var(--fc-line-2);
-  --fc-label: #f8f3e7;                          /* 라벨 종이 */
-  --fc-check: rgb(255 255 255 / .07);           /* 뒷면 체크 */
-}
-[data-skin="pixel-fc-iso"][data-theme="dark"] {
-  --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a;
-  --fc-cart-shadow: 4px 4px 0 #050505;
-  --fc-cart-shadow-lift: 4px 6px 0 #050505;
-}
 [data-skin="pixel-fc-iso"] .gcard {
   --stripe: linear-gradient(var(--fc-grip), var(--fc-grip));
   display: flex; flex-direction: column; padding: 0; overflow: visible;
@@ -329,11 +273,11 @@
 :root[data-skin="pixel-fc-iso"] .gcard[data-grade="SSR"].is-tilt { box-shadow: var(--fc-cart-shadow-lift) !important; }
 /* 다크 모드: 라벨은 크림 그대로 → 라벨 안 글자·칩·그림 색을 밝은 바탕용으로 */
 [data-skin="pixel-fc-iso"][data-theme="dark"] .gcard__frame {
-  --heading: #161616; --text: #262626; --text-muted: #5f5a50; --accent: #b8252b;
-  --cta: #f3dcd4; --cta-text: #9c1e24; --bg-elev: #e5dbc2; --surface-2: #e5dbc2; --ink: #2b2b2b; --border: #2b2b2b;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a;
+  --heading: #29384f; --text: #262626; --text-muted: #5f5a50; --accent: #b5413a;
+  --cta: #f3dcd4; --cta-text: #9c1e24; --bg-elev: #f2d4a8; --surface-2: #f2d4a8; --ink: #29384f; --border: #29384f;
+  --gen0: #b5413a; --gen1: #29384f; --gen2: #e9c46a;
 }
-:root[data-skin="pixel-fc-iso"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: #e5dbc2; --badge-fg: #262626; }
+:root[data-skin="pixel-fc-iso"][data-theme="dark"] .gcard[data-grade="A"] { --badge-bg: #f2d4a8; --badge-fg: #262626; }
 
 /* 뒷면(덱 · 뒤집기): 같은 셸 + 어두운 체크 라벨 */
 [data-skin="pixel-fc-iso"] .card-back, [data-skin="pixel-fc-iso"] .draw__deck-card.card-back {
@@ -346,7 +290,7 @@
   background:
     linear-gradient(var(--fc-grip), var(--fc-grip)) 0 0 / 100% 3.4cqw no-repeat,
     repeating-conic-gradient(var(--fc-check) 0 25%, transparent 0 50%) 0 0 / 12px 12px,
-    #303030;
+    #4a5a7a;
 }
 [data-skin="pixel-fc-iso"] .draw__deck-face { color: var(--fc-cream); }
 [data-skin="pixel-fc-iso"] .draw__deck-hint { opacity: .7; }
@@ -368,8 +312,8 @@
 [data-skin="pixel-fc-iso"] .fc-fly .fc-fly__card { position: absolute; inset: 0; aspect-ratio: auto; transform: none; box-shadow: none; visibility: visible; }
 [data-skin="pixel-fc-iso"] .hero.fc-console.is-slot::after {
   content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 3;
-  width: min(300px, 36%); height: 18px; border: 3px solid #000; border-bottom: 0; border-radius: 4px 4px 0 0;
-  background: #101010; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
+  width: min(300px, 36%); height: 18px; border: 3px solid #29384f; border-bottom: 0; border-radius: 4px 4px 0 0;
+  background: #29384f; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
 }
 [data-skin="pixel-fc-iso"] .fc-slot {
   /* 상단바 바로 아래로 내려옵니다 (top 은 famicom.js 가 상단바 높이를 재서 넣습니다) —
@@ -388,7 +332,7 @@
 [data-skin="pixel-fc-iso"] .fc-boot {
   position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center;
   padding: 24px 32px; overflow: auto; color: var(--fc-cream);
-  background: #141414;
+  background: #4a5a7a;
   animation: fcBootIn .18s steps(2, end);
 }
 [data-skin="pixel-fc-iso"] .fc-boot--full { position: fixed; z-index: 250; padding: 72px 24px 32px; }
@@ -406,19 +350,19 @@
 }
 [data-skin="pixel-fc-iso"] .fc-ov__art {
   position: relative; aspect-ratio: 3 / 2; overflow: hidden; container: gcard / inline-size;
-  border: 3px solid var(--fc-cream); background: #e5dbc2; box-shadow: 4px 4px 0 #000;
-  --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a; --ghost-c: #b8252b;
+  border: 3px solid var(--fc-cream); background: #f2d4a8; box-shadow: 4px 4px 0 #29384f;
+  --gen0: #b5413a; --gen1: #29384f; --gen2: #e9c46a; --ghost-c: #b5413a;
 }
 [data-skin="pixel-fc-iso"] .fc-ov__art .gcard__gen svg { shape-rendering: crispEdges; }
 [data-skin="pixel-fc-iso"] .fc-ov__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-family: 'Galmuri11', monospace; font-size: 11px; letter-spacing: 0; }
 [data-skin="pixel-fc-iso"] .fc-ov__cat { padding: 3px 8px; border: 2px solid var(--fc-cream); }
-[data-skin="pixel-fc-iso"] .fc-ov__tag { color: #cfc6b0; }
-[data-skin="pixel-fc-iso"] .fc-ov__grade { padding: 3px 8px; background: #6b665c; color: #fff; }
-[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="R"] { background: #a3a3a3; color: #111; }
-[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="SR"] { background: var(--fc-gold); color: #111; }
-[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, #b8252b 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 #000; }
+[data-skin="pixel-fc-iso"] .fc-ov__tag { color: #f6efe2; }
+[data-skin="pixel-fc-iso"] .fc-ov__grade { padding: 3px 8px; background: #4a5a7a; color: #fff; }
+[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="R"] { background: #d3deeb; color: #29384f; }
+[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="SR"] { background: var(--fc-gold); color: #29384f; }
+[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="SSR"] { background: repeating-linear-gradient(45deg, #b5413a 0 6px, var(--fc-gold) 6px 12px); color: #fff; text-shadow: 1px 1px 0 #29384f; }
 [data-skin="pixel-fc-iso"] .fc-ov__t { margin: 10px 0 6px; font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 3vw, 40px); line-height: 1.12; letter-spacing: -.03em; color: var(--fc-cream); }
-[data-skin="pixel-fc-iso"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #d8d0bc; }
+[data-skin="pixel-fc-iso"] .fc-ov__sub { margin: 0; font-size: 15px; line-height: 1.5; color: #f6efe2; }
 [data-skin="pixel-fc-iso"] .fc-ov__rows { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 16px 0 0; font-size: 13px; line-height: 1.4; }
 [data-skin="pixel-fc-iso"] .fc-ov__k { font-family: 'Galmuri11', monospace; font-size: 10px; letter-spacing: .06em; color: var(--fc-gold); align-self: center; }
 [data-skin="pixel-fc-iso"] .fc-ov__v { color: var(--fc-cream); }
@@ -431,13 +375,13 @@
   display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; cursor: pointer;
   border: 3px solid var(--fc-cream); background: transparent; color: var(--fc-cream);
   font-family: var(--font-sans); font-size: 14px; font-weight: 700; letter-spacing: -.01em;
-  box-shadow: 4px 4px 0 #000; transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
+  box-shadow: 4px 4px 0 #29384f; transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
 }
-[data-skin="pixel-fc-iso"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 0; background: var(--fc-cream); color: #111; font-family: 'Galmuri11', monospace; font-size: 10px; font-weight: 400; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 0; background: var(--fc-cream); color: #29384f; font-family: 'Galmuri11', monospace; font-size: 10px; font-weight: 400; }
 [data-skin="pixel-fc-iso"] .fc-ov__btn--go { background: var(--fc-grip); }
-[data-skin="pixel-fc-iso"] .fc-ov__btn:hover { background: var(--fc-cream); color: #111; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn:hover { background: var(--fc-cream); color: #29384f; }
 [data-skin="pixel-fc-iso"] .fc-ov__btn--go:hover { background: var(--fc-grip-hi); color: var(--fc-cream); }
-[data-skin="pixel-fc-iso"] .fc-ov__btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #29384f; }
 [data-skin="pixel-fc-iso"] .fc-ov__btn:focus-visible { outline: 2px solid var(--fc-gold); outline-offset: 3px; }
 @media (max-width: 760px) {
   [data-skin="pixel-fc-iso"] .fc-boot { padding: 20px 18px; align-items: flex-start; }
@@ -447,239 +391,6 @@
   [data-skin="pixel-fc-iso"] .fc-ov__sub { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { [data-skin="pixel-fc-iso"] .fc-boot, [data-skin="pixel-fc-iso"] .fc-boot.is-on { animation: none; } }
-
-/* ── 원본 패미컴 마감 ───────────────────────────────────────────────────
-   물리 기기의 둥근 외곽·그립 폭·--fc-h·슬롯 위치는 위 규칙을 유지합니다.
-   화면 안 UI는 직각, 작은 조작 키는 4px 계단. 카드 안쪽 cqw 칸은 바꾸지 않습니다. */
-:root[data-skin="pixel-fc-iso"] {
-  --bw: 3px;
-  --fcc-edge: 2px;
-  --fcc-offset: 4px;
-  --fcc-shadow: var(--fcc-offset) var(--fcc-offset) 0 var(--lo);
-  --deck-shadow: 4px 4px 0 var(--fc-line-2);
-  --fcc-select: var(--accent);
-}
-:root[data-skin="pixel-fc-iso"][data-theme="dark"] { --fcc-select: var(--fc-gold); }
-[data-skin="pixel-fc-iso"] :is(h1, h2, .proj-title) { font-weight: 900; }
-[data-skin="pixel-fc-iso"] :is(.strength__tag, .hpl-row__d, .hp-skill__t, .detail__period, .card__index, .steam__stats, .steam__table td, .sr-val) {
-  font-family: 'Galmuri11', 'Galmuri14', monospace;
-  font-variant-numeric: tabular-nums; letter-spacing: 0;
-}
-[data-skin="pixel-fc-iso"] :is(.badge, .tag, .tool, .store-link, .steam__sample, .play-card__hours, .fc-slot) { border-radius: 0; }
-[data-skin="pixel-fc-iso"] :is(.card, .profile, .strength, .play-card, .pager__item, .quest-strip, .media-box, .sheet__panel, .steam) {
-  border-radius: 0; box-shadow: var(--fcc-shadow);
-}
-[data-skin="pixel-fc-iso"] :is(.hero__portrait, .portrait, .quip) { box-shadow: var(--fcc-shadow); }
-[data-skin="pixel-fc-iso"] .hero__portrait .portrait { box-shadow: none; }
-[data-skin="pixel-fc-iso"] .reveal { opacity: 1; transform: none; transition: none; }
-[data-skin="pixel-fc-iso"] .reveal:not(.is-visible) { transform: none; }
-[data-skin="pixel-fc-iso"] .ghost--float { animation: none; }
-
-/* 전원 한 칸 · 위아래 나사 · 스피커 구멍. 모두 비상호작용 장식입니다. */
-[data-skin="pixel-fc-iso"] .fcc-hardware { position: absolute; inset: 0; pointer-events: none; }
-[data-skin="pixel-fc-iso"] .fc-grip { position: relative; }
-[data-skin="pixel-fc-iso"] .fc-grip::before,
-[data-skin="pixel-fc-iso"] .fc-grip::after {
-  content: ''; position: absolute; left: calc(50% - 4px); width: 8px; height: 8px;
-  background: var(--fc-line-2); border: 2px solid var(--fc-grip-hi); pointer-events: none;
-}
-[data-skin="pixel-fc-iso"] .fc-grip::before { top: 28px; }
-[data-skin="pixel-fc-iso"] .fc-grip::after { bottom: 28px; }
-[data-skin="pixel-fc-iso"] .fcc-led {
-  position: absolute; top: 20px; left: calc(var(--fc-grip-w) + 20px); z-index: 2;
-  width: 8px; height: 8px; border: 2px solid var(--fc-line-2); background: var(--fc-gold); pointer-events: none;
-}
-[data-skin="pixel-fc-iso"] .fcc-speaker {
-  position: absolute; right: calc(var(--fc-grip-w) + 20px); bottom: 16px; z-index: 2;
-  display: flex; gap: 4px; pointer-events: none;
-}
-[data-skin="pixel-fc-iso"] .fcc-speaker i { width: 4px; height: 4px; background: var(--fc-line-2); box-shadow: 0 -8px 0 var(--fc-line-2); }
-[data-skin="pixel-fc-iso"] .fc-key {
-  border-radius: 50%;   /* 원본처럼 둥근 버튼 — 계단 모서리는 도트 시안이 아니면 깨진 것처럼 보임 */
-  clip-path: none;
-  transition: transform 80ms steps(2, end), border-color 80ms steps(1, end);
-}
-[data-skin="pixel-fc-iso"] .fc-key:focus-visible { border-color: var(--fc-gold); background: var(--fc-key-hi); }
-
-/* 메뉴 선택: 위치가 흔들리지 않게 커서 자리를 미리 확보합니다.
-   공통 클릭 핸들러와 카드 뽑기/꽂기 애니메이션은 그대로 둡니다. */
-[data-skin="pixel-fc-iso"] :is(a[href], button):not([aria-disabled="true"]):not(:disabled) {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%232b2b2b' d='M1 1h4v3h4v3h4v3h4v4h-4v3H9v3H5v3H1z'/%3E%3Cpath fill='%23f8f3e7' d='M3 4h2v3h4v3h4v4H9v3H5v3H3z'/%3E%3C/svg%3E") 1 1, pointer;
-}
-[data-skin="pixel-fc-iso"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn) {
-  position: relative; padding-inline: 24px 16px;
-  transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
-}
-[data-skin="pixel-fc-iso"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn)::before {
-  content: ''; position: absolute; left: 8px; top: calc(50% - 5px); width: 8px; height: 10px;
-  background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%);
-  opacity: 0; pointer-events: none;
-}
-[data-skin="pixel-fc-iso"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn):is(:hover, :focus-visible)::before,
-[data-skin="pixel-fc-iso"] :is(.nav__link, .tab, .sheet__link).is-active::before { opacity: 1; }
-[data-skin="pixel-fc-iso"] .nav__link.is-active::before { content: ''; }
-[data-skin="pixel-fc-iso"] :is(.btn, .pager__item, .store-link) { box-shadow: var(--fcc-shadow); }
-[data-skin="pixel-fc-iso"] .hero .btn { padding-inline: 24px 16px; box-shadow: 4px 4px 0 var(--fc-line); }
-[data-skin="pixel-fc-iso"] :is(.btn, .pager__item):hover { transform: none; box-shadow: var(--fcc-shadow); }
-[data-skin="pixel-fc-iso"] .hero .btn:hover { box-shadow: 4px 4px 0 var(--fc-line); }
-[data-skin="pixel-fc-iso"] .hp-more:hover span { transform: none; }
-[data-skin="pixel-fc-iso"] :is(.btn, .pager__item, .store-link, .fc-ov__btn):is(:active, .fcc-pressed) {
-  transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--lo);
-}
-[data-skin="pixel-fc-iso"] .hero .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 var(--fc-line); }
-[data-skin="pixel-fc-iso"] :is(.tab, .nav__link, .sheet__link, .fc-key, .icon-btn, .nav__burger, .lang-toggle__btn):is(:active, .fcc-pressed) { transform: translateY(2px); }
-[data-skin="pixel-fc-iso"] :is(a[href], button):focus-visible { outline: 2px solid var(--fcc-select); outline-offset: 4px; }
-[data-skin="pixel-fc-iso"] :is(.nav, .fc-grip, .footer, .fc-boot) :is(a[href], button):focus-visible { outline-color: var(--fc-gold); }
-[data-skin="pixel-fc-iso"] .tab:focus-visible { outline-offset: -4px; }
-[data-skin="pixel-fc-iso"] :is(.draw-card, .proj-card, .draw__deck):is(:hover, :focus-visible) {
-  outline: 2px solid var(--fcc-select); outline-offset: 4px;
-}
-/* draw-card의 dealSlide를 덮지 않도록 뽑은 카드는 앞면의 선택선만 점멸합니다. */
-:root[data-skin="pixel-fc-iso"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible),
-[data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard {
-  animation: fccSelect 640ms steps(1, end) 2;
-}
-[data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard { outline: 2px solid var(--fcc-select); outline-offset: 4px; }
-@keyframes fccSelect { 0%, 100% { outline-color: var(--fcc-select); } 50% { outline-color: transparent; } }
-/* 3Dホバーを平面の2px選択に。飛行コンテナ(.fc-fly)の transform には触れません。 */
-:root[data-skin="pixel-fc-iso"] .gcard,
-:root[data-skin="pixel-fc-iso"] .gcard.reveal.is-visible,
-:root[data-skin="pixel-fc-iso"] .gcard.is-tilt {
-  transform: translateY(var(--fcc-lift, 0px)); transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
-}
-:root[data-skin="pixel-fc-iso"] .proj-card:is(:hover, :focus-visible),
-:root[data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard { --fcc-lift: -2px; }
-:root[data-skin="pixel-fc-iso"] .proj-card:is(:active, .fcc-pressed),
-:root[data-skin="pixel-fc-iso"] .draw-card:is(:active, .fcc-pressed) .gcard {
-  --fcc-lift: 2px;
-  --fc-cart-shadow: 2px 2px 0 var(--fc-line-2);
-  --fc-cart-shadow-lift: 2px 2px 0 var(--fc-line-2);
-}
-:root[data-skin="pixel-fc-iso"] .gcard::after {
-  display: block; content: '▶'; position: absolute; inset: auto; right: 0; top: 1cqw; z-index: 2;
-  font: 400 5cqw 'Galmuri11', monospace; color: var(--fc-gold); background: var(--fc-cart);
-  mix-blend-mode: normal; border-radius: 0; opacity: 0; transition: none;
-}
-[data-skin="pixel-fc-iso"] .proj-card:is(:hover, :focus-visible)::after,
-[data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard::after { opacity: 1; }
-:root[data-skin="pixel-fc-iso"] .fc-fly .fc-fly__card { transform: none; box-shadow: none !important; }
-[data-skin="pixel-fc-iso"] .draw__deck:is(:hover, :focus-visible) { --d1-rot: -2.6deg; --d2-rot: 1.8deg; --d3-y: -2px; }
-[data-skin="pixel-fc-iso"] .draw__deck:active { --d3-sc: 1; --d3-y: 2px; }
-
-/* 덱 아래: 내용의 순서/열수는 유지하고 창의 가장자리와 구분선만 정돈합니다. */
-[data-skin="pixel-fc-iso"] .hp { padding-block: 48px; }
-[data-skin="pixel-fc-iso"] .hp--sep { border-top-width: 2px; }
-[data-skin="pixel-fc-iso"] .hp-block { margin-bottom: 32px; }
-[data-skin="pixel-fc-iso"] .hp-h {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px;
-  border-bottom-width: 2px; padding-bottom: 12px; font-weight: 900;
-}
-[data-skin="pixel-fc-iso"] .hp-h::before {
-  content: ''; display: block; flex: none; width: 8px; height: 12px; background: var(--accent);
-  box-shadow: 4px -4px 0 var(--ink);
-}
-[data-skin="pixel-fc-iso"] .hpl { border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow); }
-[data-skin="pixel-fc-iso"] .hpl-row,
-[data-skin="pixel-fc-iso"] .hpl-row:first-child { padding: 16px; gap: 16px; border-top: 2px solid var(--ink); }
-[data-skin="pixel-fc-iso"] .hpl-row:first-child { border-top: 0; }
-[data-skin="pixel-fc-iso"] .hp-thumb { width: 56px; height: 56px; background: var(--surface-2); }
-[data-skin="pixel-fc-iso"] .hpl-row__m { line-height: 1.65; }
-[data-skin="pixel-fc-iso"] .hpl-row__d { font-size: 11px; }
-[data-skin="pixel-fc-iso"] .hp-skills {
-  padding: 20px 16px; gap: 20px 24px; border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow);
-}
-[data-skin="pixel-fc-iso"] .hp-skill { width: 100px; gap: 12px; }
-[data-skin="pixel-fc-iso"] .hp-skill__ic { width: 56px; height: 56px; box-shadow: 4px 4px 0 var(--lo); }
-[data-skin="pixel-fc-iso"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
-[data-skin="pixel-fc-iso"] .hp-skill__t { font-size: 12px; }
-[data-skin="pixel-fc-iso"] .strength { border-width: 2px; padding: 20px; }
-[data-skin="pixel-fc-iso"] .strength__tag { color: var(--accent); font-size: 11px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
-[data-skin="pixel-fc-iso"] .strength__t { margin-top: 16px; font-weight: 900; }
-[data-skin="pixel-fc-iso"] .strength__b { line-height: 1.75; }
-
-/* 분홍 대형 빈 썸네일 → 작은 칩 아이콘 + 제목/기록. 실제 이미지도 그대로 보존합니다. */
-[data-skin="pixel-fc-iso"] .hp-games { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: none; }
-[data-skin="pixel-fc-iso"] .hp-game {
-  display: grid; grid-template-columns: 60px minmax(0, 1fr); grid-template-rows: auto auto;
-  align-content: center; gap: 4px 16px; padding: 16px; border: 2px solid var(--ink);
-  background: var(--surface); box-shadow: var(--fcc-shadow);
-}
-[data-skin="pixel-fc-iso"] .hp-game__ic {
-  grid-row: 1 / 3; position: relative; align-self: center; width: 60px; height: 72px; aspect-ratio: auto; margin: 0;
-  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: #b8252b;
-  box-shadow: 0 4px 0 var(--fc-line-2); overflow: visible;
-}
-[data-skin="pixel-fc-iso"] .hp-game__ic::before {
-  content: ''; position: absolute; top: -10px; left: 4px; right: 4px; height: 4px;
-  background: repeating-linear-gradient(90deg, var(--fc-gold) 0 4px, transparent 4px 6px);
-}
-[data-skin="pixel-fc-iso"] .hp-game__ic svg { width: 24px; height: 28px; }
-[data-skin="pixel-fc-iso"] .hp-game__ic img { overflow: hidden; }
-[data-skin="pixel-fc-iso"] .hp-game__t { align-self: end; font-size: 17px; font-weight: 900; overflow-wrap: anywhere; }
-[data-skin="pixel-fc-iso"] .hp-game__b { align-self: start; margin: 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
-
-/* 하위 페이지의 정보 창. 원본 콘텐츠·배치·미디어는 유지합니다. */
-[data-skin="pixel-fc-iso"] :is(.card, .profile, .play-card, .pager__item, .steam) { border-width: var(--fcc-edge); }
-[data-skin="pixel-fc-iso"] .section__head { padding-bottom: 20px; border-bottom: 2px solid var(--ink); }
-[data-skin="pixel-fc-iso"] .proj-head { padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
-[data-skin="pixel-fc-iso"] .detail__learned,
-[data-skin="pixel-fc-iso"] .cover-block {
-  padding: 24px; border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow);
-}
-[data-skin="pixel-fc-iso"] .cover-block h3 { padding-bottom: 16px; border-bottom: 2px solid var(--ink); font-weight: 900; }
-[data-skin="pixel-fc-iso"] .quest-strip { border-width: 3px; }
-[data-skin="pixel-fc-iso"] .quest-strip__k { width: 64px; font-size: 11px; }
-[data-skin="pixel-fc-iso"] .quest-strip__v { min-width: 0; overflow-wrap: anywhere; }
-[data-skin="pixel-fc-iso"] .quest-strip__badge { font-size: 11px; }
-[data-skin="pixel-fc-iso"] .detail__meta-row { padding-block: 4px; }
-[data-skin="pixel-fc-iso"] .detail__meta-k { font-size: 11px; }
-[data-skin="pixel-fc-iso"] .pager__dir { font-size: 11px; }
-[data-skin="pixel-fc-iso"] .media-box { border-width: 3px; }
-[data-skin="pixel-fc-iso"] .media-box--empty { background-image: none; background-color: var(--bg-elev); }
-[data-skin="pixel-fc-iso"] .play-card__top { flex-wrap: wrap; }
-[data-skin="pixel-fc-iso"] .play-card__hours { font-size: 11px; }
-[data-skin="pixel-fc-iso"] :is(.hero__grid > *, .strength, .play-card, .steam__body > *, .profile__row > *) { min-width: 0; }
-[data-skin="pixel-fc-iso"] .footer { background: #2b2b2b; border-top-width: 4px; }
-[data-skin="pixel-fc-iso"] .footer .btn { box-shadow: 4px 4px 0 #161616; }
-[data-skin="pixel-fc-iso"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 #161616; }
-
-@media (max-width: 899px) {
-  [data-skin="pixel-fc-iso"] .fcc-led { top: 4px; left: 28px; width: 6px; height: 6px; border-width: 0; }
-  [data-skin="pixel-fc-iso"] .fcc-speaker { right: 32px; bottom: 6px; }
-  [data-skin="pixel-fc-iso"] .fcc-speaker i { box-shadow: none; }
-  [data-skin="pixel-fc-iso"] .fc-grip::before,
-  [data-skin="pixel-fc-iso"] .fc-grip::after { display: none; }
-}
-@media (max-width: 760px) {
-  [data-skin="pixel-fc-iso"] .hp-games { grid-template-columns: minmax(0, 1fr); }
-  [data-skin="pixel-fc-iso"] .hp-game { min-height: 104px; }
-}
-@media (max-width: 520px) {
-  [data-skin="pixel-fc-iso"] .hp { padding-block: 36px; }
-  [data-skin="pixel-fc-iso"] .hp-h { gap: 10px; font-size: 24px; line-height: 1.35; }
-  [data-skin="pixel-fc-iso"] .hpl-row,
-  [data-skin="pixel-fc-iso"] .hpl-row:first-child { padding: 12px; gap: 12px; }
-  [data-skin="pixel-fc-iso"] .hpl-row__top { flex-direction: column; gap: 8px; }
-  [data-skin="pixel-fc-iso"] .hp-thumb { width: 44px; height: 44px; }
-  [data-skin="pixel-fc-iso"] .hp-skills { gap: 20px 12px; padding: 16px 12px; }
-  [data-skin="pixel-fc-iso"] .hp-skill { width: calc((100% - 24px) / 3); min-width: 0; }
-  [data-skin="pixel-fc-iso"] .hp-skill__ic { width: 48px; height: 48px; }
-  [data-skin="pixel-fc-iso"] :is(.detail__learned, .cover-block, .steam) { padding: 16px; }
-  [data-skin="pixel-fc-iso"] .profile__row { grid-template-columns: minmax(0, 5.5em) minmax(0, 1fr); gap: 12px; padding: 12px; }
-  [data-skin="pixel-fc-iso"] .fc-ov__btn { padding-inline: 24px 12px; font-size: 13px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  :root[data-skin="pixel-fc-iso"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible) { animation: none; }
-  [data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard { animation: none; }
-  :root[data-skin="pixel-fc-iso"] .gcard,
-  :root[data-skin="pixel-fc-iso"] .gcard.reveal.is-visible,
-  :root[data-skin="pixel-fc-iso"] .gcard.is-tilt,
-  :root[data-skin="pixel-fc-iso"] .proj-card:is(:hover, :focus-visible),
-  :root[data-skin="pixel-fc-iso"] .draw-card:is(:hover, :focus-visible) .gcard { transform: none; transition: none; }
-  [data-skin="pixel-fc-iso"] .draw__deck:is(:hover, :focus-visible) { --d3-y: 0px; }
-  [data-skin="pixel-fc-iso"] :is(.btn, .fc-key, .fc-ov__btn, .pager__item, .draw__deck-card) { transition: none; }
-  [data-skin="pixel-fc-iso"] .fc-boot__c { animation: none; }
-}
 
 
 /* ==========================================================================
@@ -732,4 +443,339 @@
    투명 외곽선 1px 로 가장자리 샘플링을 부드럽게 합니다. 없으면 위쪽 테두리가 중간에서 끊겨 계단처럼 보입니다. */
 @media (min-width: 720px) {
   [data-skin="pixel-fc-iso"] .fcs-rig { will-change: transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; outline: 1px solid transparent; }
+}
+
+/* Illustration finish. Depth is always down/right; highlights never cross content. */
+[data-skin="pixel-fc-iso"] .hero,
+[data-skin="pixel-fc-iso"] .home-screen .hero {
+  background: linear-gradient(var(--iso-sage) 0 var(--fc-bezel), var(--fc-shell) var(--fc-bezel));
+  box-shadow: 4px 6px 0 var(--iso-blue), 7px 9px 0 var(--iso-line);
+}
+[data-skin="pixel-fc-iso"] .hero > .wrap {
+  --heading: #29384f; --text: #29384f; --text-muted: #4a5870;
+  --accent: #a53630; --accent-soft: #a53630; --ink: #29384f; --border: #29384f;
+  border-radius: 14px; box-shadow: 0 3px 0 var(--iso-line);
+}
+[data-skin="pixel-fc-iso"][data-theme="dark"] .hero > .wrap { box-shadow: 0 3px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-grip--l { border-right-color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-grip--r { border-left-color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-key {
+  color: var(--iso-line); border-color: var(--iso-line); background: var(--iso-tan);
+  box-shadow: 0 4px 0 var(--iso-line); transition: transform .12s ease, background-color .12s ease;
+}
+[data-skin="pixel-fc-iso"] .fc-key:hover { background: var(--iso-yellow); color: var(--iso-line); border-color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-key:active { box-shadow: 0 1px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-lbl { color: var(--iso-line); background: var(--iso-cream); border-radius: 5px; padding: 1px 4px; font-family: var(--font-sans); font-size: 11px; letter-spacing: .02em; font-weight: 650; }
+[data-skin="pixel-fc-iso"] .fcc-hardware { position: absolute; inset: 0; pointer-events: none; }
+[data-skin="pixel-fc-iso"] .fcc-led {
+  position: absolute; top: 18px; left: calc(var(--fc-grip-w) + 18px);
+  width: 10px; height: 10px; border: 2px solid var(--iso-line); border-radius: 50%; background: var(--iso-yellow);
+}
+[data-skin="pixel-fc-iso"] .fcc-speaker { position: absolute; right: calc(var(--fc-grip-w) + 20px); bottom: 18px; display: flex; gap: 5px; }
+[data-skin="pixel-fc-iso"] .fcc-speaker i { width: 4px; height: 10px; border-radius: 4px; background: var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.portrait, .hero__portrait, .ghost-art) { border-radius: 12px; border-color: var(--iso-line); box-shadow: 3px 4px 0 var(--iso-blue); }
+[data-skin="pixel-fc-iso"] .hero__portrait { --pose-rest: 0deg; background: var(--iso-tan); }
+[data-skin="pixel-fc-iso"] .hero__portrait .portrait { box-shadow: none; border-radius: 9px; }
+[data-skin="pixel-fc-iso"] .ghost-art { background: var(--iso-tan); }
+[data-skin="pixel-fc-iso"] .ghost-art::before { display: none; }
+[data-skin="pixel-fc-iso"] .quip {
+  border: 2px solid var(--iso-line); border-radius: 12px; background: var(--iso-cream); color: var(--iso-line);
+  box-shadow: 2px 3px 0 var(--iso-blue); font-weight: 650; line-height: 1.55;
+}
+[data-skin="pixel-fc-iso"] .fcs-info .quip.is-pop { animation: none; }
+:root[data-skin="pixel-fc-iso"] .fcs-caption { font: 400 13px/1.75 var(--font-sans); max-width: 31em; }
+:root[data-skin="pixel-fc-iso"] .fcs-rig .draw__stage {
+  background: var(--iso-tan); border-radius: 20px;
+  box-shadow: 4px 5px 0 var(--iso-blue), 6px 7px 0 var(--iso-line);
+}
+
+/* Cartridge shell, terminals and ears keep their original cqw geometry. */
+:root[data-skin="pixel-fc-iso"] .gcard {
+  border-radius: 10px 10px 7px 7px;
+  --badge-bg: #e1ecdc; --badge-fg: #29384f;
+  transform: translateY(var(--iso-lift, 0px));
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+:root[data-skin="pixel-fc-iso"] .gcard.reveal.is-visible,
+:root[data-skin="pixel-fc-iso"] .gcard.is-tilt,
+:root[data-skin="pixel-fc-iso"] .gcard.reveal.is-visible.is-tilt { transform: translateY(var(--iso-lift, 0px)); transition: transform .16s ease; }
+[data-skin="pixel-fc-iso"] .gcard::after { display: none; }
+[data-skin="pixel-fc-iso"] .gcard__frame,
+[data-skin="pixel-fc-iso"][data-theme="dark"] .gcard__frame {
+  position: relative; border-radius: 7px; background: var(--fc-label);
+  --heading: #29384f; --text: #29384f; --text-muted: #4a5870; --accent: #a53630;
+  --cta: #e1ecdc; --cta-text: #29384f; --bg-elev: #f2d4a8; --surface-2: #f2d4a8;
+  --ink: #29384f; --border: #29384f; --gen0: #b5413a; --gen1: #37613e; --gen2: #4a5a7a;
+}
+[data-skin="pixel-fc-iso"] .gcard__frame::before {
+  content: ''; position: absolute; top: 1.6cqw; left: 4cqw; width: 20cqw; height: 3.4cqw;
+  border-radius: 4cqw; background: var(--iso-yellow);
+  box-shadow: 25cqw 0 0 var(--iso-sage), 50cqw 0 0 var(--iso-red); pointer-events: none;
+}
+[data-skin="pixel-fc-iso"] .gcard__name { height: 17.2cqw; font: 800 6.6cqw/1.28 var(--font-sans); }
+[data-skin="pixel-fc-iso"] .gcard__desc { height: 15.7cqw; font: 400 5.4cqw/1.45 var(--font-sans); }
+[data-skin="pixel-fc-iso"] :is(.gcard__cat, .gcard__grade) { border: 1.5px solid var(--iso-line); border-radius: 2cqw; }
+[data-skin="pixel-fc-iso"] :is(.gcard__cat, .gcard__tag, .gcard__grade, .gcard__go, .gcard__period) { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
+[data-skin="pixel-fc-iso"] .gcard__grade { font-size: 4.5cqw; }
+[data-skin="pixel-fc-iso"] .gcard__go { font-size: 4.8cqw; }
+[data-skin="pixel-fc-iso"] .gcard__art { border-radius: 4cqw; border-color: var(--iso-line); background: var(--iso-tan); }
+[data-skin="pixel-fc-iso"] :is(.gcard__gen svg, svg.ghost),
+[data-skin="pixel-fc-iso"] .fc-ov__art .gcard__gen svg { shape-rendering: geometricPrecision; }
+:root[data-skin="pixel-fc-iso"] .gcard[data-grade="A"] { --badge-bg: #e1ecdc; --badge-fg: #29384f; }
+:root[data-skin="pixel-fc-iso"] .gcard[data-grade="R"] { --badge-bg: #d3deeb; --badge-fg: #29384f; }
+:root[data-skin="pixel-fc-iso"] .gcard[data-grade="SR"] { --badge-bg: #e9c46a; --badge-fg: #29384f; }
+:root[data-skin="pixel-fc-iso"] .gcard[data-grade="SSR"] { --badge-bg: #f5ddd3; --badge-fg: #8b2d29; }
+[data-skin="pixel-fc-iso"] .card-back,
+[data-skin="pixel-fc-iso"] .draw__deck-card.card-back { border-radius: 10px 10px 7px 7px; }
+[data-skin="pixel-fc-iso"] .card-back::before { border-radius: 7px; background: var(--iso-blue); }
+[data-skin="pixel-fc-iso"] .draw__deck-face { padding-inline: 9px; }
+[data-skin="pixel-fc-iso"] .draw__deck-label { font-family: var(--font-sans); font-weight: 750; font-size: 10cqw; line-height: 1.4; }
+[data-skin="pixel-fc-iso"] .draw__deck-hint { font-family: var(--font-sans); font-size: 8.2cqw; opacity: 1; color: #fffdf8; }
+[data-skin="pixel-fc-iso"] .card-back__seal .ghost { color: var(--iso-yellow); }
+:root[data-skin="pixel-fc-iso"] .fc-fly .fc-fly__card { transform: none; box-shadow: none !important; }
+[data-skin="pixel-fc-iso"] .fc-boot { background: var(--iso-blue); }
+[data-skin="pixel-fc-iso"] .fc-ov { gap: 20px; }
+[data-skin="pixel-fc-iso"] :is(.fc-ov__art, .fc-ov__cat, .fc-ov__grade, .fc-ov__q, .fc-ov__btn) { border-radius: 10px; }
+[data-skin="pixel-fc-iso"] .fc-ov__art { box-shadow: 3px 4px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.fc-ov__meta, .fc-ov__k, .fc-ov__clear, .fc-boot__load) { font-family: var(--font-sans); letter-spacing: 0; }
+[data-skin="pixel-fc-iso"] .fc-ov__meta { font-size: 13px; }
+[data-skin="pixel-fc-iso"] .fc-ov__k { font-size: 12px; color: #f8dfa0; }
+[data-skin="pixel-fc-iso"] .fc-ov__grade[data-grade="SSR"] { background: #f5ddd3; color: #8b2d29; text-shadow: none; }
+[data-skin="pixel-fc-iso"] .fc-ov__clear { font-size: 12px; color: #d7f2cf; }
+[data-skin="pixel-fc-iso"] .fc-ov__arrow { color: #fffdf8; }
+[data-skin="pixel-fc-iso"] .fc-ov__q { background: #3c4b65; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn { box-shadow: 3px 4px 0 var(--iso-line); padding: 10px 14px; font-size: 14px; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn b { border-radius: 50%; font-family: var(--font-sans); font-weight: 750; }
+[data-skin="pixel-fc-iso"] .fc-ov__btn:hover { color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .fc-ov__btn--go:hover { color: #fffdf8; }
+
+/* Shared controls: the same rounded face and lower/right edge on every page. */
+[data-skin="pixel-fc-iso"] :is(.btn, .back-link, .link-more, .store-link, .to-top) {
+  border: 3px solid var(--border); border-radius: 12px; box-shadow: 3px 4px 0 var(--iso-depth);
+  font-family: var(--font-sans); font-weight: 700;
+  transition: background-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+[data-skin="pixel-fc-iso"] .btn { padding: 11px 20px; font-size: 14px; }
+[data-skin="pixel-fc-iso"] .btn--sm { padding: 8px 14px; font-size: 13px; }
+[data-skin="pixel-fc-iso"] .btn--primary { background: var(--iso-red); color: #fffdf8; }
+[data-skin="pixel-fc-iso"] .btn--primary:hover { background: #9c352f; }
+[data-skin="pixel-fc-iso"] .btn--outline { background: var(--surface); color: var(--heading); }
+[data-skin="pixel-fc-iso"] .btn--outline:hover { background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .hero .btn { border-color: var(--iso-line); border-radius: 11px; box-shadow: 3px 4px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] .hero .btn--outline { background: var(--iso-tan); color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .hero .btn--outline:hover { background: var(--iso-yellow); color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.btn, .back-link, .link-more, .store-link):hover { transform: translateY(-1px); box-shadow: 3px 5px 0 var(--iso-depth); }
+[data-skin="pixel-fc-iso"] .hero .btn:hover { box-shadow: 3px 5px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.btn, .back-link, .link-more, .store-link, .fc-ov__btn):is(:active, .fcc-pressed) { transform: translate(2px, 2px); box-shadow: 1px 2px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.tag, .badge, .steam__sample, .quest-strip__badge, .play-card__hours) { border: 2px solid var(--border); border-radius: 9px; font-size: 13px; font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
+[data-skin="pixel-fc-iso"] :is(.tag--lavender, .tag--butter, .tag--blush, .tag--cornflower) { color: var(--text); }
+[data-skin="pixel-fc-iso"] .tag--cornflower { background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .badge { background: var(--surface-2); color: var(--text); }
+[data-skin="pixel-fc-iso"] :is(.hero__eyebrow, .eyebrow) { border: 2px solid var(--border); border-radius: 10px; background: var(--surface-2); color: var(--heading); padding: 7px 12px; font-size: 13px; box-shadow: 2px 3px 0 var(--iso-depth); }
+[data-skin="pixel-fc-iso"] .hero__eyebrow .ghost { color: var(--accent); }
+[data-skin="pixel-fc-iso"] .tabs { border: 3px solid var(--border); border-radius: 14px; padding: 4px; gap: 4px; background: var(--surface-2); box-shadow: 3px 4px 0 var(--iso-depth); }
+[data-skin="pixel-fc-iso"] .tab { min-height: 42px; border: 0; border-radius: 9px; padding: 10px 16px; color: var(--text); font-weight: 650; font-size: 14px; }
+:root[data-skin="pixel-fc-iso"] .tab.is-active { background: var(--iso-red); color: #fffdf8; }
+[data-skin="pixel-fc-iso"] .tab:not(.is-active):hover { background: var(--surface); }
+[data-skin="pixel-fc-iso"] .tab:focus-visible { outline-offset: -4px; }
+[data-skin="pixel-fc-iso"] :is(input, select, textarea) { min-width: 0; max-width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; accent-color: var(--accent); }
+[data-skin="pixel-fc-iso"] ::placeholder { color: var(--text-muted); opacity: 1; }
+
+/* Navigation is a quiet cream panel; the selected destination carries the red. */
+[data-skin="pixel-fc-iso"] .nav { background: var(--surface); color: var(--text); border-bottom: 3px solid var(--border); box-shadow: 0 4px 0 var(--iso-depth); }
+[data-skin="pixel-fc-iso"] .nav__logo { color: var(--heading); font-weight: 750; font-size: 14px; }
+[data-skin="pixel-fc-iso"] .nav__logo .ghost { color: var(--accent); }
+[data-skin="pixel-fc-iso"] .nav__logo-en { color: var(--text-muted); font-size: 12px; }
+[data-skin="pixel-fc-iso"] .nav__link { color: var(--text); font-size: 14px; font-weight: 650; border-radius: 10px; }
+[data-skin="pixel-fc-iso"] .nav__link:hover { background: var(--surface-2); color: var(--heading); }
+[data-skin="pixel-fc-iso"] .nav__link.is-active { background: var(--iso-red); color: #fffdf8; }
+[data-skin="pixel-fc-iso"] .nav__link .chev { opacity: 1; }
+[data-skin="pixel-fc-iso"] .lang-toggle { border: 2px solid var(--border); border-radius: 10px; background: var(--surface); padding: 2px; }
+[data-skin="pixel-fc-iso"] .lang-toggle__btn { color: var(--text); font-size: 12px; padding: 9px; border-radius: 6px; font-weight: 650; }
+[data-skin="pixel-fc-iso"] .lang-toggle__btn[aria-pressed="true"] { background: var(--iso-yellow); color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.icon-btn, .nav__burger) { border: 2px solid var(--border); border-radius: 11px; background: var(--surface-2); color: var(--heading); }
+[data-skin="pixel-fc-iso"] :is(.icon-btn, .nav__burger):hover { background: var(--surface); }
+[data-skin="pixel-fc-iso"] .sheet { background: rgb(22 33 49 / .65); }
+[data-skin="pixel-fc-iso"] .sheet__panel { border: 3px solid var(--border); border-radius: 24px; box-shadow: var(--iso-shadow); }
+[data-skin="pixel-fc-iso"] .sheet__link { border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .sheet__link.is-active { background: var(--cta); border-radius: 10px; padding-inline: 12px; }
+[data-skin="pixel-fc-iso"] .sheet__num { font: 600 13px var(--font-mono); }
+
+/* Section titles use one small extruded tile. No scenery or floating stickers. */
+[data-skin="pixel-fc-iso"] :is(.hp-h, .section__title, .proj-title, .cl-summary__t) { text-wrap: pretty; }
+[data-skin="pixel-fc-iso"] :is(.hp-h, .section__title, .cl-summary__t)::before {
+  content: ''; display: inline-block; vertical-align: .08em; width: 15px; height: 15px; margin-right: 13px;
+  border: 2px solid var(--border); border-radius: 5px; background: var(--iso-top); box-shadow: 2px 3px 0 var(--iso-depth);
+}
+[data-skin="pixel-fc-iso"] .section__head { padding-bottom: 24px; border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .section__lead { max-width: 46rem; color: var(--text-muted); line-height: 1.8; }
+[data-skin="pixel-fc-iso"] .section--elev { background: var(--bg-elev); border-block: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .hp { padding-block: 52px; }
+[data-skin="pixel-fc-iso"] .hp--sep { border-top: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .hp-h { padding-bottom: 14px; border-bottom: 2px solid var(--border); font-weight: 800; line-height: 1.3; }
+[data-skin="pixel-fc-iso"] .hp-block { margin-bottom: 32px; }
+[data-skin="pixel-fc-iso"] :is(.card, .stat, .profile, .strength, .play-card, .pager__item, .quest-strip, .media-box, .steam, .cover-block, .detail__learned, .block, .hpl, .hp-skills, .hp-game) {
+  border: 3px solid var(--border); border-radius: 20px; background: var(--surface); box-shadow: var(--iso-shadow);
+}
+[data-skin="pixel-fc-iso"] :is(.card, .strength, .play-card) { background: linear-gradient(var(--iso-top) 0 9px, transparent 9px), var(--surface); padding: 28px 24px 24px; }
+[data-skin="pixel-fc-iso"] .strength:nth-child(2) { background: linear-gradient(var(--iso-panel) 0 9px, transparent 9px), var(--surface); }
+[data-skin="pixel-fc-iso"] .strength:nth-child(3) { background: linear-gradient(var(--iso-red) 0 9px, transparent 9px), var(--surface); }
+[data-skin="pixel-fc-iso"] .strength__tag { color: var(--text-muted); font-size: 13px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .strength__t { font-weight: 800; margin-top: 16px; }
+[data-skin="pixel-fc-iso"] :is(.strength__b, .card__body, .play-card__note, .tl-body) { color: var(--text-muted); line-height: 1.8; }
+[data-skin="pixel-fc-iso"] .hpl { overflow: hidden; }
+[data-skin="pixel-fc-iso"] .hpl-row,
+[data-skin="pixel-fc-iso"] .hpl-row:first-child { padding: 20px; border-top: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .hpl-row:first-child { border-top: 0; }
+[data-skin="pixel-fc-iso"] .hp-thumb { width: 56px; height: 56px; border-radius: 13px; background: var(--iso-panel); }
+[data-skin="pixel-fc-iso"] .hpl-row__m { line-height: 1.75; }
+[data-skin="pixel-fc-iso"] .hp-skills { padding: 24px; gap: 24px; }
+[data-skin="pixel-fc-iso"] .hp-skill { width: 104px; gap: 12px; }
+[data-skin="pixel-fc-iso"] :is(.hp-skill__ic, .tool__ic) { border: 2px solid var(--iso-line); border-radius: 13px; box-shadow: 3px 4px 0 var(--iso-blue); }
+[data-skin="pixel-fc-iso"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
+[data-skin="pixel-fc-iso"] .hp-skill__t { font-family: var(--font-sans); font-size: 14px; font-weight: 650; }
+[data-skin="pixel-fc-iso"] .tool__nm { font-size: 12px; line-height: 1.4; }
+[data-skin="pixel-fc-iso"] .tool { width: 72px; }
+[data-skin="pixel-fc-iso"] .hp-games { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; max-width: none; }
+[data-skin="pixel-fc-iso"] .hp-game { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: center; gap: 4px 16px; padding: 20px; }
+[data-skin="pixel-fc-iso"] .hp-game__ic { grid-row: 1 / 3; align-self: center; width: 52px; height: 62px; margin: 0; border-radius: 10px; border: 3px solid var(--border); background: var(--iso-panel); box-shadow: 2px 3px 0 var(--iso-depth); }
+[data-skin="pixel-fc-iso"] .hp-game__ic svg { width: 25px; height: 29px; }
+[data-skin="pixel-fc-iso"] .hp-game__t { align-self: end; font-size: 17px; overflow-wrap: anywhere; }
+[data-skin="pixel-fc-iso"] .hp-game__b { margin: 0; line-height: 1.65; overflow-wrap: anywhere; }
+
+/* Résumé: dimensional counters, a ruled profile, and connected timeline panels. */
+[data-skin="pixel-fc-iso"] .stat { border-top: 9px solid var(--iso-top); padding: 20px; }
+[data-skin="pixel-fc-iso"] .stat__num { font: 800 clamp(24px, 2.4vw, 34px)/1.25 var(--font-sans); color: var(--accent); font-variant-numeric: tabular-nums; }
+[data-skin="pixel-fc-iso"] .stat__num .unit { color: var(--text-muted); font-size: .55em; }
+[data-skin="pixel-fc-iso"] .stat__label { font-family: var(--font-sans); font-size: 13px; line-height: 1.6; }
+[data-skin="pixel-fc-iso"] .profile__row { border-color: var(--border); padding: 18px; }
+[data-skin="pixel-fc-iso"] .profile__k { font-size: 13px; font-weight: 650; }
+[data-skin="pixel-fc-iso"] .timeline { gap: 24px; padding-left: 28px; }
+[data-skin="pixel-fc-iso"] .timeline::before { left: 6px; width: 3px; background: var(--border); }
+[data-skin="pixel-fc-iso"] .tl-item { padding: 22px; border: 3px solid var(--border); border-radius: 18px; background: var(--surface); box-shadow: var(--iso-shadow); }
+[data-skin="pixel-fc-iso"] .tl-item::before { left: -31px; top: 25px; width: 15px; height: 15px; border: 3px solid var(--border); border-radius: 50%; background: var(--iso-yellow); }
+[data-skin="pixel-fc-iso"] .tl-item--now::before { background: var(--iso-sage); }
+[data-skin="pixel-fc-iso"] .tl-date { font: 600 13px var(--font-sans); color: var(--text-muted); }
+[data-skin="pixel-fc-iso"] .tl-org { color: var(--accent); }
+[data-skin="pixel-fc-iso"] .cl-summary { border-block: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .cover-block { max-width: 52rem; padding: 28px; }
+[data-skin="pixel-fc-iso"] .cover-block h3 { padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .cover-block p { line-height: 1.85; }
+
+/* Projects and details: labels, media, meta rows and long reading blocks. */
+[data-skin="pixel-fc-iso"] .proj-head { padding-bottom: 28px; border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .proj-grid { gap: 24px; }
+[data-skin="pixel-fc-iso"] :is(.draw__empty, .proj-empty, .cover-empty) { padding: 32px 24px; border: 3px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text-muted); }
+[data-skin="pixel-fc-iso"] .quest-strip { background: var(--iso-panel); padding: 18px; }
+[data-skin="pixel-fc-iso"] .quest-strip__badge { background: var(--iso-sage); color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] .quest-strip__k { width: 60px; font-size: 12px; color: var(--text); }
+[data-skin="pixel-fc-iso"] .quest-strip__v { min-width: 0; overflow-wrap: anywhere; }
+[data-skin="pixel-fc-iso"] .detail__meta { padding: 18px; border: 2px solid var(--border); border-radius: 16px; background: var(--surface); }
+[data-skin="pixel-fc-iso"] .detail__meta-row { padding-left: 12px; border-left: 4px solid var(--iso-top); }
+[data-skin="pixel-fc-iso"] .detail__meta-k { font-size: 13px; }
+[data-skin="pixel-fc-iso"] .detail__learned { padding: 22px; }
+[data-skin="pixel-fc-iso"] .bullets li::before { border-radius: 50%; width: 7px; height: 7px; }
+[data-skin="pixel-fc-iso"] .media-box { background: var(--surface-2); background-image: none; }
+[data-skin="pixel-fc-iso"] .media-box--empty { background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .block { padding: 24px; gap: 24px; }
+[data-skin="pixel-fc-iso"] .block__label small { color: var(--text-muted); font-size: 13px; }
+[data-skin="pixel-fc-iso"] .block__body p { line-height: 1.85; }
+[data-skin="pixel-fc-iso"] .pager { gap: 22px; }
+[data-skin="pixel-fc-iso"] .pager__dir { color: var(--accent); font-size: 13px; }
+[data-skin="pixel-fc-iso"] .pager__item:hover { border-color: var(--border); transform: translateY(-1px); box-shadow: var(--iso-shadow); }
+
+/* Play log: one red series, calm table headers and readable numeric summaries. */
+[data-skin="pixel-fc-iso"] .play-card__top { flex-wrap: wrap; align-items: flex-start; }
+[data-skin="pixel-fc-iso"] .play-card__hours { font-size: 13px; background: var(--surface-2); color: var(--text); }
+[data-skin="pixel-fc-iso"] .play-card__note { border-top: 2px solid var(--border); }
+[data-skin="pixel-fc-iso"] .play-card__icon { border: 2px solid var(--border); border-radius: 12px; }
+[data-skin="pixel-fc-iso"] .steam { padding: 28px; }
+[data-skin="pixel-fc-iso"] .steam__head { padding-bottom: 16px; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+[data-skin="pixel-fc-iso"] .steam__sample { color: var(--text); background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .steam__stats { gap: 16px 24px; padding: 16px; border: 2px solid var(--border); border-radius: 13px; background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .steam__stats dd { font-weight: 750; }
+[data-skin="pixel-fc-iso"] .steam__table { table-layout: fixed; }
+[data-skin="pixel-fc-iso"] .steam__table th,
+[data-skin="pixel-fc-iso"] .steam__table td { padding: 12px 6px; overflow-wrap: anywhere; }
+[data-skin="pixel-fc-iso"] .steam__table thead { background: var(--surface-2); }
+[data-skin="pixel-fc-iso"] .steam__table th:first-child { width: 42%; }
+[data-skin="pixel-fc-iso"] .sr-grid { opacity: .6; stroke-width: 1.5; }
+[data-skin="pixel-fc-iso"] .sr-area { fill-opacity: .13; stroke-width: 3; }
+[data-skin="pixel-fc-iso"] .sr-val { font-family: var(--font-sans); }
+
+/* Footer repeats the blue side plane, with a sage seam rather than a new style. */
+:root[data-skin="pixel-fc-iso"] .footer {
+  --heading: #fffdf8; --text: #fffdf8; --text-muted: #e2e7ef; --accent: #f8dfa0;
+  background: #34445f; border-top: 8px solid var(--iso-sage); box-shadow: 0 -3px 0 var(--iso-line);
+}
+[data-skin="pixel-fc-iso"] :is(.footer__brand, .footer__tagline, .footer__copy) { color: var(--text); opacity: 1; }
+[data-skin="pixel-fc-iso"] :is(.footer__tagline, .footer__copy) { color: var(--text-muted); font-family: var(--font-sans); }
+[data-skin="pixel-fc-iso"] .footer .btn--outline { border: 2px solid #fffdf8; border-radius: 11px; color: #fffdf8; background: #34445f; box-shadow: 3px 4px 0 var(--iso-line); }
+[data-skin="pixel-fc-iso"] .footer .btn--outline:hover { background: #29384f; }
+[data-skin="pixel-fc-iso"] .footer .is-placeholder { opacity: 1; border-style: dashed; }
+[data-skin="pixel-fc-iso"] :is(.toast, .preview-banner) { border: 3px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); box-shadow: var(--iso-shadow); white-space: normal; max-width: calc(100vw - 32px); overflow-wrap: anywhere; }
+[data-skin="pixel-fc-iso"] .toast__mail { font: inherit; color: var(--text-muted); }
+[data-skin="pixel-fc-iso"] .pf-blk--box { border: 3px solid var(--border); border-radius: 20px; box-shadow: var(--iso-shadow); }
+[data-skin="pixel-fc-iso"] .pf-blk--img img { border: 3px solid var(--border); border-radius: 16px; }
+[data-skin="pixel-fc-iso"] .skip-link { border-radius: 10px; }
+[data-skin="pixel-fc-iso"] :is(.hero, .fc-grip, .fc-boot, .footer) :focus-visible { outline-color: var(--iso-yellow); }
+[data-skin="pixel-fc-iso"] .hero > .wrap .btn:focus-visible { outline-color: var(--iso-line); }
+[data-skin="pixel-fc-iso"] :is(.draw-card, .proj-card, .draw__deck):focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+[data-skin="pixel-fc-iso"] :is(.hero__grid > *, .fcs-info, .strength, .play-card, .steam__body > *, .profile__row > *, .detail > *, .block > *) { min-width: 0; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :root[data-skin="pixel-fc-iso"] .proj-card:hover,
+  [data-skin="pixel-fc-iso"] .draw-card:hover .gcard { --iso-lift: -3px; }
+}
+@media (max-width: 899px) {
+  [data-skin="pixel-fc-iso"] .fc-grip { border-top-color: var(--iso-line); }
+  [data-skin="pixel-fc-iso"] .fcc-led { top: 17px; left: 24px; width: 8px; height: 8px; }
+  [data-skin="pixel-fc-iso"] .fcc-speaker { bottom: 4px; right: 32px; }
+  [data-skin="pixel-fc-iso"] .fcc-speaker i { height: 5px; }
+  [data-skin="pixel-fc-iso"] .hp-games { grid-template-columns: minmax(0, 1fr); }
+  [data-skin="pixel-fc-iso"] .hp-game { min-height: 100px; }
+}
+@media (max-width: 700px) {
+  /* Reserve the extrusion's full width instead of clipping page overflow. */
+  :root[data-skin="pixel-fc-iso"] .fcs-rig { margin-inline: 12px; }
+  :root[data-skin="pixel-fc-iso"] .fcs-rig > .draw { margin-inline: 0; }
+  :root[data-skin="pixel-fc-iso"] .fcs-rig > .hero > .wrap { padding: 18px 14px; }
+}
+@media (max-width: 520px) {
+  :root[data-skin="pixel-fc-iso"] { --gutter: 20px; --section-pad-y: 44px; --card-pad: 20px; }
+  [data-skin="pixel-fc-iso"] .nav { gap: 8px; padding-inline: 10px; }
+  [data-skin="pixel-fc-iso"] .nav__actions { gap: 6px; }
+  [data-skin="pixel-fc-iso"] .nav__logo { padding-right: 0; gap: 6px; }
+  [data-skin="pixel-fc-iso"] .nav__logo .ghost { width: 16px; }
+  [data-skin="pixel-fc-iso"] .lang-toggle__btn { padding: 9px 7px; }
+  [data-skin="pixel-fc-iso"] .hp { padding-block: 36px; }
+  [data-skin="pixel-fc-iso"] .hp-h { font-size: 24px; line-height: 1.4; }
+  [data-skin="pixel-fc-iso"] .hpl-row,
+  [data-skin="pixel-fc-iso"] .hpl-row:first-child { padding: 16px 12px; gap: 12px; }
+  [data-skin="pixel-fc-iso"] .hpl-row__top { flex-direction: column; gap: 6px; }
+  [data-skin="pixel-fc-iso"] .hp-thumb { width: 44px; height: 44px; }
+  [data-skin="pixel-fc-iso"] .hp-skills { padding: 20px 12px; gap: 20px 12px; }
+  [data-skin="pixel-fc-iso"] .hp-skill { width: calc((100% - 24px) / 3); min-width: 0; }
+  [data-skin="pixel-fc-iso"] .hp-skill__ic { width: 48px; height: 48px; }
+  [data-skin="pixel-fc-iso"] :is(.strength, .card, .play-card, .steam, .block, .cover-block, .detail__learned) { padding: 24px 18px 20px; }
+  [data-skin="pixel-fc-iso"] .profile__row { grid-template-columns: minmax(0, 5em) minmax(0, 1fr); gap: 10px; padding: 16px 12px; }
+  [data-skin="pixel-fc-iso"] .proj-grid { grid-template-columns: minmax(0, 1fr); max-width: 320px; margin-inline: auto; gap: 28px; }
+  [data-skin="pixel-fc-iso"] .stat-grid { gap: 16px; }
+  [data-skin="pixel-fc-iso"] .stat { padding: 16px 12px; }
+  [data-skin="pixel-fc-iso"] .quest-strip { padding: 14px; }
+  [data-skin="pixel-fc-iso"] .quest-strip__row { gap: 8px; }
+  [data-skin="pixel-fc-iso"] .quest-strip__k { width: 52px; }
+  [data-skin="pixel-fc-iso"] .sheet__panel { padding: 20px 16px; }
+  [data-skin="pixel-fc-iso"] .steam__stats { padding: 12px; }
+  [data-skin="pixel-fc-iso"] .steam__table { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skin="pixel-fc-iso"] { scroll-behavior: auto; }
+  [data-skin="pixel-fc-iso"] *,
+  [data-skin="pixel-fc-iso"] *::before,
+  [data-skin="pixel-fc-iso"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  :root[data-skin="pixel-fc-iso"] .gcard,
+  :root[data-skin="pixel-fc-iso"] .gcard.reveal.is-visible,
+  :root[data-skin="pixel-fc-iso"] .gcard.is-tilt { --iso-lift: 0px; transform: none; }
+  [data-skin="pixel-fc-iso"] :is(.btn, .fc-key, .pager__item, .hero__portrait):hover { transform: none; }
 }

@@ -104,6 +104,13 @@
     var la = document.querySelector('[data-fc-lbl="a"]'), lb = document.querySelector('[data-fc-lbl="b"]');
     if (la) { if (!la.getAttribute('data-orig')) la.setAttribute('data-orig', la.textContent); la.textContent = a || la.getAttribute('data-orig'); }
     if (lb) { if (!lb.getAttribute('data-orig')) lb.setAttribute('data-orig', lb.textContent); lb.textContent = b || lb.getAttribute('data-orig'); }
+    /* 화면의 라벨뿐 아니라 접근성 이름도 현재 A/B 기능과 함께 바꿉니다. */
+    [[document.querySelector('[data-fc-a]'), a ? t(T.view) : null],
+     [document.querySelector('[data-fc-b]'), b ? t(T.eject) : null]].forEach(function (entry) {
+      var key = entry[0]; if (!key) return;
+      if (!key.hasAttribute('data-flat-label')) key.setAttribute('data-flat-label', key.getAttribute('aria-label') || '');
+      key.setAttribute('aria-label', entry[1] || key.getAttribute('data-flat-label'));
+    });
   }
 
   /* 페이지의 절(section) 목록 — 히어로를 뺀 나머지 */
@@ -338,7 +345,7 @@
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest) return;
+    if (!active() || !e.target.closest) return;
     if (e.target.closest('[data-fc-view]')) { e.preventDefault(); viewDetail(); return; }
     if (e.target.closest('[data-fc-eject]')) { e.preventDefault(); eject(); return; }
     var b = e.target.closest('[data-fc-step]'); if (b) { e.preventDefault(); step(parseInt(b.getAttribute('data-fc-step'), 10) || 1); return; }

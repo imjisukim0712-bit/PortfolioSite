@@ -47,11 +47,10 @@
     quest:  { ko: '퀘스트',        en: 'Quest' },
     cleared:{ ko: '달성',          en: 'Cleared' },
     play:   { ko: '게임플레이',    en: 'Gameplay' },
-    bpSelect: { ko: 'SELECT ◀▶ · 한마디', en: 'SELECT ◀▶ · QUIP' },
-    bpSections: { ko: 'SELECT ◀▶ · 절 이동', en: 'SELECT ◀▶ · SECTIONS' },
-    bpSlot: { ko: '카트리지 슬롯', en: 'CARTRIDGE SLOT' },
-    bpDeck: { ko: '01 · 프로젝트 덱', en: '01 · PROJECT DECK' },
-    bpTray: { ko: '02 · 카트리지 진열판', en: '02 · CARTRIDGE TRAY' }
+    bpSelect: { ko: '한마디 선택', en: 'Select a quip' },
+    bpSections: { ko: '절 이동', en: 'Browse sections' },
+    bpScreen: { ko: '개요 화면', en: 'Overview display' },
+    bpTray: { ko: '프로젝트 카트리지', en: 'Project cartridges' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
@@ -108,8 +107,6 @@
     var la = document.querySelector('[data-fc-lbl="a"]'), lb = document.querySelector('[data-fc-lbl="b"]');
     if (la) { if (!la.getAttribute('data-orig')) la.setAttribute('data-orig', la.textContent); la.textContent = a || la.getAttribute('data-orig'); }
     if (lb) { if (!lb.getAttribute('data-orig')) lb.setAttribute('data-orig', lb.textContent); lb.textContent = b || lb.getAttribute('data-orig'); }
-    var label = document.querySelector('[data-bp-a]');
-    if (label) label.textContent = 'A · ' + (la ? la.textContent : t(T.draw));
   }
 
   /* 지시선은 기울인 판 안의 로컬 좌표로 잽니다. 슬롯/비행 좌표와 본체 치수에는
@@ -132,10 +129,9 @@
       layer = document.createElement('div');
       layer.className = 'bp-diagram';
       layer.setAttribute('aria-hidden', 'true');
-      layer.innerHTML = '<svg class="bp-leaders" xmlns="http://www.w3.org/2000/svg"></svg>' +
-        '<span class="bp-note bp-note--select"></span><span class="bp-note bp-note--a" data-bp-a></span>' +
-        '<span class="bp-note bp-note--slot"></span><span class="bp-note bp-note--deck"></span>' +
-        '<span class="bp-note bp-note--tray"></span><span class="bp-year"><span>19</span><span>83</span></span>';
+      layer.innerHTML = '<svg class="bp-leaders" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>' +
+        '<span class="bp-note bp-note--select"></span><span class="bp-note bp-note--screen"></span>' +
+        '<span class="bp-note bp-note--tray"></span>';
       rig.appendChild(layer);
     }
     /* offsetParent 를 따라가므로 CSS perspective 로 변형된 화면 좌표를 역산하지 않습니다. */
@@ -146,10 +142,11 @@
     }
     var w = rig.clientWidth, h = rig.clientHeight;
     var mobile = window.innerWidth < 900;
-    var select = point(hero.querySelector('[data-fc-step]'), .5, .5);
-    var aKey = point(hero.querySelector('[data-fc-a]'), .5, .5);
-    var slot = point(hero, .5, 1);
-    var tray = rig.querySelector('.draw__stage'), deck = rig.querySelector('[data-draw]');
+    var selectKey = hero.querySelector('[data-fc-step]');
+    if (!selectKey) return;
+    var select = point(selectKey, 0, .5);
+    var screen = point(hero.querySelector('.wrap'), .78, 0);
+    var tray = rig.querySelector('.draw__stage');
     var paths = [];
     function leader(p, bendX, endX, endY) {
       paths.push('<path d="M' + p.x + ' ' + p.y + ' H' + bendX + ' V' + endY + ' H' + endX + '"/>' +
@@ -159,32 +156,72 @@
       var el = layer.querySelector('.bp-note--' + cls);
       el.textContent = text; el.style.left = x + 'px'; el.style.top = y + 'px';
     }
-    note('select', t(hero.querySelector('[data-quip]') ? T.bpSelect : T.bpSections), 14, mobile ? -26 : -44);
-    note('a', 'A · ' + hero.querySelector('[data-fc-lbl="a"]').textContent, mobile ? w - 98 : w - 208, mobile ? -26 : -44);
-    leader(select, mobile ? 6 : -14, 34, mobile ? -10 : -27);
-    leader(aKey, mobile ? w - 6 : w + 8, mobile ? w - 38 : w - 140, mobile ? -10 : -27);
-    layer.querySelector('.bp-note--slot').hidden = !tray;
-    if (tray) {
-      note('slot', t(T.bpSlot), slot.x + 16, slot.y + 7);
-      leader(slot, slot.x, slot.x + 10, slot.y + 14);
-      var trayPoint = point(tray, .9, 1);
-      note('tray', t(T.bpTray), mobile ? Math.max(100, w - 210) : w - 220, h + 12);
-      leader(trayPoint, trayPoint.x, mobile ? w - 84 : w - 70, h + 28);
-      note('deck', t(T.bpDeck), 12, h + 12);
-      if (deck) leader(point(deck, .45, 1), mobile ? 16 : 8, 42, h + 28);
+    /* Two short right-angle paths stay within the rig width. On touch screens
+       they become a quiet legend below the hardware, never over its controls. */
+    note('select', '① ' + t(hero.querySelector('[data-quip]') ? T.bpSelect : T.bpSections), 12, -38);
+    note('screen', '② ' + t(T.bpScreen), Math.max(150, w - 192), -38);
+    if (!mobile) {
+      leader(select, 8, 26, -18);
+      leader(screen, screen.x, w - 180, -18);
     }
-    layer.querySelector('.bp-note--deck').hidden = !deck;
+    if (tray) {
+      note('tray', '③ ' + t(T.bpTray), Math.max(12, w - 224), h + 14);
+      if (!mobile) {
+        var trayPoint = point(tray, .94, 1);
+        leader(trayPoint, trayPoint.x, w - 18, h + 26);
+      }
+    }
     layer.querySelector('.bp-note--tray').hidden = !tray;
-    var year = layer.querySelector('.bp-year');
-    year.style.left = (w - (mobile ? 50 : 82)) + 'px';
-    year.style.top = (mobile ? h + 4 : -76) + 'px';
     var svg = layer.querySelector('svg');
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     svg.innerHTML = paths.join('');
   }
   function queueBlueprint() {
     if (blueprintFrame) cancelAnimationFrame(blueprintFrame);
-    blueprintFrame = requestAnimationFrame(function () { blueprintFrame = 0; blueprint(); });
+    blueprintFrame = requestAnimationFrame(function () { blueprintFrame = 0; manualSystem(); blueprint(); });
+  }
+
+  /* Document furniture is skin-local and never replaces editable content.
+     Project IDs follow content order, so filtering/dealing cannot renumber them. */
+  var observedCards = null, cardsObserver = null;
+  function partNumbers() {
+    if (!active()) return;
+    var items = (content().projects && content().projects.items) || [];
+    Array.prototype.forEach.call(document.querySelectorAll('a.proj-card, a.draw-card'), function (a) {
+      var p = projectOf(a), index = items.indexOf(p);
+      var face = a.classList.contains('gcard') ? a : a.querySelector('.gcard');
+      if (face && index >= 0) face.setAttribute('data-bp-part', 'PRJ-' + pad(index + 1));
+    });
+  }
+  function pad(n) { return ('0' + n).slice(-2); }
+  function manualSystem() {
+    if (!active()) return;
+    var main = document.querySelector('[data-slot="main"]');
+    if (!main) return;
+    Array.prototype.forEach.call(main.querySelectorAll('.hp-h, .section__title, .proj-title, .cl-summary__t, .cover-block h3, .block__label, .steam__t, .detail__learned-title'), function (heading, i) {
+      heading.setAttribute('data-bp-fig', 'FIG. ' + pad(i + 1));
+    });
+    [['.stat', 'SPEC'], ['.strength', 'SKL'], ['.skill-card', 'TOOL'], ['.play-card', 'LOG']].forEach(function (group) {
+      Array.prototype.forEach.call(main.querySelectorAll(group[0]), function (el, i) {
+        el.setAttribute('data-bp-part', group[1] + '-' + pad(i + 1));
+      });
+    });
+    var detail = main.querySelector('.detail__title');
+    if (detail) {
+      var anchor = detail.getAttribute('data-e') || '';
+      var match = anchor.match(/^projects\.items\.(\d+)\./);
+      if (match) detail.setAttribute('data-bp-fig', 'PRJ-' + pad(Number(match[1]) + 1));
+    }
+    partNumbers();
+    var cards = main.querySelector('[data-draw-cards]');
+    if (observedCards !== cards) {
+      if (cardsObserver) cardsObserver.disconnect();
+      observedCards = cards;
+      if (cards && window.MutationObserver) {
+        cardsObserver = new MutationObserver(partNumbers);
+        cardsObserver.observe(cards, { childList: true });
+      }
+    }
   }
 
   /* 페이지의 절(section) 목록 — 히어로를 뺀 나머지 */
