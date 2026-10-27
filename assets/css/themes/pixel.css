@@ -244,6 +244,8 @@
   background-image: linear-gradient(rgb(0 0 0 / .07) 1px, transparent 1px), linear-gradient(90deg, rgb(0 0 0 / .07) 1px, transparent 1px);
   background-size: 8px 8px;
 }
+[data-skin-theme="pixel"] .doc__k { letter-spacing: 0; }
+[data-skin-theme="pixel"] .doc__title { font-family: var(--font-display); }
 [data-skin-theme="pixel"] .block__label { font-family: var(--font-display); }
 [data-skin-theme="pixel"] .block__label small { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0; }
 [data-skin-theme="pixel"] .pager__item { border: var(--bw) solid var(--ink); border-radius: 0; box-shadow: 4px 4px 0 var(--lo); }

@@ -899,6 +899,18 @@ a.hpl-row:hover .hpl-row__t { color: var(--accent); }
 .media-box--embed { aspect-ratio: 16 / 9; }
 .media-box--embed iframe { width: 100%; height: 100%; }
 
+/* 문서 보기 (구글 드라이브 PDF·문서·슬라이드) — 상세 정보 아래 본문 폭 전체 */
+.doc-list { margin-top: 48px; display: grid; gap: 32px; }
+.doc { margin: 0; }
+.doc__bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+.doc__k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: var(--accent); }
+.doc__title { flex: 1 1 auto; min-width: 0; font-size: var(--text-heading-sm); color: var(--heading); }
+.doc__open { flex: none; font-size: var(--text-body-sm); color: var(--text-muted); border-bottom: 1px solid var(--border-2); transition: color .18s ease, border-color .18s ease; }
+.doc__open:hover { color: var(--heading); border-color: var(--accent-soft); }
+.doc__frame iframe { width: 100%; height: 100%; }
+.doc__frame--slide { aspect-ratio: 16 / 10; }   /* 발표 자료 — 아래 쪽 넘김 막대 자리까지 */
+.doc__frame--page { aspect-ratio: 1 / 1.3; max-height: 88vh; }
+
 .detail__blocks { margin-top: 48px; display: grid; gap: 32px; }
 .block { display: grid; gap: 16px; }
 @media (min-width: 720px) { .block { grid-template-columns: 200px 1fr; gap: 32px; } }

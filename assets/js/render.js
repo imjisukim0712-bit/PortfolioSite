@@ -452,6 +452,34 @@
   }
 
   /* ---------- PROJECT DETAIL ---------- */
+  /* 구글 드라이브·문서·슬라이드 공유 링크를 '페이지 안에 끼워 넣을 수 있는' 주소로 바꿉니다.
+     공유 버튼에서 복사한 …/view?usp=sharing · …/edit 를 그대로 붙여도 됩니다. 그 밖의 주소는 그대로. */
+  function embedUrl(url) {
+    url = (url || '').trim();
+    var m = url.match(/^https:\/\/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/);
+    if (m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
+    m = url.match(/^https:\/\/docs\.google\.com\/(document|spreadsheets|presentation)\/d\/([\w-]+)/);
+    if (m) return 'https://docs.google.com/' + m[1] + '/d/' + m[2] + (m[1] === 'presentation' ? '/embed' : '/preview');
+    return url;
+  }
+  /* 문서 보기 — projects.items[].docs[]{ title, url, shape }. shape: 'slide'(가로, 기본) · 'page'(세로 A4) */
+  function docViewer(lang, idx, docs) {
+    docs = arr(docs).filter(function (d) { return (d.url || '').trim(); });
+    if (!docs.length) return '';
+    return '<div class="doc-list">' + docs.map(function (d, j) {
+      var title = t(d.title, lang);
+      return '<figure class="doc reveal">' +
+        '<figcaption class="doc__bar">' +
+          '<span class="doc__k">' + (lang==='en'?'DOCUMENT':'문서') + '</span>' +
+          '<span class="doc__title"' + ep('projects.items.'+idx+'.docs.'+j+'.title') + '>' + esc(title) + '</span>' +
+          '<a class="doc__open" href="' + esc(d.url) + '" target="_blank" rel="noopener noreferrer">' + (lang==='en'?'Open in new tab':'새 창에서 열기') + ' <span aria-hidden="true">↗</span></a>' +
+        '</figcaption>' +
+        '<div class="media-box doc__frame doc__frame--' + (d.shape === 'page' ? 'page' : 'slide') + '">' +
+          '<iframe src="' + esc(embedUrl(d.url)) + '" title="' + esc(title) + '" loading="lazy" allow="autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe>' +
+        '</div>' +
+      '</figure>';
+    }).join('') + '</div>';
+  }
   function renderDetail(c, lang, base, id) {
     var items = arr(c.projects && c.projects.items);
     var idx = -1; items.forEach(function (p,i){ if (p.id===id) idx=i; });
@@ -463,7 +491,7 @@
     var m = p.media || {};
     var media;
     if ((m.embed||'').trim()) {
-      media = '<div class="media-box media-box--embed"><iframe src="' + esc(m.embed) + '" title="' + esc(t(p.title, lang)) + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
+      media = '<div class="media-box media-box--embed"><iframe src="' + esc(embedUrl(m.embed)) + '" title="' + esc(t(p.title, lang)) + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
     } else {
       media = '<div class="media-box media-box--empty">' + esc(t(m.note, lang) || (lang==='en'?'Space for gameplay video and images.':'게임 영상·이미지가 들어갈 자리입니다.')) + '</div>';
     }
@@ -508,7 +536,7 @@
       (next ? pagerItem('detail.html?p='+encodeURIComponent(next.id), lang==='en'?'Next →':'다음 →', t(next.title, lang), 1) : pagerItem(base+'play.html', lang==='en'?'Play log →':'게임플레이 →', t(c.play&&c.play.title, lang), 1)) +
     '</nav>';
 
-    return '<section class="section"><div class="wrap"><div class="detail">' + info + mediaCol + '</div>' + blocks + pager + '</div></section>';
+    return '<section class="section"><div class="wrap"><div class="detail">' + info + mediaCol + '</div>' + docViewer(lang, idx, p.docs) + blocks + pager + '</div></section>';
   }
   function metaRow(k, v) {
     if (!v) return '';

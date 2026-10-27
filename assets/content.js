@@ -220,6 +220,10 @@ window.PORTFOLIO_CONTENT = {
      id 는 상세 페이지 주소가 됩니다 (영문 소문자·하이픈 권장).
      detail 의 problem·approach·retrospective 를 비우면 "작성 예정"으로 표시됩니다.
      media: 상세 페이지 우측 큰 영역. embed 에 URL 을 넣으면 그대로 삽입, 비우면 안내 문구.
+     docs: 상세 정보 아래 '문서 보기' (선택). [{ title:{ko,en}, url, shape }]
+           url 은 구글 드라이브·문서·슬라이드 공유 링크를 그대로 붙여도 됩니다 (자동으로 미리보기 주소로 바뀜).
+           드라이브 공유는 '링크가 있는 모든 사용자 — 뷰어' 여야 방문자에게 보입니다.
+           shape: "slide"(가로 발표 자료, 기본) · "page"(세로 A4 문서)
      ────────────────────────────────────────────────────────────────────── */
   projects: {
     tabs: {
@@ -270,7 +274,12 @@ window.PORTFOLIO_CONTENT = {
           { ko: "기획을 AI 코딩으로 직접 프로토타입해 같은 주에 검증했습니다.", en: "Prototyped my own specs with AI coding, tested the same week." }
         ],
         links: { googlePlay: "", steam: "" },
-        media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } }
+        media: { embed: "", note: { ko: "게임 영상·이미지가 들어갈 자리입니다.", en: "Space for gameplay video and images." } },
+        docs: [
+          { title: { ko: "최종 발표 자료", en: "Final presentation" },
+            url: "https://drive.google.com/file/d/1h6oa-_rYccWpe98_pOtKuiHan23THFKm/view?usp=drive_link",
+            shape: "slide" }
+        ]
       },
       {
         id: "indie-games",
