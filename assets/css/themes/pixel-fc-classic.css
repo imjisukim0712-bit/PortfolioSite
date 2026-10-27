@@ -1,6 +1,6 @@
 @charset "UTF-8";
-/* 레트로 픽셀 · 시안 C — 패미컴 (크림 본체 · 빨강 · 짙은 회색 · 금색 포인트)
-   라이트 = 크림 본체 · 다크 = 검정 본체에 빨간 그림자 */
+/* 패미컴 · 정돈 — 원본 기기/카트리지 치수와 슬롯 좌표계를 유지합니다.
+   선: 2px(내용) / 3px(기기·창) / 4px(강조). 그림자는 번짐 없이 4px. */
 :root[data-skin="pixel-fc-classic"] {
   --ink: #2b2b2b; --lo: #2b2b2b;
   --bg: #efe6d2; --bg-elev: #e5dbc2; --surface: #f8f3e7; --surface-2: #e5dbc2;
@@ -31,7 +31,7 @@
   --gen0: #e0373d; --gen1: #efe6d2; --gen2: #e9b64a;
   --grade-r: #8a857a; --grade-sr: #e9b64a; --grade-ssr-a: #e0373d; --grade-ssr-b: #e9b64a;
   --title-shadow: none;
-  --overlay: repeating-linear-gradient(0deg, rgb(0 0 0 / .14) 0 1px, transparent 1px 4px);
+  --overlay: none;
   --deck-check: rgb(255 255 255 / .09);
   --shadow-card: none;
   color-scheme: dark;
@@ -121,19 +121,19 @@
   display: grid; grid-template-columns: var(--fc-grip-w) minmax(0, 1fr) var(--fc-grip-w); align-items: stretch;
   min-height: var(--fc-h); padding: 0;
   width: min(100% - 24px, calc(var(--page-max) + var(--fc-grip-w) * 2)); margin-inline: auto;
-  background: linear-gradient(180deg, var(--fc-shell-hi), var(--fc-shell));
+  background: var(--fc-shell);
   border: 3px solid var(--fc-line-2); border-radius: var(--fc-r);
-  box-shadow: 0 10px 0 var(--fc-line-2), inset 0 3px 0 rgb(255 255 255 / .12);
+  box-shadow: 0 8px 0 var(--fc-line-2), inset 0 2px 0 var(--fc-shell-hi);
 }
 [data-skin="pixel-fc-classic"] .hero::before { display: none; }   /* 기본 색면(판)은 쓰지 않음 */
 
 /* 손잡이 */
 [data-skin="pixel-fc-classic"] .fc-grip {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-  background: linear-gradient(90deg, var(--fc-grip-hi), var(--fc-grip));
+  background: var(--fc-grip);
 }
 [data-skin="pixel-fc-classic"] .fc-grip--l { border-right: 6px solid var(--fc-gold); }
-[data-skin="pixel-fc-classic"] .fc-grip--r { border-left: 6px solid var(--fc-gold); background: linear-gradient(90deg, var(--fc-grip), var(--fc-grip-hi)); }
+[data-skin="pixel-fc-classic"] .fc-grip--r { border-left: 6px solid var(--fc-gold); background: var(--fc-grip); }
 [data-skin="pixel-fc-classic"] .fc-lbl { font-family: 'Galmuri11', monospace; font-size: 9px; letter-spacing: .06em; color: var(--fc-cream); text-align: center; white-space: nowrap; }
 [data-skin="pixel-fc-classic"] .fc-ab { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
@@ -141,10 +141,10 @@
 [data-skin="pixel-fc-classic"] .fc-key {
   display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; margin: 0;
   border: 3px solid var(--fc-key-ring); border-radius: 50%;
-  background: radial-gradient(circle at 38% 32%, var(--fc-key-hi), var(--fc-key) 72%);
+  background: var(--fc-key);
   color: #fff; font-family: var(--font-sans); font-size: 12px; font-weight: 800; line-height: 1; letter-spacing: 0;
   text-decoration: none; cursor: pointer;
-  box-shadow: 0 3px 0 var(--fc-line-2), inset 0 1px 0 rgb(255 255 255 / .25);
+  box-shadow: 0 4px 0 var(--fc-line-2), inset 0 2px 0 var(--fc-key-hi);
   transition: transform .08s ease, box-shadow .08s ease, border-color .12s ease;
 }
 [data-skin="pixel-fc-classic"] .fc-key > span { font-size: 11px; }
@@ -152,18 +152,18 @@
 [data-skin="pixel-fc-classic"] .fc-key--mail svg { width: 17px; height: 13px; display: block; }
 [data-skin="pixel-fc-classic"] .fc-key--ab { font-family: var(--font-display); font-size: 13px; }
 [data-skin="pixel-fc-classic"] .fc-key:hover { border-color: var(--fc-gold); color: #fff; }
-[data-skin="pixel-fc-classic"] .fc-key:active { transform: translateY(3px); box-shadow: 0 0 0 var(--fc-line-2), inset 0 1px 0 rgb(255 255 255 / .25); }
+[data-skin="pixel-fc-classic"] .fc-key:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--fc-line-2); }
 [data-skin="pixel-fc-classic"] .fc-key:focus-visible { outline: 2px solid var(--fc-gold); outline-offset: 2px; }
 
 /* 화면: 크림 액정 + 검은 테. 안에 본래의 히어로 + 채널 표시줄 */
 [data-skin="pixel-fc-classic"] .hero > .wrap {
   position: relative; max-width: none; margin-block: var(--fc-bezel); padding: 36px 44px 34px;
   display: flex; flex-direction: column;
-  background: linear-gradient(180deg, var(--fc-screen-a), var(--fc-screen-b));
+  background: var(--fc-screen-a);
   border: 3px solid var(--fc-line);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .35), inset 0 0 60px rgb(0 0 0 / .05);
+  box-shadow: inset 0 0 0 2px var(--fc-screen-b);
 }
-[data-skin="pixel-fc-classic"][data-theme="dark"] .hero > .wrap { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06), inset 0 0 80px rgb(0 0 0 / .35); }
+[data-skin="pixel-fc-classic"][data-theme="dark"] .hero > .wrap { box-shadow: inset 0 0 0 2px var(--fc-screen-b); }
 [data-skin="pixel-fc-classic"] .hero__grid { flex: 1; align-items: center; }
 [data-skin="pixel-fc-classic"] .hero__note { margin-top: 28px; }
 
@@ -180,10 +180,6 @@
 [data-skin="pixel-fc-classic"] .hero .btn--outline:hover { background: var(--fc-grip-hi); color: var(--fc-cream); }
 /* '한 마디 더' 버튼은 숨깁니다 — 왼쪽 손잡이 SELECT ◀ ▶ 가 한마디를 넘깁니다 */
 [data-skin="pixel-fc-classic"] .quip__more { display: none; }
-
-/* 아래로 스크롤할 때 나타나는 연출은 짧게 — 픽셀 테마의 steps(5) 는 끊겨 보여 쓰지 않습니다 */
-[data-skin="pixel-fc-classic"] .reveal { transition: opacity .18s ease-out, transform .18s ease-out; }
-[data-skin="pixel-fc-classic"] .reveal:not(.is-visible) { transform: translateY(10px); }
 
 /* ── 액정 안 사진 카드와 '한마디' 자리 ────────────────────────────────────
    카드는 한마디를 넘길 때마다 조금씩 기울고(--pose-d, 최대 5°), 말풍선은 카드 위·옆으로
@@ -237,16 +233,16 @@
     display: block; content: ''; position: absolute; z-index: 3; inset: auto;
     top: 0; left: 50%; transform: translateX(-50%);
     width: min(168px, 44%); height: 13px;
-    background: linear-gradient(180deg, #050505, #1e1e1e);
+    background: #101010;
     border: 3px solid var(--fc-line-2); border-top: 0; border-radius: 0 0 11px 11px;
-    box-shadow: inset 0 -2px 0 rgb(255 255 255 / .06);
+    box-shadow: inset 0 -2px 0 var(--fc-shell-hi);
   }
   /* 조작부 */
   [data-skin="pixel-fc-classic"] .fc-grip {
     flex-direction: row; align-items: center; gap: 13px;
     min-height: var(--fc-deck); margin-top: 14px; padding: 14px 18px;
     border-top: 5px solid var(--fc-gold); border-left: 0; border-right: 0;
-    background: linear-gradient(180deg, var(--fc-grip-hi), var(--fc-grip));
+    background: var(--fc-grip);
   }
   [data-skin="pixel-fc-classic"] .fc-grip--l { grid-area: gl; justify-content: flex-start; border-bottom-left-radius: calc(var(--fc-r) - 9px); }
   [data-skin="pixel-fc-classic"] .fc-grip--r { grid-area: gr; justify-content: flex-end; border-bottom-right-radius: calc(var(--fc-r) - 9px); }
@@ -284,22 +280,22 @@
    다크 모드에서도 라벨은 크림색 그대로이고, 라벨 안 글자색 토큰만 밝은 바탕용으로 다시 정합니다. */
 [data-skin="pixel-fc-classic"] {
   --fc-cart: #383838; --fc-cart-hi: #474747;   /* 셸 */
-  /* 바닥에 깔리는 그림자 — 딱딱한 오프셋 그림자는 칩이 기울 때 '뒷장'처럼 붙어다녀서 쓰지 않습니다 */
-  --fc-cart-shadow: 0 12px 22px -14px rgb(0 0 0 / .55);
-  --fc-cart-shadow-lift: 0 22px 38px -20px rgb(0 0 0 / .6);
+  /* 정면 선택 반응과 함께 쓰는 단단한 셸 그림자 (기울기는 아래에서 고정). */
+  --fc-cart-shadow: 4px 4px 0 var(--fc-line-2);
+  --fc-cart-shadow-lift: 4px 6px 0 var(--fc-line-2);
   --fc-label: #f8f3e7;                          /* 라벨 종이 */
   --fc-check: rgb(255 255 255 / .07);           /* 뒷면 체크 */
 }
 [data-skin="pixel-fc-classic"][data-theme="dark"] {
   --fc-cart: #2c2c2c; --fc-cart-hi: #3a3a3a;
-  --fc-cart-shadow: 0 12px 22px -12px rgb(0 0 0 / .8);
-  --fc-cart-shadow-lift: 0 22px 38px -18px rgb(0 0 0 / .85);
+  --fc-cart-shadow: 4px 4px 0 #050505;
+  --fc-cart-shadow-lift: 4px 6px 0 #050505;
 }
 [data-skin="pixel-fc-classic"] .gcard {
   --stripe: linear-gradient(var(--fc-grip), var(--fc-grip));
   display: flex; flex-direction: column; padding: 0; overflow: visible;
-  background: linear-gradient(180deg, var(--fc-cart-hi), var(--fc-cart)); background-size: auto; background-position: 0 0;
-  border: 3px solid var(--fc-line); border-radius: 4px 4px 6px 6px;
+  background: var(--fc-cart); background-size: auto; background-position: 0 0;
+  border: 3px solid var(--fc-line); border-radius: 0;
   animation: none;
 }
 /* 금색 단자(위) + 귀 두 개(아래) */
@@ -315,7 +311,7 @@
 /* 라벨 */
 [data-skin="pixel-fc-classic"] .gcard__frame {
   flex: 1 1 auto; min-height: 0; height: auto; margin: 8.8cqw 4cqw 4.5cqw;
-  padding: 6.6cqw 3.6cqw 3.6cqw; border: 2px solid var(--fc-line); border-radius: 1.2cqw;
+  padding: 6.6cqw 3.6cqw 3.6cqw; border: 2px solid var(--fc-line); border-radius: 0;
   background: var(--stripe) 0 0 / 100% 3.4cqw no-repeat, var(--fc-label);
 }
 [data-skin="pixel-fc-classic"] .gcard__name { height: 17.2cqw; }      /* 6.6cqw × 1.3 × 2줄 */
@@ -324,11 +320,7 @@
 :root[data-skin="pixel-fc-classic"] .gcard[data-grade="R"]   { --stripe: linear-gradient(var(--grade-r), var(--grade-r)); }
 :root[data-skin="pixel-fc-classic"] .gcard[data-grade="SR"]  { --stripe: linear-gradient(var(--grade-sr), var(--grade-sr)); }
 :root[data-skin="pixel-fc-classic"] .gcard[data-grade="SSR"] { --stripe: repeating-linear-gradient(45deg, var(--grade-ssr-a) 0 6px, var(--grade-ssr-b) 6px 12px); }
-/* ── 칩 그림자는 바닥에 깔립니다 ──────────────────────────────────────
-   pixel.css 가 등급별로 딱딱한 오프셋 그림자(5px 5px 0)를 여러 특이도로 걸어 두어,
-   칩이 기울면 그림자가 '뒷장'처럼 붙어 따라다녔습니다. 등급·상태별로 선택자를 하나씩
-   맞춰 싸우는 대신 이 한 곳에서 !important 로 못박습니다 (중요 선언끼리는 특이도로 갈리므로
-   기울임·호버 쪽이 기본보다 높아 그대로 이깁니다). */
+/* 등급별 기본 테마의 그림자를 이 테마의 정면 셸 규칙으로 통일합니다. */
 :root[data-skin="pixel-fc-classic"] .gcard,
 :root[data-skin="pixel-fc-classic"] .gcard[data-grade="SSR"] { box-shadow: var(--fc-cart-shadow) !important; }
 :root[data-skin="pixel-fc-classic"] .gcard:hover,
@@ -345,12 +337,12 @@
 
 /* 뒷면(덱 · 뒤집기): 같은 셸 + 어두운 체크 라벨 */
 [data-skin="pixel-fc-classic"] .card-back, [data-skin="pixel-fc-classic"] .draw__deck-card.card-back {
-  overflow: visible; border: 3px solid var(--fc-line); border-radius: 4px 4px 6px 6px;
-  background-color: var(--fc-cart); background-image: linear-gradient(180deg, var(--fc-cart-hi), var(--fc-cart)); background-size: auto;
+  overflow: visible; border: 3px solid var(--fc-line); border-radius: 0;
+  background-color: var(--fc-cart); background-image: none; background-size: auto;
 }
 [data-skin="pixel-fc-classic"] .card-back::before {
   content: ''; display: block; position: absolute; inset: 8.8cqw 4cqw 4.5cqw; z-index: 0; pointer-events: none;
-  border: 2px solid var(--fc-line); border-radius: 1.2cqw;
+  border: 2px solid var(--fc-line); border-radius: 0;
   background:
     linear-gradient(var(--fc-grip), var(--fc-grip)) 0 0 / 100% 3.4cqw no-repeat,
     repeating-conic-gradient(var(--fc-check) 0 25%, transparent 0 50%) 0 0 / 12px 12px,
@@ -371,32 +363,32 @@
    (화면 전체를 덮는 .fc-boot--full 만 예외 — 그건 '액정이 화면을 먹는' 연출이라 상단바 위입니다) */
 [data-skin="pixel-fc-classic"] .fc-fly {
   position: fixed; z-index: 85; pointer-events: none; container: gcard / inline-size;
-  filter: drop-shadow(0 18px 22px rgb(0 0 0 / .35));
+  filter: none;
 }
 [data-skin="pixel-fc-classic"] .fc-fly .fc-fly__card { position: absolute; inset: 0; aspect-ratio: auto; transform: none; box-shadow: none; visibility: visible; }
 [data-skin="pixel-fc-classic"] .hero.fc-console.is-slot::after {
   content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 3;
   width: min(300px, 36%); height: 18px; border: 3px solid #000; border-bottom: 0; border-radius: 4px 4px 0 0;
-  background: linear-gradient(180deg, #050505, #1a1a1a); box-shadow: inset 0 2px 0 rgb(255 255 255 / .06);
+  background: #101010; box-shadow: inset 0 2px 0 var(--fc-shell-hi);
 }
 [data-skin="pixel-fc-classic"] .fc-slot {
   /* 상단바 바로 아래로 내려옵니다 (top 은 famicom.js 가 상단바 높이를 재서 넣습니다) —
      상단바보다 아래 층이라 맨 위에 두면 띠가 바에 가려 보이지 않습니다 */
   position: fixed; z-index: 84; top: 0; left: 50%; transform: translate(-50%, -100%);
   width: min(560px, 92vw); height: 58px;
-  background: linear-gradient(180deg, var(--fc-shell-hi), var(--fc-shell));
+  background: var(--fc-shell);
   border: 3px solid var(--fc-line-2); border-top: 0; border-radius: 0 0 26px 26px;
-  box-shadow: 0 8px 0 var(--fc-line-2), 0 18px 40px rgb(0 0 0 / .35);
+  box-shadow: 0 8px 0 var(--fc-line-2);
 }
 [data-skin="pixel-fc-classic"] .fc-slot::before, [data-skin="pixel-fc-classic"] .fc-slot::after {
-  content: ''; position: absolute; top: 0; bottom: 0; width: 46px; background: linear-gradient(90deg, var(--fc-grip-hi), var(--fc-grip));
+  content: ''; position: absolute; top: 0; bottom: 0; width: 46px; background: var(--fc-grip);
 }
 [data-skin="pixel-fc-classic"] .fc-slot::before { left: 0; border-right: 5px solid var(--fc-gold); border-radius: 0 0 0 22px; }
-[data-skin="pixel-fc-classic"] .fc-slot::after { right: 0; border-left: 5px solid var(--fc-gold); border-radius: 0 0 22px 0; background: linear-gradient(90deg, var(--fc-grip), var(--fc-grip-hi)); }
+[data-skin="pixel-fc-classic"] .fc-slot::after { right: 0; border-left: 5px solid var(--fc-gold); border-radius: 0 0 22px 0; background: var(--fc-grip); }
 [data-skin="pixel-fc-classic"] .fc-boot {
   position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center;
   padding: 24px 32px; overflow: auto; color: var(--fc-cream);
-  background: repeating-linear-gradient(0deg, rgb(255 255 255 / .035) 0 1px, transparent 1px 3px), #141414;
+  background: #141414;
   animation: fcBootIn .18s steps(2, end);
 }
 [data-skin="pixel-fc-classic"] .fc-boot--full { position: fixed; z-index: 250; padding: 72px 24px 32px; }
@@ -414,7 +406,7 @@
 }
 [data-skin="pixel-fc-classic"] .fc-ov__art {
   position: relative; aspect-ratio: 3 / 2; overflow: hidden; container: gcard / inline-size;
-  border: 3px solid var(--fc-cream); background: #e5dbc2; box-shadow: 5px 5px 0 #000;
+  border: 3px solid var(--fc-cream); background: #e5dbc2; box-shadow: 4px 4px 0 #000;
   --gen0: #b8252b; --gen1: #2b2b2b; --gen2: #e9b64a; --ghost-c: #b8252b;
 }
 [data-skin="pixel-fc-classic"] .fc-ov__art .gcard__gen svg { shape-rendering: crispEdges; }
@@ -439,9 +431,9 @@
   display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; cursor: pointer;
   border: 3px solid var(--fc-cream); background: transparent; color: var(--fc-cream);
   font-family: var(--font-sans); font-size: 14px; font-weight: 700; letter-spacing: -.01em;
-  box-shadow: 3px 3px 0 #000; transition: transform .08s ease, box-shadow .08s ease, background-color .12s ease, color .12s ease;
+  box-shadow: 4px 4px 0 #000; transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
 }
-[data-skin="pixel-fc-classic"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--fc-cream); color: #111; font-family: 'Galmuri11', monospace; font-size: 10px; font-weight: 400; }
+[data-skin="pixel-fc-classic"] .fc-ov__btn b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 0; background: var(--fc-cream); color: #111; font-family: 'Galmuri11', monospace; font-size: 10px; font-weight: 400; }
 [data-skin="pixel-fc-classic"] .fc-ov__btn--go { background: var(--fc-grip); }
 [data-skin="pixel-fc-classic"] .fc-ov__btn:hover { background: var(--fc-cream); color: #111; }
 [data-skin="pixel-fc-classic"] .fc-ov__btn--go:hover { background: var(--fc-grip-hi); color: var(--fc-cream); }
@@ -455,3 +447,283 @@
   [data-skin="pixel-fc-classic"] .fc-ov__sub { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { [data-skin="pixel-fc-classic"] .fc-boot, [data-skin="pixel-fc-classic"] .fc-boot.is-on { animation: none; } }
+
+/* ── 원본 패미컴 마감 ───────────────────────────────────────────────────
+   물리 기기의 둥근 외곽·그립 폭·--fc-h·슬롯 위치는 위 규칙을 유지합니다.
+   화면 안 UI는 직각, 작은 조작 키는 4px 계단. 카드 안쪽 cqw 칸은 바꾸지 않습니다. */
+:root[data-skin="pixel-fc-classic"] {
+  --bw: 3px;
+  --fcc-edge: 2px;
+  --fcc-offset: 4px;
+  --fcc-shadow: var(--fcc-offset) var(--fcc-offset) 0 var(--lo);
+  --deck-shadow: 4px 4px 0 var(--fc-line-2);
+  --fcc-select: var(--accent);
+}
+:root[data-skin="pixel-fc-classic"][data-theme="dark"] { --fcc-select: var(--fc-gold); }
+[data-skin="pixel-fc-classic"] :is(h1, h2, .proj-title) { font-weight: 900; }
+[data-skin="pixel-fc-classic"] :is(.strength__tag, .hpl-row__d, .hp-skill__t, .detail__period, .card__index, .steam__stats, .steam__table td, .sr-val) {
+  font-family: 'Galmuri11', 'Galmuri14', monospace;
+  font-variant-numeric: tabular-nums; letter-spacing: 0;
+}
+[data-skin="pixel-fc-classic"] :is(.badge, .tag, .tool, .store-link, .steam__sample, .play-card__hours, .fc-slot) { border-radius: 0; }
+[data-skin="pixel-fc-classic"] :is(.card, .profile, .strength, .play-card, .pager__item, .quest-strip, .media-box, .sheet__panel, .steam) {
+  border-radius: 0; box-shadow: var(--fcc-shadow);
+}
+[data-skin="pixel-fc-classic"] :is(.hero__portrait, .portrait, .quip) { box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-classic"] .hero__portrait .portrait { box-shadow: none; }
+[data-skin="pixel-fc-classic"] .reveal { opacity: 1; transform: none; transition: none; }
+[data-skin="pixel-fc-classic"] .reveal:not(.is-visible) { transform: none; }
+[data-skin="pixel-fc-classic"] .ghost--float { animation: none; }
+
+/* 전원 한 칸 · 위아래 나사 · 스피커 구멍. 모두 비상호작용 장식입니다. */
+[data-skin="pixel-fc-classic"] .fcc-hardware { position: absolute; inset: 0; pointer-events: none; }
+[data-skin="pixel-fc-classic"] .fc-grip { position: relative; }
+[data-skin="pixel-fc-classic"] .fc-grip::before,
+[data-skin="pixel-fc-classic"] .fc-grip::after {
+  content: ''; position: absolute; left: calc(50% - 4px); width: 8px; height: 8px;
+  background: var(--fc-line-2); border: 2px solid var(--fc-grip-hi); pointer-events: none;
+}
+[data-skin="pixel-fc-classic"] .fc-grip::before { top: 28px; }
+[data-skin="pixel-fc-classic"] .fc-grip::after { bottom: 28px; }
+[data-skin="pixel-fc-classic"] .fcc-led {
+  position: absolute; top: 20px; left: calc(var(--fc-grip-w) + 20px); z-index: 2;
+  width: 8px; height: 8px; border: 2px solid var(--fc-line-2); background: var(--fc-gold); pointer-events: none;
+}
+[data-skin="pixel-fc-classic"] .fcc-speaker {
+  position: absolute; right: calc(var(--fc-grip-w) + 20px); bottom: 16px; z-index: 2;
+  display: flex; gap: 4px; pointer-events: none;
+}
+[data-skin="pixel-fc-classic"] .fcc-speaker i { width: 4px; height: 4px; background: var(--fc-line-2); box-shadow: 0 -8px 0 var(--fc-line-2); }
+[data-skin="pixel-fc-classic"] .fc-key {
+  border-radius: 0;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
+  transition: transform 80ms steps(2, end), border-color 80ms steps(1, end);
+}
+[data-skin="pixel-fc-classic"] .fc-key:focus-visible { border-color: var(--fc-gold); background: var(--fc-key-hi); }
+
+/* 메뉴 선택: 위치가 흔들리지 않게 커서 자리를 미리 확보합니다.
+   공통 클릭 핸들러와 카드 뽑기/꽂기 애니메이션은 그대로 둡니다. */
+[data-skin="pixel-fc-classic"] :is(a[href], button):not([aria-disabled="true"]):not(:disabled) {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%232b2b2b' d='M1 1h4v3h4v3h4v3h4v4h-4v3H9v3H5v3H1z'/%3E%3Cpath fill='%23f8f3e7' d='M3 4h2v3h4v3h4v4H9v3H5v3H3z'/%3E%3C/svg%3E") 1 1, pointer;
+}
+[data-skin="pixel-fc-classic"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn) {
+  position: relative; padding-inline: 24px 16px;
+  transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
+}
+[data-skin="pixel-fc-classic"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn)::before {
+  content: ''; position: absolute; left: 8px; top: calc(50% - 5px); width: 8px; height: 10px;
+  background: currentColor; clip-path: polygon(0 0, 3px 0, 3px 2px, 5px 2px, 5px 4px, 8px 4px, 8px 6px, 5px 6px, 5px 8px, 3px 8px, 3px 10px, 0 10px);
+  opacity: 0; pointer-events: none;
+}
+[data-skin="pixel-fc-classic"] :is(.btn, .tab, .nav__link, .sheet__link, .fc-ov__btn):is(:hover, :focus-visible)::before,
+[data-skin="pixel-fc-classic"] :is(.nav__link, .tab, .sheet__link).is-active::before { opacity: 1; }
+[data-skin="pixel-fc-classic"] .nav__link.is-active::before { content: ''; }
+[data-skin="pixel-fc-classic"] :is(.btn, .pager__item, .store-link) { box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-classic"] .hero .btn { padding-inline: 24px 16px; box-shadow: 4px 4px 0 var(--fc-line); }
+[data-skin="pixel-fc-classic"] :is(.btn, .pager__item):hover { transform: none; box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-classic"] .hero .btn:hover { box-shadow: 4px 4px 0 var(--fc-line); }
+[data-skin="pixel-fc-classic"] .hp-more:hover span { transform: none; }
+[data-skin="pixel-fc-classic"] :is(.btn, .pager__item, .store-link, .fc-ov__btn):is(:active, .fcc-pressed) {
+  transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--lo);
+}
+[data-skin="pixel-fc-classic"] .hero .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 var(--fc-line); }
+[data-skin="pixel-fc-classic"] :is(.tab, .nav__link, .sheet__link, .fc-key, .icon-btn, .nav__burger, .lang-toggle__btn):is(:active, .fcc-pressed) { transform: translateY(2px); }
+[data-skin="pixel-fc-classic"] :is(a[href], button):focus-visible { outline: 2px solid var(--fcc-select); outline-offset: 4px; }
+[data-skin="pixel-fc-classic"] :is(.nav, .fc-grip, .footer, .fc-boot) :is(a[href], button):focus-visible { outline-color: var(--fc-gold); }
+[data-skin="pixel-fc-classic"] .tab:focus-visible { outline-offset: -4px; }
+[data-skin="pixel-fc-classic"] :is(.draw-card, .proj-card, .draw__deck):is(:hover, :focus-visible) {
+  outline: 2px solid var(--fcc-select); outline-offset: 4px;
+}
+/* draw-card의 dealSlide를 덮지 않도록 뽑은 카드는 앞면의 선택선만 점멸합니다. */
+:root[data-skin="pixel-fc-classic"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible),
+[data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard {
+  animation: fccSelect 640ms steps(1, end) 2;
+}
+[data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard { outline: 2px solid var(--fcc-select); outline-offset: 4px; }
+@keyframes fccSelect { 0%, 100% { outline-color: var(--fcc-select); } 50% { outline-color: transparent; } }
+/* 3Dホバーを平面の2px選択に。飛行コンテナ(.fc-fly)の transform には触れません。 */
+:root[data-skin="pixel-fc-classic"] .gcard,
+:root[data-skin="pixel-fc-classic"] .gcard.reveal.is-visible,
+:root[data-skin="pixel-fc-classic"] .gcard.is-tilt {
+  transform: translateY(var(--fcc-lift, 0px)); transition: transform 80ms steps(2, end), box-shadow 80ms steps(2, end);
+}
+:root[data-skin="pixel-fc-classic"] .proj-card:is(:hover, :focus-visible),
+:root[data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard { --fcc-lift: -2px; }
+:root[data-skin="pixel-fc-classic"] .proj-card:is(:active, .fcc-pressed),
+:root[data-skin="pixel-fc-classic"] .draw-card:is(:active, .fcc-pressed) .gcard {
+  --fcc-lift: 2px;
+  --fc-cart-shadow: 2px 2px 0 var(--fc-line-2);
+  --fc-cart-shadow-lift: 2px 2px 0 var(--fc-line-2);
+}
+:root[data-skin="pixel-fc-classic"] .gcard::after {
+  display: block; content: '▶'; position: absolute; inset: auto; right: 0; top: 1cqw; z-index: 2;
+  font: 400 5cqw 'Galmuri11', monospace; color: var(--fc-gold); background: var(--fc-cart);
+  mix-blend-mode: normal; border-radius: 0; opacity: 0; transition: none;
+}
+[data-skin="pixel-fc-classic"] .proj-card:is(:hover, :focus-visible)::after,
+[data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard::after { opacity: 1; }
+:root[data-skin="pixel-fc-classic"] .fc-fly .fc-fly__card { transform: none; box-shadow: none !important; }
+[data-skin="pixel-fc-classic"] .draw__deck:is(:hover, :focus-visible) { --d1-rot: -2.6deg; --d2-rot: 1.8deg; --d3-y: -2px; }
+[data-skin="pixel-fc-classic"] .draw__deck:active { --d3-sc: 1; --d3-y: 2px; }
+
+/* 덱 아래: 내용의 순서/열수는 유지하고 창의 가장자리와 구분선만 정돈합니다. */
+[data-skin="pixel-fc-classic"] .hp { padding-block: 48px; }
+[data-skin="pixel-fc-classic"] .hp--sep { border-top-width: 2px; }
+[data-skin="pixel-fc-classic"] .hp-block { margin-bottom: 32px; }
+[data-skin="pixel-fc-classic"] .hp-h {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px;
+  border-bottom-width: 2px; padding-bottom: 12px; font-weight: 900;
+}
+[data-skin="pixel-fc-classic"] .hp-h::before {
+  content: ''; display: block; flex: none; width: 8px; height: 12px; background: var(--accent);
+  box-shadow: 4px -4px 0 var(--ink);
+}
+[data-skin="pixel-fc-classic"] .hpl { border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow); }
+[data-skin="pixel-fc-classic"] .hpl-row,
+[data-skin="pixel-fc-classic"] .hpl-row:first-child { padding: 16px; gap: 16px; border-top: 2px solid var(--ink); }
+[data-skin="pixel-fc-classic"] .hpl-row:first-child { border-top: 0; }
+[data-skin="pixel-fc-classic"] .hp-thumb { width: 56px; height: 56px; background: var(--surface-2); }
+[data-skin="pixel-fc-classic"] .hpl-row__m { line-height: 1.65; }
+[data-skin="pixel-fc-classic"] .hpl-row__d { font-size: 11px; }
+[data-skin="pixel-fc-classic"] .hp-skills {
+  padding: 20px 16px; gap: 20px 24px; border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow);
+}
+[data-skin="pixel-fc-classic"] .hp-skill { width: 100px; gap: 12px; }
+[data-skin="pixel-fc-classic"] .hp-skill__ic { width: 56px; height: 56px; box-shadow: 4px 4px 0 var(--lo); }
+[data-skin="pixel-fc-classic"] :is(.tool__ic, .hp-skill__ic--logo) { background: #fff !important; }
+[data-skin="pixel-fc-classic"] .hp-skill__t { font-size: 12px; }
+[data-skin="pixel-fc-classic"] .strength { border-width: 2px; padding: 20px; }
+[data-skin="pixel-fc-classic"] .strength__tag { color: var(--accent); font-size: 11px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+[data-skin="pixel-fc-classic"] .strength__t { margin-top: 16px; font-weight: 900; }
+[data-skin="pixel-fc-classic"] .strength__b { line-height: 1.75; }
+
+/* 분홍 대형 빈 썸네일 → 작은 칩 아이콘 + 제목/기록. 실제 이미지도 그대로 보존합니다. */
+[data-skin="pixel-fc-classic"] .hp-games { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: none; }
+[data-skin="pixel-fc-classic"] .hp-game {
+  display: grid; grid-template-columns: 60px minmax(0, 1fr); grid-template-rows: auto auto;
+  align-content: center; gap: 4px 16px; padding: 16px; border: 2px solid var(--ink);
+  background: var(--surface); box-shadow: var(--fcc-shadow);
+}
+[data-skin="pixel-fc-classic"] .hp-game__ic {
+  grid-row: 1 / 3; position: relative; align-self: center; width: 60px; height: 72px; aspect-ratio: auto; margin: 0;
+  border: 4px solid var(--fc-cart); border-top-width: 12px; background: var(--fc-label); color: #b8252b;
+  box-shadow: 0 4px 0 var(--fc-line-2); overflow: visible;
+}
+[data-skin="pixel-fc-classic"] .hp-game__ic::before {
+  content: ''; position: absolute; top: -10px; left: 4px; right: 4px; height: 4px;
+  background: repeating-linear-gradient(90deg, var(--fc-gold) 0 4px, transparent 4px 6px);
+}
+[data-skin="pixel-fc-classic"] .hp-game__ic svg { width: 24px; height: 28px; }
+[data-skin="pixel-fc-classic"] .hp-game__ic img { overflow: hidden; }
+[data-skin="pixel-fc-classic"] .hp-game__t { align-self: end; font-size: 17px; font-weight: 900; overflow-wrap: anywhere; }
+[data-skin="pixel-fc-classic"] .hp-game__b { align-self: start; margin: 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+
+/* 하위 페이지의 정보 창. 원본 콘텐츠·배치·미디어는 유지합니다. */
+[data-skin="pixel-fc-classic"] :is(.card, .profile, .play-card, .pager__item, .steam) { border-width: var(--fcc-edge); }
+[data-skin="pixel-fc-classic"] .section__head { padding-bottom: 20px; border-bottom: 2px solid var(--ink); }
+[data-skin="pixel-fc-classic"] .proj-head { padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
+[data-skin="pixel-fc-classic"] .detail__learned,
+[data-skin="pixel-fc-classic"] .cover-block {
+  padding: 24px; border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--fcc-shadow);
+}
+[data-skin="pixel-fc-classic"] .cover-block h3 { padding-bottom: 16px; border-bottom: 2px solid var(--ink); font-weight: 900; }
+[data-skin="pixel-fc-classic"] .quest-strip { border-width: 3px; }
+[data-skin="pixel-fc-classic"] .quest-strip__k { width: 64px; font-size: 11px; }
+[data-skin="pixel-fc-classic"] .quest-strip__v { min-width: 0; overflow-wrap: anywhere; }
+[data-skin="pixel-fc-classic"] .quest-strip__badge { font-size: 11px; }
+[data-skin="pixel-fc-classic"] .detail__meta-row { padding-block: 4px; }
+[data-skin="pixel-fc-classic"] .detail__meta-k { font-size: 11px; }
+[data-skin="pixel-fc-classic"] .pager__dir { font-size: 11px; }
+[data-skin="pixel-fc-classic"] .media-box { border-width: 3px; }
+[data-skin="pixel-fc-classic"] .media-box--empty { background-image: none; background-color: var(--bg-elev); }
+[data-skin="pixel-fc-classic"] .play-card__top { flex-wrap: wrap; }
+[data-skin="pixel-fc-classic"] .play-card__hours { font-size: 11px; }
+[data-skin="pixel-fc-classic"] :is(.hero__grid > *, .strength, .play-card, .steam__body > *, .profile__row > *) { min-width: 0; }
+[data-skin="pixel-fc-classic"] .footer { background: #2b2b2b; border-top-width: 4px; }
+[data-skin="pixel-fc-classic"] .footer .btn { box-shadow: 4px 4px 0 #161616; }
+[data-skin="pixel-fc-classic"] .footer .btn:is(:active, .fcc-pressed) { box-shadow: 2px 2px 0 #161616; }
+
+@media (max-width: 899px) {
+  [data-skin="pixel-fc-classic"] .fcc-led { top: 4px; left: 28px; width: 6px; height: 6px; border-width: 0; }
+  [data-skin="pixel-fc-classic"] .fcc-speaker { right: 32px; bottom: 6px; }
+  [data-skin="pixel-fc-classic"] .fcc-speaker i { box-shadow: none; }
+  [data-skin="pixel-fc-classic"] .fc-grip::before,
+  [data-skin="pixel-fc-classic"] .fc-grip::after { display: none; }
+}
+@media (max-width: 760px) {
+  [data-skin="pixel-fc-classic"] .hp-games { grid-template-columns: minmax(0, 1fr); }
+  [data-skin="pixel-fc-classic"] .hp-game { min-height: 104px; }
+}
+@media (max-width: 520px) {
+  [data-skin="pixel-fc-classic"] .hp { padding-block: 36px; }
+  [data-skin="pixel-fc-classic"] .hp-h { gap: 10px; font-size: 24px; line-height: 1.35; }
+  [data-skin="pixel-fc-classic"] .hpl-row,
+  [data-skin="pixel-fc-classic"] .hpl-row:first-child { padding: 12px; gap: 12px; }
+  [data-skin="pixel-fc-classic"] .hpl-row__top { flex-direction: column; gap: 8px; }
+  [data-skin="pixel-fc-classic"] .hp-thumb { width: 44px; height: 44px; }
+  [data-skin="pixel-fc-classic"] .hp-skills { gap: 20px 12px; padding: 16px 12px; }
+  [data-skin="pixel-fc-classic"] .hp-skill { width: calc((100% - 24px) / 3); min-width: 0; }
+  [data-skin="pixel-fc-classic"] .hp-skill__ic { width: 48px; height: 48px; }
+  [data-skin="pixel-fc-classic"] :is(.detail__learned, .cover-block, .steam) { padding: 16px; }
+  [data-skin="pixel-fc-classic"] .profile__row { grid-template-columns: minmax(0, 5.5em) minmax(0, 1fr); gap: 12px; padding: 12px; }
+  [data-skin="pixel-fc-classic"] .fc-ov__btn { padding-inline: 24px 12px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin="pixel-fc-classic"] :is(.proj-card, .draw__deck):is(:hover, :focus-visible) { animation: none; }
+  [data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard { animation: none; }
+  :root[data-skin="pixel-fc-classic"] .gcard,
+  :root[data-skin="pixel-fc-classic"] .gcard.reveal.is-visible,
+  :root[data-skin="pixel-fc-classic"] .gcard.is-tilt,
+  :root[data-skin="pixel-fc-classic"] .proj-card:is(:hover, :focus-visible),
+  :root[data-skin="pixel-fc-classic"] .draw-card:is(:hover, :focus-visible) .gcard { transform: none; transition: none; }
+  [data-skin="pixel-fc-classic"] .draw__deck:is(:hover, :focus-visible) { --d3-y: 0px; }
+  [data-skin="pixel-fc-classic"] :is(.btn, .fc-key, .fc-ov__btn, .pager__item, .draw__deck-card) { transition: none; }
+  [data-skin="pixel-fc-classic"] .fc-boot__c { animation: none; }
+}
+
+
+/* ==========================================================================
+   구도 — 왼쪽 큰 제목 · 오른쪽 살짝 기울어진 게임기 · 그 바로 밑 같은 기울기의 카트리지 진열판
+   (자리 옮기기는 assets/js/themes/fc-stage.js). 판(.fcs-rig)은 transform-style: flat 이어야
+   기울인 카드가 클릭·호버에 제대로 반응합니다. 좁은 화면(<900px)은 평평하게 쌓습니다.
+   ========================================================================== */
+:root[data-skin="pixel-fc-classic"] .fcs-stage { position: relative; width: min(100% - 48px, 1240px); margin: 0 auto; padding: 48px 0 56px; }
+:root[data-skin="pixel-fc-classic"] .fcs-intro { position: relative; z-index: 2; min-width: 0; margin-bottom: 36px; }
+:root[data-skin="pixel-fc-classic"] .fcs-intro .hero__eyebrow { margin-bottom: 22px; }
+:root[data-skin="pixel-fc-classic"] .fcs-intro .hero__title { font-size: clamp(34px, 3.9vw + 4px, 60px); line-height: 1.14; letter-spacing: -.04em; word-break: keep-all; }
+:root[data-skin="pixel-fc-classic"] .fcs-intro .hero__sub { margin-top: 20px; }
+:root[data-skin="pixel-fc-classic"] .fcs-caption { margin: 30px 0 0; font: 400 11px/1.6 'Galmuri11', monospace; color: var(--text-muted); }
+:root[data-skin="pixel-fc-classic"] .fcs-rig { position: relative; min-width: 0; transform-style: flat; }
+/* 게임기: 오른쪽 칸 폭에 맞춘 한 대 (원본은 화면 높이로 크기를 정하지만 여기선 고정) */
+:root[data-skin="pixel-fc-classic"] .fcs-rig > .hero { width: 100%; margin: 0; --fc-h: 380px; min-height: 380px; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig .hero__grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 26px; align-items: center; height: 100%; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig .hero__media { order: -1; width: auto; padding: 0 !important; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig .hero .portrait { width: clamp(130px, 13vw, 190px); }
+:root[data-skin="pixel-fc-classic"] .fcs-rig .hero__portrait { padding: 0; }
+:root[data-skin="pixel-fc-classic"] .fcs-info { min-width: 0; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .portrait__cap { align-items: flex-start; text-align: left; margin: 0 0 12px; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .quip { position: static; inset: auto; transform: none; max-width: none; width: auto; margin: 0 0 8px; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .quip::after, :root[data-skin="pixel-fc-classic"] .fcs-info .quip::before { display: none; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .quip__more { position: static; transform: none; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; max-width: none; }
+:root[data-skin="pixel-fc-classic"] .fcs-info .btn { min-height: 40px; padding: 9px 16px; font-size: 13px; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig > .hero > .wrap { padding: 22px 26px; }
+/* 진열판: 게임기 바로 밑 */
+:root[data-skin="pixel-fc-classic"] .fcs-rig > .draw { padding: 0; margin-top: 30px; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig > .draw > .wrap { width: 100%; max-width: none; padding: 0; }
+:root[data-skin="pixel-fc-classic"] .fcs-rig .draw__stage { gap: 14px; padding: 18px; background: var(--fc-screen-b, #ece2c9); border: 3px solid var(--fc-line); box-shadow: 6px 6px 0 var(--fc-line-2); }
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-classic"] .fcs-stage { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.4fr); column-gap: 44px; align-items: start; }
+  :root[data-skin="pixel-fc-classic"] .fcs-intro { margin: 0; padding-top: 110px; }
+  :root[data-skin="pixel-fc-classic"] .fcs-rig { transform: perspective(1300px) rotateX(7deg) rotateY(-12deg) rotateZ(3deg); transform-origin: 50% 35%; }
+}
+@media (max-width: 899px) {
+  :root[data-skin="pixel-fc-classic"] .fcs-rig > .hero { min-height: 0; }
+}
+@media (max-width: 700px) {
+  :root[data-skin="pixel-fc-classic"] .fcs-stage { width: 100%; padding-top: 28px; }
+  :root[data-skin="pixel-fc-classic"] .fcs-intro { padding: 0 22px; }
+  :root[data-skin="pixel-fc-classic"] .fcs-rig .hero__grid { grid-template-columns: auto minmax(0, 1fr); gap: 14px; }
+  :root[data-skin="pixel-fc-classic"] .fcs-rig .hero .portrait { width: 104px; }
+  :root[data-skin="pixel-fc-classic"] .fcs-rig > .draw { margin: 22px 12px 0; }
+}

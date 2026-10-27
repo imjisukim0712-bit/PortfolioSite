@@ -45,7 +45,8 @@
     role:   { ko: '역할',          en: 'Role' },
     status: { ko: '상태',          en: 'Status' },
     quest:  { ko: '퀘스트',        en: 'Quest' },
-    cleared:{ ko: '달성',          en: 'Cleared' }
+    cleared:{ ko: '달성',          en: 'Cleared' },
+    play:   { ko: '게임플레이',    en: 'Gameplay' }
   };
   var GRADES = { SSR: 1, SR: 1, R: 1, A: 1 };
   /* 손잡이 메일 키 아이콘 (봉투) */
@@ -91,6 +92,11 @@
     hero.classList.add('fc-console');
     hero.insertBefore(left, wrap);
     hero.appendChild(right);
+    var hardware = document.createElement('span');
+    hardware.className = 'fcc-hardware';
+    hardware.setAttribute('aria-hidden', 'true');
+    hardware.innerHTML = '<span class="fcc-led"></span><span class="fcc-speaker"><i></i><i></i><i></i><i></i><i></i></span>';
+    hero.appendChild(hardware);
   }
   /* 카트리지가 꽂혀 있는 동안 A/B 라벨을 바꿉니다 */
   function setAB(a, b) {
@@ -150,12 +156,16 @@
   }
   function cardTitle(a) { var n = a.querySelector('.gcard__name'); return n ? n.textContent : ''; }
   function go(a) { a.setAttribute('data-fc-go', '1'); a.click(); }
-  function cleanup() {
+  function cleanup(restoreFocus) {
+    var origin = pending && pending.a;
     pending = null;
     Array.prototype.forEach.call(document.querySelectorAll('.fc-fly, .fc-slot, .fc-boot'), function (el) { el.parentNode && el.parentNode.removeChild(el); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-fc-lifted]'), function (el) { el.style.visibility = ''; el.removeAttribute('data-fc-lifted'); });
     var h = document.querySelector('.hero.is-slot'); if (h) h.classList.remove('is-slot');
     setAB(null, null);
+    if (restoreFocus && origin && origin.isConnected) {
+      try { origin.focus({ preventScroll: true }); } catch (e) { origin.focus(); }
+    }
   }
 
   /* 개요(타이틀 화면) 마크업 */
@@ -216,7 +226,7 @@
       ';left:' + (r.left + (useHero ? sx : 0)) + 'px;top:' + (r.top + (useHero ? sy : 0)) + 'px' +
       ';width:' + W + 'px;height:' + H + 'px';
     var clone = face.cloneNode(true);
-    clone.classList.remove('is-tilt', 'reveal', 'is-visible'); clone.classList.add('fc-fly__card');
+    clone.classList.remove('is-tilt', 'reveal', 'is-visible', 'fcc-pressed'); clone.classList.add('fc-fly__card');
     clone.removeAttribute('style'); clone.removeAttribute('href'); clone.removeAttribute('hidden');
     fly.appendChild(clone); document.body.appendChild(fly);
     a.style.visibility = 'hidden'; a.setAttribute('data-fc-lifted', '1');
@@ -306,7 +316,7 @@
       var back = fly.animate(
         [{ transform: at(dx, dy1) + ' scale(1)' }, { transform: at(dx * .5, dy1 * .5 - 24) + ' scale(1.06)', offset: .5 }, { transform: at(0, 0) + ' scale(1)' }],
         { duration: 720, easing: 'cubic-bezier(.35,.65,.25,1)', fill: 'forwards' });
-      back.onfinish = function () { if (pending === me) cleanup(); };
+      back.onfinish = function () { if (pending === me) cleanup(true); };
     };
   }
 
@@ -335,8 +345,31 @@
     if (e.target.closest('[data-fc-b]')) { e.preventDefault(); pressB(); }
   });
 
-  /* 다시 그려질 때마다 붙입니다 (main 의 자식이 바뀌면) */
-  function scan() { cleanup(); var h = document.querySelector('.hero'); if (h) build(h); }
+  /* 언어 전환 시에도 원본 내용/편집 앵커는 그대로 두고 제목 한 줄만 덧붙입니다. */
+  function finishMenus() {
+    var games = document.querySelector('.hp-games');
+    if (games && !document.querySelector('.fcc-play-heading')) {
+      var title = document.createElement('h2');
+      title.className = 'hp-h fcc-play-heading';
+      title.textContent = t(T.play);
+      games.parentNode.insertBefore(title, games);
+    }
+  }
+  /* 링크의 Enter 입력에도 버튼과 같은 2px 눌림. 기본 키 동작은 유지합니다. */
+  function releaseKeys() {
+    Array.prototype.forEach.call(document.querySelectorAll('.fcc-pressed'), function (el) { el.classList.remove('fcc-pressed'); });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (!active() || e.repeat || (e.key !== 'Enter' && e.key !== ' ')) return;
+    var el = e.target.closest && e.target.closest('a[href], button');
+    if (el && !el.disabled && el.getAttribute('aria-disabled') !== 'true' && (e.key === 'Enter' || el.tagName === 'BUTTON')) el.classList.add('fcc-pressed');
+  });
+  document.addEventListener('keyup', releaseKeys);
+  document.addEventListener('focusout', releaseKeys);
+  window.addEventListener('blur', releaseKeys);
+
+  /* 다시 그려질 때마다 붙입니다 (main 의 직접 자식이 바뀌면). */
+  function scan() { if (!active()) return; if (pending) cleanup(); var h = document.querySelector('.hero'); if (h) build(h); finishMenus(); }
   function init() {
     var main = document.querySelector('[data-slot="main"]');
     if (main && window.MutationObserver) new MutationObserver(scan).observe(main, { childList: true });
