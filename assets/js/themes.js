@@ -2,6 +2,7 @@
    themes.js — 디자인 테마(스킨) 목록 + 로더
    ----------------------------------------------------------------------------
    · 기본 디자인(style.css) 위에 assets/css/themes/<테마>.css + <테마>-<시안>.css 를 덧입힙니다.
+     시안 항목에 css: [...] 가 있으면 그 파일들을 시안 CSS 뒤에 더 읽습니다(공용 다듬기 파일).
    · 시안 고르기 :  ?skin=pixel-gameboy  (주소에 붙이면 그 뒤로 모든 페이지에 유지)
                     ?skin=default        (기본 디자인으로 되돌리기)
    · 확정하기   :  아래 DEFAULT_SKIN 에 시안 id 를 적으면 방문자 모두에게 그 디자인이 보입니다.
@@ -77,9 +78,10 @@
           scripts: ['js/themes/pixel-fc-icon.js', 'js/themes/fc-stage.js'],
           swatch: ['#f2a03d', '#d2412c', '#f3e3c3', '#3d5a73'] },
         { id: 'fc-dot', name: { ko: '패미컴 · 도트', en: 'Famicom · Dot' },
-          desc: { ko: '참고 그림 ②. 아이소메트릭 도트 부품 — 회색 두께 면과 검은 4px 선, 진홍 띠 속 주황 사선 줄무늬, 큰 도트 번호 열로 나눈 부품 상자 절.',
-                  en: 'Reference ②: isometric dot parts — grey depth faces and 4px black outlines, orange diagonal stripes on crimson bands, and sections laid out as part boxes with big pixel numbers.' },
+          desc: { ko: '참고 그림 ②. 아이소메트릭 도트 부품 — 회색 두께 면과 검은 4px 선, 진홍 띠 속 주황 사선 줄무늬. 절은 도트 번호 배지와 굵은 선으로 연 머리 아래 한 겹짜리 카드.',
+                  en: 'Reference ②: isometric dot parts — grey depth faces and 4px black outlines with orange diagonal stripes on crimson bands. Each section opens with a pixel number badge and a heavy rule over single-layer cards.' },
           scripts: ['js/themes/pixel-fc-dot.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css'],
           swatch: ['#ffffff', '#ffdca8', '#b0122e', '#f5a000'] },
         { id: 'fc-blueprint', name: { ko: '패미컴 · 설명서', en: 'Famicom · Manual' },
           desc: { ko: '참고 그림 ③. 제품 설명서·제도 도면 — 모눈 바탕, 치수선과 부품 번호, 문서 번호 머리줄, 번호 붙은 2단 설명서 배치와 사양표.',
@@ -116,15 +118,17 @@
           scripts: ['js/themes/pixel-fc-snes.js', 'js/themes/fc-stage.js'],
           swatch: ['#f2a51f', '#d9d4cc', '#c8102e', '#3a5bb8'] },
         { id: 'fc-kraft', name: { ko: '패미컴 · 크라프트', en: 'Famicom · Kraft' },
-          desc: { ko: '참고 그림 ⑨. 기념 포스터 — 크라프트지 바탕, 외곽선 없는 크림·진홍 2색 평면, 검은 케이블이 제목·게임기·절을 감싸 잇는 선로, 거대한 진홍 숫자.',
-                  en: 'Reference ⑨: an anniversary poster — kraft paper, outline-free cream and crimson flats, a black cable route wrapping the title, console and sections, and giant crimson numbers.' },
+          desc: { ko: '참고 그림 ⑨. 기념 포스터 — 크라프트지 바탕, 외곽선 없는 크림·진홍 2색 평면, 절 제목을 단자처럼 잇는 가는 검은 케이블, 거대한 진홍 숫자.',
+                  en: 'Reference ⑨: an anniversary poster — kraft paper, outline-free cream and crimson flats, a slim black cable plugging into each section heading, and giant crimson numbers.' },
           scripts: ['js/themes/pixel-fc-kraft.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css'],
           fonts: [G + 'Black+Han+Sans&family=Do+Hyeon'],
           swatch: ['#c9a678', '#f3ead6', '#a3203a', '#1d1d1b'] },
         { id: 'fc-level', name: { ko: '패미컴 · 스테이지', en: 'Famicom · Stage' },
-          desc: { ko: '참고 그림 ⑩. 페이지 전체가 한 스테이지 — 게임 화면식 상단 메뉴(WORLD 1-1), 물음표 블록 위로 튀어나온 점수, 벽돌 판·땅 블록 지형.',
-                  en: 'Reference ⑩: the whole page as one game level — a HUD-style top bar (WORLD 1-1), scores popping out of question blocks, brick panels and ground-block terrain.' },
+          desc: { ko: '참고 그림 ⑩. 페이지 전체가 한 스테이지 — 게임 화면식 상단 메뉴(WORLD 1-1), 물음표 블록 위로 튀어나온 점수, 벽돌 턱을 얹은 발판 카드와 땅 블록 지형.',
+                  en: 'Reference ⑩: the whole page as one game level — a HUD-style top bar (WORLD 1-1), scores popping out of question blocks, platform cards topped with a brick ledge, and ground-block terrain.' },
           scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css'],
           swatch: ['#5c94fc', '#c84c0c', '#fca044', '#00a800'] },
         { id: 'fc-gold', name: { ko: '패미컴 · 기념판', en: 'Famicom · Anniversary Edition' },
           desc: { ko: '기념판 패키지 감성. 칠기 같은 진홍 바탕에 금박 테두리와 월계관 엠블럼, 상아색 증서 같은 카드, 세리프 제목.',
@@ -159,6 +163,7 @@
           desc: { ko: 'R&D ③. 80년대 스포츠 인쇄물의 넓은 사선 띠와 기울임꼴 제목, 강한 띠로 구분한 정보. 모서리를 깎은 빨강 기기와 경기 프로그램 같은 카트리지 라벨.',
                   en: 'R&D 3: broad diagonal bands, italic headlines and bold information bars inspired by 1980s sports print. A chamfered red console and cartridges labelled like a race programme.' },
           scripts: ['js/themes/pixel-fc-rally.js', 'js/themes/fc-stage.js'],
+          css: ['css/themes/pixel-fc-folio.css'],
           swatch: ['#eee8d8', '#ba2632', '#e8ad23', '#302b28'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
           desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
@@ -326,7 +331,8 @@
 
   function hrefs(sel) {
     if (!sel) return { css: [], fonts: [], js: [] };
-    var css = [ASSETS + 'css/themes/' + sel.theme.id + '.css', ASSETS + 'css/themes/' + sel.theme.id + '-' + sel.variant.id + '.css'];
+    var css = [ASSETS + 'css/themes/' + sel.theme.id + '.css', ASSETS + 'css/themes/' + sel.theme.id + '-' + sel.variant.id + '.css']
+      .concat((sel.variant.css || []).map(function (f) { return ASSETS + f; }));   /* 시안 CSS 뒤에 덧입히는 공용 다듬기 파일 */
     var fonts = (sel.theme.fonts || []).concat(sel.variant.fonts || []);
     var js = (sel.theme.scripts || []).concat(sel.variant.scripts || []).map(function (f) { return ASSETS + f; });   /* 홈 구성을 바꾸는 테마·시안의 스크립트 */
     return { css: css, fonts: fonts, js: js };

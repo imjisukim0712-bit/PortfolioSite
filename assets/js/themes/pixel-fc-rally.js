@@ -383,41 +383,11 @@
 (function () {
   'use strict';
   var SKIN = 'pixel-fc-rally', MODE = 'rally';
-  var labels = {
-    laureate: { ko: '기획 선집 · 첫 번째 컬렉션', en: 'Selected plans · Collection one' },
-    gallery: { ko: '소장품 01 · 플레이를 설계하는 사람', en: 'Exhibit 01 · A designer of play' },
-    rally: { ko: '기획에서 플레이까지 · 김지수', en: 'From plan to play · Jisu Kim' }
-  };
   function lang() {
     return document.documentElement.lang === 'en' ? 'en' : 'ko';
   }
   function svg(inner, cls, box) {
     return '<svg xmlns="http://www.w3.org/2000/svg" class="' + cls + '" viewBox="' + (box || '0 0 1000 500') + '" aria-hidden="true" focusable="false">' + inner + '</svg>';
-  }
-  function leaves() {
-    var s = '';
-    // Generic laurel, drawn independently. No anniversary logo or character.
-    for (var i = 0; i < 7; i++) {
-      var angle = i * 15 - 55, r = angle * Math.PI / 180;
-      var x = 60 - 43 * Math.cos(r), y = 57 + 43 * Math.sin(r);
-      s += '<ellipse cx="' + x.toFixed(2) + '" cy="' + y.toFixed(2) + '" rx="4.4" ry="10" transform="rotate(' + (angle - 30) + ' ' + x + ' ' + y + ')" fill="currentColor"/>';
-    }
-    return s + '<path d="M46 103Q6 77 27 22" fill="none" stroke="currentColor" stroke-width="1.5"/>';
-  }
-  function emblem() {
-    if (MODE === 'laureate') {
-      return svg('<circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width=".7"/>' +
-        leaves() + '<g transform="translate(120 0) scale(-1 1)">' + leaves() + '</g>' +
-        '<path d="m60 15 2 5 5 1-4 3 1 5-4-3-4 3 1-5-4-3 5-1z" fill="currentColor"/>' +
-        '<text x="60" y="78" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="51" fill="currentColor">01</text>', 'rnd-mark', '0 0 120 120');
-    }
-    if (MODE === 'gallery') {
-      return svg('<circle cx="44" cy="44" r="42" fill="none" stroke="currentColor" stroke-width="1"/>' +
-        '<text x="44" y="60" text-anchor="middle" font-family="Arial,sans-serif" font-weight="300" font-size="47" letter-spacing="-5" fill="currentColor">01</text>' +
-        '<circle cx="80" cy="12" r="8" fill="var(--accent)"/>', 'rnd-mark', '0 0 90 90');
-    }
-    return svg('<path d="M0 48 36 0h20L20 48zm34 0L70 0h36L70 48zm50 0L120 0h24l-36 48z" fill="currentColor"/>' +
-      '<path d="m124 48 36-48h12l-36 48z" fill="var(--rnd-stripe)"/>', 'rnd-mark', '0 0 172 48');
   }
   function body() {
     var shape = MODE === 'rally'
@@ -461,16 +431,6 @@
       if (!active) el.remove();
     });
     if (!active) return;
-    var intro = document.querySelector('.fcs-intro');
-    if (intro && !intro.querySelector('[data-rnd-owner="' + SKIN + '"]')) {
-      var mark = document.createElement('div');
-      mark.className = 'rnd-identity';
-      mark.setAttribute('data-rnd-owner', SKIN);
-      mark.innerHTML = emblem();
-      var line = document.createElement('p');
-      line.className = 'rnd-edition'; line.textContent = labels[MODE][lang()];
-      mark.appendChild(line); intro.insertBefore(mark, intro.firstChild);
-    }
     // Resume previously left the display almost empty: reuse the real bilingual identity.
     if (document.body.getAttribute('data-page') === 'resume') {
       var info = document.querySelector('.fcs-info');

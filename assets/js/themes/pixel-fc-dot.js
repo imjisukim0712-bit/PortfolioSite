@@ -374,50 +374,26 @@
     if (text) el.textContent = text;
     parent.appendChild(el);
   }
-  /* 5차: 참고 그림 ②의 패드 두 개 — 4px 도트 한 칸씩 찍은 SVG(글자 없음, 장식). 홈 첫 화면 제목 아래에만. */
-  function padsSvg() {
-    var R = function (x, y, w, h, c) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + c + '"/>'; };
-    function pad(ox) {
-      var k = '#161616', r = '#ae1032', o = '#ff9e00', g = '#bdbdbd';
-      /* 모서리 한 칸씩 깎은 몸통(검은 테 → 진홍) · 주황 면 · 십자키 · SELECT/START · 버튼 두 개 · 회색 두께 · 위로 나가는 선 */
-      return R(ox + 2, 3, 26, 9, g) + R(ox + 3, 2, 24, 11, g) +
-        R(ox, 2, 26, 9, k) + R(ox + 1, 1, 24, 11, k) + R(ox + 1, 2, 24, 9, r) + R(ox + 2, 5, 22, 5, o) +
-        R(ox + 4, 7, 3, 1, k) + R(ox + 5, 6, 1, 3, k) +
-        R(ox + 9, 7, 2, 1, k) + R(ox + 12, 7, 2, 1, k) +
-        R(ox + 16, 6, 3, 3, k) + R(ox + 17, 7, 1, 1, r) + R(ox + 20, 6, 3, 3, k) + R(ox + 21, 7, 1, 1, r) +
-        R(ox + 12, 0, 2, 1, k);
-    }
-    return '<svg viewBox="0 0 59 14" width="295" height="70" shape-rendering="crispEdges" focusable="false">' +
-      pad(0) + pad(31) + '</svg>';
-  }
-  function decoratePads(main) {
-    var intro = main.querySelector('.fcs-stage--home .fcs-intro');
-    if (!intro || intro.querySelector('.fcd-pads')) return;
-    var art = document.createElement('span');
-    art.className = 'fcd-pads'; art.setAttribute('aria-hidden', 'true');
-    art.innerHTML = padsSvg();
-    intro.appendChild(art);
-  }
   function decorateParts() {
     if (!active()) return;
     var main = document.querySelector('[data-slot="main"]');
     if (!main) return;
-    decoratePads(main);
     var hero = main.querySelector('.hero.fc-console');
     if (hero) decoration(hero, 'fcd-shell');
     var parts = main.querySelectorAll('.hp-block, .hp-games');
     if (!parts.length) parts = main.querySelectorAll('.section > .wrap');
-    Array.prototype.forEach.call(parts, function (part, i) {
+    var no = 0;
+    Array.prototype.forEach.call(parts, function (part) {
       if (part.classList.contains('hp-games')) part = part.parentNode;
       part.classList.add('fcd-part');
-      decoration(part, 'fcd-part-no', ('0' + (i + 1)).slice(-2));
+      /* 10회차: 번호는 제목이 있는 절에만 — 제목 없는 숫자 줄(이력서 stats)에 붙으면 첫 카드를 덮음 */
+      if (part.querySelector(':scope > :is(.hp-h, .section__head, .proj-head, .cl-summary__t)')) decoration(part, 'fcd-part-no', ('0' + (++no)).slice(-2));
     });
-    var faces = document.querySelectorAll('.fcd-part, .hero.fc-console, .draw__stage, .gcard, .card-back, ' +
+    /* 10회차: 두께 면은 큰 면(게임기 · 진열판 · 카드 · 버튼)에만 — 칩 · 아이콘 · 메뉴 · 절 상자까지 입체면 조잡해 보임 */
+    var faces = document.querySelectorAll('.hero.fc-console, .draw__stage, .gcard, .card-back, ' +
       '.stat, .card, .strength, .hp-game, .profile, .tl-item, .cover-block, .play-card, .steam, ' +
       '.quest-strip, .detail__learned, .block, .pager__item, .media-box, .cover-empty, .proj-empty, ' +
-      '.sheet__panel, .toast, .btn, .tab, .fc-key, .tag, .badge, .back-link, .store-link, ' +
-      '.icon-btn, .nav__burger, .lang-toggle, .nav__link, .hp-skill__ic, .tool__ic, .hp-thumb, .hp-game__ic, ' +
-      '.hero__eyebrow, .hero__portrait, .hero__photo, .quip, .fc-ov__btn, .fc-slot');
+      '.sheet__panel, .btn, .tab, .fc-key, .fc-ov__btn, .fc-slot');
     Array.prototype.forEach.call(faces, function (face) {
       face.classList.add('fcd-solid');
       decoration(face, 'fcd-volume');
@@ -432,7 +408,7 @@
     new MutationObserver(function (records) {
       var added = records.some(function (record) {
         return Array.prototype.some.call(record.addedNodes, function (el) {
-          return el.nodeType === 1 && !/^fcd-(volume|shell|part-no|pads)$/.test(el.className || '');
+          return el.nodeType === 1 && !/^fcd-(volume|shell|part-no)$/.test(el.className || '');
         });
       });
       if (!added || queued || !active()) return;

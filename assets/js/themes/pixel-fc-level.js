@@ -416,14 +416,6 @@
       if (hud.firstElementChild.textContent !== numberText) hud.firstElementChild.textContent = numberText;
       if (hud.lastElementChild.textContent !== pageText) hud.lastElementChild.textContent = pageText;
     }
-    /* 5차: 첫 화면 제목 아래 떠 있는 블록 한 줄(벽돌 · ? · 벽돌 · ? · 벽돌) + ? 위로 튀어나온 코인. 장식 전용. */
-    var intro = document.querySelector('[data-slot="main"] .fcs-stage--home .fcs-intro');
-    if (intro && !intro.querySelector('.level-platform')) {
-      var row = document.createElement('span');
-      row.className = 'level-platform'; row.setAttribute('aria-hidden', 'true');
-      row.innerHTML = '<i class="b"></i><i class="q"><em></em></i><i class="b"></i><i class="q"></i><i class="b"></i>';
-      intro.appendChild(row);
-    } else if (!intro && !paint.retry) { paint.retry = true; requestAnimationFrame(function () { paint.retry = false; paint(); }); }
     var footer = document.querySelector('[data-slot="footer"]');
     if (footer) {
       var end = footer.querySelector('.level-end');

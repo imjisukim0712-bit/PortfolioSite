@@ -54,9 +54,21 @@
 같은 R&D 를 Codex 가 따로 진행한 결과가 `pixel-fc-laureate`(기념 선집) · `pixel-fc-gallery`(소장품 전시) · `pixel-fc-rally`(랠리 프린트) 이고(조사 노트 `docs/rnd-codex-retro.md`), 게임기 몸통 SVG 는 fc-body.js 가 아니라 각 안의 JS 안에 따로 있습니다.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
+**포트폴리오 다듬기(10회차) — 도트 · 크라프트 · 스테이지 · 랠리 프린트** 네 안은 시안 CSS 뒤에 공용 파일
+`assets/css/themes/pixel-fc-folio.css` 를 하나 더 읽습니다(시안 항목의 `css: [...]`). 이 파일이 네 안의 '포트폴리오다운' 뼈대를 같은 규칙으로 맞추고,
+안별 조정도 파일 아래쪽 안 이름 절에 모았습니다(회차마다 덧쌓인 시안 CSS 를 고치는 대신 뒤에서 덮습니다 — 특이도는 `:root[data-skin…]` 로 맞춤).
+- 첫 화면 왼쪽 = 눈썹 → 큰 제목 → 읽히는 안내 한 줄(15px) → **이력서 숫자 줄 `.fcs-facts`**. 숫자 줄은 `fc-stage.js` 가 `content.js` 의 `resume.stats`
+  (`{num, unit, label}` ko/en)로 그리므로 숫자를 바꾸려면 이력서 쪽만 고치면 됩니다(`FOLIO` 목록의 안 · 홈에서만). 예전의 첫 화면 소품
+  (도트 패드 · 크라프트 컨트롤러 스티커 · 스테이지 블록 줄 · 랠리 사선 엠블럼)은 빼고 다시 붙이지 않습니다.
+- 정렬: 첫 화면 판(`.fcs-stage`)과 아래 모든 절(`main .section > .wrap`) · 푸터가 같은 폭 `--folio-max`(1240px) · 같은 왼쪽 선. 절의 `.wrap` 안쪽 여백은 건드리지 않습니다.
+- 본문은 15px 이상, 도트 글꼴은 로고 · 큰 제목 · 숫자에만. 절 끝 '더 보기'(`.hp-more`)는 떠 있는 버튼이 아니라 오른쪽 글자 링크.
+- 도트: 절 = 도트 번호 배지 + 제목 + 굵은 선의 머리 아래 한 겹 카드(번호는 제목이 있는 절에만 — `pixel-fc-dot.js`), 회색 두께 면은 게임기 · 진열판 · 카드 · 버튼에만.
+  크라프트: 선로는 첫 절 제목부터 내려가는 가는 선 하나(첫 화면을 감던 고리 · 여백 스티커 없음). 스테이지: 카드는 '벽돌 턱 한 줄 + 남색 테' 발판, 강점 카드는 같은 높이,
+  절 사이 구름 없음, 큰 글자는 외곽선 없이 그림자 하나. 랠리: 절 사이 전폭 구분선 없음.
+
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).
   `?skin=<id>` 파라미터 → `localStorage['portfolio:skin']` → `DEFAULT_SKIN` 순으로 시안을 정하고,
-  `<html data-skin="pixel-gameboy" data-skin-theme="pixel">` 를 찍은 뒤 CSS 두 개(`<테마>.css` + `<테마>-<시안>.css`)와 글꼴 링크를 넣습니다.
+  `<html data-skin="pixel-gameboy" data-skin-theme="pixel">` 를 찍은 뒤 CSS 두 개(`<테마>.css` + `<테마>-<시안>.css`, 시안 항목에 `css` 가 있으면 그 파일까지)와 글꼴 링크를 넣습니다.
   둘러보는 중(파라미터나 저장값이 있을 때)에만 왼쪽 아래 스위처가 뜹니다. 편집기 프레임(`ve=1`)·iframe 안에서는 저장하지 않습니다.
 - **확정**은 `DEFAULT_SKIN` 한 줄. 지금은 `'pixel-famicom'` 이 들어가 있어 방문자 모두에게 패미컴 시안이 보입니다. 시안 목록·이름·설명·색견본·글꼴 URL 도 같은 파일의 `THEMES` 배열에 있고, `themes.html` 갤러리가 이 배열로 그려집니다.
 - 테마 CSS 규칙은 전부 `[data-skin-theme="…"]` / `[data-skin="…"]` 로 시작합니다. 기본 CSS 의 다크 규칙(`:root[data-theme="dark"] .x`)보다 우선해야 하는 카드 등급·아트 색 같은 규칙은 `:root[data-skin…]` 으로 특이도를 맞춥니다.

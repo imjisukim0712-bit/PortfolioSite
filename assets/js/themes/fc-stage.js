@@ -20,6 +20,8 @@
                 'pixel-fc-gold': 1, 'pixel-fc-metal': 1, 'pixel-fc-museum': 1,
                 'pixel-fc-laureate': 1, 'pixel-fc-gallery': 1, 'pixel-fc-rally': 1 };
   var CAPTION = { ko: '카트리지를 골라 꽂으면 게임기 화면에 프로젝트가 켜집니다', en: 'Pick a cartridge and slot it in to boot the project on screen' };
+  /* 포트폴리오 다듬기(10회차) 안: 홈 제목 아래에 이력서 숫자(content.js 의 resume.stats)를 한 줄로 */
+  var FOLIO = { 'pixel-fc-dot': 1, 'pixel-fc-kraft': 1, 'pixel-fc-level': 1, 'pixel-fc-rally': 1 };
 
   function active() { return !!SKINS[document.documentElement.getAttribute('data-skin')]; }
   function lang() {
@@ -27,6 +29,22 @@
     return v === 'en' ? 'en' : 'ko';
   }
   function node(tag, cls, text) { var el = document.createElement(tag); el.className = cls; if (text) el.textContent = text; return el; }
+  function pick(o) { var L = lang(); return typeof o === 'string' ? o : (o && (o[L] || o.ko)) || ''; }
+
+  function facts() {
+    var c = window.PORTFOLIO_CONTENT || {}, stats = (c.resume && c.resume.stats) || [];
+    if (!stats.length) return null;
+    var list = node('dl', 'fcs-facts');
+    stats.forEach(function (s) {
+      var item = node('div', 'fcs-fact'), unit = pick(s.unit), value = node('dd', 'fcs-fact__v', s.num || '');
+      /* 영어 단위(titles · yrs)는 숫자와 띄우고, 기호·한글 단위(+ · 종 · 년)는 붙입니다 */
+      if (unit) value.appendChild(node('span', 'fcs-fact__u' + (/^[A-Za-z]/.test(unit) ? ' fcs-fact__u--word' : ''), unit));
+      item.appendChild(node('dt', 'fcs-fact__k', pick(s.label)));
+      item.appendChild(value);
+      list.appendChild(item);
+    });
+    return list;
+  }
 
   function stage() {
     if (!active()) return;
@@ -53,6 +71,7 @@
     var note = intro.querySelector('.hero__note'); if (note) lead.appendChild(note);
     if (actions) lead.appendChild(actions);
     if (tray) intro.appendChild(node('p', 'fcs-caption', CAPTION[lang()]));
+    if (tray && FOLIO[document.documentElement.getAttribute('data-skin')]) { var list = facts(); if (list) intro.appendChild(list); }
   }
 
   function scan() { if (active()) stage(); }

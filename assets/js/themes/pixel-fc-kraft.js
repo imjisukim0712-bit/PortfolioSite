@@ -384,9 +384,6 @@
   'use strict';
   var SKIN = 'pixel-fc-kraft', NS = 'http://www.w3.org/2000/svg';
   var frame = 0, resize = null, observed = [];
-  var STAR = 'M8 0h8v8h8v8h-8v8H8v-8H0V8h8Z';
-  var HEART = 'M0 4h4V0h8v4h4V0h8v4h4v12h-4v4h-4v4h-4v4h-4v-4H8v-4H4v-4H0Z';
-  var COIN = 'M8 0h12v4h4v4h4v12h-4v4h-4v4H8v-4H4v-4H0V8h4V4h4Zm4 8v12h4V8Z';
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
   function node(tag, attrs) {
     var el = document.createElementNS(NS, tag);
@@ -406,24 +403,6 @@
     }
     return d + 'L' + points[points.length - 1].join(' ');
   }
-  /* 직접 그린 두 컨트롤러. 글자 없는 비상호작용 기념 스티커입니다. */
-  function memento(intro) {
-    if (!intro || intro.querySelector('.kf-memento')) return;
-    var art = document.createElement('span');
-    art.className = 'kf-memento'; art.setAttribute('aria-hidden', 'true');
-    var svg = node('svg', { viewBox: '0 0 160 56', focusable: 'false' });
-    svg.appendChild(node('path', { d: 'M24 6V2H136V6', fill: 'none', stroke: 'var(--kf-cable)', 'stroke-width': '4', 'stroke-linejoin': 'round' }));
-    [0, 84].forEach(function (x) {
-      var g = node('g', { transform: 'translate(' + x + ' 8)' });
-      g.appendChild(node('rect', { width: '76', height: '42', rx: '12', fill: '#a3203a' }));
-      g.appendChild(node('rect', { x: '6', y: '6', width: '64', height: '30', rx: '6', fill: '#f5ebd6' }));
-      g.appendChild(node('path', { d: 'M16 12h8v6h6v8h-6v6h-8v-6h-6v-8h6Z', fill: '#26221d' }));
-      g.appendChild(node('circle', { cx: '49', cy: '26', r: '5', fill: '#a3203a' }));
-      g.appendChild(node('circle', { cx: '62', cy: '18', r: '5', fill: '#a3203a' }));
-      svg.appendChild(g);
-    });
-    art.appendChild(svg); intro.appendChild(art);
-  }
   function observe(elements) {
     if (!resize) return;
     if (elements.length === observed.length && elements.every(function (el, i) { return observed[i] === el; })) return;
@@ -433,7 +412,7 @@
   function paint() {
     frame = 0;
     if (!active()) {
-      document.querySelectorAll('.kf-cables, .kf-memento').forEach(function (el) { el.remove(); });
+      document.querySelectorAll('.kf-cables').forEach(function (el) { el.remove(); });
       if (resize) resize.disconnect();
       observed = [];
       return;
@@ -441,8 +420,6 @@
     var main = document.querySelector('[data-slot="main"]');
     if (!main) return;
     var stage = main.querySelector('.fcs-stage');
-    var intro = stage && stage.querySelector('.fcs-intro');
-    memento(intro);
     var headings = Array.prototype.slice.call(main.querySelectorAll('.hp-h, .section__head, .proj-head, .detail__title, .cl-summary__t'));
     var svg = main.querySelector(':scope > .kf-cables');
     if (!svg) {
@@ -450,12 +427,10 @@
       svg.appendChild(node('path', { 'class': 'kf-cables__wire' }));
       svg.appendChild(node('path', { 'class': 'kf-cables__wire' }));
       svg.appendChild(node('g', { 'class': 'kf-cables__sockets' }));
-      [STAR, HEART, COIN].forEach(function (d) { svg.appendChild(node('path', { 'class': 'kf-cables__sprite', d: d, 'fill-rule': 'evenodd' })); });
       main.insertBefore(svg, main.firstChild);
     }
     var paper = main.getBoundingClientRect(), W = paper.width, H = paper.height;
     if (!W || !H) return;
-    var mobile = W < 900;
     function x(v) { return Math.max(16, Math.min(W - 16, v - paper.left)); }
     function y(v) { return Math.max(12, Math.min(H - 12, v - paper.top)); }
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
@@ -463,26 +438,9 @@
     var left = firstWrap ? firstWrap.getBoundingClientRect().left + parseFloat(getComputedStyle(firstWrap).paddingLeft) : paper.left + 38;
     var spine = Math.max(16, x(left) - 26), end = H - 22;
     var wires = svg.querySelectorAll('.kf-cables__wire');
-    var start = stage ? y(stage.getBoundingClientRect().bottom + 12) : 20;
-    var hero = stage && stage.querySelector('.hero');
-    if (stage && intro && hero && !mobile) {
-      var st = stage.getBoundingClientRect(), title = intro.getBoundingClientRect();
-      var machine = hero.getBoundingClientRect();
-      var tray = stage.querySelector('.draw__stage'), shelf = (tray || hero).getBoundingClientRect();
-      var top = y(Math.min(machine.top - 22, st.top + 20));
-      var right = x(Math.max(machine.right, shelf.right) + 24);
-      var gutter = x(title.right + 18);
-      /* memento 아래 → 제목 오른쪽 → 게임기 윗면/오른쪽 → 진열판 아래 → 본문 선로. */
-      wires[0].setAttribute('d', rounded([
-        [x(title.left + 18), y(title.bottom + 18)], [gutter, y(title.bottom + 18)],
-        [gutter, top], [right, top], [right, y(Math.max(shelf.bottom, title.bottom) + 28)],
-        [spine, y(Math.max(shelf.bottom, title.bottom) + 28)], [spine, end]
-      ]));
-    } else {
-      /* 모바일은 글자 바깥의 왼쪽 여백을 쓴다. 기기 구도와 터치 영역은 그대로. */
-      var from = stage ? y(stage.getBoundingClientRect().top + 16) : 18;
-      wires[0].setAttribute('d', rounded([[spine + 12, from], [spine, from], [spine, end]]));
-    }
+    /* 10회차: 첫 화면을 크게 감던 경로는 접고, 첫 절 제목 위에서 시작해 마지막 절까지 내려가는 선 하나만 */
+    var from = headings.length ? y(headings[0].getBoundingClientRect().top - 22) : (stage ? y(stage.getBoundingClientRect().bottom + 12) : 20);
+    wires[0].setAttribute('d', 'M' + spine + ' ' + from + 'V' + end);
     var sockets = svg.querySelector('.kf-cables__sockets');
     while (sockets.children.length > headings.length) sockets.lastElementChild.remove();
     var branches = '';
@@ -490,26 +448,17 @@
       var r = heading.getBoundingClientRect(), cx = Math.max(16, x(r.left) - 24);
       var cy = y(r.top + Math.min(18, r.height / 2));
       var circle = sockets.children[i];
-      if (!circle) { circle = node('circle', { 'class': 'kf-cables__socket', r: '9' }); sockets.appendChild(circle); }
+      if (!circle) { circle = node('circle', { 'class': 'kf-cables__socket', r: '7' }); sockets.appendChild(circle); }
       circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
       /* 먼 열의 제목은 문장 가로지르지 않게 제목 위 빈 여백으로 분기. */
       branches += rounded([[spine, y(r.top - 22)], [cx, y(r.top - 22)], [cx, cy]]) + ' ';
     });
     wires[1].setAttribute('d', branches);
-    var sprites = svg.querySelectorAll('.kf-cables__sprite');
-    var stageTop = stage ? y(stage.getBoundingClientRect().top + 12) : 12;
-    /* 소품은 오른쪽 바깥 여백에만, 세 높이에 나눠 둡니다(글·케이블과 겹치지 않게). 좁은 화면에서는 숨김. */
-    var mx = W - Math.max(40, (W - 1120) / 4) - 14;
-    var spots = [[mx, Math.min(end - 40, start + 90)], [mx - 6, Math.round(start + (end - start) * .5)], [mx, end - 120]];
-    sprites.forEach(function (el, i) {
-      el.style.display = mobile || W < 1240 ? 'none' : '';
-      el.setAttribute('transform', 'translate(' + spots[i].join(' ') + ')');
-    });
     /* 선로 끝 = 둥근 플러그 하나 (끊긴 선처럼 보이지 않게) */
     var plug = svg.querySelector('.kf-cables__plug');
-    if (!plug) { plug = node('circle', { 'class': 'kf-cables__plug', r: '10' }); svg.appendChild(plug); }
+    if (!plug) { plug = node('circle', { 'class': 'kf-cables__plug', r: '7' }); svg.appendChild(plug); }
     plug.setAttribute('cx', spine); plug.setAttribute('cy', end);
-    observe([main].concat(stage ? [stage, intro, hero] : [], headings, Array.prototype.slice.call(main.querySelectorAll('.draw__stage, .strengths, .steam'))).filter(Boolean));
+    observe([main].concat(stage ? [stage] : [], headings, Array.prototype.slice.call(main.querySelectorAll('.draw__stage, .strengths, .steam'))).filter(Boolean));
   }
   function schedule() { if (!frame) frame = window.requestAnimationFrame(paint); }
   function init() {

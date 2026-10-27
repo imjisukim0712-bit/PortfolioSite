@@ -937,10 +937,7 @@
 }
 [data-skin="pixel-fc-kraft"] .kf-cables__wire { fill: none; stroke: currentColor; stroke-width: 9; stroke-linejoin: round; stroke-linecap: round; }
 [data-skin="pixel-fc-kraft"] .kf-cables__socket { fill: var(--bg); stroke: currentColor; stroke-width: 7; }
-[data-skin="pixel-fc-kraft"] .kf-cables__sprite { fill: var(--kf-red); opacity: .55; }
 [data-skin="pixel-fc-kraft"] .kf-cables__plug { fill: var(--kf-cable); }
-[data-skin="pixel-fc-kraft"] .kf-memento { display: block; width: 160px; height: 56px; margin-top: 28px; transform: rotate(-5deg); pointer-events: none; }
-[data-skin="pixel-fc-kraft"] .kf-memento svg { width: 100%; height: 100%; }
 /* 절 제목 = 선로에 꽂는 둥근 단자 + 라벨 활자. 단자 중심은 JS가 읽음. */
 [data-skin="pixel-fc-kraft"] :is(.hp-h, .cl-summary__t) {
   display: block; position: relative; border: 0; padding: 0; margin-bottom: 26px;
