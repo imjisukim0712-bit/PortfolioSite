@@ -95,12 +95,12 @@ python3 -m http.server 8000   # http://localhost:8000
 ## 색 · 다크모드 조정
 `assets/css/style.css` 상단 `:root`(라이트) 와 `:root[data-theme="dark"]`(다크) 의 시맨틱 토큰만 바꾸면 전체에 반영됩니다.
 
-## 디자인 테마 시안 (테마 8종 · 시안 35개)
+## 디자인 테마 시안 (테마 8종 · 시안 38개)
 `themes.html` 에서 전체 시안을 보고, 카드를 누르면 그 디자인이 입혀진 실제 사이트가 열립니다.
 
 | 테마 | 시안 id |
 |---|---|
-| 레트로 픽셀 아케이드 | `pixel-famicom` · 디자인 안 `pixel-fc-3d` · `pixel-fc-8bit` · `pixel-fc-boxart` · 그림체 안 `pixel-fc-clay` · `pixel-fc-toon` · `pixel-fc-airbrush` · `pixel-fc-pixel` · 원본 기반 기울인 구도 `pixel-fc-classic` · `pixel-fc-px3d` · `pixel-fc-voxel` · 참고 그림 화풍 `pixel-fc-icon` · `pixel-fc-dot` · `pixel-fc-blueprint` · `pixel-fc-flat` · `pixel-fc-ukiyo` · `pixel-fc-iso` · `pixel-fc-line` · `pixel-fc-snes` · `pixel-fc-kraft` · `pixel-fc-level` · 레트로 R&D `pixel-fc-gold` · `pixel-fc-metal` · `pixel-fc-museum` |
+| 레트로 픽셀 아케이드 | `pixel-famicom` · 디자인 안 `pixel-fc-3d` · `pixel-fc-8bit` · `pixel-fc-boxart` · 그림체 안 `pixel-fc-clay` · `pixel-fc-toon` · `pixel-fc-airbrush` · `pixel-fc-pixel` · 원본 기반 기울인 구도 `pixel-fc-classic` · `pixel-fc-px3d` · `pixel-fc-voxel` · 참고 그림 화풍 `pixel-fc-icon` · `pixel-fc-dot` · `pixel-fc-blueprint` · `pixel-fc-flat` · `pixel-fc-ukiyo` · `pixel-fc-iso` · `pixel-fc-line` · `pixel-fc-snes` · `pixel-fc-kraft` · `pixel-fc-level` · 레트로 R&D `pixel-fc-gold` · `pixel-fc-metal` · `pixel-fc-museum` · Codex R&D `pixel-fc-laureate` · `pixel-fc-gallery` · `pixel-fc-rally` |
 | 네오 브루탈리즘 | `brutal-cyberpunk` · `brutal-newsprint` |
 | 브랜드 홈페이지 | `brand-keynote` · `brand-bento` |
 | 컨셉 무대 | `concept-spec` · `concept-patch` · `concept-tabletop` |

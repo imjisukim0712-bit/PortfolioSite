@@ -16,7 +16,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 35개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 38개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -144,6 +144,22 @@
           scripts: ['js/themes/pixel-fc-museum.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           fonts: [G + 'Noto+Serif+KR:wght@400;700'],
           swatch: ['#f4f2ee', '#c8202c', '#1a1a1a', '#b9a88a'] },
+        { id: 'fc-laureate', name: { ko: '패미컴 · 기념 선집', en: 'Famicom · Laureate' },
+          desc: { ko: 'R&D ①. 진홍 래커와 금박 월계 메달, 세리프 제목과 가는 이중선으로 꾸민 기획 선집. 카트리지는 금속 테를 두른 수집품으로, 하위 페이지는 기념 도록으로.',
+                  en: 'R&D 1: a collector folio in crimson lacquer, with a gold laurel medallion, serif headlines and fine double rules. Cartridges become gilt collectibles; inner pages become a commemorative catalogue.' },
+          scripts: ['js/themes/pixel-fc-laureate.js', 'js/themes/fc-stage.js'],
+          fonts: [G + 'Noto+Serif+KR:wght@500;600;700'],
+          swatch: ['#8f1028', '#eac888', '#fff6e2', '#631127'] },
+        { id: 'fc-gallery', name: { ko: '패미컴 · 소장품 전시', en: 'Famicom · Gallery' },
+          desc: { ko: 'R&D ②. 거대한 원형 전시벽, 가는 전시 번호와 소장품 라벨. 빨강 기기는 밝은 받침대 위에 놓이고, 카드·표·본문은 여백이 넉넉한 전시 캡션처럼.',
+                  en: 'R&D 2: a monumental circular gallery wall, light exhibit numbers and collection labels. A red console rests on a pale plinth; cards, tables and text use the space and rhythm of exhibition captions.' },
+          scripts: ['js/themes/pixel-fc-gallery.js', 'js/themes/fc-stage.js'],
+          swatch: ['#f4f5f1', '#b52d3c', '#dce5d8', '#23392e'] },
+        { id: 'fc-rally', name: { ko: '패미컴 · 랠리 프린트', en: 'Famicom · Rally Print' },
+          desc: { ko: 'R&D ③. 80년대 스포츠 인쇄물의 넓은 사선 띠와 기울임꼴 제목, 강한 띠로 구분한 정보. 모서리를 깎은 빨강 기기와 경기 프로그램 같은 카트리지 라벨.',
+                  en: 'R&D 3: broad diagonal bands, italic headlines and bold information bars inspired by 1980s sports print. A chamfered red console and cartridges labelled like a race programme.' },
+          scripts: ['js/themes/pixel-fc-rally.js', 'js/themes/fc-stage.js'],
+          swatch: ['#eee8d8', '#ba2632', '#e8ad23', '#302b28'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
           desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
                   en: 'Design draft 2: an 8-bit screen where everything from the console to the window frames and headings is drawn in pixels, with stepped corners, pixel shadows and retro dialog boxes.' },
