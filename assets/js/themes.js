@@ -45,7 +45,22 @@
           desc: { ko: '레이아웃 안 3. 게임기 화면이 게임 선택 메뉴가 됩니다. 화면 왼쪽 목록에서 프로젝트를 고르면 오른쪽에 미리보기가 뜨고, 아래 선반의 카트리지를 꽂으면 바로 상세로 들어갑니다.',
                   en: 'Layout draft 3: the console screen becomes a game-select menu. Pick a project from the list on the left to preview it on the right, or insert a cartridge from the shelf below to jump into the details.' },
           scripts: ['js/themes/pixel-fc-menu.js'],
-          swatch: ['#efe6d2', '#b8252b', '#2b2b2b', '#e9b64a'] }
+          swatch: ['#efe6d2', '#b8252b', '#2b2b2b', '#e9b64a'] },
+        { id: 'fc-3d', name: { ko: '패미컴 · 제품 사진', en: 'Famicom · Product Shot' },
+          desc: { ko: '디자인 안 ①. 게임기와 카트리지를 실물 같은 광택 플라스틱으로 그린 제품 소개 페이지. 넓은 여백, 부드러운 그림자, 살짝 기울어진 본체.',
+                  en: 'Design draft 1: the console and cartridges rendered as glossy, real-looking plastic on a product page, with generous space, soft shadows and a slightly tilted body.' },
+          scripts: ['js/themes/pixel-fc-3d.js'],
+          swatch: ['#f4f1ec', '#c8202f', '#1c1c1e', '#d9b25a'] },
+        { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
+          desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
+                  en: 'Design draft 2: an 8-bit screen where everything from the console to the window frames and headings is drawn in pixels, with stepped corners, pixel shadows and retro dialog boxes.' },
+          scripts: ['js/themes/pixel-fc-8bit.js'],
+          swatch: ['#000000', '#d82800', '#fcfcfc', '#fca044'] },
+        { id: 'fc-boxart', name: { ko: '패미컴 · 박스아트', en: 'Famicom · Box Art' },
+          desc: { ko: '디자인 안 ③. 빨간 바탕 위에 크림색 게임기를 놓은 대담한 평면 그래픽. 패키지 박스처럼 큰 글자와 금색 띠, 사선 무늬.',
+                  en: 'Design draft 3: bold flat graphics with a cream console on a red field, like game box art, with huge type, gold bands and diagonal stripes.' },
+          scripts: ['js/themes/pixel-fc-boxart.js'],
+          swatch: ['#b8252b', '#f3e9d2', '#2b2b2b', '#e9b64a'] }
       ]
     },
     {
