@@ -49,6 +49,7 @@
 3D 픽셀(`pixel-fc-px3d`)은 자동 변환이 아니라 `tools/fc-pixel/sprites.py` 가 도트를 규칙대로 찍어 만든 **스프라이트**이고(입체는 그림 안 3/4 시점 — 도트가 깨지지 않게 이 안만 판을 CSS 로 기울이지 않음, 도트 한 칸 = 4px),
 복셀의 그림은 `tools/fc-pixel/capture-fc.js` → `render3d.py voxel` 로 만들고, 게임기는 화면 높이에 따라 크기가 바뀌므로 9조각 border-image 로 붙이며 붙이는 CSS(`pixel-fc-<안>-parts.css`)도 자동 생성됩니다. 시안 항목의 `scripts` 는 테마 공통 스크립트 뒤에 그 시안에서만 읽힙니다.
 `pixel-fc-icon`(픽셀 아이콘) · `pixel-fc-dot`(도트) · `pixel-fc-blueprint`(설명서) · `pixel-fc-flat`(플랫 일러스트) · `pixel-fc-ukiyo`(레트로 판화) · `pixel-fc-iso`(아이소) · `pixel-fc-line`(컬러 선화) · `pixel-fc-snes`(고해상 도트) · `pixel-fc-kraft`(크라프트) · `pixel-fc-level`(스테이지) 는 정돈 안을 복제해 **사용자가 준 참고 그림 한 장씩의 색·화풍**을 입힌 안입니다 — 구도(fc-stage.js 의 기울인 판)·패미컴 실루엣·빨강 중심 색·꽂기 동작은 그대로이고, 화풍은 첫 화면만이 아니라 메뉴·절·카드·표·푸터·하위 페이지까지 **사이트 전체의 디자인 규칙**으로 입힙니다(그림 속 소품을 그대로 붙이지 않음 · 상표/기존 게임 캐릭터 금지). 장식 DOM 은 각 안의 JS 가 시안 id 일 때만 붙입니다.
+이 중 `pixel-fc-dot` · `pixel-fc-kraft` · `pixel-fc-level` 은 900px 이상에서 게임기 몸통을 상자 조각 대신 **SVG 그림 한 장**(`assets/js/themes/fc-body.js`, viewBox 1000×500)으로 그립니다 — 손잡이·화면 자리는 각 안 CSS 가 같은 숫자(cqw, 판 `.fcs-rig` 가 크기 기준)로 맞추고, 도트 그림은 칸 격자에 칠한 뒤 외곽선을 실루엣 가장자리로 계산해 모서리에서 선이 끊기지 않게 합니다. 그림 숫자를 바꾸면 CSS 의 손잡이 폭(13cqw)·화면 여백도 함께 바꾸세요.
 `hud-launcher` 는 `assets/js/themes/hud.js` 로 상단 시계·하단 컨트롤러 바(Ⓐ 프로젝트 · Ⓑ 맨 위로 · Ⓨ 화면 모드)를 붙입니다.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).

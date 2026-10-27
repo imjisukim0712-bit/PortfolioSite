@@ -853,3 +853,58 @@
 @keyframes level-coin { 50% { transform: translateY(-8px); } }
 @media (prefers-reduced-motion: reduce) { [data-skin="pixel-fc-level"] .level-platform em { animation: none; } }
 @media (max-width: 899px) { [data-skin="pixel-fc-level"] .level-platform { display: none; } }
+
+/* ── 6차: 게임기 몸통 = SVG 그림 한 장 (assets/js/themes/fc-body.js) ─────────────
+   상자 여러 개를 쌓아 그린 몸통은 기울이면 조각마다 계단 모서리가 틀어져 깨져 보였습니다.
+   900px 이상에서는 그림이 몸통을 맡고, 아래 규칙은 손잡이·화면 자리를 그림과 같은 숫자에 맞춥니다
+   (그림 1000 단위 = 판 폭 100cqw — 판 .fcs-rig 를 크기 기준(container)으로 씁니다).
+   기울기도 조금 줄였습니다(날씬한 비율 + 덜 비틀린 원근). */
+[data-skin="pixel-fc-level"] .fcb-art { display: none; }
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-level"] .fcs-rig { container-type: inline-size; transform: perspective(1400px) rotateX(5deg) rotateY(-9deg) rotateZ(2deg); }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console {
+    --fc-h: 50cqw; height: 50cqw; min-height: 0; padding: 0 3cqw 3cqw 0;
+    grid-template-columns: 13cqw minmax(0, 1fr) 13cqw;
+    background: none; border: 0; border-radius: 0; box-shadow: none; clip-path: none; overflow: visible;
+  }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console::before { display: none; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > :is(.fcd-shell, .fcd-volume, .fcc-hardware) { display: none; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero > .fcb-art { display: block; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .fc-grip {
+    position: relative; z-index: 1; background: none; border: 0; border-radius: 0; clip-path: none; box-shadow: none; padding: 0; gap: 1.4cqw;
+  }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .fc-grip::before,
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .fc-grip::after { display: none; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .wrap {
+    position: relative; z-index: 1; min-height: 0; margin: 6cqw 3cqw; padding: 2.2cqw 2.8cqw;
+    background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible;
+  }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .wrap > .fc-boot { border-radius: 0; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .hero__grid { gap: 2.8cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .hero .portrait { width: 15cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .portrait__nm { font-size: 3.1cqw; line-height: 1.25; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .portrait__cap { margin-bottom: 1.2cqw; gap: .4cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .quip { font-size: 1.75cqw; line-height: 1.6; padding: .9cqw 1.4cqw; margin-bottom: 1cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .btn-row { margin-top: 1.2cqw; gap: 1.2cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .btn { min-height: 0; padding: .9cqw 1.8cqw; font-size: 1.6cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig > .draw { margin-top: 3.6cqw; }
+}
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info, :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info > * { min-width: 0; max-width: 100%; box-sizing: border-box; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fcs-info .quip { width: 100%; overflow-wrap: anywhere; }
+}
+@media (min-width: 900px) { :root[data-skin="pixel-fc-level"] .fcs-rig > .hero.fc-console > .wrap { width: auto; max-width: none; } }
+/* 꽂은 뒤 개요 화면도 그림 속 액정 크기(cqw)에 맞춰 — 큰 제목이 화면을 다 먹지 않게 */
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-boot { padding: 1.8cqw 2.4cqw; align-items: center; overflow: hidden; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov { grid-template-columns: 22cqw minmax(0, 1fr); gap: 2.4cqw; align-items: center; width: 100%; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__art { width: 100%; max-width: none; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__meta { font-size: 1.25cqw; gap: .8cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__t { margin: .9cqw 0 .5cqw; font-size: 3cqw; line-height: 1.2; word-break: keep-all; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__sub { font-size: 1.5cqw; line-height: 1.45; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__rows { margin-top: 1.2cqw; gap: .4cqw 1.2cqw; font-size: 1.35cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__k { font-size: 1.15cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__q { margin-top: 1cqw; padding: .7cqw 1cqw; font-size: 1.3cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__btns { margin-top: 1.4cqw; gap: 1cqw; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__btn { min-height: 0; padding: .8cqw 1.6cqw; font-size: 1.4cqw; }
+}
