@@ -256,6 +256,19 @@
 [data-skin="pixel-fc-3d"] .fc-fly__card { width: 100%; height: 100%; transform: none !important; }
 [data-skin="pixel-fc-3d"] .fc-slot { position: fixed; z-index: 99; left: 50%; width: 220px; height: 32px; border: 1px solid #9a1827; border-radius: 0 0 18px 18px; background: linear-gradient(#f0525c,#ba1a2d); box-shadow: inset 0 -2px 3px #ff8f8f70,0 10px 25px #00000030; }
 [data-skin="pixel-fc-3d"] .fc-slot::after { content: ''; position: absolute; bottom: 7px; left: 20px; right: 20px; height: 7px; border-radius: 9px; background: #241c1d; box-shadow: inset 0 2px 2px #000,0 1px 0 #ff8d8d80; }
+/* 홈: 게임기와 카트리지 진열판이 같은 기울기의 판(.ps-rig) 하나에 올라갑니다 — 진열판이 게임기 바로 밑 */
+[data-skin="pixel-fc-3d"] .ps-rig { position: relative; min-width: 0; }
+[data-skin="pixel-fc-3d"] .ps-stage--rig .ps-caption { position: static; margin: 34px 0 0; text-align: left; }
+@media (min-width: 720px) {
+  [data-skin="pixel-fc-3d"] .ps-stage--rig { align-items: start; padding-bottom: 64px; }
+  [data-skin="pixel-fc-3d"] .ps-stage--rig .ps-intro { padding-top: 118px; }
+  [data-skin="pixel-fc-3d"] .ps-stage--rig .ps-rig { transform: perspective(1300px) rotateX(7deg) rotateY(-12deg) rotateZ(3deg); transform-origin: 50% 35%; transform-style: flat; }
+  [data-skin="pixel-fc-3d"] .ps-stage--rig .ps-rig > .hero { transform: none; transform-style: flat; }
+  [data-skin="pixel-fc-3d"] .ps-rig > .draw { padding: 0; margin-top: 30px; }
+  [data-skin="pixel-fc-3d"] .ps-rig > .draw > .wrap { width: 100%; max-width: none; padding: 0; }
+  [data-skin="pixel-fc-3d"] .ps-rig .fcr-select-guide { margin: 0 6px 12px; }
+  [data-skin="pixel-fc-3d"] .ps-rig .draw__stage { gap: 14px; padding: 18px 18px 20px; border-radius: 26px; box-shadow: inset 0 1px 3px #00000008, 4px 34px 38px -22px #4b211d3a, 16px 60px 60px -30px #4b211d22; }
+}
 @media (min-width: 720px) {
   [data-skin="pixel-fc-3d"] .profile__row:nth-child(even) { border-left: 1px solid var(--border); }
 }

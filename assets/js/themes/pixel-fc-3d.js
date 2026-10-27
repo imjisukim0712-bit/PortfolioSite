@@ -154,8 +154,11 @@
     if (!hero || hero.closest('.ps-stage')) return;
     var grid = hero.querySelector('.hero__grid'), lead = grid && grid.firstElementChild;
     if (!lead) return;
-    var stage = node('div', 'ps-stage'), intro = node('div', 'ps-intro');
-    hero.parentNode.insertBefore(stage, hero); stage.appendChild(intro); stage.appendChild(hero);
+    var stage = node('div', 'ps-stage'), intro = node('div', 'ps-intro'), rig = node('div', 'ps-rig');
+    hero.parentNode.insertBefore(stage, hero); stage.appendChild(intro); stage.appendChild(rig); rig.appendChild(hero);
+    /* 홈: 카트리지 진열판을 게임기 바로 밑, 같은 기울기 판(ps-rig) 위에 올립니다 */
+    var tray = stage.parentNode.querySelector(':scope > .draw');
+    if (tray) { rig.appendChild(tray); stage.classList.add('ps-stage--rig'); }
     var actions = lead.querySelector('.btn-row');
     while (lead.firstChild) intro.appendChild(lead.firstChild);
     lead.className = 'ps-lcd-info';
@@ -175,7 +178,7 @@
     var mark = node('span', 'ps-device-mark', 'KJS / 01'); mark.setAttribute('aria-hidden', 'true'); hero.appendChild(mark);
     var slot = node('div', 'ps-socket'); slot.setAttribute('aria-hidden', 'true'); hero.appendChild(slot);
     var caption = node('p', 'ps-caption', t({ko:'김지수의 포트폴리오 · 프로젝트를 꽂아 시작하세요',en:'JISU KIM’S PORTFOLIO · INSERT A PROJECT TO START'}));
-    stage.appendChild(caption);
+    (tray ? intro : stage).appendChild(caption);
   }
 
   var selected = null, pending = null, deckObserver = null, restoringFocus = false, rearmingDeck = false;
