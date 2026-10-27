@@ -16,7 +16,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 27개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 32개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -96,6 +96,31 @@
                   en: 'Reference ⑤: a Japanese retro print style with a paper-textured cream ground, coral red, teal and navy, cloud, wave and mountain motifs and brown line work.' },
           scripts: ['js/themes/pixel-fc-ukiyo.js', 'js/themes/fc-stage.js'],
           swatch: ['#f1e8d6', '#e0574a', '#6ea597', '#2f4b7c'] },
+        { id: 'fc-iso', name: { ko: '패미컴 · 아이소 일러스트', en: 'Famicom · Iso Illustration' },
+          desc: { ko: '참고 그림 ⑥. 굵은 남색 선화에 세이지 초록·살구 베이지·벽돌 빨강·겨자색을 평면으로 칠한 아이소메트릭 만화풍.',
+                  en: 'Reference 6: an isometric cartoon style with bold navy line work and flat sage green, apricot beige, brick red and mustard.' },
+          scripts: ['js/themes/pixel-fc-iso.js', 'js/themes/fc-stage.js'],
+          swatch: ['#f6efe2', '#b5413a', '#8fb58a', '#e9c46a'] },
+        { id: 'fc-line', name: { ko: '패미컴 · 컬러 선화', en: 'Famicom · Color Line Art' },
+          desc: { ko: '참고 그림 ⑦. 밝은 회색 바탕 위에 빨강·노랑·초록·파랑 굵은 선을 겹쳐 그린 패키지 그래픽풍.',
+                  en: 'Reference 7: package-graphic style with bold red, yellow, green and blue outlines layered on a light grey ground.' },
+          scripts: ['js/themes/pixel-fc-line.js', 'js/themes/fc-stage.js'],
+          swatch: ['#e4e4e2', '#e60012', '#f5c000', '#0068b7'] },
+        { id: 'fc-snes', name: { ko: '패미컴 · 고해상 도트', en: 'Famicom · Hi-Res Pixel' },
+          desc: { ko: '참고 그림 ⑧. 호박색 바탕 위에 회백색 본체와 부드러운 도트 명암, 네 빛깔 버튼을 단 정교한 도트 그림풍.',
+                  en: 'Reference 8: a refined pixel-art style with an off-white console, soft dithered shading and four-color buttons on an amber ground.' },
+          scripts: ['js/themes/pixel-fc-snes.js', 'js/themes/fc-stage.js'],
+          swatch: ['#f2a51f', '#d9d4cc', '#c8102e', '#3a5bb8'] },
+        { id: 'fc-kraft', name: { ko: '패미컴 · 크라프트', en: 'Famicom · Kraft' },
+          desc: { ko: '참고 그림 ⑨. 크라프트지 바탕에 크림·진홍 게임기, 굵은 검은 케이블 선이 판을 감싸는 기념 포스터풍.',
+                  en: 'Reference 9: an anniversary-poster style with a cream and crimson console on kraft paper, framed by thick black cable lines.' },
+          scripts: ['js/themes/pixel-fc-kraft.js', 'js/themes/fc-stage.js'],
+          swatch: ['#c9a678', '#f3ead6', '#a3203a', '#1d1d1b'] },
+        { id: 'fc-level', name: { ko: '패미컴 · 스테이지', en: 'Famicom · Stage' },
+          desc: { ko: '참고 그림 ⑩. 하늘색 화면에 물음표 블록·벽돌·초록 언덕·땅 블록을 깐 8비트 게임 스테이지풍.',
+                  en: 'Reference 10: an 8-bit game level style with a sky blue screen, question blocks, bricks, green hills and ground tiles.' },
+          scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js'],
+          swatch: ['#5c94fc', '#c84c0c', '#fca044', '#00a800'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },
           desc: { ko: '디자인 안 ②. 게임기부터 창 테두리·제목까지 전부 도트로 그린 8비트 화면. 계단식 모서리, 도트 그림자, 옛 게임 대화 상자.',
                   en: 'Design draft 2: an 8-bit screen where everything from the console to the window frames and headings is drawn in pixels, with stepped corners, pixel shadows and retro dialog boxes.' },
