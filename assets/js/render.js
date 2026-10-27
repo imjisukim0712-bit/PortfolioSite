@@ -462,21 +462,40 @@
     if (m) return 'https://docs.google.com/' + m[1] + '/d/' + m[2] + (m[1] === 'presentation' ? '/embed' : '/preview');
     return url;
   }
-  /* 문서 보기 — projects.items[].docs[]{ title, url, shape }. shape: 'slide'(가로, 기본) · 'page'(세로 A4) */
-  function docViewer(lang, idx, docs) {
-    docs = arr(docs).filter(function (d) { return (d.url || '').trim(); });
+  /* 브라우저 내장 PDF 뷰어(왼쪽 쪽 목록·인쇄·받기)를 iframe 안에서 쓸 수 있는지.
+     휴대폰·태블릿은 iframe 속 PDF 를 비우거나 첫 장만 보여 주므로 터치 화면이면 쓰지 않습니다. */
+  function inlinePdfOk() {
+    try {
+      if (navigator.pdfViewerEnabled === false) return false;
+      return !(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+    } catch (e) { return true; }
+  }
+  /* 문서 보기 — projects.items[].docs[]{ title, note, file, url, shape }
+     file: 사이트에 올린 PDF (assets/docs/…) → PC 는 브라우저 PDF 뷰어로 바로 띄웁니다.
+     url:  구글 드라이브·문서·슬라이드 링크 → file 이 없거나 휴대폰일 때 드라이브 미리보기로 띄웁니다.
+     shape: 드라이브 미리보기 칸 모양 'slide'(가로, 기본) · 'page'(세로 A4) */
+  function docViewer(lang, base, idx, docs) {
+    docs = arr(docs).filter(function (d) { return (d.file || '').trim() || (d.url || '').trim(); });
     if (!docs.length) return '';
+    var native = inlinePdfOk();
     return '<div class="doc-list">' + docs.map(function (d, j) {
-      var title = t(d.title, lang);
+      var title = t(d.title, lang), note = t(d.note, lang), path = 'projects.items.'+idx+'.docs.'+j;
+      var file = (d.file || '').trim() ? base + d.file.trim() : '';
+      var url = (d.url || '').trim();
+      var pdf = file && (native || !url);
+      var frame = pdf
+        ? '<div class="media-box doc__frame doc__frame--pdf"><iframe src="' + esc(file) + '" title="' + esc(title) + '" loading="lazy"></iframe></div>'
+        : '<div class="media-box doc__frame doc__frame--' + (d.shape === 'page' ? 'page' : 'slide') + '">' +
+            '<iframe src="' + esc(embedUrl(url)) + '" title="' + esc(title) + '" loading="lazy" allow="autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe></div>';
       return '<figure class="doc reveal">' +
         '<figcaption class="doc__bar">' +
-          '<span class="doc__k">' + (lang==='en'?'DOCUMENT':'문서') + '</span>' +
-          '<span class="doc__title"' + ep('projects.items.'+idx+'.docs.'+j+'.title') + '>' + esc(title) + '</span>' +
-          '<a class="doc__open" href="' + esc(d.url) + '" target="_blank" rel="noopener noreferrer">' + (lang==='en'?'Open in new tab':'새 창에서 열기') + ' <span aria-hidden="true">↗</span></a>' +
+          '<span class="doc__k">' + (lang==='en'?'DOCUMENT':'문서') + ' ' + String(j + 1).padStart(2, '0') + '</span>' +
+          '<span class="doc__title"' + ep(path+'.title') + '>' + esc(title) + '</span>' +
+          '<a class="doc__open" href="' + esc(file || url) + '" target="_blank" rel="noopener noreferrer">' + (lang==='en'?'Open in new tab':'새 창에서 열기') + ' <span aria-hidden="true">↗</span></a>' +
         '</figcaption>' +
-        '<div class="media-box doc__frame doc__frame--' + (d.shape === 'page' ? 'page' : 'slide') + '">' +
-          '<iframe src="' + esc(embedUrl(d.url)) + '" title="' + esc(title) + '" loading="lazy" allow="autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe>' +
-        '</div>' +
+        (note ? '<p class="doc__note"' + ep(path+'.note') + '>' + esc(note) + '</p>' : '') +
+        (pdf ? '<p class="doc__hint">' + (lang==='en'?'※ Scroll inside the viewer to read the whole document. Pages are listed on the left.':'※ 뷰어 안에서 마우스 휠을 내리면 전체 문서를 볼 수 있어요. 왼쪽 목록에서 쪽을 골라 넘길 수도 있어요.') + '</p>' : '') +
+        frame +
       '</figure>';
     }).join('') + '</div>';
   }
@@ -536,7 +555,7 @@
       (next ? pagerItem('detail.html?p='+encodeURIComponent(next.id), lang==='en'?'Next →':'다음 →', t(next.title, lang), 1) : pagerItem(base+'play.html', lang==='en'?'Play log →':'게임플레이 →', t(c.play&&c.play.title, lang), 1)) +
     '</nav>';
 
-    return '<section class="section"><div class="wrap"><div class="detail">' + info + mediaCol + '</div>' + docViewer(lang, idx, p.docs) + blocks + pager + '</div></section>';
+    return '<section class="section"><div class="wrap"><div class="detail">' + info + mediaCol + '</div>' + docViewer(lang, base, idx, p.docs) + blocks + pager + '</div></section>';
   }
   function metaRow(k, v) {
     if (!v) return '';
