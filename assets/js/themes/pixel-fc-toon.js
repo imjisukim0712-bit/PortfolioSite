@@ -1,8 +1,8 @@
-/* Product Shot · glossy injection-moulded hardware; one-click 680ms cartridge insertion. */
+/* Toon · inked cel illustration; original one-click 680ms cartridge insertion. */
 (function () {
   'use strict';
-  if (window.__portfolioFCProductShot) return;
-  window.__portfolioFCProductShot = true;
+  if (window.__portfolioFCToon) return;
+  window.__portfolioFCToon = true;
   var SKIN = 'pixel-fc-toon';
   var T = {
     select: 'SELECT',
@@ -115,7 +115,7 @@
     if (value !== undefined) el.textContent = value;
     return el;
   }
-  /* Product specification sections use their original content and edit anchors. */
+  /* Page panels keep their original content and edit anchors. */
   function menus() {
     each('.hp-block, .cover-block, .skill-card, .play-card, .detail__blocks .block', function (el, i) {
       el.setAttribute('data-ps-number', ('0' + (i + 1)).slice(-2));
@@ -150,7 +150,48 @@
     });
   }
 
-  function productShot(hero) {
+  /* Draw only generated placeholder art. Uploaded thumbnails and portraits stay intact.
+     All paths use two flat cel tones, ink outlines and short white glints. */
+  function toonArt() {
+    each('.gcard, .card-back', function (shell) {
+      if (shell.querySelector('.ps-cart-glints')) return;
+      var glints = node('span', 'ps-cart-glints');
+      glints.setAttribute('aria-hidden', 'true'); glints.innerHTML = '<i></i><i></i>';
+      shell.appendChild(glints);
+    });
+    each('.gcard__gen', function (art) {
+      if (art.hasAttribute('data-toon-art')) return;
+      art.setAttribute('data-toon-art', '');
+      var symbols = [
+        '<path fill="#171717" stroke="none" d="M33 48Q34 37 49 37H82Q96 37 98 49L105 75Q106 85 97 85Q92 85 81 73H51Q40 85 35 85Q26 85 28 76Z"/>' +
+        '<path fill="#ed303e" d="M29 44Q31 33 46 33H79Q92 33 94 45L101 71Q103 81 94 81Q89 81 78 69H48Q37 81 32 81Q23 81 25 72Z"/>' +
+        '<path fill="#b5152c" stroke="none" d="M94 45L101 71Q103 81 94 81Q89 81 78 69H48Q37 81 32 81Q28 81 26 78L43 62H84Z"/>' +
+        '<path fill="#171717" stroke-width="2" d="M40 44H46V51H53V57H46V64H40V57H33V51H40Z"/>' +
+        '<circle fill="#ffc83d" cx="80" cy="48" r="5"/><circle fill="#ffc83d" cx="87" cy="60" r="5"/>' +
+        '<path fill="none" stroke="#fffdf6" stroke-width="4" d="M38 39H56M62 39H67"/>',
+        '<path fill="#171717" d="M42 24H87L96 33V83H42Z"/>' +
+        '<path fill="#45413e" d="M36 18H81L90 27V77H36Z"/>' +
+        '<path fill="#292725" stroke="none" d="M80 20L90 27V77H36V69H80Z"/>' +
+        '<path fill="#fffdf6" d="M44 36H81V64H44Z"/>' +
+        '<path fill="#ffc83d" d="M47 18H72V29H47Z"/>' +
+        '<path fill="#ed303e" stroke-width="2.5" d="M63 41L68 48L76 49L70 55L71 62L63 58L56 62L57 54L51 49L59 47Z"/>' +
+        '<path fill="none" stroke="#fffdf6" stroke-width="4" d="M41 24V30M41 68V71"/>',
+        '<path fill="#171717" stroke="none" d="M69 21L82 43L107 47L89 65L91 89L69 79L47 89L49 65L31 47L56 43Z"/>' +
+        '<path fill="#ffc83d" d="M63 15L76 37L101 41L83 59L85 83L63 73L41 83L43 59L25 41L50 37Z"/>' +
+        '<path fill="#d79920" stroke="none" d="M63 15L66 49L83 59L85 83L63 73L41 83L57 56L25 41L50 37Z"/>' +
+        '<path fill="none" d="M63 15L76 37L101 41L83 59L85 83L63 73L41 83L43 59L25 41L50 37Z"/>' +
+        '<path fill="none" stroke="#fffdf6" stroke-width="4" d="M63 27L59 36M56 42L52 44"/>'
+      ];
+      var i = art.classList.contains('gcard__gen--1') ? 1 : art.classList.contains('gcard__gen--2') ? 2 : 0;
+      art.innerHTML = '<svg viewBox="0 0 128 100" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">' +
+        '<g stroke="#171717" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path fill="#fffdf6" stroke="none" d="M64 1L72 18L95 7L91 29L120 27L105 47L126 62L102 68L107 94L82 83L69 100L54 83L26 94L29 70L3 61L23 45L8 23L37 27L38 5L55 20Z"/>' +
+        '<path fill="none" d="M13 10L22 18M104 12L100 20M113 81L120 88M14 84L22 77"/>' +
+        symbols[i] + '</g></svg>';
+    });
+  }
+
+  function toonStage(hero) {
     if (!hero || hero.closest('.ps-stage')) return;
     var grid = hero.querySelector('.hero__grid'), lead = grid && grid.firstElementChild;
     if (!lead) return;
@@ -174,6 +215,9 @@
       var note = intro.querySelector('.hero__note'); if (note) lead.appendChild(note);
     }
     if (actions) lead.appendChild(actions);
+    var glints = node('span', 'ps-toon-glints');
+    glints.setAttribute('aria-hidden', 'true'); glints.innerHTML = '<i></i><i></i><i></i>';
+    hero.appendChild(glints);
     hero.appendChild(node('div', 'ps-speaker'));
     var mark = node('span', 'ps-device-mark', 'KJS / 01'); mark.setAttribute('aria-hidden', 'true'); hero.appendChild(mark);
     var slot = node('div', 'ps-socket'); slot.setAttribute('aria-hidden', 'true'); hero.appendChild(slot);
@@ -474,11 +518,11 @@
     cleanup(); resetPreview(false);
     each('.fcr-preview--aux', function (el) { el.remove(); });
     if (deckObserver) deckObserver.disconnect();
-    var h = document.querySelector('.hero'); if (h) { build(h); productShot(h); }
-    menus(); setupSelection(); status();
+    var h = document.querySelector('.hero'); if (h) { build(h); toonStage(h); }
+    toonArt(); menus(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {
-      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); setupSelection(); });
+      deckObserver = new MutationObserver(function () { cleanup(); resetPreview(false); toonArt(); setupSelection(); });
       deckObserver.observe(deck, { childList: true });
     }
   }

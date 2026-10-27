@@ -1,8 +1,8 @@
-/* Product Shot · glossy injection-moulded hardware; one-click 680ms cartridge insertion. */
+/* Clay · matte toy surfaces; preserve the shared rig and 680ms cartridge insertion. */
 (function () {
   'use strict';
-  if (window.__portfolioFCProductShot) return;
-  window.__portfolioFCProductShot = true;
+  if (window.__portfolioFCClay) return;
+  window.__portfolioFCClay = true;
   var SKIN = 'pixel-fc-clay';
   var T = {
     select: 'SELECT',
@@ -47,6 +47,13 @@
   function t(o) { var L = lang(); return typeof o === 'string' ? o : (o && (o[L] || o.ko)) || ''; }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
+  function clayFonts() {
+    if (!active() || document.getElementById('fc-clay-fonts')) return;
+    var link = document.createElement('link');
+    link.id = 'fc-clay-fonts'; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@400;500;600;700;800;900&display=swap';
+    document.head.appendChild(link);
+  }
   function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function navH() { var n = document.querySelector('.nav'); return (n ? n.getBoundingClientRect().height : 60) + 16; }
   function scrollToY(y) { try { window.scrollTo({ top: Math.max(0, y), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, Math.max(0, y)); } }
@@ -115,7 +122,7 @@
     if (value !== undefined) el.textContent = value;
     return el;
   }
-  /* Product specification sections use their original content and edit anchors. */
+  /* Keep the original content and edit anchors throughout the clay scene. */
   function menus() {
     each('.hp-block, .cover-block, .skill-card, .play-card, .detail__blocks .block', function (el, i) {
       el.setAttribute('data-ps-number', ('0' + (i + 1)).slice(-2));
@@ -471,6 +478,7 @@
       applied = false; return;
     }
     applied = true;
+    clayFonts();
     cleanup(); resetPreview(false);
     each('.fcr-preview--aux', function (el) { el.remove(); });
     if (deckObserver) deckObserver.disconnect();

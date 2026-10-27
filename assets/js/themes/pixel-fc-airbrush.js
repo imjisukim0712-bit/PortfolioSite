@@ -1,8 +1,8 @@
-/* Product Shot · glossy injection-moulded hardware; one-click 680ms cartridge insertion. */
+/* Airbrush · 1980s ad illustration; shared layout and one-click cartridge insertion. */
 (function () {
   'use strict';
-  if (window.__portfolioFCProductShot) return;
-  window.__portfolioFCProductShot = true;
+  if (window.__portfolioFCAirbrush) return;
+  window.__portfolioFCAirbrush = true;
   var SKIN = 'pixel-fc-airbrush';
   var T = {
     select: 'SELECT',
@@ -150,7 +150,7 @@
     });
   }
 
-  function productShot(hero) {
+  function airbrushScene(hero) {
     if (!hero || hero.closest('.ps-stage')) return;
     var grid = hero.querySelector('.hero__grid'), lead = grid && grid.firstElementChild;
     if (!lead) return;
@@ -174,6 +174,11 @@
       var note = intro.querySelector('.hero__note'); if (note) lead.appendChild(note);
     }
     if (actions) lead.appendChild(actions);
+    // A few printed star glints on the enamel rim, safely outside the photo.
+    ['a', 'b', 'c'].forEach(function (position) {
+      var glint = node('span', 'ab-glint ab-glint--' + position, '✦');
+      glint.setAttribute('aria-hidden', 'true'); hero.appendChild(glint);
+    });
     hero.appendChild(node('div', 'ps-speaker'));
     var mark = node('span', 'ps-device-mark', 'KJS / 01'); mark.setAttribute('aria-hidden', 'true'); hero.appendChild(mark);
     var slot = node('div', 'ps-socket'); slot.setAttribute('aria-hidden', 'true'); hero.appendChild(slot);
@@ -474,7 +479,7 @@
     cleanup(); resetPreview(false);
     each('.fcr-preview--aux', function (el) { el.remove(); });
     if (deckObserver) deckObserver.disconnect();
-    var h = document.querySelector('.hero'); if (h) { build(h); productShot(h); }
+    var h = document.querySelector('.hero'); if (h) { build(h); airbrushScene(h); }
     menus(); setupSelection(); status();
     var deck = document.querySelector('[data-draw-cards]');
     if (deck && window.MutationObserver) {
