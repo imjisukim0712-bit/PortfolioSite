@@ -993,3 +993,15 @@
 /* 숫자 칸은 계단처럼 엇갈리지 않고 한 줄로 정렬(엇갈림이 정돈되지 않아 보임), 상자 아래 빈 자리도 줄임 */
 [data-skin="pixel-fc-dot"] .stat:nth-child(n) { margin-top: 0; }
 [data-skin="pixel-fc-dot"] .stat-grid { padding-bottom: 12px; align-items: stretch; }
+
+/* 첫 화면 왼쪽: 제목을 게임기 높이 가운데쯤으로 내리고, 그 아래 참고 그림의 패드 두 개 */
+@media (min-width: 900px) { :root[data-skin="pixel-fc-dot"] .fcs-intro { padding-top: 120px; } }
+[data-skin="pixel-fc-dot"] .fcd-pads { display: block; margin-top: 44px; line-height: 0; }
+[data-skin="pixel-fc-dot"] .fcd-pads svg { display: block; width: 295px; height: auto; }
+@media (max-width: 899px) { [data-skin="pixel-fc-dot"] .fcd-pads { display: none; } }
+/* 메뉴: 링크마다 두꺼운 상자 + 두께 면이 줄줄이 붙어 무거웠던 것을, 글자 탭 + 지금 페이지만 진홍 블록으로 */
+:root[data-skin="pixel-fc-dot"] .nav__link { border-color: transparent; background: transparent; }
+:root[data-skin="pixel-fc-dot"] .nav__link > .fcd-volume { display: none; }
+:root[data-skin="pixel-fc-dot"] .nav__link:hover { background: var(--dot-cream); border-color: #161616; }
+:root[data-skin="pixel-fc-dot"] .nav__link.is-active { background: var(--dot-red); color: #fff; border-color: #161616; }
+:root[data-skin="pixel-fc-dot"] .nav__link.is-active > .fcd-volume { display: block; }
