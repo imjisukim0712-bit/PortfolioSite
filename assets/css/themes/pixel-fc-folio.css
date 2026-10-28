@@ -551,6 +551,91 @@
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info::after { content: none; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__title { color: var(--level-white, #fffdf3); text-shadow: var(--level-type-shadow); }
 
+/* ── 12회차: 땅 위 · 땅 밑 ───────────────────────────────────────────────────
+   하늘은 첫 화면(하위 페이지는 페이지 머리)까지만. 그 아래는 지면(풀 한 줄 + 벽돌)이 이어지다 어두운 지하로 내려가
+   푸터까지 그대로. 지면 높이 --lv-surface 는 pixel-fc-level.js 가 재서 main 에 넣습니다(못 재면 첫 화면 높이쯤). */
+:root[data-skin="pixel-fc-level"] { --lv-deep: #0b1122; --lv-under-ink: #edf1f8; --lv-under-muted: #bcc6da; }
+:root[data-skin="pixel-fc-level"][data-theme="dark"] { --lv-deep: #070b16; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main { position: relative; isolation: isolate; --lv-surface: 620px; padding-bottom: 72px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main::before {
+  content: ''; position: absolute; z-index: -1; inset: var(--lv-surface) 0 0; pointer-events: none;
+  background:
+    linear-gradient(#00a800, #00a800) 0 0 / 100% 8px no-repeat,
+    linear-gradient(#0b6b1c, #0b6b1c) 0 8px / 100% 4px no-repeat,
+    linear-gradient(to bottom, rgb(11 17 34 / 0) 0, rgb(11 17 34 / 0) 44px, rgb(11 17 34 / .6) 140px, rgb(11 17 34 / .9) 240px, var(--lv-deep) 340px) 0 0 / 100% 100% no-repeat,
+    var(--level-ground) 0 12px / 64px 32px repeat;
+  background-color: var(--lv-deep);
+}
+/* 첫 화면의 언덕은 지면 위에 그대로, 풀 · 벽돌은 지하 그림이 이어서 그림 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen { padding-bottom: 80px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen::after { height: 80px; background: var(--level-hill) 8% 0 / 160px 80px no-repeat; }
+/* 바닥 쪽 지면(푸터 위 풀 · 벽돌)은 지하라 없앰 — 푸터도 어두운 지하 그대로 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .footer { margin-top: 0; padding-top: 48px; background: var(--lv-deep); border-top: 4px solid #1d2742; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .footer::before { content: none; }
+/* 지하의 글자: 창 밖(절 설명 · 더 보기 · 상세 왼쪽 칸)은 어두운 바탕 위 밝은 글자 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > :is(.section, .lv-menu) {
+  --heading: #fffdf3; --text: var(--lv-under-ink); --text-muted: var(--lv-under-muted); --gui-sky-ink: var(--lv-under-muted);
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp .hp-more { color: var(--lv-under-ink); border-bottom-color: #ffdc90; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp .hp-more:hover { color: #ffdc90; }
+/* 하위 페이지의 페이지 머리(하늘 위)는 그대로 남색 · 크림 글자 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head) { --gui-sky-ink: #102346; --text: #102346; --text-muted: #102346; }
+:root[data-skin="pixel-fc-level"][data-theme="dark"] main > .section:first-of-type :is(.section__head, .proj-head) { --gui-sky-ink: #eef3ff; --text: #eef3ff; --text-muted: #eef3ff; }
+/* 페이지 머리와 내용 사이에 지면이 들어갈 자리 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head) { margin-bottom: 132px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage { margin-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage + .section { padding-top: 112px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info { --heading: #fffdf3; --text: var(--lv-under-ink); --text-muted: var(--lv-under-muted); }
+
+/* ── 12회차: 홈 지하 = 메뉴 화면 한 장 ──────────────────────────────────────
+   위 줄 퀘스트(7) + 인벤토리(5), 아래 줄 업적(7) + 저장 슬롯(5). 두 줄의 세로 선이 맞고, 창 높이는 줄마다 같음.
+   '더 보기'는 각 창 바로 아래 오른쪽. */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px;
+  width: min(100% - var(--gutter) * 2, var(--folio-max)); margin: 0 auto; padding: 104px 0 24px;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp { padding: 0; margin: 0; border: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp > .wrap { width: 100%; max-width: none; padding: 0; margin: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp:not(.hp--summary) > .wrap:not(:has(> .hp-block + .hp-block)),
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp--summary > .wrap { display: flex; flex-direction: column; height: 100%; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp > .wrap > .hp-block,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp > .wrap > .hp-games { flex: 1 1 auto; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-more { margin-top: 18px; }
+@media (min-width: 1000px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px 40px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp:first-child { grid-column: 1 / -1; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu > .hp:first-child > .wrap { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 40px; row-gap: 0; align-items: stretch; }
+  /* 저장 슬롯은 좁은 오른쪽 칸이라 세로 목록 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-games { grid-template-columns: minmax(0, 1fr); }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-games > .hp-game { padding: 16px 0; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-games > .hp-game:first-child { padding-top: 0; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-games > .hp-game:last-child { padding-bottom: 0; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-menu .hp-games > .hp-game + .hp-game { border-left: 0; border-top: var(--gui-sep); }
+}
+
+/* ── 12회차: 하위 페이지 배치 ───────────────────────────────────────────── */
+@media (min-width: 900px) {
+  /* 인적사항: 넓은 창에 한 줄씩 늘어놓던 것을 두 단으로 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .profile { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .profile .profile__row:nth-child(2) { border-top: 0; }
+  /* 경력: 날짜 칸 | 내용 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .timeline > .tl-item { display: grid; grid-template-columns: 168px minmax(0, 1fr); column-gap: 32px; align-items: start; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .timeline > .tl-item > * { grid-column: 2; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .timeline > .tl-item > .tl-date { grid-column: 1; grid-row: 1 / span 6; margin: 0; padding-top: .3em; }
+}
+@media (min-width: 1100px) {
+  /* 핵심역량 다섯 장: 세 장 + 두 장(빈 자리) 대신 한 줄 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .section .grid--3:has(> .skill-card) { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  /* 로고 줄을 카드 바닥으로 밀던 여백을 걷어, 설명 바로 아래에 (좁은 다섯 칸에서 빈 틈이 커 보임) */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .section .grid--3 > .skill-card .card__body { flex: 0 0 auto; }
+}
+@media (min-width: 1000px) {
+  /* 자기소개서 본문 네 덩어리: 왼쪽에 몰린 한 줄 대신 2 × 2 대화창 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section > .wrap:has(> .cover-block) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 40px; align-items: stretch; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section > .wrap:has(> .cover-block) > :not(.cover-block) { grid-column: 1 / -1; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section > .wrap > .cover-block { max-width: none; margin: 0; }
+}
+
 /* ============================================================================
    랠리 프린트 (pixel-fc-rally) — 빨강 8px 윗띠 + 검은 2px 테 + 노랑 판화 그림자의 인쇄 판,
    이름표 = 사선으로 자른 검은 판(글자는 곧게) + 노랑 줄 · 업적 태그 = 검은 칩 · 구분선 = 가는 인쇄 선

@@ -440,3 +440,53 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStageDecor);
   else initStageDecor();
 })();
+
+/* 12회차 — 땅 위 · 땅 밑. 하늘은 첫 화면(하위 페이지는 페이지 머리)까지만, 그 바로 아래가 지면(풀 · 벽돌)이고
+   벽돌 땅이 이어지다 어두운 지하로 내려갑니다. 지면 높이는 화면마다 달라 여기서 재어 main 의 --lv-surface 로 넘기고,
+   그림은 CSS(pixel-fc-folio.css 의 스테이지 절, main::before)가 그립니다.
+   홈은 지하의 네 창을 한 장의 메뉴 화면으로 묶으려고 개요 절들을 .lv-menu 하나에 담습니다(내용 · 순서는 그대로). */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-level';
+  function active() { return document.documentElement.getAttribute('data-skin') === SKIN; }
+  function mainEl() { return document.querySelector('[data-slot="main"]'); }
+  function groupMenu(main) {
+    if (!main.querySelector(':scope > .home-screen') || main.querySelector(':scope > .lv-menu')) return;
+    var parts = main.querySelectorAll(':scope > section.hp');
+    if (!parts.length) return;
+    var menu = document.createElement('div');
+    menu.className = 'lv-menu';
+    main.insertBefore(menu, parts[0]);
+    Array.prototype.forEach.call(parts, function (s) { menu.appendChild(s); });
+  }
+  function measure() {
+    var main = mainEl(); if (!main) return;
+    if (!active()) { main.style.removeProperty('--lv-surface'); return; }
+    var top = main.getBoundingClientRect().top, y = 0;
+    var first = main.querySelector(':scope > .home-screen, :scope > .fcs-stage');
+    var head = main.querySelector(':scope > .section:first-of-type :is(.section__head, .proj-head)');
+    if (first) y = first.getBoundingClientRect().bottom - top;
+    else if (head && !main.querySelector('.detail')) y = head.getBoundingClientRect().bottom - top + 36;
+    main.style.setProperty('--lv-surface', Math.round(y) + 'px');
+  }
+  var queued = false;
+  function update() {
+    if (queued) return; queued = true;
+    requestAnimationFrame(function () {
+      queued = false;
+      var main = mainEl(); if (!main) return;
+      if (active()) groupMenu(main);
+      measure();
+    });
+  }
+  function init() {
+    update();
+    var main = mainEl();
+    if (main && window.MutationObserver) new MutationObserver(update).observe(main, { childList: true });
+    if (main && window.ResizeObserver) new ResizeObserver(update).observe(main);
+    if (window.MutationObserver) new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'lang'] });
+    window.addEventListener('resize', update);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
