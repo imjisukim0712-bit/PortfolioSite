@@ -474,7 +474,7 @@
     var first = main.querySelector(':scope > .home-screen, :scope > .fcs-stage');
     var head = main.querySelector(':scope > .section:first-of-type :is(.section__head, .proj-head)');
     if (first) y = first.getBoundingClientRect().bottom - top;
-    else if (head && !main.querySelector('.detail')) y = head.getBoundingClientRect().bottom - top + 112;   /* 머리 아래 16px 띄우고 96px 지면 소품 띠 */
+    else if (head && !main.querySelector('.detail')) y = head.getBoundingClientRect().bottom - top + 144;   /* 머리 아래 16px 띄우고 128px 지면 소품 띠 */
     main.style.setProperty('--lv-surface', Math.round(y) + 'px');
   }
   var queued = false;

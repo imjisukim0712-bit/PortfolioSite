@@ -1,131 +1,171 @@
-# 스테이지(pixel-fc-level) 소품 — 픽셀을 한 칸씩 직접 찍은 격자 그림을 CSS data URI 로 뽑습니다.
+# 스테이지(pixel-fc-level) 소품 — 슈퍼 마리오 브라더스(1985) 1-1 · 1-2 의 그림 문법을 따라 한 칸씩 찍은 격자 그림을 CSS data URI 로 뽑습니다.
 # 사용법: python3 tools/fc-pixel/stage-props.py  → 출력된 --lv-* 줄을 assets/css/themes/pixel-fc-folio.css 의 스테이지 13회차 절에 붙여 넣기.
 #
-# 기존 스테이지 그림과 같은 규칙으로 찍습니다(섞으면 '깨져' 보임). 땅은 벽돌이 아니라 풀 + 흙입니다:
-#   · 물건(관 · 동전 · 벽돌 블록)  = 4px 한 칸 + 남색 외곽선 #171c28   ← 물음표 블록과 같은 격자
-#   · 배경(덤불)                    = 8px 한 칸 · 외곽선 없음 · 두 톤      ← 언덕 · 구름과 같은 격자
+# 따르는 규칙(원작에서 확인한 것):
+#   · 색은 원작 롬의 팔레트 묶음 그대로 — GroundPaletteData / UndergroundPaletteData (6502disassembly.com/nes-smb, $8CC8 · $8CEC)
+#       초록 묶음 $29 $1A $0F (관 · 언덕 · 덤불)      땅 · 벽돌 묶음 $36 $17 $0F      구름 묶음 $30 $21 $0F
+#       물음표 블록 · 동전 묶음 $27 $17 $0F            지하 땅 · 벽돌 묶음 $3C $1C $0F (바탕은 검정)      하늘 $22
+#     (색 번호를 RGB 로 옮긴 값은 흔히 쓰는 NES 팔레트 — 하늘 #5c94fc · 벽돌 #c84c0c 와 같은 표)
+#   · 모든 그림이 같은 크기의 칸(원작 1픽셀 = 4px)이고 검은 외곽선. 땅은 벽돌이 아니라 '땅 블록'(16×16칸)을 쌓은 것.
+#   · 원작 그림을 그대로 베끼지 않고 같은 문법으로 새로 찍습니다. 캐릭터 · 아이템 · 로고는 그리지 않습니다.
 #   · 그림은 원래 크기(1배)로만 씁니다. 줄이거나 늘리면 칸이 고르지 않게 됩니다.
-# 캐릭터 · 아이템 · 로고는 그리지 않습니다(지형 · 소품만).
 import urllib.parse
 
+U = 4   # 원작 1픽셀 = 4px
 PAL = {
-    'X': '#171c28',                                    # 외곽선 · 모르타르
-    'g': '#00a800', 'L': '#58d854', 'd': '#005624',    # 초록 (언덕과 같은 #00a800 · #005624)
-    'o': '#fca044', 'h': '#ffdb98', 'r': '#c84c0c',    # 주황 · 밝은 크림 · 벽돌 (물음표 블록과 같은 색)
-    's': '#a8522a', 'k': '#6e3016', 'p': '#d8824a',    # 흙 · 어두운 점 · 밝은 점
-    'a': '#2b3448', 'b': '#161c2a', 'c': '#46546e', 'e': '#6a7a9c',   # 지하 바위 · 어두운 점 · 밝은 점 · 윗면
+    'K': '#171c28',                        # 검정(사이트의 먹색 — 원작 $0F 자리)
+    'g': '#80d010', 'G': '#00a800',        # 초록 묶음 $29 · $1A
+    'l': '#fcbcb0', 'm': '#c84c0c',        # 땅 · 벽돌 묶음 $36 · $17
+    'w': '#fcfcfc', 'c': '#3cbcfc',        # 구름 묶음 $30 · $21
+    'o': '#fc9838',                        # 물음표 블록 · 동전 $27 (갈색은 $17 = 'm')
+    'u': '#a4e4fc', 'v': '#008888',        # 지하 땅 · 벽돌 묶음 $3C · $1C
 }
 
-def grid_svg(rows, unit):
+def svg(rows):
     w, h = len(rows[0]), len(rows)
-    assert all(len(r) == w for r in rows), rows
+    assert all(len(r) == w for r in rows), [len(r) for r in rows]
     body = []
     for y, row in enumerate(rows):
         x = 0
         while x < w:
-            c = row[x]
-            if c == '.':
-                x += 1; continue
-            run = 1
-            while x + run < w and row[x + run] == c: run += 1
-            body.append(f"<rect x='{x * unit}' y='{y * unit}' width='{run * unit}' height='{unit}' fill='{PAL[c]}'/>")
-            x += run
-    s = f"<svg xmlns='http://www.w3.org/2000/svg' width='{w * unit}' height='{h * unit}' viewBox='0 0 {w * unit} {h * unit}' shape-rendering='crispEdges'>{''.join(body)}</svg>"
-    return 'url("data:image/svg+xml,' + urllib.parse.quote(s, safe="=/:' ") + '")', w * unit, h * unit
+            ch = row[x]
+            if ch == '.': x += 1; continue
+            n = 1
+            while x + n < w and row[x + n] == ch: n += 1
+            body.append(f"<rect x='{x*U}' y='{y*U}' width='{n*U}' height='{U}' fill='{PAL[ch]}'/>")
+            x += n
+    s = (f"<svg xmlns='http://www.w3.org/2000/svg' width='{w*U}' height='{h*U}' viewBox='0 0 {w*U} {h*U}' "
+         f"shape-rendering='crispEdges'>{''.join(body)}</svg>")
+    return 'url("data:image/svg+xml,' + urllib.parse.quote(s, safe="=/:' ") + '")', w * U, h * U
 
-SPRITES = {}
+def outline(mask, fill, ground=False):
+    """mask: '#' = 그림 안. 바깥과 맞닿은 칸을 검은 선으로. ground=True 면 아랫변은 땅에 묻혀 선을 긋지 않음."""
+    h, w = len(mask), len(mask[0])
+    inside = lambda x, y: 0 <= x < w and 0 <= y < h and mask[y][x] == '#'
+    out = []
+    for y in range(h):
+        row = ''
+        for x in range(w):
+            if not inside(x, y): row += '.'; continue
+            nb = [(x-1, y), (x+1, y), (x, y-1)] + ([] if ground and y == h - 1 else [(x, y+1)])
+            row += 'K' if any(not inside(a, b) for a, b in nb) else fill
+        out.append(row)
+    return out
 
-# 초록 관 (4px · 16×18칸 = 64×72) — 머리 6칸 + 몸통 12칸, 밝은 줄 · 어두운 줄 위치를 머리와 몸통이 맞춤
-LIP = 'X' + 'gLLgLggggggdgd' + 'X'
-BODY = '.X' + 'LLgLggggggdg' + 'X.'
-SPRITES['pipe'] = (['X' * 16] + [LIP] * 4 + ['X' * 16] + [BODY] * 12, 4)
+def paint(rows, spots, ch):
+    rows = [list(r) for r in rows]
+    for x, y in spots:
+        if rows[y][x] not in '.K': rows[y][x] = ch
+    return [''.join(r) for r in rows]
 
-# 동전 (4px · 5×8칸 = 20×32) — 떠 있는 블록 위
-SPRITES['coin'] = ([
-    '.XXX.',
-    'XoooX',
-    'XhorX',
-    'XhorX',
-    'XhorX',
-    'XhorX',
-    'XoooX',
-    '.XXX.',
-], 4)
+def puffs(w, h, circles, base_from):
+    """구름 · 덤불 실루엣: 원 몇 개 + 아랫부분 직사각형."""
+    m = []
+    for y in range(h):
+        row = ''
+        for x in range(w):
+            hit = y >= base_from and 1 <= x <= w - 2
+            for cx, cy, r in circles:
+                if (x + .5 - cx) ** 2 + (y + .5 - cy) ** 2 <= r * r: hit = True
+            row += '#' if hit else '.'
+        m.append(row)
+    return m
 
-# 작은 동전 (4px · 4×6칸 = 16×24) — 점수판 숫자(24px) 옆
-SPRITES['coin-s'] = ([
-    '.XX.',
-    'XhoX',
-    'XhoX',
-    'XhoX',
-    'XhoX',
-    '.XX.',
-], 4)
+S = {}
 
-# 벽돌 블록 (4px · 12×12칸 = 48×48) — 물음표 블록과 같은 크기 · 외곽선, 땅 벽돌과 같은 짜임(모르타르 · 밝은 띠)
-SPRITES['brick'] = ([
-    'XXXXXXXXXXXX',
-    'XhhhhhhhhhhX',
-    'XrrrrrrXrrrX',
-    'XrrrrrrXrrrX',
-    'XXXXXXXXXXXX',
-    'XhhhXhhhhhhX',
-    'XrrrXrrrrrrX',
-    'XrrrXrrrrrrX',
-    'XXXXXXXXXXXX',
-    'XhhhhhhXhhhX',
-    'XrrrrrrXrrrX',
-    'XXXXXXXXXXXX',
-], 4)
-
-# 덤불 (8px · 14×6칸 = 112×48) — 구름과 같은 실루엣을 초록으로(언덕처럼 외곽선 없이, 어두운 점 셋)
-SPRITES['bush'] = ([
-    '....ggg.......',
-    '..ggggggg.gg..',
-    '.ggggggggggggg',
-    'gggdggggggdggg',
-    'gggggggdgggggg',
-    'gggggggggggggg',
-], 8)
-
-# 땅 = 풀 + 흙 (벽돌 아님). 지면에서 아래로 이어지다 CSS 그라데이션으로 어두워집니다.
-# 풀 (4px · 16×6칸 = 64×24, 가로 반복) — 밝은 윗줄 · 풀잎 몇 개 · 아래로 처진 어두운 끝 ('.' 은 아래 흙이 비침)
-SPRITES['grass'] = ([
-    'LLLLLLLLLLLLLLLL',
-    'gLggggLgggggLggg',
-    'gggggggggggggggg',
-    'gggggggggggggggg',
-    'ddgggddddddgggdd',
-    '..ddd......ddd..',
-], 4)
-# 흙 (4px · 16×16칸 = 64×64, 바둑판 반복) — 칸마다 손으로 놓은 점 · 2칸 자갈 (규칙적인 줄이 생기지 않게)
-SOIL = [
-    'ssssssssssssssss',
-    'ssskssssssssspss',
-    'sssssssspsssssss',
-    'ssssssssssssssss',
-    'spsssssssspkssss',
-    'sssssssssskkssss',
-    'sssskssssssssssp',
-    'ssssssssssssssss',
-    'ssssssspssssssss',
-    'sksssssssssspkss',
-    'sssssssssssskkss',
-    'sssssspsssssssss',
-    'sssssssssssssssk',
-    'ssspssssskssssss',
-    'ssssssssssssssss',
-    'sssssssssssspsss',
+# 땅 블록 (16×16칸 = 64px) — 밝은 윗변 · 왼변, 검은 아랫변 · 오른변, 안쪽에 갈라진 금 두 줄(위는 세로, 아래는 계단)
+S['ground'] = [
+    'lllllllllKllllll',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKKlmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'lmmmmmmmmKlmmmmK',
+    'KKmmmmmmKlmmmmmK',
+    'llKKKKKKlmmmmmmK',
+    'lmmmmmmKlmmmmmmK',
+    'lmmmmmmKlmmmmmmK',
+    'lmmmmmmKlmmmmmmK',
+    'lmmmmmmKlmmmmmmK',
+    'KKKKKKKKKKKKKKKK',
 ]
-SPRITES['soil'] = (SOIL, 4)
-# 지하 바닥 바위 (같은 흙 무늬를 차가운 어두운 돌 색으로) + 윗면 (4px · 16×2칸 = 64×8)
-SPRITES['rock'] = ([r.replace('s', 'a').replace('k', 'b').replace('p', 'c') for r in SOIL], 4)
-SPRITES['rock-top'] = ([
-    'eeeeeeeeeeeeeeee',
-    'cccacccccccaccca',
-], 4)
+# 지하 땅 블록 — 같은 모양을 지하 묶음 색으로
+S['uground'] = [r.replace('l', 'u').replace('m', 'v') for r in S['ground']]
+
+# 벽돌 (16×8칸 = 64×32 타일 — 창 윗변의 벽돌 턱 · 진열판 테에 반복) — 4칸 높이 단 두 줄, 세로 줄눈이 엇갈림
+S['bricks'] = [
+    'lllllllKlllllllK',
+    'mmmmmmmKmmmmmmmK',
+    'mmmmmmmKmmmmmmmK',
+    'KKKKKKKKKKKKKKKK',
+    'lllKlllllllKllll',
+    'mmmKmmmmmmmKmmmm',
+    'mmmKmmmmmmmKmmmm',
+    'KKKKKKKKKKKKKKKK',
+]
+# 벽돌 블록 (16×16칸 = 64px) — 떠 있는 블록 줄
+S['brick'] = S['bricks'] + S['bricks']
+
+# 물음표 블록 (16×16칸 = 64px) — 주황 면 · 갈색 윗변 · 검은 그림자 · 네 귀 리벳 · 물음표
+S['qblock'] = [
+    'mmmmmmmmmmmmmmm.',
+    'mooooooooooooooK',
+    'moKooooooooooKoK',
+    'moooommmmmoooooK',
+    'mooommKKKmmooooK',
+    'mooommKoommKoooK',
+    'moooKKooommKoooK',
+    'mooooooommKKoooK',
+    'moooooommKKooooK',
+    'moooooommKoooooK',
+    'mooooooKKooooooK',
+    'moooooommooooooK',
+    'moooooommKoooooK',
+    'moKooooooKKooKoK',
+    'mooooooooooooooK',
+    'KKKKKKKKKKKKKKKK',
+]
+
+# 동전 (6×10칸 = 24×40) · 작은 동전 (4×6칸 = 16×24, 점수판 숫자 옆) — 물음표 블록 묶음 색
+S['coin'] = [
+    '.KKKK.',
+    'KooooK',
+    'KomooK',
+    'KomooK',
+    'KomooK',
+    'KomooK',
+    'KomooK',
+    'KomooK',
+    'KooooK',
+    '.KKKK.',
+]
+S['coin-s'] = ['.KK.', 'KomK', 'KomK', 'KomK', 'KomK', '.KK.']
+
+# 초록 관 (32×32칸 = 128px) — 머리 10칸 + 몸통 22칸. 밝은 초록 면에 어두운 초록 세로 줄(왼쪽 가는 줄 · 오른쪽 굵은 그늘)
+LIP_IN = 'G' + 'gg' + 'G' + 'g' * 14 + 'GG' + 'g' + 'GGG' + 'g' + 'GGG' + 'G' + 'G'   # 30칸
+BODY_IN = 'G' + 'gg' + 'G' + 'g' * 12 + 'GG' + 'g' + 'GGG' + 'g' + 'GG' + 'G'          # 26칸
+assert len(LIP_IN) == 30 and len(BODY_IN) == 26, (len(LIP_IN), len(BODY_IN))
+S['pipe'] = (['K' * 32] + ['K' + LIP_IN + 'K'] * 8 + ['K' * 32]
+             + ['..K' + BODY_IN + 'K..'] * 22)
+
+# 언덕 (48×19칸 = 192×76) — 계단진 둥근 지붕, 검은 외곽선(아랫변은 땅에 묻힘), 검은 점
+HILL_W = [12, 20, 26, 30, 34, 36, 38, 40, 42, 42, 44, 44, 46, 46, 46, 48, 48, 48, 48]
+hill = outline([('#' * wd).center(48, '.') for wd in HILL_W], 'G', ground=True)
+S['hill'] = paint(hill, [(20, 5), (20, 6), (20, 7), (28, 9), (28, 10), (28, 11), (14, 12), (14, 13), (14, 14),
+                         (33, 14), (33, 15), (33, 16)], 'K')
+
+# 구름 (28×12칸 = 112×48) — 흰 몸통 · 아랫단 하늘색 그늘 · 검은 외곽선
+cloud = outline(puffs(28, 12, [(8, 7, 4.6), (14, 5.4, 5.6), (20.5, 7, 4.6)], 7), 'w')
+S['cloud'] = paint(cloud, [(x, y) for y in (9, 10) for x in range(2, 26)] + [(9, 5), (15, 3), (21, 5)], 'c')
+
+# 덤불 (32×14칸 = 128×56) — 구름과 같은 문법을 초록 묶음으로(밝은 초록 몸통 · 어두운 초록 무늬 · 아랫변은 땅에 묻힘)
+bush = outline(puffs(32, 14, [(6.5, 9, 5), (13, 6.5, 6.2), (19.5, 6.5, 6.2), (25.5, 9, 5)], 9), 'g', ground=True)
+S['bush'] = paint(bush, [(8, 7), (9, 6), (14, 4), (15, 3), (20, 4), (21, 3), (26, 7), (27, 6)], 'G')
 
 if __name__ == '__main__':
-    for name, (rows, unit) in SPRITES.items():
-        uri, w, h = grid_svg(rows, unit)
+    for name, rows in S.items():
+        uri, w, h = svg(rows)
         print(f'--lv-{name}: {uri};   /* {w}×{h} */')
