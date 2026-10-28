@@ -527,6 +527,26 @@
 :root[data-skin="pixel-fc-level"] .fcs-intro .hero__title { font-size: 28px; line-height: 1.5; }   /* Galmuri14 = 14 의 배수 */
 @media (min-width: 900px) { :root[data-skin="pixel-fc-level"] .fcs-intro .hero__title { font-size: 42px; line-height: 1.38; } }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .level-end { font-size: 16px; }
+/* 페이지 머리 밑에 깔던 벽돌 한 줄(원래 시안의 border-image)은 하늘에 떠 보여 걷음 — 지면은 아래 지하 그림이 맡음 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main :is(.section__head, .proj-head) { border-bottom: 0; border-image: none; padding-bottom: 0; }
+/* 14회차: 홈 말고도 지면 위에 같은 소품(언덕 · 덤불 · 관) — 하위 페이지는 페이지 머리 아래, 이력서는 첫 화면 아래 96px 띠 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head)::after,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 96px; pointer-events: none; border: 0; border-image: none;
+  background: var(--level-hill) 0 100% / 192px 96px no-repeat, var(--lv-bush) 38% 100% / 112px 48px no-repeat, var(--lv-pipe) 100% 100% / 64px 72px no-repeat;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head)::after { top: calc(100% + 16px); bottom: auto; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage { position: relative; padding-bottom: 96px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage::after { top: auto; bottom: 0; }
+/* 도트 글꼴 격자: 자기소개서 본문 제목 · 그래프 제목 28px(Galmuri14), 좁은 화면 22px(Galmuri11), 상세 칸 이름표 8px(Press Start 2P) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.cover-block > h3, .steam__t) { font-size: 28px; line-height: 1.35; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__meta-k { font-size: 8px; }
+@media (max-width: 700px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.cover-block > h3, .steam__t) { font-family: 'Galmuri11', var(--font-display); font-size: 22px; }
+  /* 페이지 제목의 물음표 블록도 원래 크기(48px) */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__title, .proj-title) { padding-left: 60px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__title, .proj-title)::before { width: 48px; height: 48px; background-size: 48px 48px; top: -4px; }
+}
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .level-hud-world span { font-family: 'Galmuri11', var(--font-display); font-size: 11px; }   /* Galmuri11 = 11 의 배수 */
 :root[data-skin="pixel-fc-level"] .fcs-intro .fcs-caption { font-size: 15px; line-height: 1.7; }
 /* 하늘 위 숫자 줄은 밝은 글자 */
@@ -587,8 +607,8 @@
 /* 하위 페이지의 페이지 머리(하늘 위)는 그대로 남색 · 크림 글자 */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head) { --gui-sky-ink: #102346; --text: #102346; --text-muted: #102346; }
 :root[data-skin="pixel-fc-level"][data-theme="dark"] main > .section:first-of-type :is(.section__head, .proj-head) { --gui-sky-ink: #eef3ff; --text: #eef3ff; --text-muted: #eef3ff; }
-/* 페이지 머리와 내용 사이에 지면이 들어갈 자리 */
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head) { margin-bottom: 132px; }
+/* 페이지 머리와 내용 사이에 지면이 들어갈 자리 — 머리 아래 16px + 지면 소품 띠 96px(지면 = 머리 아래 112px, pixel-fc-level.js) + 지하로 96px */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:first-of-type :is(.section__head, .proj-head) { position: relative; margin-bottom: 208px; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage { margin-bottom: 0; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage + .section { padding-top: 112px; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info { --heading: #fffdf3; --text: var(--lv-under-ink); --text-muted: var(--lv-under-muted); }
@@ -683,8 +703,8 @@
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen { padding-bottom: 96px; }
 @media (min-width: 900px) {
   :root[data-skin="pixel-fc-level"] .fcs-intro { padding-top: 56px; }
-  /* 제목 밑 빈 하늘: 떠 있는 벽돌 · 물음표 블록 한 줄 + 그 위 동전 둘 */
-  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .fcs-intro::after {
+  /* 제목 밑 빈 하늘: 떠 있는 벽돌 · 물음표 블록 한 줄 + 그 위 동전 둘 (홈만 — 이력서는 제목 아래가 짧아 언덕과 붙음) */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .fcs-stage--home .fcs-intro::after {
     content: ''; display: block; width: 240px; height: 96px; margin-top: 64px; pointer-events: none;
     background:
       var(--lv-coin) 62px 0 / 20px 32px no-repeat, var(--lv-coin) 158px 0 / 20px 32px no-repeat,
