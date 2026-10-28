@@ -39,7 +39,7 @@
 
 ## 디자인 테마(스킨) — `assets/js/themes.js` · `assets/css/themes/`
 
-기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 38개.
+기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 42개.
 (`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
 `pixel-fc-3d`(제품 사진) · `pixel-fc-8bit`(도트 아트) · `pixel-fc-boxart`(박스아트) 는 패미컴 콘셉트(게임기 화면·카트리지 꽂기·빨강)는 지키고 **디자인 언어를 새로 만든 안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js`, 원본 `famicom.js` 와 별개 · 카트리지 1클릭 꽂기 후 바로 상세).
 `pixel-fc-clay` · `pixel-fc-toon` · `pixel-fc-airbrush` 는 제품 사진 안과 같은 구도(기울어진 게임기 + 그 밑 같은 기울기의 카트리지 진열판 `.ps-rig`)에 그림체만 바꾼 안이고,
@@ -65,6 +65,12 @@
 - 도트: 절 = 도트 번호 배지 + 제목 + 굵은 선의 머리 아래 한 겹 카드(번호는 제목이 있는 절에만 — `pixel-fc-dot.js`), 회색 두께 면은 게임기 · 진열판 · 카드 · 버튼에만.
   크라프트: 선로는 첫 절 제목부터 내려가는 가는 선 하나(첫 화면을 감던 고리 · 여백 스티커 없음). 스테이지: 카드는 '벽돌 턱 한 줄 + 남색 테' 발판, 강점 카드는 같은 높이,
   절 사이 구름 없음, 큰 글자는 외곽선 없이 그림자 하나. 랠리: 절 사이 전폭 구분선 없음.
+
+**같은 10회차의 Codex 판** — `pixel-fc-dot-cx` · `pixel-fc-kraft-cx` · `pixel-fc-level-cx` · `pixel-fc-rally-cx` 는 위 Claude 판과 나란히 비교하려고
+다듬기 **전** 원본 네 안을 복제한 뒤 Codex 가 따로 다듬은 판입니다(지시서 · 2차 피드백 `docs/design-log/briefs/r10-folio-cx/`).
+각자 `pixel-fc-<안>-cx.css` + `pixel-fc-<안>-cx.js` 로 완결되고(원본 · Claude 판 파일과 별개), 공용 다듬기 파일(`pixel-fc-folio.css`) · 숫자 줄은 쓰지 않습니다.
+첫 화면 왼쪽은 '01 프로젝트 보기 / 02 이력서 읽기' 바로가기 줄입니다. 공용 `fc-stage.js` 의 `SKINS` · `fc-body.js` 의 `ART` 에 id 가 들어가 있으니,
+안을 지우거나 이름을 바꿀 때 두 목록도 함께 고치세요.
 
 - `themes.js` 는 `<head>` 에서 `style.css` **바로 다음**에 읽습니다 (모든 페이지 + `projects/detail.html`).
   `?skin=<id>` 파라미터 → `localStorage['portfolio:skin']` → `DEFAULT_SKIN` 순으로 시안을 정하고,

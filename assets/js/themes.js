@@ -17,7 +17,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 38개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 42개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -166,24 +166,24 @@
           css: ['css/themes/pixel-fc-folio.css'],
           swatch: ['#eee8d8', '#ba2632', '#e8ad23', '#302b28'] },
         { id: 'fc-dot-cx', name: { ko: '패미컴 · 도트 · Codex 다듬기', en: 'Famicom · Dot · Codex polish' },
-          desc: { ko: '10회차 Codex 안. 다듬기 전 도트 원본에서 출발해 Codex 가 따로 포트폴리오답게 다듬는 중인 판 (Claude 판은 도트).',
-                  en: 'Round 10, Codex take: starting from the original Dot draft, Codex refines it on its own into a cleaner portfolio (the Claude take is Dot).' },
+          desc: { ko: '도트 게임기에서 본문까지 이어지는 4px 윤곽·크림 면·주황 사선. 도트 절 제목과 작은 번호, 한 겹 프레임으로 정리한 포트폴리오.',
+                  en: 'A pixel portfolio with 4px outlines, cream panels, and orange stripes from console to content. Pixel section headings, compact numbers, and a single layer of framing.' },
           scripts: ['js/themes/pixel-fc-dot-cx.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           swatch: ['#ffffff', '#ffdca8', '#b0122e', '#f5a000'] },
         { id: 'fc-kraft-cx', name: { ko: '패미컴 · 크라프트 · Codex 다듬기', en: 'Famicom · Kraft · Codex polish' },
-          desc: { ko: '10회차 Codex 안. 다듬기 전 크라프트 원본에서 출발해 Codex 가 따로 포트폴리오답게 다듬는 중인 판 (Claude 판은 크라프트).',
-                  en: 'Round 10, Codex take: starting from the original Kraft draft, Codex refines it on its own into a cleaner portfolio (the Claude take is Kraft).' },
+          desc: { ko: '크라프트 종이와 진홍 잉크로 엮은 작업 자료집. 강점은 평면 인쇄 칼럼으로, 기록은 절취선으로 구분하고 작은 화면의 조작부도 간결하게.',
+                  en: 'A work collection in kraft paper and crimson ink. Strengths form flat printed columns, perforated rules separate records, and compact controls fit small screens.' },
           scripts: ['js/themes/pixel-fc-kraft-cx.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           fonts: [G + 'Black+Han+Sans&family=Do+Hyeon'],
           swatch: ['#c9a678', '#f3ead6', '#a3203a', '#1d1d1b'] },
         { id: 'fc-level-cx', name: { ko: '패미컴 · 스테이지 · Codex 다듬기', en: 'Famicom · Stage · Codex polish' },
-          desc: { ko: '10회차 Codex 안. 다듬기 전 스테이지 원본에서 출발해 Codex 가 따로 포트폴리오답게 다듬는 중인 판 (Claude 판은 스테이지).',
-                  en: 'Round 10, Codex take: starting from the original Stage draft, Codex refines it on its own into a cleaner portfolio (the Claude take is Stage).' },
+          desc: { ko: '파란 하늘과 빨간 게임기, 남색 머리글과 벽돌 턱으로 이어지는 스테이지. 읽히는 절 제목·점수 이름표·조작 버튼과 같은 높이의 강점 발판.',
+                  en: 'A stage portfolio with blue sky, a red console, navy headings, and brick ledges. Readable section titles, score labels, control buttons, and aligned strength platforms.' },
           scripts: ['js/themes/pixel-fc-level-cx.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           swatch: ['#5c94fc', '#c84c0c', '#fca044', '#00a800'] },
         { id: 'fc-rally-cx', name: { ko: '패미컴 · 랠리 프린트 · Codex 다듬기', en: 'Famicom · Rally Print · Codex polish' },
-          desc: { ko: '10회차 Codex 안. 다듬기 전 랠리 프린트 원본에서 출발해 Codex 가 따로 포트폴리오답게 다듬는 중인 판 (Claude 판은 랠리 프린트).',
-                  en: 'Round 10, Codex take: starting from the original Rally Print draft, Codex refines it on its own into a cleaner portfolio (the Claude take is Rally Print).' },
+          desc: { ko: '기울임꼴 굵은 절 제목과 짧은 빨강·노랑 사선 인쇄로 이어지는 랠리 포트폴리오. 옆선 프레임과 단일 머리 구분선으로 본문도 같은 화풍으로.',
+                  en: 'A rally portfolio with bold italic section headings and short red and yellow print stripes throughout. Side-rule frames and single heading dividers carry the style into the content.' },
           scripts: ['js/themes/pixel-fc-rally-cx.js', 'js/themes/fc-stage.js'],
           swatch: ['#eee8d8', '#ba2632', '#e8ad23', '#302b28'] },
         { id: 'fc-8bit', name: { ko: '패미컴 · 도트 아트', en: 'Famicom · Pixel Art' },

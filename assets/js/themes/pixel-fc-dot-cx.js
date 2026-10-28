@@ -374,50 +374,22 @@
     if (text) el.textContent = text;
     parent.appendChild(el);
   }
-  /* 5차: 참고 그림 ②의 패드 두 개 — 4px 도트 한 칸씩 찍은 SVG(글자 없음, 장식). 홈 첫 화면 제목 아래에만. */
-  function padsSvg() {
-    var R = function (x, y, w, h, c) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + c + '"/>'; };
-    function pad(ox) {
-      var k = '#161616', r = '#ae1032', o = '#ff9e00', g = '#bdbdbd';
-      /* 모서리 한 칸씩 깎은 몸통(검은 테 → 진홍) · 주황 면 · 십자키 · SELECT/START · 버튼 두 개 · 회색 두께 · 위로 나가는 선 */
-      return R(ox + 2, 3, 26, 9, g) + R(ox + 3, 2, 24, 11, g) +
-        R(ox, 2, 26, 9, k) + R(ox + 1, 1, 24, 11, k) + R(ox + 1, 2, 24, 9, r) + R(ox + 2, 5, 22, 5, o) +
-        R(ox + 4, 7, 3, 1, k) + R(ox + 5, 6, 1, 3, k) +
-        R(ox + 9, 7, 2, 1, k) + R(ox + 12, 7, 2, 1, k) +
-        R(ox + 16, 6, 3, 3, k) + R(ox + 17, 7, 1, 1, r) + R(ox + 20, 6, 3, 3, k) + R(ox + 21, 7, 1, 1, r) +
-        R(ox + 12, 0, 2, 1, k);
-    }
-    return '<svg viewBox="0 0 59 14" width="295" height="70" shape-rendering="crispEdges" focusable="false">' +
-      pad(0) + pad(31) + '</svg>';
-  }
-  function decoratePads(main) {
-    var intro = main.querySelector('.fcs-stage--home .fcs-intro');
-    if (!intro || intro.querySelector('.fcd-pads')) return;
-    var art = document.createElement('span');
-    art.className = 'fcd-pads'; art.setAttribute('aria-hidden', 'true');
-    art.innerHTML = padsSvg();
-    intro.appendChild(art);
-  }
   function decorateParts() {
     if (!active()) return;
     var main = document.querySelector('[data-slot="main"]');
     if (!main) return;
-    decoratePads(main);
     var hero = main.querySelector('.hero.fc-console');
     if (hero) decoration(hero, 'fcd-shell');
     var parts = main.querySelectorAll('.hp-block, .hp-games');
     if (!parts.length) parts = main.querySelectorAll('.section > .wrap');
     Array.prototype.forEach.call(parts, function (part, i) {
       if (part.classList.contains('hp-games')) part = part.parentNode;
+      if (!part.querySelector('.hp-h, .section__head, .proj-title, .cl-summary__t')) return;
       part.classList.add('fcd-part');
       decoration(part, 'fcd-part-no', ('0' + (i + 1)).slice(-2));
     });
-    var faces = document.querySelectorAll('.fcd-part, .hero.fc-console, .draw__stage, .gcard, .card-back, ' +
-      '.stat, .card, .strength, .hp-game, .profile, .tl-item, .cover-block, .play-card, .steam, ' +
-      '.quest-strip, .detail__learned, .block, .pager__item, .media-box, .cover-empty, .proj-empty, ' +
-      '.sheet__panel, .toast, .btn, .tab, .fc-key, .tag, .badge, .back-link, .store-link, ' +
-      '.icon-btn, .nav__burger, .lang-toggle, .nav__link, .hp-skill__ic, .tool__ic, .hp-thumb, .hp-game__ic, ' +
-      '.hero__eyebrow, .hero__portrait, .hero__photo, .quip, .fc-ov__btn, .fc-slot');
+    // Depth belongs to physical hardware; text and document panels stay flat.
+    var faces = main.querySelectorAll('.hero.fc-console, .draw__stage, .gcard, .card-back, .fc-key');
     Array.prototype.forEach.call(faces, function (face) {
       face.classList.add('fcd-solid');
       decoration(face, 'fcd-volume');
@@ -462,4 +434,75 @@
     watchDecoration();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* Round 10 — direct portfolio entry points, independent of the console controls.
+   The stage assembles after this script; a queued, idempotent observer handles
+   that assembly and later KO/EN rerenders without touching insertion state. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-dot-cx', queued = false;
+  var LABELS = {
+    nav: { ko: '포트폴리오 바로가기', en: 'Portfolio shortcuts' },
+    projects: { ko: '프로젝트 보기', en: 'View projects' },
+    resume: { ko: '이력서 읽기', en: 'Read résumé' }
+  };
+  function language() {
+    var app = window.PortfolioApp;
+    return (app && app.getLang ? app.getLang() : document.documentElement.lang) === 'en' ? 'en' : 'ko';
+  }
+  function paint() {
+    queued = false;
+    if (document.documentElement.getAttribute('data-skin') !== SKIN) {
+      document.querySelectorAll('[data-cx-owner="' + SKIN + '"]').forEach(function (el) { el.remove(); });
+      return;
+    }
+    var intro = document.querySelector('.fcs-stage--home .fcs-intro'), L = language();
+    if (intro && !intro.querySelector('.cx-entry')) {
+      var links = document.createElement('nav');
+      links.className = 'cx-entry'; links.setAttribute('data-cx-owner', SKIN);
+      links.setAttribute('aria-label', LABELS.nav[L]);
+      ['projects', 'resume'].forEach(function (key, i) {
+        var a = document.createElement('a');
+        a.href = key + '.html?skin=' + encodeURIComponent(SKIN);
+        var number = document.createElement('span');
+        number.className = 'cx-entry__no'; number.setAttribute('aria-hidden', 'true');
+        number.textContent = '0' + (i + 1);
+        a.appendChild(number); a.appendChild(document.createTextNode(LABELS[key][L]));
+        var arrow = document.createElement('span');
+        arrow.className = 'cx-entry__arrow'; arrow.setAttribute('aria-hidden', 'true'); arrow.textContent = '↗';
+        a.appendChild(arrow); links.appendChild(a);
+      });
+      intro.insertBefore(links, intro.querySelector('.fcs-caption'));
+    }
+    // Use the actual identity on résumé screens as well as on the home screen.
+    if (document.body.getAttribute('data-page') === 'resume') {
+      var info = document.querySelector('.fcs-info');
+      if (info && !info.querySelector('.portrait__cap')) {
+        var cap = document.createElement('p'), meta = (window.PORTFOLIO_CONTENT || {}).meta || {};
+        cap.className = 'portrait__cap'; cap.setAttribute('data-cx-owner', SKIN);
+        [['name', 'portrait__nm'], ['role', 'portrait__role']].forEach(function (entry) {
+          var text = meta[entry[0]], span = document.createElement('span');
+          span.className = entry[1]; span.setAttribute('data-e', 'meta.' + entry[0]);
+          span.textContent = typeof text === 'string' ? text : (text && (text[L] || text.ko)) || '';
+          cap.appendChild(span);
+        });
+        info.insertBefore(cap, info.firstChild);
+      }
+    }
+  }
+  function schedule() {
+    if (queued) return;
+    queued = true; requestAnimationFrame(paint);
+  }
+  function start() {
+    schedule();
+    if (!window.MutationObserver) return;
+    var main = document.querySelector('[data-slot="main"]');
+    if (main) new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
+    new MutationObserver(schedule).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-skin', 'lang']
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

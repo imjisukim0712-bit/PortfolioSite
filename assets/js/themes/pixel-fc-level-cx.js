@@ -416,14 +416,6 @@
       if (hud.firstElementChild.textContent !== numberText) hud.firstElementChild.textContent = numberText;
       if (hud.lastElementChild.textContent !== pageText) hud.lastElementChild.textContent = pageText;
     }
-    /* 5차: 첫 화면 제목 아래 떠 있는 블록 한 줄(벽돌 · ? · 벽돌 · ? · 벽돌) + ? 위로 튀어나온 코인. 장식 전용. */
-    var intro = document.querySelector('[data-slot="main"] .fcs-stage--home .fcs-intro');
-    if (intro && !intro.querySelector('.level-platform')) {
-      var row = document.createElement('span');
-      row.className = 'level-platform'; row.setAttribute('aria-hidden', 'true');
-      row.innerHTML = '<i class="b"></i><i class="q"><em></em></i><i class="b"></i><i class="q"></i><i class="b"></i>';
-      intro.appendChild(row);
-    } else if (!intro && !paint.retry) { paint.retry = true; requestAnimationFrame(function () { paint.retry = false; paint(); }); }
     var footer = document.querySelector('[data-slot="footer"]');
     if (footer) {
       var end = footer.querySelector('.level-end');
@@ -447,4 +439,75 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStageDecor);
   else initStageDecor();
+})();
+
+/* Round 10 — direct portfolio entry points, independent of the console controls.
+   The stage assembles after this script; a queued, idempotent observer handles
+   that assembly and later KO/EN rerenders without touching insertion state. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-level-cx', queued = false;
+  var LABELS = {
+    nav: { ko: '포트폴리오 바로가기', en: 'Portfolio shortcuts' },
+    projects: { ko: '프로젝트 보기', en: 'View projects' },
+    resume: { ko: '이력서 읽기', en: 'Read résumé' }
+  };
+  function language() {
+    var app = window.PortfolioApp;
+    return (app && app.getLang ? app.getLang() : document.documentElement.lang) === 'en' ? 'en' : 'ko';
+  }
+  function paint() {
+    queued = false;
+    if (document.documentElement.getAttribute('data-skin') !== SKIN) {
+      document.querySelectorAll('[data-cx-owner="' + SKIN + '"]').forEach(function (el) { el.remove(); });
+      return;
+    }
+    var intro = document.querySelector('.fcs-stage--home .fcs-intro'), L = language();
+    if (intro && !intro.querySelector('.cx-entry')) {
+      var links = document.createElement('nav');
+      links.className = 'cx-entry'; links.setAttribute('data-cx-owner', SKIN);
+      links.setAttribute('aria-label', LABELS.nav[L]);
+      ['projects', 'resume'].forEach(function (key, i) {
+        var a = document.createElement('a');
+        a.href = key + '.html?skin=' + encodeURIComponent(SKIN);
+        var number = document.createElement('span');
+        number.className = 'cx-entry__no'; number.setAttribute('aria-hidden', 'true');
+        number.textContent = '0' + (i + 1);
+        a.appendChild(number); a.appendChild(document.createTextNode(LABELS[key][L]));
+        var arrow = document.createElement('span');
+        arrow.className = 'cx-entry__arrow'; arrow.setAttribute('aria-hidden', 'true'); arrow.textContent = '↗';
+        a.appendChild(arrow); links.appendChild(a);
+      });
+      intro.insertBefore(links, intro.querySelector('.fcs-caption'));
+    }
+    // Use the actual identity on résumé screens as well as on the home screen.
+    if (document.body.getAttribute('data-page') === 'resume') {
+      var info = document.querySelector('.fcs-info');
+      if (info && !info.querySelector('.portrait__cap')) {
+        var cap = document.createElement('p'), meta = (window.PORTFOLIO_CONTENT || {}).meta || {};
+        cap.className = 'portrait__cap'; cap.setAttribute('data-cx-owner', SKIN);
+        [['name', 'portrait__nm'], ['role', 'portrait__role']].forEach(function (entry) {
+          var text = meta[entry[0]], span = document.createElement('span');
+          span.className = entry[1]; span.setAttribute('data-e', 'meta.' + entry[0]);
+          span.textContent = typeof text === 'string' ? text : (text && (text[L] || text.ko)) || '';
+          cap.appendChild(span);
+        });
+        info.insertBefore(cap, info.firstChild);
+      }
+    }
+  }
+  function schedule() {
+    if (queued) return;
+    queued = true; requestAnimationFrame(paint);
+  }
+  function start() {
+    schedule();
+    if (!window.MutationObserver) return;
+    var main = document.querySelector('[data-slot="main"]');
+    if (main) new MutationObserver(schedule).observe(main, { childList: true, subtree: true });
+    new MutationObserver(schedule).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-skin', 'lang']
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
