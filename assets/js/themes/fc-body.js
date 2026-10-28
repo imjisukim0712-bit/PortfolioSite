@@ -219,7 +219,9 @@
   }
 
   var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': levelArt, 'pixel-fc-kraft': kraftArt,
-              'pixel-fc-gold': goldArt, 'pixel-fc-metal': metalArt, 'pixel-fc-museum': museumArt };
+              'pixel-fc-gold': goldArt, 'pixel-fc-metal': metalArt, 'pixel-fc-museum': museumArt,
+              /* 10회차 Codex 다듬기 안 — 원본과 같은 게임기 그림에서 출발 */
+              'pixel-fc-dot-cx': dotArt, 'pixel-fc-level-cx': levelArt, 'pixel-fc-kraft-cx': kraftArt };
 
   function skin() { return document.documentElement.getAttribute('data-skin'); }
   function paint() {

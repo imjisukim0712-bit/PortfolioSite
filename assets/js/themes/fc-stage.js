@@ -18,7 +18,8 @@
                 'pixel-fc-icon': 1, 'pixel-fc-dot': 1, 'pixel-fc-blueprint': 1, 'pixel-fc-flat': 1, 'pixel-fc-ukiyo': 1,
                 'pixel-fc-iso': 1, 'pixel-fc-line': 1, 'pixel-fc-snes': 1, 'pixel-fc-kraft': 1, 'pixel-fc-level': 1,
                 'pixel-fc-gold': 1, 'pixel-fc-metal': 1, 'pixel-fc-museum': 1,
-                'pixel-fc-laureate': 1, 'pixel-fc-gallery': 1, 'pixel-fc-rally': 1 };
+                'pixel-fc-laureate': 1, 'pixel-fc-gallery': 1, 'pixel-fc-rally': 1,
+                'pixel-fc-dot-cx': 1, 'pixel-fc-kraft-cx': 1, 'pixel-fc-level-cx': 1, 'pixel-fc-rally-cx': 1 };
   var CAPTION = { ko: '카트리지를 골라 꽂으면 게임기 화면에 프로젝트가 켜집니다', en: 'Pick a cartridge and slot it in to boot the project on screen' };
   /* 포트폴리오 다듬기(10회차) 안: 홈 제목 아래에 이력서 숫자(content.js 의 resume.stats)를 한 줄로 */
   var FOLIO = { 'pixel-fc-dot': 1, 'pixel-fc-kraft': 1, 'pixel-fc-level': 1, 'pixel-fc-rally': 1 };
