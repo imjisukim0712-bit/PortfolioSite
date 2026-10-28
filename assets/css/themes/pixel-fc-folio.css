@@ -636,6 +636,70 @@
   :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section > .wrap > .cover-block { max-width: none; margin: 0; }
 }
 
+/* ── 13회차: 마리오다운 월드 문법 ───────────────────────────────────────────
+   캐릭터 · 아이템 · 로고는 그리지 않고(고정 조건) 월드의 문법만 — 화면 위 점수판, 하늘의 구름, 떠 있는 벽돌 · 물음표 블록과 동전,
+   지면 위 언덕 · 덤불 · 초록 관, 지하 바닥의 파란 벽돌과 나가는 관, 아래서 치면 튀어 오르는 블록.
+   소품 그림은 직접 찍은 픽셀 도형입니다(아래 --lv-* — tools/fc-pixel/stage-props.py 가 뽑음). 글자 위에는 아무것도 겹치지 않습니다. */
+:root[data-skin="pixel-fc-level"] {
+  --lv-pipe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='72' viewBox='0 0 32 36' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='32' height='13' fill='%23000'/%3E%3Crect x='2' y='13' width='28' height='23' fill='%23000'/%3E%3Crect x='1' y='1' width='30' height='11' fill='%2300a800'/%3E%3Crect x='3' y='13' width='26' height='23' fill='%2300a800'/%3E%3Crect x='3' y='1' width='3' height='11' fill='%23b8f818'/%3E%3Crect x='7' y='1' width='1' height='11' fill='%23b8f818'/%3E%3Crect x='5' y='13' width='3' height='23' fill='%23b8f818'/%3E%3Crect x='9' y='13' width='1' height='23' fill='%23b8f818'/%3E%3Crect x='24' y='1' width='4' height='11' fill='%23005800'/%3E%3Crect x='22' y='13' width='4' height='23' fill='%23005800'/%3E%3C/svg%3E");
+  --lv-bush: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='32' viewBox='0 0 48 16' shape-rendering='crispEdges'%3E%3Crect x='0' y='9' width='48' height='8' fill='%23000'/%3E%3Crect x='4' y='4' width='14' height='13' fill='%23000'/%3E%3Crect x='14' y='0' width='18' height='17' fill='%23000'/%3E%3Crect x='28' y='4' width='15' height='13' fill='%23000'/%3E%3Crect x='8' y='2' width='8' height='6' fill='%23000'/%3E%3Crect x='32' y='2' width='8' height='6' fill='%23000'/%3E%3Crect x='18' y='-1' width='10' height='4' fill='%23000'/%3E%3Crect x='1' y='10' width='46' height='6' fill='%2300a800'/%3E%3Crect x='5' y='5' width='12' height='11' fill='%2300a800'/%3E%3Crect x='15' y='1' width='16' height='15' fill='%2300a800'/%3E%3Crect x='29' y='5' width='13' height='11' fill='%2300a800'/%3E%3Crect x='9' y='3' width='6' height='4' fill='%2300a800'/%3E%3Crect x='33' y='3' width='6' height='4' fill='%2300a800'/%3E%3Crect x='19' y='0' width='8' height='2' fill='%2300a800'/%3E%3Crect x='8' y='6' width='4' height='3' fill='%2380d010'/%3E%3Crect x='18' y='3' width='6' height='3' fill='%2380d010'/%3E%3Crect x='32' y='6' width='4' height='3' fill='%2380d010'/%3E%3C/svg%3E");
+  --lv-coin: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='28' viewBox='0 0 8 14' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%23000'/%3E%3Crect x='1' y='1' width='6' height='1' fill='%23000'/%3E%3Crect x='0' y='2' width='8' height='10' fill='%23000'/%3E%3Crect x='1' y='12' width='6' height='1' fill='%23000'/%3E%3Crect x='2' y='13' width='4' height='1' fill='%23000'/%3E%3Crect x='2' y='1' width='4' height='1' fill='%23fca044'/%3E%3Crect x='1' y='2' width='6' height='10' fill='%23fca044'/%3E%3Crect x='2' y='12' width='4' height='1' fill='%23fca044'/%3E%3Crect x='2' y='3' width='1' height='7' fill='%23ffdb98'/%3E%3Crect x='4' y='3' width='2' height='8' fill='%23c84c0c'/%3E%3C/svg%3E");
+  --lv-brick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='16' height='16' fill='%23171c28'/%3E%3Crect x='1' y='1' width='14' height='14' fill='%23c84c0c'/%3E%3Crect x='1' y='1' width='14' height='1' fill='%23fca044'/%3E%3Crect x='1' y='5' width='14' height='1' fill='%23171c28'/%3E%3Crect x='1' y='10' width='14' height='1' fill='%23171c28'/%3E%3Crect x='8' y='1' width='1' height='4' fill='%23171c28'/%3E%3Crect x='4' y='6' width='1' height='4' fill='%23171c28'/%3E%3Crect x='12' y='6' width='1' height='4' fill='%23171c28'/%3E%3Crect x='8' y='11' width='1' height='4' fill='%23171c28'/%3E%3C/svg%3E");
+  --lv-ubrick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='32' viewBox='0 0 64 32' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='64' height='32' fill='%231b5fa0'/%3E%3Crect x='0' y='4' width='64' height='4' fill='%236cc4f4'/%3E%3Crect x='4' y='20' width='24' height='4' fill='%236cc4f4'/%3E%3Crect x='36' y='20' width='24' height='4' fill='%236cc4f4'/%3E%3Crect x='0' y='0' width='64' height='4' fill='%23081428'/%3E%3Crect x='0' y='16' width='64' height='4' fill='%23081428'/%3E%3Crect x='0' y='28' width='64' height='4' fill='%23081428'/%3E%3Crect x='28' y='16' width='4' height='16' fill='%23081428'/%3E%3Crect x='60' y='0' width='4' height='32' fill='%23081428'/%3E%3C/svg%3E");
+  --level-cloud-2: var(--level-cloud);
+}
+/* 점수판: 이력서 숫자 줄(fc-stage.js)을 pixel-fc-level.js 가 첫 화면 맨 위로 옮긴 것 — 위 줄 이름표 · 아래 줄 숫자, 흰 도트 글자 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen > .lv-hud {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 32px;
+  width: min(100% - var(--gutter) * 2, var(--folio-max)); max-width: none; margin: 0 auto; padding: 84px 0 0; border: 0;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact { flex-direction: column; gap: 12px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact__k { font: 400 14px/1.3 var(--font-display); letter-spacing: .02em; color: #fff; text-shadow: 2px 2px 0 #171c28; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact__v { display: flex; align-items: center; font: 400 22px/1 var(--font-mono); letter-spacing: 0; color: #fff; text-shadow: 3px 3px 0 #171c28; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact__u { margin-left: .3em; font-size: .7em; color: #ffdc90; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact:nth-child(2) .fcs-fact__v::before {
+  content: ''; flex: none; width: 12px; height: 21px; margin-right: 10px; background: var(--lv-coin) center / contain no-repeat;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .fcs-stage--home { padding-top: 24px; }
+/* 하늘: 꼭대기 쪽에 구름 둘 (점수판 · 제목과 겹치지 않는 높이) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen::before {
+  inset: 0 0 auto; top: 0; left: 0; width: 100%; height: 64px;
+  background: var(--level-cloud) 40% 10px / 112px 48px no-repeat, var(--level-cloud) 86% 18px / 84px 36px no-repeat;
+}
+/* 지면 위: 언덕 · 덤불 · 초록 관 (첫 화면 아래 80px 띠 안에만) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen::after {
+  background: var(--level-hill) 6% 0 / 160px 80px no-repeat, var(--lv-bush) 31% 100% / 96px 32px no-repeat, var(--lv-pipe) 92% 100% / 64px 72px no-repeat;
+}
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-level"] .fcs-intro { padding-top: 56px; }
+  /* 제목 밑 빈 하늘: 떠 있는 벽돌 · 물음표 블록 한 줄 + 그 위 동전 둘 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .fcs-intro::after {
+    content: ''; display: block; width: 240px; height: 96px; margin-top: 64px; pointer-events: none;
+    background:
+      var(--lv-coin) 64px 0 / 16px 28px no-repeat, var(--lv-coin) 160px 0 / 16px 28px no-repeat,
+      var(--lv-brick) 0 48px / 48px 48px no-repeat, var(--level-question) 48px 48px / 48px 48px no-repeat,
+      var(--lv-brick) 96px 48px / 48px 48px no-repeat, var(--level-question) 144px 48px / 48px 48px no-repeat,
+      var(--lv-brick) 192px 48px / 48px 48px no-repeat;
+  }
+}
+@media (max-width: 899px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen > .lv-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 76px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hud .fcs-fact__v { font-size: 18px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .home-screen::after { background-position: 4% 0, 62% 100%, 94% 100%; }
+}
+/* 지하 바닥: 파란 벽돌 두 줄 + 오른쪽에 나가는 관 (내용이 끝난 뒤의 여백에만) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main { padding-bottom: 196px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main::after {
+  content: ''; position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; height: 136px; pointer-events: none;
+  background: var(--lv-pipe) 88% 0 / 64px 72px no-repeat,
+              var(--lv-ubrick) 0 72px / 64px 32px repeat-x, var(--lv-ubrick) 0 104px / 64px 32px repeat-x;
+}
+/* 인벤토리의 물음표 블록: 올리면 아래서 친 것처럼 한 번 튀어 오름 */
+@keyframes lv-bump { 0%, 100% { translate: 0 0; } 45% { translate: 0 -8px; } }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp-skills > .hp-skill:hover { animation: lv-bump .26s steps(3, end) 1; }
+@media (prefers-reduced-motion: reduce) { :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp-skills > .hp-skill:hover { animation: none; } }
+
 /* ============================================================================
    랠리 프린트 (pixel-fc-rally) — 빨강 8px 윗띠 + 검은 2px 테 + 노랑 판화 그림자의 인쇄 판,
    이름표 = 사선으로 자른 검은 판(글자는 곧게) + 노랑 줄 · 업적 태그 = 검은 칩 · 구분선 = 가는 인쇄 선

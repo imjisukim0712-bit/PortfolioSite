@@ -459,6 +459,14 @@
     main.insertBefore(menu, parts[0]);
     Array.prototype.forEach.call(parts, function (s) { menu.appendChild(s); });
   }
+  /* 13회차: 이력서 숫자 줄을 첫 화면 맨 위 점수판(HUD)으로 — 게임 화면 위쪽의 점수 · 동전 · 월드 · 시간 줄처럼 */
+  function hud(main) {
+    var home = main.querySelector(':scope > .home-screen');
+    var facts = home && home.querySelector('.fcs-intro > .fcs-facts');
+    if (!facts) return;
+    facts.classList.add('lv-hud');
+    home.insertBefore(facts, home.firstChild);
+  }
   function measure() {
     var main = mainEl(); if (!main) return;
     if (!active()) { main.style.removeProperty('--lv-surface'); return; }
@@ -475,7 +483,7 @@
     requestAnimationFrame(function () {
       queued = false;
       var main = mainEl(); if (!main) return;
-      if (active()) groupMenu(main);
+      if (active()) { groupMenu(main); hud(main); }
       measure();
     });
   }
