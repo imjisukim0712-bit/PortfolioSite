@@ -111,6 +111,7 @@
   }
   function step(dir) {
     var hero = document.querySelector('.hero.fc-console'); if (!hero) return;
+    if (window.__lvTitle && window.__lvTitle.step(dir)) return;                                       /* 홈 메뉴 화면: 커서 이동 */
     var app = window.PortfolioApp;
     if (hero.querySelector('[data-quip]') && app && app.cycleQuip) { app.cycleQuip(dir); return; }   /* 홈: 한마디 넘기기 */
     var secs = sections(); if (!secs.length) return;                                                  /* 그 밖: 절 이동 */
@@ -121,6 +122,7 @@
   }
   function pressA(kind) {
     if (pending) { if (pending.ready) viewDetail(); return; }        /* 꽂혀 있으면 A = 자세히 보기 */
+    if (window.__lvTitle && window.__lvTitle.a()) return;             /* 홈: 타이틀 = 시작, 메뉴 = 결정 */
     if (kind === 'draw') {
       var deck = document.querySelector('[data-draw]'); if (!deck) return;
       deck.click();
@@ -133,6 +135,7 @@
   }
   function pressB() {
     if (pending) { if (pending.ready) eject(); return; }               /* 꽂혀 있으면 B = 꺼내기 */
+    if (window.__lvTitle && window.__lvTitle.b()) return;             /* 홈 메뉴 화면: B = 처음 화면 */
     var b = document.querySelector('[data-theme-toggle]'); if (b) b.click();
   }
 
@@ -495,6 +498,245 @@
     if (window.MutationObserver) new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'lang'] });
     window.addEventListener('resize', update);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* 15회차 — 홈 = 타이틀 화면. 아래 내용 · 진열판 없이 첫 화면만 두고,
+   게임기를 누르거나 · 아래로 밀거나(휠 · 끌기 · 쓸기) · A · ↓ 를 누르면 기울어 있던 게임기가 똑바로 서며 화면 가득 커지고,
+   게임기 화면에는 페이지 메뉴, 그 아래에는 카트리지(프로젝트 카드)가 놓입니다. B · Esc · 맨 위에서 위로 밀기 = 타이틀로.
+   상태는 body[data-lv="title" | "menu"] 하나(언어 전환으로 main 이 다시 그려져도 유지), 그림은 pixel-fc-folio.css 의 15회차 절.
+   크기가 커지는 연출은 판(.fcs-rig)의 처음 · 나중 상자를 재서 되돌려 그리는 방식(FLIP)이라 글자는 늘 실제 크기로 선명합니다. */
+(function () {
+  'use strict';
+  var SKIN = 'pixel-fc-level';
+  var T = {
+    start:  { ko: '눌러서 시작', en: 'PRESS START' },
+    hint:   { ko: '게임기를 누르거나 아래로 밀면 시작합니다', en: 'Press the console or scroll down to start' },
+    menu:   { ko: '메뉴', en: 'MENU' },
+    title:  { ko: '플레이어 선택', en: 'PLAYER SELECT' },
+    keys:   { ko: '◀ ▶ 고르기 · A 결정 · B 처음 화면', en: '◀ ▶ select · A enter · B title' },
+    navA:   { ko: '페이지 메뉴', en: 'Page menu' },
+    powerA: { ko: '게임기 켜기 — 메뉴 열기', en: 'Power on — open the menu' },
+    goL:    { ko: '시작', en: 'Start' },
+    pickL:  { ko: '결정', en: 'Enter' },
+    pickA:  { ko: '고른 메뉴로 가기', en: 'Open the selected page' },
+    backL:  { ko: '처음', en: 'Title' },
+    backA:  { ko: '처음 화면으로', en: 'Back to the title screen' },
+    lightL: { ko: '밝기', en: 'Light' },
+    lightA: { ko: '다크 · 라이트 전환', en: 'Toggle dark mode' },
+    mail:   { ko: '연락하기', en: 'Contact' },
+    desc: {
+      'resume.html':       { ko: '경력 · 핵심역량 · 인적사항', en: 'Career, skills and profile' },
+      'cover-letter.html': { ko: '함께 일하면 어떤 기획자인지', en: 'What I am like to work with' },
+      'projects.html':     { ko: '게임 · 기획 프로젝트 전체', en: 'Every game and design project' },
+      'play.html':         { ko: '장르별 플레이 기록', en: 'What I play, by genre' }
+    }
+  };
+  var ID = 'matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)';
+  var sel = 0, busy = false;
+
+  function lang() {
+    var v = window.PortfolioApp && window.PortfolioApp.getLang ? window.PortfolioApp.getLang() : document.documentElement.getAttribute('lang');
+    return v === 'en' ? 'en' : 'ko';
+  }
+  function t(o) { return (o && (o[lang()] || o.ko)) || ''; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function reduced() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function on() { return document.documentElement.getAttribute('data-skin') === SKIN && document.body.getAttribute('data-page') === 'home' && !!document.querySelector('.home-screen .fcs-rig .hero'); }
+  function state() { return document.body.getAttribute('data-lv'); }
+  function rig() { return document.querySelector('.home-screen .fcs-rig'); }
+  function items() { return Array.prototype.slice.call(document.querySelectorAll('.lv-msel .lv-mi')); }
+  function inserted() { return !!document.querySelector('.fc-fly, .fc-boot'); }
+
+  /* 게임기 화면에 붙는 것: 타이틀의 '눌러서 시작', 메뉴 화면의 페이지 목록 · 키 안내 */
+  function build() {
+    var info = document.querySelector('.home-screen .fcs-info'); if (!info) return;
+    if (!info.querySelector('.lv-start')) {
+      var st = document.createElement('p'); st.className = 'lv-start'; st.setAttribute('aria-hidden', 'true');
+      info.appendChild(st);
+    }
+    info.querySelector('.lv-start').textContent = '▶ ' + t(T.start);
+    var nav = info.querySelector('.lv-msel');
+    if (!nav) { nav = document.createElement('nav'); nav.className = 'lv-msel'; info.appendChild(nav); }
+    var rows = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.nav__menu .nav__link'), function (a) {
+      var href = a.getAttribute('href') || '', file = href.split('/').pop().split('?')[0];
+      if (!T.desc[file]) return;   /* 홈은 빼고 */
+      rows.push({ href: href, label: a.textContent.trim(), desc: t(T.desc[file]) });
+    });
+    var c = window.PORTFOLIO_CONTENT || {}, mail = ((c.meta && c.meta.email) || '').trim();
+    if (mail) rows.push({ href: 'mailto:' + mail, label: t(T.mail), desc: mail });
+    nav.setAttribute('aria-label', t(T.navA));
+    nav.innerHTML = '<ol>' + rows.map(function (r, i) {
+      return '<li><a class="lv-mi" href="' + esc(r.href) + '" data-i="' + i + '"><b class="lv-mi__t">' + esc(r.label) + '</b><span class="lv-mi__d">' + esc(r.desc) + '</span></a></li>';
+    }).join('') + '</ol><p class="lv-msel__keys" aria-hidden="true">' + esc(t(T.keys)) + '</p>';
+    sel = Math.min(sel, rows.length - 1);
+    mark();
+    var intro = document.querySelector('.home-screen .fcs-intro');
+    if (intro) {
+      var hint = intro.querySelector('.lv-hint');
+      if (!hint) { hint = document.createElement('p'); hint.className = 'lv-hint'; intro.appendChild(hint); }
+      hint.textContent = t(T.hint);
+    }
+  }
+  function mark() {
+    items().forEach(function (a, i) { a.parentNode.classList.toggle('is-sel', i === sel); });
+  }
+  function label(which, text, aria) {
+    var l = document.querySelector('[data-fc-lbl="' + which + '"]'), k = document.querySelector(which === 'a' ? '[data-fc-a]' : '[data-fc-b]');
+    if (l) { l.textContent = text; l.setAttribute('data-orig', text); }   /* 카트리지를 뺄 때 이 글자로 돌아오도록 data-orig 도 */
+    if (k) k.setAttribute('aria-label', aria);
+  }
+  /* 상태에 맞춰 글자 · 접근성 속성을 맞춤 (그림은 CSS) */
+  function apply() {
+    var st = state(), hero = document.querySelector('.home-screen .fcs-rig .hero');
+    var bar = document.querySelector('.home-screen .gui-scr__t');
+    if (bar) bar.textContent = t(st === 'menu' ? T.menu : T.title);
+    if (hero) {
+      if (st === 'title') { hero.setAttribute('tabindex', '0'); hero.setAttribute('role', 'button'); hero.setAttribute('aria-label', t(T.powerA)); }
+      else { hero.removeAttribute('tabindex'); hero.removeAttribute('role'); hero.removeAttribute('aria-label'); }
+    }
+    if (st === 'menu') { label('a', t(T.pickL), t(T.pickA)); label('b', t(T.backL), t(T.backA)); }
+    else { label('a', t(T.goL), t(T.powerA)); label('b', t(T.lightL), t(T.lightA)); }
+    var nav = document.querySelector('.nav-wrap') || document.querySelector('.nav');   /* 위에 붙은 상단바 높이 — 첫 화면을 한 화면에 맞추는 데 씀 */
+    document.documentElement.style.setProperty('--lv-nav', (nav ? Math.round(nav.getBoundingClientRect().height) : 64) + 'px');
+  }
+
+  /* 판의 실제 상자(기울기를 뺀) */
+  function box(el) { var keep = el.style.transform; el.style.transform = 'none'; var r = el.getBoundingClientRect(); el.style.transform = keep; return r; }
+  function go(next) {
+    if (busy || state() === next || inserted()) return;
+    var r = rig(); if (!r) return;
+    var anim = !reduced() && !!r.animate && window.innerWidth >= 900;
+    window.scrollTo(0, 0);
+    var oldT = getComputedStyle(r).transform, before = box(r), origin = getComputedStyle(r).transformOrigin.split(' ').map(parseFloat);
+    /* 메뉴로 갈 때 사라지는 점수판 · 제목은 그 자리에 붙잡아 두고 흐리게(아래 판이 위로 당겨져도 튀지 않게) */
+    var pinned = [], fades = [];
+    if (anim && next === 'menu') {
+      Array.prototype.forEach.call(document.querySelectorAll('.home-screen > .lv-hud, .home-screen .fcs-intro'), function (el) {
+        var b = el.getBoundingClientRect();
+        el.style.cssText += ';position:fixed;left:' + b.left + 'px;top:' + b.top + 'px;width:' + b.width + 'px;margin:0;z-index:0;display:' + getComputedStyle(el).display;
+        pinned.push(el);
+      });
+    }
+    document.body.classList.add('lv-moving');
+    document.body.setAttribute('data-lv', next);
+    apply();
+    var done = function () {
+      busy = false;
+      pinned.forEach(function (el) { ['position', 'left', 'top', 'width', 'margin', 'z-index', 'display'].forEach(function (k) { el.style.removeProperty(k); }); });
+      fades.forEach(function (f) { f.cancel(); });
+      document.body.classList.remove('lv-moving');
+      if (next === 'menu') {
+        var deck = document.querySelector('[data-draw]'); if (deck) deck.click();   /* 카트리지를 한 장씩 깔아 놓음 */
+        var first = items()[sel]; if (first) { try { first.focus({ preventScroll: true }); } catch (e) {} }
+      } else {
+        var h = document.querySelector('.home-screen .fcs-rig .hero'); if (h) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+      }
+    };
+    if (!anim) { done(); return; }
+    busy = true;
+    var newT = getComputedStyle(r).transform, after = box(r);
+    /* 처음 상자의 기준점(transform-origin)이 나중 상자의 기준점에 오도록 옮기고, 폭 비율만큼 줄여 처음 모습에서 출발 */
+    var fx = origin[0] / after.width, fy = origin[1] / after.height;
+    var dx = (before.left + before.width * fx) - (after.left + after.width * fx);
+    var dy = (before.top + before.height * fy) - (after.top + after.height * fy);
+    var s = before.width / after.width;
+    var a = r.animate([
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ') ' + (oldT === 'none' ? ID : oldT) },
+      { transform: 'translate(0px,0px) scale(1) ' + (newT === 'none' ? ID : newT) }
+    ], { duration: 980, easing: 'cubic-bezier(.65,0,.35,1)' });   /* 천천히 들어 올려 똑바로 세운 뒤 내려놓듯 */
+    if (next === 'menu') pinned.forEach(function (el) { fades.push(el.animate([{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '0 -24px' }], { duration: 360, easing: 'ease-in', fill: 'forwards' })); });
+    a.onfinish = a.oncancel = done;
+  }
+  function move(dir) {
+    var list = items(); if (!list.length) return;
+    sel = (sel + dir + list.length) % list.length; mark();
+    try { list[sel].focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  /* 기존 손잡이 키(pixel-fc-level.js 위쪽)가 먼저 물어봄 — 처리했으면 true */
+  window.__lvTitle = {
+    step: function (dir) { if (!on() || state() !== 'menu') return false; move(dir); return true; },
+    a: function () {
+      if (!on()) return false;
+      if (state() === 'title') { go('menu'); return true; }
+      var it = items()[sel]; if (it) it.click(); return true;
+    },
+    b: function () { if (!on() || state() !== 'menu') return false; go('title'); return true; }
+  };
+
+  /* 게임기 누르기(손잡이 키 · 메일 키는 제 기능 그대로) */
+  document.addEventListener('click', function (e) {
+    if (!on() || state() !== 'title' || !e.target.closest) return;
+    var hero = e.target.closest('.home-screen .fcs-rig .hero'); if (!hero) return;
+    if (e.target.closest('.fc-key, .fc-ab, .fc-grip a')) return;
+    e.preventDefault(); e.stopPropagation(); go('menu');
+  }, true);
+  document.addEventListener('mouseover', function (e) {
+    if (!on() || state() !== 'menu' || !e.target.closest) return;
+    var a = e.target.closest('.lv-mi'); if (a) { sel = +a.getAttribute('data-i') || 0; mark(); }
+  });
+  document.addEventListener('focusin', function (e) {
+    var a = e.target.closest && e.target.closest('.lv-mi'); if (a) { sel = +a.getAttribute('data-i') || 0; mark(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!on() || e.altKey || e.ctrlKey || e.metaKey || inserted()) return;
+    var tag = (e.target.tagName || '').toLowerCase(); if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    var st = state(), onHero = e.target.closest && e.target.closest('.home-screen .fcs-rig .hero');
+    if (st === 'title') {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || ((e.key === 'Enter' || e.key === ' ') && (onHero || e.target === document.body))) { e.preventDefault(); go('menu'); }
+      return;
+    }
+    if (e.key === 'Escape') { e.preventDefault(); go('title'); return; }
+    var inMenu = e.target.closest && e.target.closest('.lv-msel');
+    if (inMenu || e.target === document.body) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); move(1); }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); move(-1); }
+    }
+  });
+  /* 아래로 밀기: 휠 · 손가락 쓸기 · 마우스 끌기. 타이틀은 페이지 맨 아래(보통 한 화면이라 곧바로)에서만, 메뉴 → 타이틀은 맨 위에서 위로 밀 때만 */
+  function atBottom() { return window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2; }
+  window.addEventListener('wheel', function (e) {
+    if (!on() || inserted()) return;
+    if (busy) { e.preventDefault(); return; }
+    if (state() === 'title' && e.deltaY > 6 && atBottom()) { e.preventDefault(); go('menu'); }
+    else if (state() === 'menu' && e.deltaY < -6 && window.scrollY <= 0) { e.preventDefault(); go('title'); }
+  }, { passive: false });
+  var ty = null, tb = false;
+  window.addEventListener('touchstart', function (e) { if (on() && state() === 'title') { ty = e.touches[0].clientY; tb = atBottom(); } }, { passive: true });
+  window.addEventListener('touchend', function (e) {
+    if (ty === null || !on()) return;
+    var dy = ty - (e.changedTouches[0] || {}).clientY; ty = null;
+    if (state() === 'title' && tb && dy > 50) go('menu');
+  }, { passive: true });
+  var py = null;
+  document.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || !on() || state() !== 'title' || !e.target.closest || !e.target.closest('.home-screen')) return;
+    if (e.target.closest('a, button, input')) return;
+    py = e.clientY;
+  });
+  document.addEventListener('pointerup', function (e) {
+    if (py === null) return; var dy = py - e.clientY; py = null;
+    if (dy > 60 && on() && state() === 'title') go('menu');
+  });
+
+  function scan() {
+    if (!on()) { document.body.removeAttribute('data-lv'); return; }
+    if (!state()) document.body.setAttribute('data-lv', 'title');
+    build(); apply();
+  }
+  var queued = false;
+  function later() { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; scan(); }); }
+  function init() {
+    scan();
+    var main = document.querySelector('[data-slot="main"]');
+    if (main && window.MutationObserver) new MutationObserver(later).observe(main, { childList: true });
+    var navs = document.querySelector('[data-slot="nav"]');
+    if (navs && window.MutationObserver) new MutationObserver(later).observe(navs, { childList: true });
+    if (window.MutationObserver) new MutationObserver(later).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'lang'] });
+    window.addEventListener('resize', apply);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

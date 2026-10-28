@@ -770,6 +770,86 @@
   :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .fcs-stage::after { background-position: 0 100%, 100% 100%; }
 }
 
+/* ── 15회차: 홈 = 타이틀 화면 → 게임기가 똑바로 서며 커지는 메뉴 화면 ──────────────
+   상태는 pixel-fc-level.js 맨 아래 블록이 body[data-lv] 에 적습니다(홈에서만).
+     title : 첫 화면 한 장(점수판 · 제목 · 기울어진 게임기 · 지면). 아래 내용 · 진열판 · 푸터 없음. 게임기 화면에 '눌러서 시작'.
+     menu  : 제목 · 점수판은 사라지고 게임기가 기울기 없이 화면 가득, 화면에 페이지 메뉴, 그 아래 카트리지 진열판.
+   크기 · 기울기 변화는 JS 가 판(.fcs-rig)을 FLIP 으로 움직이고, CSS 는 두 상태의 최종 모습만 정합니다. */
+@property --lv-surface { syntax: '<length>'; inherits: true; initial-value: 620px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] main { padding-top: var(--lv-nav, 64px); padding-bottom: 128px; transition: --lv-surface .98s cubic-bezier(.65,0,.35,1); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] main::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] :is(.lv-menu, .footer) { display: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .home-screen { display: flex; flex-direction: column; min-height: calc(100svh - var(--lv-nav, 64px) - 128px); }
+/* 한 화면에 들어가도록 첫 화면 여백을 줄임(점수판 · 판 · 제목 칸) — 구름은 점수판 위 띠에 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .home-screen > .lv-hud { padding-top: 60px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .home-screen::before { background-position: 40% 4px, 86% 8px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-stage--home { padding: 12px 0 20px; }
+@media (min-width: 900px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-intro { padding-top: 8px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-stage--home .fcs-intro::after { margin-top: 28px; }
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .home-screen::after { transition: opacity .3s .1s; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body.lv-moving .home-screen::after { opacity: 0; transition: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .home-screen > .fcs-stage { margin-block: auto; }
+
+/* 타이틀 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-rig > .draw,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-intro .fcs-caption,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-info :is(.btn-row, .quip__more) { display: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] .fcs-intro { transition: opacity .35s .25s, visibility 0s 0s; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-rig > .hero { cursor: pointer; transition: translate .2s steps(2, end); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-rig > .hero:is(:hover, :focus-visible) { translate: 0 -8px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-rig > .hero:focus-visible { outline: 4px solid #fc9838; outline-offset: 6px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-start, :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel { display: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .lv-start {
+  display: block; margin: 14px 0 0; font: 400 22px/1.3 'Galmuri11', var(--font-display); letter-spacing: 0; color: var(--gui-scr-cursor);
+  animation: gui-blink 1.1s steps(1, end) infinite;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hint { margin: 28px 0 0; font: 600 16px/1.6 var(--font-sans); letter-spacing: 0; color: var(--gui-sky-ink); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hint::before { content: '▼' / ''; display: inline-block; margin-right: 8px; color: #fc9838; animation: gui-bob 1s steps(2, end) infinite; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .lv-hint { display: none; }
+@media (min-width: 900px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .fcs-stage--home { align-items: center; }
+}
+
+/* 메뉴 화면 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .home-screen > .lv-hud { display: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-stage--home { display: block; width: 100%; max-width: none; padding: 24px 0 40px; margin-block: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-intro {
+  position: absolute; top: 0; left: max(var(--gutter), calc((100% - var(--folio-max)) / 2)); width: min(40%, 460px);
+  opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .25s, visibility 0s .25s;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig { margin-inline: auto; }
+@media (min-width: 900px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig { transform: none; width: min(92vw, calc((100svh - var(--lv-nav, 64px) - 56px) * 1.48), 1380px); }
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig > .draw { width: min(100%, 820px); margin: 40px auto 0; animation: lv-tray-in .45s .85s both; }
+@keyframes lv-tray-in { from { opacity: 0; translate: 0 40px; } to { opacity: 1; translate: 0 0; } }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-info :is(.quip, .quip__more, .btn-row, .lv-start, .portrait__cap) { display: none; }   /* 이름은 화면 머리띠 · 상단바에 있으니 메뉴에 자리를 줌 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .lv-msel { display: block; margin-top: 0; animation: lv-screen-on .32s steps(4, end) both; }
+@keyframes lv-screen-on { 0% { opacity: 0; } 50% { opacity: .4; } 75% { opacity: .15; } 100% { opacity: 1; } }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel li { position: relative; margin: 0; padding: 0 0 0 30px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel li.is-sel::before {
+  content: '▶' / ''; position: absolute; left: 4px; top: 6px; font: 400 16px/1 var(--font-sans); color: var(--gui-scr-cursor);
+  animation: gui-blink 1.1s steps(1, end) infinite;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 2px 0; color: var(--gui-scr-ink); text-decoration: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi__t { font: 400 28px/1.25 var(--font-display); letter-spacing: 0; }   /* Galmuri14 = 14 의 배수 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi__d { font: 500 15px/1.4 var(--font-sans); letter-spacing: 0; color: color-mix(in srgb, var(--gui-scr-ink) 72%, transparent); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel li.is-sel .lv-mi__t { color: var(--gui-scr-cursor); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi:focus-visible { outline: 3px dashed var(--gui-scr-cursor); outline-offset: 3px; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-msel__keys { margin: 12px 0 0; padding-top: 10px; border-top: 2px dashed var(--gui-scr-rule); font: 600 13px/1.4 var(--font-sans); letter-spacing: .02em; color: var(--gui-scr-ink); }
+@media (max-width: 899px) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi__t { font: 400 22px/1.3 'Galmuri11', var(--font-display); }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-mi__d { font-size: 13px; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .lv-start { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv] :is(.lv-start, .lv-msel li.is-sel)::before, :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="title"] .lv-start, :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .lv-hint::before { animation: none; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] :is(.fcs-rig > .draw, .lv-msel) { animation: none; }
+}
+
 /* ============================================================================
    랠리 프린트 (pixel-fc-rally) — 빨강 8px 윗띠 + 검은 2px 테 + 노랑 판화 그림자의 인쇄 판,
    이름표 = 사선으로 자른 검은 판(글자는 곧게) + 노랑 줄 · 업적 태그 = 검은 칩 · 구분선 = 가는 인쇄 선
