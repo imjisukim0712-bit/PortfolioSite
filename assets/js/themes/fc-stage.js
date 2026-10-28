@@ -7,6 +7,7 @@
      · .fcs-stage  = .fcs-intro(눈썹 글자·큰 제목·한 줄) + .fcs-rig(기울이는 판)
      · .fcs-rig    = .hero(게임기) + 홈이면 .draw(카트리지 진열판)   ← CSS 가 판 전체를 한 번에 기울임
      · 게임기 화면 안 = 사진 + .fcs-info(이름 · 한마디 · 버튼)
+     · FOLIO 안이면 홈 제목 아래 이력서 숫자 줄(.fcs-facts) + 화면 맨 위 '1P · 플레이어 선택' 띠(.gui-scr, 11회차 게임 UI)
    SKINS 에 든 시안일 때만 동작하고, [data-slot="main"] 이 다시 그려지면(언어 전환 등) 다시 붙습니다.
    문구는 { ko, en } 쌍입니다.
    ========================================================================== */
@@ -23,6 +24,11 @@
   var CAPTION = { ko: '카트리지를 골라 꽂으면 게임기 화면에 프로젝트가 켜집니다', en: 'Pick a cartridge and slot it in to boot the project on screen' };
   /* 포트폴리오 다듬기(10회차) 안: 홈 제목 아래에 이력서 숫자(content.js 의 resume.stats)를 한 줄로 */
   var FOLIO = { 'pixel-fc-dot': 1, 'pixel-fc-kraft': 1, 'pixel-fc-level': 1, 'pixel-fc-rally': 1 };
+  /* 11회차 게임 UI: 게임기 화면 맨 위의 '1P · 플레이어 선택' 띠 (페이지마다 이름만 다름 · 장식이라 읽어 주지 않음) */
+  var SCREEN = {
+    home:   { ko: '플레이어 선택', en: 'PLAYER SELECT' },
+    resume: { ko: '플레이어 정보', en: 'PLAYER DATA' }
+  };
 
   function active() { return !!SKINS[document.documentElement.getAttribute('data-skin')]; }
   function lang() {
@@ -45,6 +51,16 @@
       list.appendChild(item);
     });
     return list;
+  }
+
+  function screenBar(hero) {
+    var screen = hero.querySelector(':scope > .wrap');
+    if (!screen || screen.querySelector(':scope > .gui-scr')) return;
+    var bar = node('p', 'gui-scr');
+    bar.setAttribute('aria-hidden', 'true');
+    bar.appendChild(node('b', 'gui-scr__p', '1P'));
+    bar.appendChild(node('span', 'gui-scr__t', pick(SCREEN[document.body.getAttribute('data-page')] || SCREEN.home)));
+    screen.insertBefore(bar, screen.firstChild);
   }
 
   function stage() {
@@ -72,7 +88,10 @@
     var note = intro.querySelector('.hero__note'); if (note) lead.appendChild(note);
     if (actions) lead.appendChild(actions);
     if (tray) intro.appendChild(node('p', 'fcs-caption', CAPTION[lang()]));
-    if (tray && FOLIO[document.documentElement.getAttribute('data-skin')]) { var list = facts(); if (list) intro.appendChild(list); }
+    if (FOLIO[document.documentElement.getAttribute('data-skin')]) {
+      if (tray) { var list = facts(); if (list) intro.appendChild(list); }
+      screenBar(hero);
+    }
   }
 
   function scan() { if (active()) stage(); }

@@ -1,13 +1,15 @@
 /* ============================================================================
-   pixel-fc-folio.css — 포트폴리오 다듬기 (10회차) · 도트 · 크라프트 · 스테이지 · 랠리 프린트 공용
+   pixel-fc-folio.css — 도트 · 크라프트 · 스테이지 · 랠리 프린트 공용 (10회차 뼈대 + 11회차 게임 UI)
    ----------------------------------------------------------------------------
-   네 안의 시안 CSS 뒤에 읽혀(themes.js 시안 항목의 `css`) 같은 규칙으로 '포트폴리오다운' 뼈대를 맞춥니다.
+   네 안의 시안 CSS 뒤에 읽혀(themes.js 시안 항목의 `css`) 같은 규칙으로 덮습니다.
+   [10회차 · 포트폴리오 뼈대]
      · 첫 화면 : 큰 제목 → 읽히는 안내 한 줄 → 이력서 숫자(.fcs-facts, fc-stage.js 가 resume.stats 로 그림)
      · 정렬    : 첫 화면과 아래 모든 절이 같은 폭(--folio-max)·같은 왼쪽 선
      · 글자    : 본문 15px 이상, 도트 글꼴은 큰 제목·숫자에만
      · 더 보기 : 절 끝의 떠 있는 버튼 대신 오른쪽 정렬 글자 링크
-   색·글꼴은 각 안의 토큰(--heading · --text · --text-muted · --accent · --font-display …)을 그대로 씁니다.
-   안별 조정은 맨 아래 안 이름 절에 모았습니다. 카드 안쪽 cqw 고정 칸은 건드리지 않습니다.
+   [11회차 · 패미컴 게임 UI] — 아래 '게임 UI' 절. 첫 화면 아래가 웹 카드 모음으로 보이던 것을 게임 메뉴 화면의 문법으로.
+   색·글꼴은 각 안의 토큰을 그대로 쓰고, 창을 '그리는 방식'만 안마다 --gui-* 토큰으로 다르게 줍니다(맨 아래 안 이름 절).
+   카드(카트리지) 안쪽 cqw 고정 칸은 건드리지 않습니다.
    ========================================================================== */
 
 :root[data-skin-theme="pixel"] { --folio-max: 1240px; }
@@ -62,86 +64,468 @@
 @media (prefers-reduced-motion: reduce) { :root[data-skin-theme="pixel"] .hp .hp-more > span { transition: none; } }
 
 /* ============================================================================
-   도트 (pixel-fc-dot) — 큰 테두리 상자 대신 '번호 배지 + 제목 + 굵은 선' 머리, 카드는 한 겹
+   11회차 — 패미컴 게임 UI (네 안 공용 뼈대)
+   ----------------------------------------------------------------------------
+     · 창(window)   절 하나 = RPG 대화창 하나 — 테두리 + 안쪽 겹선(inset 그림자) + 안별 그림자
+     · 이름표(tab)  홈 · 자기소개서 요약의 절 제목은 창 윗변에 걸린 이름표, 하위 페이지 절 제목은 같은 모양의 독립 이름표
+     · 창 안 목록   대외 활동 = 퀘스트 목록 · 보유 기술 = 인벤토리 칸 · 강점 = 업적 세 칸 · 게임플레이 = 저장 슬롯
+                    (각 항목은 자기 상자 · 그림자 · 도트 두께 면을 벗고 창 하나에 담김)
+     · 게임기 화면  '1P · 플레이어 선택' 띠(fc-stage.js) + 대화창 한마디(▼) + ▶ 커서 세로 메뉴
+     · 카트리지     첫 화면 진열판에 덱 + 3장 (한 장이 커지고 판이 조용해짐) — 카드 안쪽 칸은 그대로
+   특이도는 :root[data-skin-theme][data-skin] 로 각 시안 CSS 보다 한 단계 위에서 덮습니다.
    ========================================================================== */
-:root[data-skin="pixel-fc-dot"] { --section-pad-y: 88px; }
-@media (max-width: 700px) { :root[data-skin="pixel-fc-dot"] { --section-pad-y: 56px; } }
-/* 도트 글꼴은 로고 · 큰 제목 · 숫자에만. 메뉴 · 눈썹 · 작은 이름표는 읽히는 글꼴로 */
-:root[data-skin="pixel-fc-dot"] .nav__link { font: 700 14px/1.2 var(--font-sans); letter-spacing: 0; }
-:root[data-skin="pixel-fc-dot"] .fcs-intro .hero__eyebrow { padding: 6px 12px; border-width: 3px; font: 700 12px/1.6 var(--font-sans); letter-spacing: .02em; }
-:root[data-skin="pixel-fc-dot"] .fcs-intro .hero__title { font-size: clamp(38px, 3.3vw, 50px); line-height: 1.34; text-shadow: 3px 3px 0 #dcdcdc; }
-:root[data-skin="pixel-fc-dot"] .fcs-caption { font-size: 15px; line-height: 1.7; }
-:root[data-skin="pixel-fc-dot"] .fcs-facts { border-top: 4px solid var(--heading); }
-:root[data-skin="pixel-fc-dot"] .fcs-fact__u { color: var(--dot-red); }
-
-/* 절 상자 → 번호 배지 머리 */
-:root[data-skin="pixel-fc-dot"] .fcd-part { padding: 0; margin: 0 0 80px; background: none; border: 0; }
-:root[data-skin="pixel-fc-dot"] .wrap.fcd-part { padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)); }
-:root[data-skin="pixel-fc-dot"] .fcd-part:last-child,
-:root[data-skin="pixel-fc-dot"] .fcd-part:has(+ .hp-more) { margin-bottom: 0; }
-:root[data-skin="pixel-fc-dot"] .fcd-part-no {
-  top: 0; bottom: auto; left: 0; width: 56px; height: 56px; padding: 0;
-  display: grid; place-items: center;
-  border: 4px solid var(--dot-black); background: var(--dot-cream);
-  font: 700 22px/1 var(--font-display); letter-spacing: -1px; color: var(--dot-black);
+:root[data-skin-theme="pixel"] {
+  --gui-bg: var(--surface); --gui-ink: var(--text); --gui-muted: var(--text-muted); --gui-head: var(--heading);
+  --gui-line: var(--border); --gui-lw: 3px; --gui-gap: 4px; --gui-inner: var(--border); --gui-iw: 1px;
+  --gui-r: 0px; --gui-slot-r: 0px; --gui-shadow: 0 0 transparent; --gui-pad: 30px;
+  --gui-tab-h: 40px; --gui-tab-bg: var(--heading); --gui-tab-ink: var(--bg); --gui-tab-r: 0px;
+  --gui-tab-font: 700 18px/1.25 var(--font-sans);
+  --gui-rule: color-mix(in srgb, var(--gui-ink) 24%, transparent);
+  --gui-slot: color-mix(in srgb, var(--gui-ink) 5%, transparent);
+  --gui-cursor: var(--accent);
+  /* 게임기 화면 안(액정은 다크에서도 밝음) */
+  --gui-scr-ink: #1d1d1d; --gui-scr-cursor: var(--accent);
+  --gui-scr-rule: color-mix(in srgb, var(--gui-scr-ink) 28%, transparent);
 }
-:root[data-skin="pixel-fc-dot"] .wrap.fcd-part > .fcd-part-no { left: max(var(--gutter), env(safe-area-inset-left, 0px)); }
-:root[data-skin="pixel-fc-dot"] .fcd-part-no::after { content: none; }
-/* 상자 바탕을 걷었으니 다크에서는 상자가 강제하던 밝은 판 글자색 대신 페이지 글자색 */
-:root[data-skin="pixel-fc-dot"][data-theme="dark"] .fcd-part {
-  --heading: #fff; --text: #f6f3ed; --text-muted: #e1ddd4; --ink: #f6f3ed; --border: #f6f3ed; color: var(--text);
+@media (max-width: 700px) {
+  :root[data-skin-theme="pixel"] { --gui-pad: 20px; --gui-tab-h: 36px; }
 }
-:root[data-skin="pixel-fc-dot"][data-theme="dark"] .hpl-row__d { color: #ffb5c5; }
-:root[data-skin="pixel-fc-dot"] .fcd-part > :is(.hp-h, .section__head, .proj-head, .cl-summary__t):first-child,
-:root[data-skin="pixel-fc-dot"] .fcd-part > .fcc-play-heading {
-  min-height: 56px; padding: 0 0 20px 76px; margin-bottom: 32px;
-  border-bottom: 4px solid var(--border);
+@keyframes gui-blink { 50% { opacity: 0; } }
+@keyframes gui-bob { 50% { translate: 0 2px; } }
+
+/* ── 창 ──────────────────────────────────────────────────────────────────── */
+:root[data-skin-theme="pixel"][data-skin] :is(
+  .hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths,
+  .stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) {
+  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted); --border: var(--gui-rule);
+  position: relative; margin-inline: 0; padding: var(--gui-pad);
+  background: var(--gui-bg); color: var(--gui-ink);
+  border: var(--gui-lw) solid var(--gui-line); border-radius: var(--gui-r);
+  box-shadow: inset 0 0 0 var(--gui-gap) var(--gui-bg),
+              inset 0 0 0 calc(var(--gui-gap) + var(--gui-iw)) var(--gui-inner),
+              var(--gui-shadow) !important;
+  clip-path: none; transform: none; backdrop-filter: none;
 }
-:root[data-skin="pixel-fc-dot"] .fcd-part > .hp-h { display: flex; align-items: center; font-size: clamp(22px, 2vw, 28px); line-height: 1.3; }
+:root[data-skin-theme="pixel"][data-skin] :is(.stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty)::before { content: none; }
+/* 창 안의 장식 두께 면(도트)은 걷음 — 창 하나가 한 겹 */
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths,
+  .stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) .fcd-volume,
+:root[data-skin-theme="pixel"][data-skin] :is(.stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) > .fcd-volume { display: none; }
 
-/* 하위 페이지 절 머리: 번호 배지가 이름표 노릇을 하므로 제목과 같은 말을 되풀이하던 눈썹 칩은 접음 */
-:root[data-skin="pixel-fc-dot"] .fcd-part > .section__head .eyebrow { display: none; }
-:root[data-skin="pixel-fc-dot"] .fcd-part > .section__head :is(.section__title, h2) { margin-top: 0; }
-/* 이력서 숫자 카드: 계단식으로 내려가던 배치를 한 줄로 */
-:root[data-skin="pixel-fc-dot"] .stat:nth-child(n) { margin-top: 0; }
-
-/* 대외 활동 · 보유 기술 */
-:root[data-skin="pixel-fc-dot"] .hpl-row__d { font: 700 13px/1.6 var(--font-sans); color: var(--dot-red); }
-:root[data-skin="pixel-fc-dot"] .hp-skill__t { font: 600 14px/1.5 var(--font-sans); letter-spacing: 0; color: var(--text); }
-
-/* 강점 · 게임플레이: 세로로 쌓인 긴 줄 대신 세 장짜리 카드 (두께 8px 한 겹) */
-:root[data-skin="pixel-fc-dot"] .fcd-solid:not(.hero):not(.draw__stage) { --fcd-depth: 8px; }
-:root[data-skin="pixel-fc-dot"] .strengths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-:root[data-skin="pixel-fc-dot"] .strength { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 28px 24px; }
-:root[data-skin="pixel-fc-dot"] .strength__tag { font: 700 12px/1.4 var(--font-sans); letter-spacing: .06em; }
-:root[data-skin="pixel-fc-dot"] .strength__t { margin: 4px 0 0; font-size: 20px; line-height: 1.4; }
-:root[data-skin="pixel-fc-dot"] .strength__b { color: #444; }
-:root[data-skin="pixel-fc-dot"] .hp-games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-:root[data-skin="pixel-fc-dot"] .hp-game {
-  display: grid; grid-template-columns: 48px minmax(0, 1fr); grid-template-rows: auto auto;
-  gap: 4px 16px; align-items: center; padding: 20px;
+/* 창 안 항목: 각자의 상자를 벗음 */
+:root[data-skin-theme="pixel"][data-skin] :is(.hpl > .hpl-row, .hp-skills > .hp-skill, .strengths > .strength, .hp-games > .hp-game,
+  .stat-grid > .stat, .timeline > .tl-item, .play > .play-card) {
+  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted); --border: var(--gui-rule);
+  margin: 0; min-height: 0; background: none; border: 0; border-radius: 0;
+  box-shadow: none !important; clip-path: none; transform: none; color: var(--gui-ink);
 }
-:root[data-skin="pixel-fc-dot"] .hp-game__ic { grid-row: span 2; }
-:root[data-skin="pixel-fc-dot"] .hp-game__t { font-size: 18px; line-height: 1.4; }
-:root[data-skin="pixel-fc-dot"] .hp-game__b { grid-column: 2; font-size: 14px; color: #444; }
+:root[data-skin-theme="pixel"][data-skin] :is(.hpl > .hpl-row, .hp-skills > .hp-skill, .strengths > .strength, .hp-games > .hp-game,
+  .stat-grid > .stat, .timeline > .tl-item, .play > .play-card)::before,
+:root[data-skin-theme="pixel"][data-skin] :is(.hpl > .hpl-row, .hp-skills > .hp-skill, .strengths > .strength, .hp-games > .hp-game,
+  .stat-grid > .stat, .timeline > .tl-item, .play > .play-card)::after { content: none; }
+
+/* ── 이름표: 홈 절 제목 · 자기소개서 요약 제목은 바로 아래 창의 윗변에 걸림 ───── */
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 10px; align-self: flex-start;
+  width: fit-content; max-width: calc(100% - 44px); min-height: var(--gui-tab-h);
+  margin: 0 0 calc(var(--gui-tab-h) / -2) 22px; padding: 6px 18px;
+  background: var(--gui-tab-bg); color: var(--gui-tab-ink);
+  border: 0; border-radius: var(--gui-tab-r); box-shadow: none;
+  font: var(--gui-tab-font); letter-spacing: 0; text-shadow: none; text-transform: none; font-style: normal;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] :is(.hp-h, .fcc-play-heading, .cl-summary__t) + :is(.hpl, .hp-skills, .strengths, .hp-games) {
+  padding-top: calc(var(--gui-pad) + var(--gui-tab-h) / 2 + 4px);
+}
+
+/* 하위 페이지 절 머리: 같은 말을 되풀이하던 눈썹 칩은 접고, 절 제목 = 독립 이름표, 한 줄 설명은 그 아래 */
+:root[data-skin-theme="pixel"][data-skin] main .section__head { margin: 0 0 28px; padding: 0; border: 0; background: none; box-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] main .section__head::before,
+:root[data-skin-theme="pixel"][data-skin] main .section__head::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] main .section__head .eyebrow { display: none; }
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title {
+  position: relative; display: inline-flex; align-items: center; gap: 10px;
+  min-height: var(--gui-tab-h); margin: 0; padding: 6px 20px;
+  background: var(--gui-tab-bg); color: var(--gui-tab-ink);
+  border: 0; border-radius: var(--gui-tab-r); box-shadow: none;
+  font: var(--gui-tab-font); font-size: clamp(19px, 1.7vw, 24px); letter-spacing: 0;
+  text-shadow: none; text-transform: none; font-style: normal;
+}
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::before,
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] main .section__head .section__lead {
+  max-width: 44em; margin: 14px 0 0; padding: 0; background: none; border: 0; box-shadow: none;
+  font: 400 15px/1.7 var(--font-sans); letter-spacing: 0; color: var(--text-muted);
+}
+
+/* ── 홈: 대외 활동(퀘스트) + 보유 기술(인벤토리)을 메뉴 화면처럼 나란히 ────── */
+:root[data-skin-theme="pixel"][data-skin] .hp-block { display: flex; flex-direction: column; min-width: 0; margin: 0; padding: 0; background: none; border: 0; box-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-block > :is(.hpl, .hp-skills, .strengths) { flex: 1 1 auto; }
+:root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+:root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) > .hp-more { margin-top: -24px; }
+@media (min-width: 1000px) {
+  :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 40px; }
+  :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) > :not(.hp-block) { grid-column: 1 / -1; }
+  :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) > .hp-more { margin-top: 0; }
+}
+
+/* 퀘스트 목록 */
+:root[data-skin-theme="pixel"][data-skin] .hp .hpl { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row {
+  display: flex; flex-direction: row; align-items: flex-start; gap: 18px; padding: 18px 0;
+  border-top: 2px dashed var(--gui-rule);
+}
+:root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row:first-child { border-top: 0; padding-top: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row:last-child { padding-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row > .hp-thumb {
+  flex: none; width: 52px; height: 52px; margin: 0;
+  background-color: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
+}
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__top { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__t { margin: 0; font: 700 18px/1.4 var(--font-sans); letter-spacing: 0; color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__d { font: 700 13px/1.6 var(--font-sans); letter-spacing: .02em; color: var(--gui-cursor); white-space: nowrap; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__m { margin-top: 6px; color: var(--gui-muted); }
+
+/* 인벤토리: 세 칸씩, 줄이 덜 차면 빈 칸을 그려 칸 수를 맞춤 */
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; gap: 12px; }
+:root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  width: auto; min-width: 0; padding: 18px 8px 14px; text-align: center;
+  background: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r);
+}
+:root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill:hover { border-color: var(--gui-cursor); }
+:root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__ic { width: 52px; height: 52px; margin: 0; box-shadow: none; transform: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-skill__t { margin: 0; font: 600 14px/1.4 var(--font-sans); letter-spacing: 0; color: var(--gui-ink); word-break: keep-all; overflow-wrap: break-word; }
+@media (max-width: 700px) {
+  :root[data-skin-theme="pixel"][data-skin] .hp .hp-skills { gap: 8px; }
+  :root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill { padding: 14px 2px 12px; }
+  :root[data-skin-theme="pixel"][data-skin] .hp-skill__t { font-size: 13px; }
+  :root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__ic { width: 44px; height: 44px; }
+}
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::before,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+2):last-child)::after,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1):last-child)::after,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1):last-child)::before {
+  content: ''; display: block; order: 9; position: static; min-height: 96px;
+  background: none; border: 2px dashed var(--gui-rule); border-radius: var(--gui-slot-r);
+}
+
+/* 업적: 세 칸을 점선으로 나눔 */
+:root[data-skin-theme="pixel"][data-skin] :is(.hp, .cl-summary) .strengths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; align-items: stretch; }
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 4px 28px;
+}
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength:first-child { padding-left: 0; }
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength:last-child { padding-right: 0; }
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength + .strength { border-left: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__tag {
+  display: inline-flex; align-items: center; gap: 6px; width: fit-content; margin: 0; padding: 0;
+  background: none; border: 0; border-radius: 0; box-shadow: none; transform: none;
+  font: 700 12px/1.5 var(--font-sans); letter-spacing: .08em; font-style: normal; color: var(--gui-cursor);
+}
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__tag::before { content: '★' / ''; font-size: 1.1em; letter-spacing: 0; }
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__t { margin: 2px 0 0; font: 700 20px/1.4 var(--font-sans); letter-spacing: -.01em; color: var(--gui-head); text-shadow: none; font-style: normal; }
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__b { margin: 0; color: var(--gui-muted); }
+
+/* 저장 슬롯: 번호 · 아이콘 칸 · 이름 · 한 줄 */
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; counter-reset: gui-save; }
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game {
+  display: grid; grid-template-columns: auto 52px minmax(0, 1fr); grid-template-rows: auto auto;
+  column-gap: 14px; row-gap: 2px; align-items: center; padding: 4px 24px;
+  counter-increment: gui-save;
+}
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game:first-child { padding-left: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game:last-child { padding-right: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game + .hp-game { border-left: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game::before {
+  content: counter(gui-save, decimal-leading-zero) / ''; grid-row: 1 / span 2; align-self: center;
+  position: static; width: auto; height: auto; background: none; border: 0;
+  font: 700 18px/1 var(--font-display); letter-spacing: 0; color: var(--gui-cursor);
+}
+:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__ic {
+  grid-row: 1 / span 2; grid-column: 2; width: 52px; height: 52px; margin: 0;
+  background-color: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
+}
+:root[data-skin-theme="pixel"][data-skin] .hp-game > :is(.hp-game__t, .hp-game__b) { grid-column: 3; margin: 0; min-width: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__t { align-self: end; font: 700 18px/1.35 var(--font-sans); letter-spacing: 0; color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__b { align-self: start; color: var(--gui-muted); }
+
 @media (max-width: 900px) {
-  :root[data-skin="pixel-fc-dot"] :is(.strengths, .hp-games) { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  :root[data-skin-theme="pixel"][data-skin] :is(.hp, .cl-summary) .strengths,
+  :root[data-skin-theme="pixel"][data-skin] .hp .hp-games { grid-template-columns: minmax(0, 1fr); }
+  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game) { padding: 20px 0; }
+  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game):first-child { padding-top: 0; }
+  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game):last-child { padding-bottom: 0; }
+  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength + .strength, .hp-games > .hp-game + .hp-game) { border-left: 0; border-top: 2px dashed var(--gui-rule); }
+}
+
+/* ── 하위 페이지 창 안 ───────────────────────────────────────────────────── */
+/* 이력서 숫자: 상태 창 네 칸 */
+:root[data-skin-theme="pixel"][data-skin] .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat { padding: 2px 24px; }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat:first-child { padding-left: 0; }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat + .stat { border-left: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__num { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__num .unit { color: var(--gui-cursor); }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__label { color: var(--gui-muted); background: none; }
+@media (max-width: 760px) {
+  :root[data-skin-theme="pixel"][data-skin] .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; }
+  :root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat:nth-child(odd) { padding-left: 0; border-left: 0; }
+}
+/* 인적사항 */
+:root[data-skin-theme="pixel"][data-skin] .profile { padding-block: calc(var(--gui-pad) - 12px); }
+:root[data-skin-theme="pixel"][data-skin] .profile .profile__row { padding: 12px 0; background: none; border: 0; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .profile .profile__row:first-child { border-top: 0; }
+:root[data-skin-theme="pixel"][data-skin] .profile .profile__k { color: var(--gui-muted); background: none; }
+:root[data-skin-theme="pixel"][data-skin] .profile .profile__v { color: var(--gui-ink); }
+/* 경력 · 활동: 퀘스트 기록 (진행 중인 줄에 ▶) */
+:root[data-skin-theme="pixel"][data-skin] .timeline { display: grid; gap: 0; }
+:root[data-skin-theme="pixel"][data-skin] .timeline::before { content: none; }
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item { padding: 22px 0 22px 28px; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:first-child { border-top: 0; padding-top: 0; }
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:last-child { padding-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item--now::before {
+  content: '▶' / ''; position: absolute; left: 0; top: 2px; width: auto; height: auto;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+  font: 700 14px/1.6 var(--font-sans); color: var(--gui-cursor);
+  animation: gui-blink 1.1s steps(1, end) infinite;
+}
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:not(:first-child).tl-item--now::before { top: 24px; }
+:root[data-skin-theme="pixel"][data-skin] .tl-item .tl-date { color: var(--gui-cursor); }
+:root[data-skin-theme="pixel"][data-skin] .tl-item :is(.tl-role) { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .tl-item :is(.tl-org, .tl-body) { color: var(--gui-muted); }
+/* 게임플레이: 저장 기록 */
+:root[data-skin-theme="pixel"][data-skin] .play { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+:root[data-skin-theme="pixel"][data-skin] .play > .play-card { padding: 22px 0; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .play > .play-card:first-child { border-top: 0; padding-top: 0; }
+:root[data-skin-theme="pixel"][data-skin] .play > .play-card:last-child { padding-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin] .play-card .play-card__name { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .play-card .play-card__hours {
+  background: none; border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
+  color: var(--gui-cursor); font-weight: 700;
+}
+:root[data-skin-theme="pixel"][data-skin] .play-card .play-card__note { border-top: 0; padding-top: 0; margin-top: 10px; color: var(--gui-muted); }
+/* 자기소개서 본문: 한 덩어리씩 대화창, 끝에 ▼ */
+:root[data-skin-theme="pixel"][data-skin] .cover-block { max-width: 52rem; padding-bottom: calc(var(--gui-pad) + 6px); }
+:root[data-skin-theme="pixel"][data-skin] .cover-block + .cover-block { margin-top: 32px; }
+:root[data-skin-theme="pixel"][data-skin] .cover-block > h3 { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .cover-block::after {
+  content: '▼' / ''; position: absolute; right: 18px; bottom: 12px; left: auto; top: auto;
+  width: auto; height: auto; background: none; border: 0;
+  font: 700 12px/1 var(--font-sans); color: var(--gui-cursor);
+  animation: gui-bob 1s steps(2, end) infinite;
+}
+:root[data-skin-theme="pixel"][data-skin] .cl-summary { margin-bottom: 40px; padding: 0; background: none; border: 0; box-shadow: none; }
+/* 핵심역량 카드 · 상세 */
+:root[data-skin-theme="pixel"][data-skin] .skill-card .card__title,
+:root[data-skin-theme="pixel"][data-skin] .detail__learned .detail__learned-title,
+:root[data-skin-theme="pixel"][data-skin] .block .block__label { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .media-box { padding: 10px; }
+:root[data-skin-theme="pixel"][data-skin] .quest-strip { padding: 12px 16px; }
+:root[data-skin-theme="pixel"][data-skin] .pager__item { padding: 18px 22px; }
+:root[data-skin-theme="pixel"][data-skin] .pager__item .pager__dir { color: var(--gui-cursor); }
+:root[data-skin-theme="pixel"][data-skin] .pager__item .pager__title { color: var(--gui-head); }
+:root[data-skin-theme="pixel"][data-skin] .pager__item:is(:hover, :focus-visible) { border-color: var(--gui-cursor); }
+
+/* 프로젝트 분류 탭: 메뉴 고르기 (고른 칸은 이름표 색 + ▶) */
+:root[data-skin-theme="pixel"][data-skin] .tabs > .tab {
+  position: relative; min-height: 0; padding: 8px 16px;
+  background: var(--gui-bg); color: var(--gui-ink);
+  border: 2px solid var(--gui-line); border-radius: var(--gui-tab-r); box-shadow: none !important; transform: none;
+  font: 700 14px/1.4 var(--font-sans); letter-spacing: 0; font-style: normal;
+}
+:root[data-skin-theme="pixel"][data-skin] .tabs > .tab > .fcd-volume { display: none; }
+:root[data-skin-theme="pixel"][data-skin] .tabs > .tab::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] .tabs > .tab.is-active { background: var(--gui-tab-bg); color: var(--gui-tab-ink); border-color: var(--gui-tab-bg); }
+:root[data-skin-theme="pixel"][data-skin] .tabs > .tab.is-active::before {
+  content: '▶' / ''; position: static; display: inline-block; width: auto; height: auto; margin-right: 6px;
+  background: none; border: 0; font-size: .75em; vertical-align: .08em;
+}
+
+/* ── 게임기 화면: 플레이어 선택 ─────────────────────────────────────────── */
+:root[data-skin-theme="pixel"][data-skin] .fcs-rig > .hero > .wrap { position: relative; }
+:root[data-skin-theme="pixel"][data-skin] .gui-scr {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 0 0 10px;
+  border-bottom: 2px dashed var(--gui-scr-rule);
+  font: 700 12px/1 var(--font-sans); letter-spacing: .08em; color: var(--gui-scr-ink);
+}
+:root[data-skin-theme="pixel"][data-skin] .gui-scr__p { padding: 4px 6px; background: var(--gui-scr-cursor); color: #fff; font: inherit; letter-spacing: .04em; }
+/* 한마디: 화면 속 대화창, 끝에 깜빡이는 ▼ */
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .quip {
+  position: relative; width: auto; max-width: none; margin: 0 0 10px; padding: 10px 30px 10px 14px; transform: none;
+  background: var(--gui-bg); color: var(--gui-ink);
+  border: var(--gui-lw) solid var(--gui-line); border-radius: min(var(--gui-r), 10px);
+  box-shadow: inset 0 0 0 3px var(--gui-bg), inset 0 0 0 calc(3px + var(--gui-iw)) var(--gui-inner) !important;
+  font: 500 15px/1.6 var(--font-sans); letter-spacing: 0; font-style: normal;
+}
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .quip > .fcd-volume { display: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .quip::before { content: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .quip::after {
+  content: '▼' / ''; display: block; position: absolute; inset: auto 10px 7px auto; width: auto; height: auto;
+  background: none; border: 0; transform: none;
+  font: 700 10px/1 var(--font-sans); color: var(--gui-cursor);
+  animation: gui-bob 1s steps(2, end) infinite;
+}
+/* 버튼 두 개 → ▶ 커서 세로 메뉴 (첫 줄이 기본 선택, 올리거나 초점이 가면 커서가 옮겨 감) */
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row { display: grid; grid-template-columns: minmax(0, max-content); grid-auto-flow: row; justify-items: start; align-items: start; gap: 4px; margin-top: 12px; max-width: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn {
+  position: relative; display: inline-flex; align-items: center; width: auto; min-width: 0; min-height: 0;
+  margin: 0; padding: 3px 4px 3px 1.5em;
+  background: none; border: 0; border-radius: 0; box-shadow: none !important; clip-path: none; transform: none;
+  font: 700 15px/1.35 var(--font-sans); letter-spacing: 0; font-style: normal; text-decoration: none; text-shadow: none;
+  color: var(--gui-scr-ink);
+}
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn > .fcd-volume { display: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn::before {
+  content: '▶' / ''; display: block; position: absolute; inset: 50% auto auto .1em; translate: 0 -50%;
+  width: auto; height: auto; background: none; border: 0; transform: none; clip-path: none; opacity: 1;
+  font-size: .72em; line-height: 1; color: var(--gui-scr-cursor); visibility: hidden;
+}
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row:not(:hover, :focus-within) > .btn:first-child::before,
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn:is(:hover, :focus-visible)::before {
+  visibility: visible; animation: gui-blink 1.1s steps(1, end) infinite;
+}
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn:is(:hover, :focus-visible) { color: var(--gui-scr-cursor); background: none; }
+:root[data-skin-theme="pixel"][data-skin] .fcs-info .btn-row > .btn:focus-visible { outline: 2px dashed var(--gui-scr-cursor); outline-offset: 2px; }
+
+@media (min-width: 900px) {
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .gui-scr { gap: 1.1cqw; margin-bottom: 1.3cqw; padding-bottom: 1cqw; font-size: 1.5cqw; border-bottom-width: .25cqw; }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .gui-scr__p { padding: .45cqw .7cqw; }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .fcs-info .quip { margin-bottom: 1cqw; padding: .9cqw 3cqw .9cqw 1.4cqw; font-size: 1.7cqw; line-height: 1.55; }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .fcs-info .quip::after { right: 1cqw; bottom: .7cqw; font-size: 1cqw; }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .fcs-info .btn-row { gap: .3cqw; margin-top: 1cqw; }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .fcs-info .btn-row > .btn { padding: .3cqw .4cqw .3cqw 1.5em; font-size: 1.75cqw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-skin-theme="pixel"][data-skin] :is(.fcs-info .quip, .cover-block)::after,
+  :root[data-skin-theme="pixel"][data-skin] :is(.fcs-info .btn-row > .btn, .timeline > .tl-item--now)::before { animation: none; }
+}
+
+/* ── 카트리지 진열판: 덱 + 3장 (한 장이 커짐) ─────────────────────────────── */
+@media (min-width: 980px) {
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .draw__stage { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  :root[data-skin-theme="pixel"][data-skin] .fcs-rig .draw__cards > :nth-child(n+4) { display: none; }
 }
 
 /* ============================================================================
-   크라프트 (pixel-fc-kraft) — 선로는 첫 절부터 내려가는 가는 선 하나 (첫 화면을 감던 굵은 고리 · 스티커는 뺌)
+   도트 (pixel-fc-dot) — 검은 4px 테 + 크림 겹띠의 도트 RPG 창 · 검은 이름표에 빨간 번호 칸
    ========================================================================== */
+:root[data-skin="pixel-fc-dot"] {
+  --section-pad-y: 68px;
+  --gui-bg: #fff; --gui-ink: #222; --gui-muted: #4b4b4b; --gui-head: #161616;
+  --gui-line: #161616; --gui-lw: 4px; --gui-gap: 4px; --gui-inner: var(--dot-cream); --gui-iw: 4px;
+  --gui-shadow: 8px 8px 0 #cfcfcf;
+  --gui-tab-bg: #161616; --gui-tab-ink: #fff; --gui-tab-font: 400 18px/1.3 var(--font-display);
+  --gui-rule: #cbcbcb; --gui-slot: #f5f5f5; --gui-cursor: var(--dot-red);
+  --gui-scr-ink: #161616; --gui-scr-cursor: var(--dot-red); --gui-band: var(--dot-cream);
+}
+:root[data-skin="pixel-fc-dot"][data-theme="dark"] {
+  --gui-bg: #1d2029; --gui-ink: #f6f3ed; --gui-muted: #d9d4ca; --gui-head: #fff;
+  --gui-line: #f6f3ed; --gui-inner: #3a3f4d; --gui-shadow: 8px 8px 0 #050608;
+  --gui-tab-bg: var(--dot-cream); --gui-tab-ink: #161616;
+  --gui-rule: #4b5162; --gui-slot: #262a35; --gui-cursor: #ffcc83; --gui-band: #2c303c;
+}
+@media (max-width: 700px) { :root[data-skin="pixel-fc-dot"] { --section-pad-y: 56px; --gui-shadow: 6px 6px 0 #cfcfcf; } }
+/* 도트 글꼴은 로고 · 큰 제목 · 이름표 · 숫자에만. 메뉴 · 눈썹은 읽히는 글꼴로 */
+:root[data-skin="pixel-fc-dot"] .nav__link { font: 700 14px/1.2 var(--font-sans); letter-spacing: 0; }
+:root[data-skin="pixel-fc-dot"] .fcs-intro .hero__eyebrow { padding: 6px 12px; border-width: 3px; font: 700 12px/1.6 var(--font-sans); letter-spacing: .02em; }
+:root[data-skin="pixel-fc-dot"] .fcs-intro .hero__title { font-size: clamp(38px, 3.3vw, 50px); line-height: 1.34; text-shadow: 3px 3px 0 #dcdcdc; }
+:root[data-skin="pixel-fc-dot"] .fcs-facts { border-top: 4px solid var(--heading); }
+:root[data-skin="pixel-fc-dot"] .fcs-fact__u { color: var(--dot-red); }
+
+/* 절 상자는 걷고(창이 대신함), 번호 칸은 이름표 왼쪽에 붙임 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part { padding: 0; margin: 0 0 72px; background: none; border: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .wrap.fcd-part { padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] :is(.fcd-part:last-child, .fcd-part:has(+ .hp-more), .hp > .wrap > .fcd-part) { margin-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part-no {
+  z-index: 3; top: 0; bottom: auto; left: 22px; width: var(--gui-tab-h); height: var(--gui-tab-h); padding: 0;
+  display: grid; place-items: center; border: 0; background: var(--dot-red); color: #fff;
+  font: 400 15px/1 var(--font-display); letter-spacing: 0;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part-no::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .wrap.fcd-part > .fcd-part-no { left: max(var(--gutter), env(safe-area-inset-left, 0px)); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .hp .wrap.fcd-part > .fcd-part-no { left: calc(max(var(--gutter), env(safe-area-inset-left, 0px)) + 22px); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part:has(> .fcd-part-no) > :is(.hp-h, .fcc-play-heading),
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] main .fcd-part:has(> .fcd-part-no) > .section__head .section__title,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] main .fcd-part:has(> .fcd-part-no) > .proj-head .proj-title,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part:has(> .fcd-part-no) .cl-summary__t { padding-left: calc(var(--gui-tab-h) + 14px); }
+/* 다크: 절 상자가 강제하던 밝은 판 글자색 대신 페이지 글자색 */
+:root[data-skin="pixel-fc-dot"][data-theme="dark"] .fcd-part { --heading: #fff; --text: #f6f3ed; --text-muted: #e1ddd4; --ink: #f6f3ed; color: var(--text); }
+/* 이력서 숫자 카드: 계단식 배치 없이 */
+:root[data-skin="pixel-fc-dot"] .stat:nth-child(n) { margin-top: 0; }
+/* 게임플레이 그래프 · 표: 밝은 판을 전제로 박아 둔 글자 · 선 색을 창 토큰으로 (다크 창에서도 읽히게) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__head { border-bottom-color: var(--gui-line); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] :is(.steam__stats, .steam__table thead th) { background: var(--gui-band); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__table :is(th, td) { color: var(--gui-ink); border-color: var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam :is(.sr-grid, .sr-spoke) { stroke: var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam :is(.sr-name, .sr-val) { fill: var(--gui-ink); }
+/* 진열판: 띠 무늬 없이 크림 판 하나 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcs-rig .draw__stage { background: var(--dot-cream); }
+
+/* ============================================================================
+   크라프트 (pixel-fc-kraft) — 종이 위 진홍 겹선 · 둥근 모서리 창, 구멍 뚫린 종이 꼬리표 이름표, 절취선 구분
+   ========================================================================== */
+:root[data-skin="pixel-fc-kraft"] {
+  --gui-bg: #f5ebd6; --gui-ink: #28211d; --gui-muted: #5a4838; --gui-head: #211e1a;
+  --gui-line: #a3203a; --gui-lw: 2px; --gui-gap: 5px; --gui-inner: #a3203a; --gui-iw: 1px;
+  --gui-r: 18px; --gui-slot-r: 12px;
+  --gui-shadow: 0 2px 0 rgb(63 37 16 / .16), 0 18px 30px -18px rgb(63 37 16 / .55);
+  --gui-tab-bg: #a3203a; --gui-tab-ink: #fff6e6; --gui-tab-r: 6px; --gui-tab-font: 400 19px/1.25 var(--font-display);
+  --gui-rule: rgb(163 32 58 / .32); --gui-slot: rgb(163 32 58 / .05); --gui-cursor: #a3203a;
+  --gui-scr-ink: #211e1a; --gui-scr-cursor: #a3203a;
+}
+:root[data-skin="pixel-fc-kraft"][data-theme="dark"] {
+  --gui-bg: #352d26; --gui-ink: #eedcc0; --gui-muted: #d5bea0; --gui-head: #fff6e6;
+  --gui-line: #f09aa5; --gui-inner: #f09aa5; --gui-shadow: 0 18px 30px -18px #000;
+  --gui-tab-bg: #f09aa5; --gui-tab-ink: #28221d;
+  --gui-rule: rgb(240 154 165 / .34); --gui-slot: rgb(255 246 230 / .05); --gui-cursor: #f09aa5;
+}
 :root[data-skin="pixel-fc-kraft"] .kf-cables__wire { stroke-width: 4; }
 :root[data-skin="pixel-fc-kraft"] .kf-cables__socket { stroke-width: 4; }
 :root[data-skin="pixel-fc-kraft"] .fcs-facts { border-top-color: var(--kf-cable, var(--heading)); }
 /* 영어 로그라인은 한글보다 길어 크라프트의 큰 포스터 활자로는 다섯 줄이 되므로 한 단계 작게 */
 :root[data-skin="pixel-fc-kraft"][lang="en"] .fcs-intro .hero__title { font-size: clamp(38px, 3.7vw, 54px); }
+/* 이름표 = 종이 꼬리표: 왼쪽에 끈 구멍 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] main > .section:not(:first-of-type) .section__head .section__title::before {
+  content: ''; position: static; flex: none; width: 9px; height: 9px; margin: 0; border-radius: 50%;
+  background: var(--bg); box-shadow: inset 0 0 0 2px rgb(0 0 0 / .18); border: 0;
+}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) { padding-left: 14px; }
+/* 진열판 · 카트리지는 그대로 */
 
 /* ============================================================================
-   스테이지 (pixel-fc-level) — 하늘 · 땅 · 물음표 블록은 그대로, 카드는 '벽돌 턱 한 줄 + 남색 테' 발판으로
+   스테이지 (pixel-fc-level) — 하늘 위 남색 대화창 · 크림 테 + 파란 안선 · 크림 이름표에 물음표 블록
    ========================================================================== */
-/* 큰 글자: 사방 외곽선 대신 단단한 그림자 하나 */
-:root[data-skin="pixel-fc-level"] { --level-type-shadow: 3px 3px 0 #171c28; }
+:root[data-skin="pixel-fc-level"] {
+  --level-type-shadow: 3px 3px 0 #171c28;
+  --gui-bg: #17345f; --gui-ink: #f4f1e4; --gui-muted: #c9d3e6; --gui-head: #fffdf3;
+  --gui-line: #fff8e4; --gui-lw: 4px; --gui-gap: 4px; --gui-inner: #5c94fc; --gui-iw: 2px;
+  --gui-r: 10px; --gui-slot-r: 6px; --gui-shadow: 6px 6px 0 rgb(10 22 48 / .45);
+  --gui-tab-bg: #fff8e4; --gui-tab-ink: #17345f; --gui-tab-r: 6px; --gui-tab-font: 400 18px/1.3 var(--font-display);
+  --gui-rule: rgb(255 248 228 / .26); --gui-slot: rgb(255 255 255 / .07); --gui-cursor: #ffdc90;
+  --gui-scr-ink: #17345f; --gui-scr-cursor: #a91f2c;
+  --gui-sky-ink: #102346;   /* 하늘 위 작은 글자 (밝은 글자는 하늘색 위에서 대비가 모자람) */
+}
+:root[data-skin="pixel-fc-level"][data-theme="dark"] {
+  --gui-bg: #1b3463; --gui-inner: #3f6fc9; --gui-shadow: 6px 6px 0 #050b1c;
+  --gui-sky-ink: #eef3ff;
+  --gui-scr-ink: #fffaf0; --gui-scr-cursor: #ffdc90;   /* 스테이지는 다크에서 액정도 어두워짐(좁은 화면) */
+}
+/* 900px 이상은 게임기를 그림(fc-body.js)이 맡아 다크에서도 액정이 크림색 — 화면 안 글자는 남색으로 */
+@media (min-width: 900px) {
+  :root[data-skin="pixel-fc-level"][data-theme="dark"] { --gui-scr-ink: #17345f; --gui-scr-cursor: #a91f2c; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"][data-theme="dark"] .fcs-rig .fcs-info { --heading: #17345f; --text: #202637; --text-muted: #505260; }
+}
 :root[data-skin="pixel-fc-level"] .fcs-intro .hero__title { font-size: clamp(36px, 3.4vw, 50px); line-height: 1.38; }
 :root[data-skin="pixel-fc-level"] .fcs-intro .fcs-caption { font-size: 15px; line-height: 1.7; }
 /* 하늘 위 숫자 줄은 밝은 글자 */
@@ -151,38 +535,66 @@
 :root[data-skin="pixel-fc-level"] .fcs-fact__k { color: #eef3ff; font-weight: 600; }
 /* 절 사이 구름은 접음 (첫 화면의 구름 · 언덕 · 땅은 유지) */
 :root[data-skin="pixel-fc-level"] main > .section::after { content: none; }
-/* 카드: 위 벽돌 턱 12px + 크림 판 + 남색 4px 테 + 단단한 그림자 */
-:root[data-skin="pixel-fc-level"] :is(.card, .strength, .play-card, .profile, .hpl-row, .hp-game, .cover-block, .block, .steam, .detail__info, .pager__item) {
-  border: 4px solid #171c28;
-  background: linear-gradient(var(--level-panel), var(--level-panel)) 0 12px / 100% calc(100% - 12px) no-repeat,
-              var(--level-ground) 0 0 / 64px 32px repeat-x;
-  box-shadow: 6px 6px 0 rgb(23 28 40 / .35);
+/* 절 .wrap 의 안쪽 여백이 0 이라 창이 화면 끝(모바일) · 첫 화면보다 바깥(데스크톱)에 붙던 것을 같은 왼쪽 선으로 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section > .wrap { padding-inline: var(--gutter); }
+/* 이름표 왼쪽의 물음표 블록 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:not(:first-of-type) .section__head .section__title::before {
+  content: ''; position: static; flex: none; width: 22px; height: 22px; margin: 0;
+  background: var(--level-question) center / contain no-repeat; border: 0;
 }
-:root[data-skin="pixel-fc-level"] :is(.card, .strength, .play-card, .cover-block, .block, .steam, .detail__info, .pager__item) { padding: 36px 24px 24px; }
-:root[data-skin="pixel-fc-level"] :is(.hpl-row, .hpl-row:first-child) { padding: 32px 20px 20px; }
-/* 강점 세 장: 계단 · 벽돌 기둥 없이 같은 높이 */
-:root[data-skin="pixel-fc-level"] .strengths { align-items: stretch; padding-top: 0; gap: 28px; }
-:root[data-skin="pixel-fc-level"] .strength { margin-bottom: 0; }
-:root[data-skin="pixel-fc-level"] .strength::after { content: none; }
-:root[data-skin="pixel-fc-level"] .strength__t { margin: 16px 0 8px; }
-/* 게임플레이: 긴 줄 세 개 대신 세 장짜리 카드 */
-:root[data-skin="pixel-fc-level"] .hp-games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-:root[data-skin="pixel-fc-level"] .hp-game { grid-template-columns: 56px minmax(0, 1fr); grid-template-rows: auto auto; gap: 4px 16px; padding: 32px 20px 20px; }
-:root[data-skin="pixel-fc-level"] .hp-game__ic { grid-row: span 2; }
-:root[data-skin="pixel-fc-level"] .hp-game__b { grid-column: 2; }
-@media (max-width: 900px) {
-  :root[data-skin="pixel-fc-level"] :is(.strengths, .hp-games) { grid-template-columns: minmax(0, 1fr); }
-}
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t),
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:not(:first-of-type) .section__head .section__title { padding-left: 10px; }
+/* 하늘 위 한 줄 설명 · 더 보기는 밝은 글자 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section__head .section__lead { color: var(--gui-sky-ink); font-weight: 500; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp .hp-more { color: var(--gui-sky-ink); border-bottom-color: currentColor; }
+/* 창 안의 남색 바탕 위: 아이콘 칸 · 표 · 꼬리표 글자를 밝게 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.steam, .skill-card, .detail__learned, .block, .quest-strip) { --surface: #22457a; --surface-2: #22457a; --accent: #ffdc90; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hpl-row .hp-thumb, .hp-game__ic) { background-color: #fff8e4; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .steam { --level-panel-2: rgb(255 255 255 / .07); }
+/* 상세 왼쪽 칸: 크림 판을 걷고 하늘 위에 바로 (안의 퀘스트 띠 · 배운 점은 창) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info { padding: 0; background: none; border: 0; box-shadow: none; clip-path: none; --heading: var(--level-white, #fffdf3); --text: var(--gui-sky-ink); --text-muted: var(--gui-sky-ink); color: var(--text); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info::before,
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__title { color: var(--level-white, #fffdf3); text-shadow: var(--level-type-shadow); }
 
 /* ============================================================================
-   랠리 프린트 (pixel-fc-rally) — 절 제목 밑 굵은 띠 하나로 충분하므로 화면 끝까지 긋던 구분선은 뺌
+   랠리 프린트 (pixel-fc-rally) — 검은 3px 테 + 노랑 판화 그림자 창, 사선 빨강 이름표(글자는 곧게)
+   기울임꼴은 모두 곧은 글자로 — 한글 글꼴에는 기울임 꼴이 없어 브라우저가 억지로 눕히던 것(가짜 이탤릭)
    ========================================================================== */
+:root[data-skin="pixel-fc-rally"] {
+  --gui-bg: #fff9e9; --gui-ink: #262626; --gui-muted: #5f5a50; --gui-head: #161616;
+  --gui-line: #2b2b2b; --gui-lw: 3px; --gui-gap: 0px; --gui-iw: 0px;
+  --gui-shadow: 8px 8px 0 #e8ad23;
+  --gui-tab-bg: #ba2632; --gui-tab-ink: #fff8e5; --gui-tab-font: 900 18px/1.25 var(--font-sans);
+  --gui-rule: #cdbf9f; --gui-slot: #f4ecd6; --gui-cursor: #ba2632;
+  --gui-scr-ink: #302b28; --gui-scr-cursor: #ba2632;
+}
+:root[data-skin="pixel-fc-rally"][data-theme="dark"] {
+  --gui-bg: #2b2824; --gui-ink: #f0e5cc; --gui-muted: #cabb9f; --gui-head: #fff1d2;
+  --gui-line: #e7d9bd; --gui-shadow: 8px 8px 0 #b17c19;
+  --gui-tab-bg: #b62536; --gui-rule: #5d554a; --gui-slot: #34302a; --gui-cursor: #ff806c;
+}
 :root[data-skin="pixel-fc-rally"] .hp--sep { border-top: 0; }
 :root[data-skin="pixel-fc-rally"] .fcs-intro .hero__title { font-size: clamp(40px, 3.9vw, 60px); line-height: 1.16; }
-:root[data-skin="pixel-fc-rally"] .fcs-fact__v { font-weight: 900; font-style: italic; letter-spacing: -.03em; }
-/* 보유 기술: 상자 왼쪽에 몰려 있던 아이콘을 다섯 칸에 고르게 */
-:root[data-skin="pixel-fc-rally"] .hp-skills { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px 16px; padding: 24px; }
-:root[data-skin="pixel-fc-rally"] .hp-skill { width: auto; min-width: 0; }
-@media (max-width: 700px) {
-  :root[data-skin="pixel-fc-rally"] .hp-skills { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 20px 12px; }
+/* 가짜 이탤릭 → 곧은 글자 (속도감은 사선 띠 · 사선 칩 모양이 맡음) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.nav__logo, .hero__eyebrow, .fcs-intro .hero__title, .hero .btn, .gcard__name,
+  .hp-h, .section__title, .proj-title, .detail__title, .cl-summary__t, .strength__tag, .stat__num, .steam__table th, .fcs-fact__v) { font-style: normal; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .fcs-intro .hero__title { letter-spacing: -.035em; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.section__title, .proj-title, .detail__title) { letter-spacing: -.03em; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .stat__num { letter-spacing: -.03em; }
+:root[data-skin="pixel-fc-rally"] .fcs-fact__v { font-weight: 900; letter-spacing: -.02em; }
+/* 눕힌 상자(skew)는 글자까지 눕히므로, 사선은 상자 모양(clip-path)으로만 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .hero__eyebrow { transform: none; padding-inline: 16px; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .nav__link.is-active { transform: none; clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%); }
+/* 이름표: 사선 빨강 띠 + 끝에 노랑 줄 하나 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t),
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] main > .section:not(:first-of-type) .section__head .section__title {
+  padding: 6px 44px 6px 22px;
+  background: linear-gradient(105deg, var(--gui-tab-bg) calc(100% - 34px), #e8ad23 calc(100% - 34px) calc(100% - 24px), var(--gui-tab-bg) calc(100% - 24px));
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  letter-spacing: -.01em;
 }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.hp-h, .section__head, .proj-head) { border-bottom: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .proj-head { border-bottom: 4px solid var(--heading); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .profile__row:nth-child(odd) { background: none; }
