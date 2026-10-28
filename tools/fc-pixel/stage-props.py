@@ -1,8 +1,8 @@
 # 스테이지(pixel-fc-level) 소품 — 픽셀을 한 칸씩 직접 찍은 격자 그림을 CSS data URI 로 뽑습니다.
 # 사용법: python3 tools/fc-pixel/stage-props.py  → 출력된 --lv-* 줄을 assets/css/themes/pixel-fc-folio.css 의 스테이지 13회차 절에 붙여 넣기.
 #
-# 기존 스테이지 그림과 같은 규칙으로 찍습니다(섞으면 '깨져' 보임):
-#   · 물건(관 · 동전 · 벽돌 블록)  = 4px 한 칸 + 남색 외곽선 #171c28   ← 물음표 블록 · 땅 벽돌과 같은 격자
+# 기존 스테이지 그림과 같은 규칙으로 찍습니다(섞으면 '깨져' 보임). 땅은 벽돌이 아니라 풀 + 흙입니다:
+#   · 물건(관 · 동전 · 벽돌 블록)  = 4px 한 칸 + 남색 외곽선 #171c28   ← 물음표 블록과 같은 격자
 #   · 배경(덤불)                    = 8px 한 칸 · 외곽선 없음 · 두 톤      ← 언덕 · 구름과 같은 격자
 #   · 그림은 원래 크기(1배)로만 씁니다. 줄이거나 늘리면 칸이 고르지 않게 됩니다.
 # 캐릭터 · 아이템 · 로고는 그리지 않습니다(지형 · 소품만).
@@ -12,6 +12,8 @@ PAL = {
     'X': '#171c28',                                    # 외곽선 · 모르타르
     'g': '#00a800', 'L': '#58d854', 'd': '#005624',    # 초록 (언덕과 같은 #00a800 · #005624)
     'o': '#fca044', 'h': '#ffdb98', 'r': '#c84c0c',    # 주황 · 밝은 크림 · 벽돌 (물음표 블록과 같은 색)
+    's': '#a8522a', 'k': '#6e3016', 'p': '#d8824a',    # 흙 · 어두운 점 · 밝은 점
+    'a': '#2b3448', 'b': '#161c2a', 'c': '#46546e', 'e': '#6a7a9c',   # 지하 바위 · 어두운 점 · 밝은 점 · 윗면
 }
 
 def grid_svg(rows, unit):
@@ -86,24 +88,44 @@ SPRITES['bush'] = ([
     'gggggggggggggg',
 ], 8)
 
-# 지하 벽돌 타일 (4px · 16×8칸 = 64×32) — 땅 벽돌 타일과 같은 짜임에 파랑
-UB = {'X': '#081428', 'b': '#1b5fa0', 'B': '#6cc4f4'}
-UB_ROWS = [
-    'XXXXXXXXXXXXXXXX',
-    'BBBBBBBBBBBBBBBX',
-    'bbbbbbbbbbbbbbbX',
-    'bbbbbbbbbbbbbbbX',
-    'XXXXXXXXXXXXXXXX',
-    'bBBBBBBXbBBBBBBX',
-    'bbbbbbbXbbbbbbbX',
-    'XXXXXXXXXXXXXXXX',
+# 땅 = 풀 + 흙 (벽돌 아님). 지면에서 아래로 이어지다 CSS 그라데이션으로 어두워집니다.
+# 풀 (4px · 16×6칸 = 64×24, 가로 반복) — 밝은 윗줄 · 풀잎 몇 개 · 아래로 처진 어두운 끝 ('.' 은 아래 흙이 비침)
+SPRITES['grass'] = ([
+    'LLLLLLLLLLLLLLLL',
+    'gLggggLgggggLggg',
+    'gggggggggggggggg',
+    'gggggggggggggggg',
+    'ddgggddddddgggdd',
+    '..ddd......ddd..',
+], 4)
+# 흙 (4px · 16×16칸 = 64×64, 바둑판 반복) — 칸마다 손으로 놓은 점 · 2칸 자갈 (규칙적인 줄이 생기지 않게)
+SOIL = [
+    'ssssssssssssssss',
+    'ssskssssssssspss',
+    'sssssssspsssssss',
+    'ssssssssssssssss',
+    'spsssssssspkssss',
+    'sssssssssskkssss',
+    'sssskssssssssssp',
+    'ssssssssssssssss',
+    'ssssssspssssssss',
+    'sksssssssssspkss',
+    'sssssssssssskkss',
+    'sssssspsssssssss',
+    'sssssssssssssssk',
+    'ssspssssskssssss',
+    'ssssssssssssssss',
+    'sssssssssssspsss',
 ]
+SPRITES['soil'] = (SOIL, 4)
+# 지하 바닥 바위 (같은 흙 무늬를 차가운 어두운 돌 색으로) + 윗면 (4px · 16×2칸 = 64×8)
+SPRITES['rock'] = ([r.replace('s', 'a').replace('k', 'b').replace('p', 'c') for r in SOIL], 4)
+SPRITES['rock-top'] = ([
+    'eeeeeeeeeeeeeeee',
+    'cccacccccccaccca',
+], 4)
 
 if __name__ == '__main__':
     for name, (rows, unit) in SPRITES.items():
         uri, w, h = grid_svg(rows, unit)
         print(f'--lv-{name}: {uri};   /* {w}×{h} */')
-    saved = dict(PAL); PAL.clear(); PAL.update(UB)
-    uri, w, h = grid_svg(UB_ROWS, 4)
-    print(f'--lv-ubrick: {uri};   /* {w}×{h} */')
-    PAL.clear(); PAL.update(saved)
