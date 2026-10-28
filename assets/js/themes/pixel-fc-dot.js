@@ -389,8 +389,10 @@
       /* 10회차: 번호는 제목이 있는 절에만 — 제목 없는 숫자 줄(이력서 stats)에 붙으면 첫 카드를 덮음 */
       if (part.querySelector(':scope > :is(.hp-h, .section__head, .proj-head, .cl-summary__t)')) decoration(part, 'fcd-part-no', ('0' + (++no)).slice(-2));
     });
-    /* 10회차: 두께 면은 큰 면(게임기 · 진열판 · 카드 · 버튼)에만 — 칩 · 아이콘 · 메뉴 · 절 상자까지 입체면 조잡해 보임 */
+    /* 10회차: 두께 면은 큰 면(게임기 · 진열판 · 카드 · 버튼)에만 — 칩 · 아이콘 · 메뉴 · 절 상자까지 입체면 조잡해 보임
+       11회차: 게임 UI 창(목록을 담는 상자)도 큰 면이라 같은 두께 면을 붙임 — 창 안 항목의 두께 면은 folio CSS 가 숨김 */
     var faces = document.querySelectorAll('.hero.fc-console, .draw__stage, .gcard, .card-back, ' +
+      '.hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths, .stat-grid, .timeline, .play, ' +
       '.stat, .card, .strength, .hp-game, .profile, .tl-item, .cover-block, .play-card, .steam, ' +
       '.quest-strip, .detail__learned, .block, .pager__item, .media-box, .cover-empty, .proj-empty, ' +
       '.sheet__panel, .btn, .tab, .fc-key, .fc-ov__btn, .fc-slot');

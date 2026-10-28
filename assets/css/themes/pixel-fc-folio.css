@@ -66,29 +66,40 @@
 /* ============================================================================
    11회차 — 패미컴 게임 UI (네 안 공용 뼈대)
    ----------------------------------------------------------------------------
-     · 창(window)   절 하나 = RPG 대화창 하나 — 테두리 + 안쪽 겹선(inset 그림자) + 안별 그림자
+     · 창(window)   절 하나 = RPG 대화창 하나
      · 이름표(tab)  홈 · 자기소개서 요약의 절 제목은 창 윗변에 걸린 이름표, 하위 페이지 절 제목은 같은 모양의 독립 이름표
      · 창 안 목록   대외 활동 = 퀘스트 목록 · 보유 기술 = 인벤토리 칸 · 강점 = 업적 세 칸 · 게임플레이 = 저장 슬롯
                     (각 항목은 자기 상자 · 그림자 · 도트 두께 면을 벗고 창 하나에 담김)
      · 게임기 화면  '1P · 플레이어 선택' 띠(fc-stage.js) + 대화창 한마디(▼) + ▶ 커서 세로 메뉴
      · 카트리지     첫 화면 진열판에 덱 + 3장 (한 장이 커지고 판이 조용해짐) — 카드 안쪽 칸은 그대로
+   이 절은 '배치'만 맡습니다. 창 · 이름표 · 칸을 그리는 재료(면 · 테 · 그림자 · 글꼴 · 구분선)는
+   --gui-* 토큰으로 받아, 맨 아래 안 이름 절에서 각 안이 원래 쓰던 카드 재료로 채웁니다
+   (도트 = 회색 두께 면 · 크라프트 = 둥근 종이 라벨 · 스테이지 = 벽돌 턱 판 · 랠리 = 빨강 윗띠 인쇄 판).
+   아이콘 칸 · 썸네일 · 태그 칩 · 표는 각 안의 원래 모양을 그대로 씁니다.
    특이도는 :root[data-skin-theme][data-skin] 로 각 시안 CSS 보다 한 단계 위에서 덮습니다.
    ========================================================================== */
 :root[data-skin-theme="pixel"] {
-  --gui-bg: var(--surface); --gui-ink: var(--text); --gui-muted: var(--text-muted); --gui-head: var(--heading);
-  --gui-line: var(--border); --gui-lw: 3px; --gui-gap: 4px; --gui-inner: var(--border); --gui-iw: 1px;
-  --gui-r: 0px; --gui-slot-r: 0px; --gui-shadow: 0 0 transparent; --gui-pad: 30px;
-  --gui-tab-h: 40px; --gui-tab-bg: var(--heading); --gui-tab-ink: var(--bg); --gui-tab-r: 0px;
-  --gui-tab-font: 700 18px/1.25 var(--font-sans);
-  --gui-rule: color-mix(in srgb, var(--gui-ink) 24%, transparent);
-  --gui-slot: color-mix(in srgb, var(--gui-ink) 5%, transparent);
+  --gui-ink: var(--text); --gui-muted: var(--text-muted); --gui-head: var(--heading);
+  --gui-face: var(--surface); --gui-frame: 3px solid var(--border); --gui-r: 0px;
+  --gui-shadow: 0 0 transparent; --gui-pad: 32px; --gui-pad-top: 0px;
+  --gui-sep: 2px solid color-mix(in srgb, var(--gui-ink) 14%, transparent);
+  --gui-tab-h: 54px; --gui-tab-bg: var(--heading); --gui-tab-ink: var(--bg);
+  --gui-tab-bd: 0 solid transparent; --gui-tab-r: 0px; --gui-tab-shadow: none;
+  --gui-tab-font: 800 24px/1.25 var(--font-display); --gui-tab-size: 24px;
+  --gui-title-font: 700 19px/1.4 var(--font-sans);
+  --gui-num-font: 800 22px/1 var(--font-display);
+  --gui-slot: transparent; --gui-slot-bd: 2px solid color-mix(in srgb, var(--gui-ink) 18%, transparent);
+  --gui-slot-r: 0px; --gui-slot-shadow: none;
+  --gui-slot-empty: transparent; --gui-slot-empty-bd: 2px dashed color-mix(in srgb, var(--gui-ink) 22%, transparent);
+  --gui-slot-empty-shadow: none;
   --gui-cursor: var(--accent);
   /* 게임기 화면 안(액정은 다크에서도 밝음) */
+  --gui-quip-bg: #fff; --gui-quip-ink: #1d1d1d; --gui-quip-bd: 3px solid #1d1d1d; --gui-quip-r: 0px;
   --gui-scr-ink: #1d1d1d; --gui-scr-cursor: var(--accent);
   --gui-scr-rule: color-mix(in srgb, var(--gui-scr-ink) 28%, transparent);
 }
 @media (max-width: 700px) {
-  :root[data-skin-theme="pixel"] { --gui-pad: 20px; --gui-tab-h: 36px; }
+  :root[data-skin-theme="pixel"] { --gui-pad: 22px; --gui-tab-h: 42px; --gui-tab-size: 18px; }
 }
 @keyframes gui-blink { 50% { opacity: 0; } }
 @keyframes gui-bob { 50% { translate: 0 2px; } }
@@ -98,28 +109,25 @@
   .hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths,
   .stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
   .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) {
-  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted); --border: var(--gui-rule);
-  position: relative; margin-inline: 0; padding: var(--gui-pad);
-  background: var(--gui-bg); color: var(--gui-ink);
-  border: var(--gui-lw) solid var(--gui-line); border-radius: var(--gui-r);
-  box-shadow: inset 0 0 0 var(--gui-gap) var(--gui-bg),
-              inset 0 0 0 calc(var(--gui-gap) + var(--gui-iw)) var(--gui-inner),
-              var(--gui-shadow) !important;
+  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted);
+  position: relative; margin-inline: 0;
+  padding: calc(var(--gui-pad) + var(--gui-pad-top)) var(--gui-pad) var(--gui-pad);
+  background: var(--gui-face); color: var(--gui-ink);
+  border: var(--gui-frame); border-radius: var(--gui-r);
+  box-shadow: var(--gui-shadow) !important;
   clip-path: none; transform: none; backdrop-filter: none;
 }
 :root[data-skin-theme="pixel"][data-skin] :is(.stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
   .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty)::before { content: none; }
-/* 창 안의 장식 두께 면(도트)은 걷음 — 창 하나가 한 겹 */
+/* 창 안 항목의 두께 면(도트)은 걷음 — 창 자신의 두께 면만 남김 */
 :root[data-skin-theme="pixel"][data-skin] :is(.hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths,
   .stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
-  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) .fcd-volume,
-:root[data-skin-theme="pixel"][data-skin] :is(.stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
-  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) > .fcd-volume { display: none; }
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) * .fcd-volume { display: none; }
 
 /* 창 안 항목: 각자의 상자를 벗음 */
 :root[data-skin-theme="pixel"][data-skin] :is(.hpl > .hpl-row, .hp-skills > .hp-skill, .strengths > .strength, .hp-games > .hp-game,
   .stat-grid > .stat, .timeline > .tl-item, .play > .play-card) {
-  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted); --border: var(--gui-rule);
+  --heading: var(--gui-head); --text: var(--gui-ink); --text-muted: var(--gui-muted);
   margin: 0; min-height: 0; background: none; border: 0; border-radius: 0;
   box-shadow: none !important; clip-path: none; transform: none; color: var(--gui-ink);
 }
@@ -129,20 +137,24 @@
   .stat-grid > .stat, .timeline > .tl-item, .play > .play-card)::after { content: none; }
 
 /* ── 이름표: 홈 절 제목 · 자기소개서 요약 제목은 바로 아래 창의 윗변에 걸림 ───── */
-:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) {
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t),
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title {
   position: relative; z-index: 2;
-  display: flex; align-items: center; gap: 10px; align-self: flex-start;
-  width: fit-content; max-width: calc(100% - 44px); min-height: var(--gui-tab-h);
-  margin: 0 0 calc(var(--gui-tab-h) / -2) 22px; padding: 6px 18px;
+  display: flex; align-items: center; gap: 12px; align-self: flex-start;
+  width: fit-content; max-width: calc(100% - 48px); min-height: var(--gui-tab-h);
+  margin: 0; padding: 6px 22px;
   background: var(--gui-tab-bg); color: var(--gui-tab-ink);
-  border: 0; border-radius: var(--gui-tab-r); box-shadow: none;
-  font: var(--gui-tab-font); letter-spacing: 0; text-shadow: none; text-transform: none; font-style: normal;
-  word-break: keep-all; overflow-wrap: anywhere;
+  border: var(--gui-tab-bd); border-radius: var(--gui-tab-r); box-shadow: var(--gui-tab-shadow);
+  font: var(--gui-tab-font); font-size: var(--gui-tab-size); letter-spacing: -.01em;
+  text-shadow: none; text-transform: none; font-style: normal; word-break: keep-all; overflow-wrap: anywhere;
 }
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) { margin: 0 0 calc(var(--gui-tab-h) / -2) 24px; }
 :root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
-:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::after { content: none; }
+:root[data-skin-theme="pixel"][data-skin] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::after,
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::before,
+:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::after { content: none; }
 :root[data-skin-theme="pixel"][data-skin] :is(.hp-h, .fcc-play-heading, .cl-summary__t) + :is(.hpl, .hp-skills, .strengths, .hp-games) {
-  padding-top: calc(var(--gui-pad) + var(--gui-tab-h) / 2 + 4px);
+  margin-top: 0; padding-top: calc(var(--gui-pad) + var(--gui-pad-top) + var(--gui-tab-h) / 2);
 }
 
 /* 하위 페이지 절 머리: 같은 말을 되풀이하던 눈썹 칩은 접고, 절 제목 = 독립 이름표, 한 줄 설명은 그 아래 */
@@ -150,23 +162,13 @@
 :root[data-skin-theme="pixel"][data-skin] main .section__head::before,
 :root[data-skin-theme="pixel"][data-skin] main .section__head::after { content: none; }
 :root[data-skin-theme="pixel"][data-skin] main .section__head .eyebrow { display: none; }
-:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title {
-  position: relative; display: inline-flex; align-items: center; gap: 10px;
-  min-height: var(--gui-tab-h); margin: 0; padding: 6px 20px;
-  background: var(--gui-tab-bg); color: var(--gui-tab-ink);
-  border: 0; border-radius: var(--gui-tab-r); box-shadow: none;
-  font: var(--gui-tab-font); font-size: clamp(19px, 1.7vw, 24px); letter-spacing: 0;
-  text-shadow: none; text-transform: none; font-style: normal;
-}
-:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::before,
-:root[data-skin-theme="pixel"][data-skin] main > .section:not(:first-of-type) .section__head .section__title::after { content: none; }
 :root[data-skin-theme="pixel"][data-skin] main .section__head .section__lead {
   max-width: 44em; margin: 14px 0 0; padding: 0; background: none; border: 0; box-shadow: none;
   font: 400 15px/1.7 var(--font-sans); letter-spacing: 0; color: var(--text-muted);
 }
 
 /* ── 홈: 대외 활동(퀘스트) + 보유 기술(인벤토리)을 메뉴 화면처럼 나란히 ────── */
-:root[data-skin-theme="pixel"][data-skin] .hp-block { display: flex; flex-direction: column; min-width: 0; margin: 0; padding: 0; background: none; border: 0; box-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-block { display: flex; flex-direction: column; gap: 0; min-width: 0; margin: 0; padding: 0; background: none; border: 0; box-shadow: none; }
 :root[data-skin-theme="pixel"][data-skin] .hp-block > :is(.hpl, .hp-skills, .strengths) { flex: 1 1 auto; }
 :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
 :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) > .hp-more { margin-top: -24px; }
@@ -176,86 +178,71 @@
   :root[data-skin-theme="pixel"][data-skin] .hp > .wrap:has(> .hp-block + .hp-block) > .hp-more { margin-top: 0; }
 }
 
-/* 퀘스트 목록 */
+/* 퀘스트 목록 (썸네일 칸은 각 안의 원래 모양) */
 :root[data-skin-theme="pixel"][data-skin] .hp .hpl { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 0; }
-:root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row {
-  display: flex; flex-direction: row; align-items: flex-start; gap: 18px; padding: 18px 0;
-  border-top: 2px dashed var(--gui-rule);
-}
+:root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row { display: flex; flex-direction: row; align-items: flex-start; gap: 18px; padding: 20px 0; border-top: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row:first-child { border-top: 0; padding-top: 0; }
 :root[data-skin-theme="pixel"][data-skin] .hpl > .hpl-row:last-child { padding-bottom: 0; }
-:root[data-skin-theme="pixel"][data-skin] .hpl-row > .hp-thumb {
-  flex: none; width: 52px; height: 52px; margin: 0;
-  background-color: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
-}
-:root[data-skin-theme="pixel"][data-skin] .hpl-row__top { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
-:root[data-skin-theme="pixel"][data-skin] .hpl-row__t { margin: 0; font: 700 18px/1.4 var(--font-sans); letter-spacing: 0; color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row > .hp-thumb { flex: none; margin: 0; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__top { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+:root[data-skin-theme="pixel"][data-skin] .hpl-row__t { margin: 0; font: var(--gui-title-font); color: var(--gui-head); text-shadow: none; }
 :root[data-skin-theme="pixel"][data-skin] .hpl-row__d { font: 700 13px/1.6 var(--font-sans); letter-spacing: .02em; color: var(--gui-cursor); white-space: nowrap; }
 :root[data-skin-theme="pixel"][data-skin] .hpl-row__m { margin-top: 6px; color: var(--gui-muted); }
 
 /* 인벤토리: 세 칸씩, 줄이 덜 차면 빈 칸을 그려 칸 수를 맞춤 */
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; gap: 12px; }
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; gap: 14px; }
 :root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  width: auto; min-width: 0; padding: 18px 8px 14px; text-align: center;
-  background: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  width: auto; min-width: 0; padding: 20px 8px 16px; text-align: center;
+  background: var(--gui-slot); border: var(--gui-slot-bd); border-radius: var(--gui-slot-r);
+  box-shadow: var(--gui-slot-shadow) !important;
 }
-:root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill:hover { border-color: var(--gui-cursor); }
-:root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__ic { width: 52px; height: 52px; margin: 0; box-shadow: none; transform: none; }
-:root[data-skin-theme="pixel"][data-skin] .hp-skill__t { margin: 0; font: 600 14px/1.4 var(--font-sans); letter-spacing: 0; color: var(--gui-ink); word-break: keep-all; overflow-wrap: break-word; }
+:root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__ic { width: 52px; height: 52px; margin: 0; transform: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__t { margin: 0; font: 700 14px/1.4 var(--font-sans); letter-spacing: 0; color: var(--gui-ink); word-break: keep-all; overflow-wrap: break-word; }
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::before,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::after { content: none; }
+/* 칸 수는 .hp-skill 만 셈 (도트는 창 끝에 두께 면 span 이 붙으므로 :last-child 대신 마지막 div) */
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+2 of .hp-skill):last-of-type)::after,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1 of .hp-skill):last-of-type)::after,
+:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1 of .hp-skill):last-of-type)::before {
+  content: ''; display: block; order: 9; position: static; min-height: 104px;
+  background: var(--gui-slot-empty); border: var(--gui-slot-empty-bd); border-radius: var(--gui-slot-r);
+  box-shadow: var(--gui-slot-empty-shadow);
+}
 @media (max-width: 700px) {
   :root[data-skin-theme="pixel"][data-skin] .hp .hp-skills { gap: 8px; }
   :root[data-skin-theme="pixel"][data-skin] .hp-skills > .hp-skill { padding: 14px 2px 12px; }
-  :root[data-skin-theme="pixel"][data-skin] .hp-skill__t { font-size: 13px; }
+  :root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__t { font-size: 13px; }
   :root[data-skin-theme="pixel"][data-skin] .hp-skill .hp-skill__ic { width: 44px; height: 44px; }
 }
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::before,
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills::after { content: none; }
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+2):last-child)::after,
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1):last-child)::after,
-:root[data-skin-theme="pixel"][data-skin] .hp .hp-skills:has(> .hp-skill:nth-child(3n+1):last-child)::before {
-  content: ''; display: block; order: 9; position: static; min-height: 96px;
-  background: none; border: 2px dashed var(--gui-rule); border-radius: var(--gui-slot-r);
-}
 
-/* 업적: 세 칸을 점선으로 나눔 */
-:root[data-skin-theme="pixel"][data-skin] :is(.hp, .cl-summary) .strengths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; align-items: stretch; }
-:root[data-skin-theme="pixel"][data-skin] .strengths > .strength {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 4px 28px;
-}
+/* 업적: 세 칸 (칸 사이는 각 안의 구분선) — 태그 칩은 각 안의 원래 모양 */
+:root[data-skin-theme="pixel"][data-skin] :is(.hp, .cl-summary) .strengths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; align-items: stretch; counter-reset: gui-ach; }
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 4px 28px; counter-increment: gui-ach; }
 :root[data-skin-theme="pixel"][data-skin] .strengths > .strength:first-child { padding-left: 0; }
 :root[data-skin-theme="pixel"][data-skin] .strengths > .strength:last-child { padding-right: 0; }
-:root[data-skin-theme="pixel"][data-skin] .strengths > .strength + .strength { border-left: 2px dashed var(--gui-rule); }
-:root[data-skin-theme="pixel"][data-skin] .strength .strength__tag {
-  display: inline-flex; align-items: center; gap: 6px; width: fit-content; margin: 0; padding: 0;
-  background: none; border: 0; border-radius: 0; box-shadow: none; transform: none;
-  font: 700 12px/1.5 var(--font-sans); letter-spacing: .08em; font-style: normal; color: var(--gui-cursor);
-}
-:root[data-skin-theme="pixel"][data-skin] .strength .strength__tag::before { content: '★' / ''; font-size: 1.1em; letter-spacing: 0; }
-:root[data-skin-theme="pixel"][data-skin] .strength .strength__t { margin: 2px 0 0; font: 700 20px/1.4 var(--font-sans); letter-spacing: -.01em; color: var(--gui-head); text-shadow: none; font-style: normal; }
+:root[data-skin-theme="pixel"][data-skin] .strengths > .strength + .strength { border-left: var(--gui-sep); }
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__tag { margin: 0; width: fit-content; font-style: normal; transform: none; }
+:root[data-skin-theme="pixel"][data-skin] .strength .strength__t { margin: 4px 0 0; font: var(--gui-title-font); font-size: 21px; color: var(--gui-head); text-shadow: none; font-style: normal; }
 :root[data-skin-theme="pixel"][data-skin] .strength .strength__b { margin: 0; color: var(--gui-muted); }
 
 /* 저장 슬롯: 번호 · 아이콘 칸 · 이름 · 한 줄 */
 :root[data-skin-theme="pixel"][data-skin] .hp .hp-games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; counter-reset: gui-save; }
 :root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game {
   display: grid; grid-template-columns: auto 52px minmax(0, 1fr); grid-template-rows: auto auto;
-  column-gap: 14px; row-gap: 2px; align-items: center; padding: 4px 24px;
-  counter-increment: gui-save;
+  column-gap: 14px; row-gap: 2px; align-items: center; padding: 4px 24px; counter-increment: gui-save;
 }
 :root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game:first-child { padding-left: 0; }
 :root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game:last-child { padding-right: 0; }
-:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game + .hp-game { border-left: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game + .hp-game { border-left: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .hp-games > .hp-game::before {
   content: counter(gui-save, decimal-leading-zero) / ''; grid-row: 1 / span 2; align-self: center;
   position: static; width: auto; height: auto; background: none; border: 0;
-  font: 700 18px/1 var(--font-display); letter-spacing: 0; color: var(--gui-cursor);
+  font: var(--gui-num-font); letter-spacing: -.02em; color: var(--gui-cursor);
 }
-:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__ic {
-  grid-row: 1 / span 2; grid-column: 2; width: 52px; height: 52px; margin: 0;
-  background-color: var(--gui-slot); border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
-}
+:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__ic { grid-row: 1 / span 2; grid-column: 2; width: 52px; height: 52px; margin: 0; }
 :root[data-skin-theme="pixel"][data-skin] .hp-game > :is(.hp-game__t, .hp-game__b) { grid-column: 3; margin: 0; min-width: 0; }
-:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__t { align-self: end; font: 700 18px/1.35 var(--font-sans); letter-spacing: 0; color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__t { align-self: end; font: var(--gui-title-font); color: var(--gui-head); text-shadow: none; }
 :root[data-skin-theme="pixel"][data-skin] .hp-game > .hp-game__b { align-self: start; color: var(--gui-muted); }
 
 @media (max-width: 900px) {
@@ -264,7 +251,7 @@
   :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game) { padding: 20px 0; }
   :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game):first-child { padding-top: 0; }
   :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength, .hp-games > .hp-game):last-child { padding-bottom: 0; }
-  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength + .strength, .hp-games > .hp-game + .hp-game) { border-left: 0; border-top: 2px dashed var(--gui-rule); }
+  :root[data-skin-theme="pixel"][data-skin] :is(.strengths > .strength + .strength, .hp-games > .hp-game + .hp-game) { border-left: 0; border-top: var(--gui-sep); }
 }
 
 /* ── 하위 페이지 창 안 ───────────────────────────────────────────────────── */
@@ -272,7 +259,7 @@
 :root[data-skin-theme="pixel"][data-skin] .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
 :root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat { padding: 2px 24px; }
 :root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat:first-child { padding-left: 0; }
-:root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat + .stat { border-left: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat + .stat { border-left: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__num { color: var(--gui-head); text-shadow: none; }
 :root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__num .unit { color: var(--gui-cursor); }
 :root[data-skin-theme="pixel"][data-skin] .stat-grid .stat__label { color: var(--gui-muted); background: none; }
@@ -281,15 +268,15 @@
   :root[data-skin-theme="pixel"][data-skin] .stat-grid > .stat:nth-child(odd) { padding-left: 0; border-left: 0; }
 }
 /* 인적사항 */
-:root[data-skin-theme="pixel"][data-skin] .profile { padding-block: calc(var(--gui-pad) - 12px); }
-:root[data-skin-theme="pixel"][data-skin] .profile .profile__row { padding: 12px 0; background: none; border: 0; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .profile { padding-block: calc(var(--gui-pad) + var(--gui-pad-top) - 12px) calc(var(--gui-pad) - 12px); }
+:root[data-skin-theme="pixel"][data-skin] .profile .profile__row { padding: 14px 0; background: none; border: 0; border-top: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .profile .profile__row:first-child { border-top: 0; }
 :root[data-skin-theme="pixel"][data-skin] .profile .profile__k { color: var(--gui-muted); background: none; }
 :root[data-skin-theme="pixel"][data-skin] .profile .profile__v { color: var(--gui-ink); }
 /* 경력 · 활동: 퀘스트 기록 (진행 중인 줄에 ▶) */
 :root[data-skin-theme="pixel"][data-skin] .timeline { display: grid; gap: 0; }
 :root[data-skin-theme="pixel"][data-skin] .timeline::before { content: none; }
-:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item { padding: 22px 0 22px 28px; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item { padding: 22px 0 22px 28px; border-top: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:first-child { border-top: 0; padding-top: 0; }
 :root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:last-child { padding-bottom: 0; }
 :root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item--now::before {
@@ -300,18 +287,14 @@
 }
 :root[data-skin-theme="pixel"][data-skin] .timeline > .tl-item:not(:first-child).tl-item--now::before { top: 24px; }
 :root[data-skin-theme="pixel"][data-skin] .tl-item .tl-date { color: var(--gui-cursor); }
-:root[data-skin-theme="pixel"][data-skin] .tl-item :is(.tl-role) { color: var(--gui-head); text-shadow: none; }
+:root[data-skin-theme="pixel"][data-skin] .tl-item .tl-role { color: var(--gui-head); text-shadow: none; }
 :root[data-skin-theme="pixel"][data-skin] .tl-item :is(.tl-org, .tl-body) { color: var(--gui-muted); }
 /* 게임플레이: 저장 기록 */
 :root[data-skin-theme="pixel"][data-skin] .play { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
-:root[data-skin-theme="pixel"][data-skin] .play > .play-card { padding: 22px 0; border-top: 2px dashed var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin] .play > .play-card { padding: 22px 0; border-top: var(--gui-sep); }
 :root[data-skin-theme="pixel"][data-skin] .play > .play-card:first-child { border-top: 0; padding-top: 0; }
 :root[data-skin-theme="pixel"][data-skin] .play > .play-card:last-child { padding-bottom: 0; }
 :root[data-skin-theme="pixel"][data-skin] .play-card .play-card__name { color: var(--gui-head); text-shadow: none; }
-:root[data-skin-theme="pixel"][data-skin] .play-card .play-card__hours {
-  background: none; border: 2px solid var(--gui-rule); border-radius: var(--gui-slot-r); box-shadow: none;
-  color: var(--gui-cursor); font-weight: 700;
-}
 :root[data-skin-theme="pixel"][data-skin] .play-card .play-card__note { border-top: 0; padding-top: 0; margin-top: 10px; color: var(--gui-muted); }
 /* 자기소개서 본문: 한 덩어리씩 대화창, 끝에 ▼ */
 :root[data-skin-theme="pixel"][data-skin] .cover-block { max-width: 52rem; padding-bottom: calc(var(--gui-pad) + 6px); }
@@ -328,23 +311,13 @@
 :root[data-skin-theme="pixel"][data-skin] .skill-card .card__title,
 :root[data-skin-theme="pixel"][data-skin] .detail__learned .detail__learned-title,
 :root[data-skin-theme="pixel"][data-skin] .block .block__label { color: var(--gui-head); text-shadow: none; }
-:root[data-skin-theme="pixel"][data-skin] .media-box { padding: 10px; }
-:root[data-skin-theme="pixel"][data-skin] .quest-strip { padding: 12px 16px; }
-:root[data-skin-theme="pixel"][data-skin] .pager__item { padding: 18px 22px; }
+:root[data-skin-theme="pixel"][data-skin] .media-box { padding: calc(10px + var(--gui-pad-top)) 10px 10px; }
+:root[data-skin-theme="pixel"][data-skin] .quest-strip { padding: calc(12px + var(--gui-pad-top)) 16px 12px; }
+:root[data-skin-theme="pixel"][data-skin] .pager__item { padding: calc(18px + var(--gui-pad-top)) 22px 18px; }
 :root[data-skin-theme="pixel"][data-skin] .pager__item .pager__dir { color: var(--gui-cursor); }
 :root[data-skin-theme="pixel"][data-skin] .pager__item .pager__title { color: var(--gui-head); }
-:root[data-skin-theme="pixel"][data-skin] .pager__item:is(:hover, :focus-visible) { border-color: var(--gui-cursor); }
 
-/* 프로젝트 분류 탭: 메뉴 고르기 (고른 칸은 이름표 색 + ▶) */
-:root[data-skin-theme="pixel"][data-skin] .tabs > .tab {
-  position: relative; min-height: 0; padding: 8px 16px;
-  background: var(--gui-bg); color: var(--gui-ink);
-  border: 2px solid var(--gui-line); border-radius: var(--gui-tab-r); box-shadow: none !important; transform: none;
-  font: 700 14px/1.4 var(--font-sans); letter-spacing: 0; font-style: normal;
-}
-:root[data-skin-theme="pixel"][data-skin] .tabs > .tab > .fcd-volume { display: none; }
-:root[data-skin-theme="pixel"][data-skin] .tabs > .tab::after { content: none; }
-:root[data-skin-theme="pixel"][data-skin] .tabs > .tab.is-active { background: var(--gui-tab-bg); color: var(--gui-tab-ink); border-color: var(--gui-tab-bg); }
+/* 프로젝트 분류 탭: 각 안의 원래 탭 모양 + 고른 칸에 ▶ */
 :root[data-skin-theme="pixel"][data-skin] .tabs > .tab.is-active::before {
   content: '▶' / ''; position: static; display: inline-block; width: auto; height: auto; margin-right: 6px;
   background: none; border: 0; font-size: .75em; vertical-align: .08em;
@@ -361,9 +334,8 @@
 /* 한마디: 화면 속 대화창, 끝에 깜빡이는 ▼ */
 :root[data-skin-theme="pixel"][data-skin] .fcs-info .quip {
   position: relative; width: auto; max-width: none; margin: 0 0 10px; padding: 10px 30px 10px 14px; transform: none;
-  background: var(--gui-bg); color: var(--gui-ink);
-  border: var(--gui-lw) solid var(--gui-line); border-radius: min(var(--gui-r), 10px);
-  box-shadow: inset 0 0 0 3px var(--gui-bg), inset 0 0 0 calc(3px + var(--gui-iw)) var(--gui-inner) !important;
+  background: var(--gui-quip-bg); color: var(--gui-quip-ink);
+  border: var(--gui-quip-bd); border-radius: var(--gui-quip-r); box-shadow: none !important;
   font: 500 15px/1.6 var(--font-sans); letter-spacing: 0; font-style: normal;
 }
 :root[data-skin-theme="pixel"][data-skin] .fcs-info .quip > .fcd-volume { display: none; }
@@ -371,7 +343,7 @@
 :root[data-skin-theme="pixel"][data-skin] .fcs-info .quip::after {
   content: '▼' / ''; display: block; position: absolute; inset: auto 10px 7px auto; width: auto; height: auto;
   background: none; border: 0; transform: none;
-  font: 700 10px/1 var(--font-sans); color: var(--gui-cursor);
+  font: 700 10px/1 var(--font-sans); color: var(--gui-scr-cursor);
   animation: gui-bob 1s steps(2, end) infinite;
 }
 /* 버튼 두 개 → ▶ 커서 세로 메뉴 (첫 줄이 기본 선택, 올리거나 초점이 가면 커서가 옮겨 감) */
@@ -417,25 +389,31 @@
 }
 
 /* ============================================================================
-   도트 (pixel-fc-dot) — 검은 4px 테 + 크림 겹띠의 도트 RPG 창 · 검은 이름표에 빨간 번호 칸
+   도트 (pixel-fc-dot) — 흰 면 + 검은 4px 테 + 회색 두께 면(게임기 · 카드와 같은 .fcd-volume, pixel-fc-dot.js)
+   이름표 = 검은 도트 글꼴 판 + 크림 번호 칸 · 인벤토리 칸 = 4px 테 + 도트 음영
    ========================================================================== */
 :root[data-skin="pixel-fc-dot"] {
   --section-pad-y: 68px;
-  --gui-bg: #fff; --gui-ink: #222; --gui-muted: #4b4b4b; --gui-head: #161616;
-  --gui-line: #161616; --gui-lw: 4px; --gui-gap: 4px; --gui-inner: var(--dot-cream); --gui-iw: 4px;
-  --gui-shadow: 8px 8px 0 #cfcfcf;
-  --gui-tab-bg: #161616; --gui-tab-ink: #fff; --gui-tab-font: 400 18px/1.3 var(--font-display);
-  --gui-rule: #cbcbcb; --gui-slot: #f5f5f5; --gui-cursor: var(--dot-red);
+  --gui-ink: #222; --gui-muted: #4b4b4b; --gui-head: #161616;
+  --gui-face: #fff; --gui-frame: 4px solid #161616; --gui-shadow: 0 0 transparent;
+  --gui-sep: 4px solid #eeeeee;
+  --gui-tab-bg: #161616; --gui-tab-ink: #fff; --gui-tab-font: 700 24px/1.3 var(--font-display);
+  --gui-title-font: 700 19px/1.5 var(--font-display);
+  --gui-num-font: 700 24px/1 var(--font-display);
+  --gui-slot: #fff; --gui-slot-bd: 4px solid #161616; --gui-slot-shadow: inset -4px -4px 0 #dedede;
+  --gui-slot-empty: #f6f6f6; --gui-slot-empty-bd: 4px dashed #cfcfcf;
+  --gui-cursor: var(--dot-red);
+  --gui-quip-bg: #fff; --gui-quip-ink: #161616; --gui-quip-bd: 4px solid #161616;
   --gui-scr-ink: #161616; --gui-scr-cursor: var(--dot-red); --gui-band: var(--dot-cream);
 }
+/* 다크: 원래 도트 다크처럼 어두운 들판 위에 크림 부품 (글자는 짙게) */
 :root[data-skin="pixel-fc-dot"][data-theme="dark"] {
-  --gui-bg: #1d2029; --gui-ink: #f6f3ed; --gui-muted: #d9d4ca; --gui-head: #fff;
-  --gui-line: #f6f3ed; --gui-inner: #3a3f4d; --gui-shadow: 8px 8px 0 #050608;
-  --gui-tab-bg: var(--dot-cream); --gui-tab-ink: #161616;
-  --gui-rule: #4b5162; --gui-slot: #262a35; --gui-cursor: #ffcc83; --gui-band: #2c303c;
+  --gui-face: #fff5e5; --gui-sep: 4px solid #eee1c9;
+  --gui-tab-bg: var(--dot-cream); --gui-tab-ink: #161616; --gui-tab-bd: 4px solid #161616;
+  --gui-slot: #fff5e5; --gui-slot-shadow: inset -4px -4px 0 #e6d6bc; --gui-slot-empty: #f6ead6; --gui-slot-empty-bd: 4px dashed #d6c4a6;
 }
-@media (max-width: 700px) { :root[data-skin="pixel-fc-dot"] { --section-pad-y: 56px; --gui-shadow: 6px 6px 0 #cfcfcf; } }
-/* 도트 글꼴은 로고 · 큰 제목 · 이름표 · 숫자에만. 메뉴 · 눈썹은 읽히는 글꼴로 */
+@media (max-width: 700px) { :root[data-skin="pixel-fc-dot"] { --section-pad-y: 56px; --gui-tab-size: 18px; } }
+/* 도트 글꼴은 로고 · 큰 제목 · 이름표 · 항목 이름 · 숫자에만. 메뉴 · 눈썹은 읽히는 글꼴로 */
 :root[data-skin="pixel-fc-dot"] .nav__link { font: 700 14px/1.2 var(--font-sans); letter-spacing: 0; }
 :root[data-skin="pixel-fc-dot"] .fcs-intro .hero__eyebrow { padding: 6px 12px; border-width: 3px; font: 700 12px/1.6 var(--font-sans); letter-spacing: .02em; }
 :root[data-skin="pixel-fc-dot"] .fcs-intro .hero__title { font-size: clamp(38px, 3.3vw, 50px); line-height: 1.34; text-shadow: 3px 3px 0 #dcdcdc; }
@@ -447,80 +425,97 @@
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .wrap.fcd-part { padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)); }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] :is(.fcd-part:last-child, .fcd-part:has(+ .hp-more), .hp > .wrap > .fcd-part) { margin-bottom: 0; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part-no {
-  z-index: 3; top: 0; bottom: auto; left: 22px; width: var(--gui-tab-h); height: var(--gui-tab-h); padding: 0;
-  display: grid; place-items: center; border: 0; background: var(--dot-red); color: #fff;
-  font: 400 15px/1 var(--font-display); letter-spacing: 0;
+  z-index: 3; top: 0; bottom: auto; left: 24px; width: var(--gui-tab-h); height: var(--gui-tab-h); padding: 0;
+  display: grid; place-items: center; border: 4px solid #161616; background: var(--dot-cream); color: #161616;
+  font: 700 20px/1 var(--font-display); letter-spacing: -1px;
 }
+:root[data-skin="pixel-fc-dot"][data-theme="dark"] .fcd-part-no { background: var(--dot-red); color: #fff; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part-no::after { content: none; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .wrap.fcd-part > .fcd-part-no { left: max(var(--gutter), env(safe-area-inset-left, 0px)); }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .hp .wrap.fcd-part > .fcd-part-no { left: calc(max(var(--gutter), env(safe-area-inset-left, 0px)) + 22px); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .hp .wrap.fcd-part > .fcd-part-no { left: calc(max(var(--gutter), env(safe-area-inset-left, 0px)) + 24px); }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part:has(> .fcd-part-no) > :is(.hp-h, .fcc-play-heading),
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] main .fcd-part:has(> .fcd-part-no) > .section__head .section__title,
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] main .fcd-part:has(> .fcd-part-no) > .proj-head .proj-title,
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part:has(> .fcd-part-no) .cl-summary__t { padding-left: calc(var(--gui-tab-h) + 14px); }
-/* 다크: 절 상자가 강제하던 밝은 판 글자색 대신 페이지 글자색 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcd-part:has(> .fcd-part-no) .cl-summary__t { padding-left: calc(var(--gui-tab-h) + 16px); }
+/* 다크: 창 밖(절 머리의 한 줄 설명 등)은 어두운 들판 위 밝은 글자 */
 :root[data-skin="pixel-fc-dot"][data-theme="dark"] .fcd-part { --heading: #fff; --text: #f6f3ed; --text-muted: #e1ddd4; --ink: #f6f3ed; color: var(--text); }
 /* 이력서 숫자 카드: 계단식 배치 없이 */
 :root[data-skin="pixel-fc-dot"] .stat:nth-child(n) { margin-top: 0; }
-/* 게임플레이 그래프 · 표: 밝은 판을 전제로 박아 둔 글자 · 선 색을 창 토큰으로 (다크 창에서도 읽히게) */
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__head { border-bottom-color: var(--gui-line); }
+/* 게임플레이 그래프 · 표: 박아 둔 글자 · 선 색을 창 토큰으로 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__head { border-bottom-color: #161616; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] :is(.steam__stats, .steam__table thead th) { background: var(--gui-band); }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__table :is(th, td) { color: var(--gui-ink); border-color: var(--gui-rule); }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam :is(.sr-grid, .sr-spoke) { stroke: var(--gui-rule); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam__table :is(th, td) { color: var(--gui-ink); }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .steam :is(.sr-name, .sr-val) { fill: var(--gui-ink); }
 /* 진열판: 띠 무늬 없이 크림 판 하나 */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-dot"] .fcs-rig .draw__stage { background: var(--dot-cream); }
 
 /* ============================================================================
-   크라프트 (pixel-fc-kraft) — 종이 위 진홍 겹선 · 둥근 모서리 창, 구멍 뚫린 종이 꼬리표 이름표, 절취선 구분
+   크라프트 (pixel-fc-kraft) — 크라프트지 위 크림 종이 라벨(둥근 모서리 · 오른쪽 위 타공 · 외곽선 없음)
+   이름표 = 라벨에서 이어져 올라온 폴더 탭(진홍 라벨 활자) · 업적 칸 = 거대한 진홍 숫자 · 구분선 = 뜯는 점선
    ========================================================================== */
 :root[data-skin="pixel-fc-kraft"] {
-  --gui-bg: #f5ebd6; --gui-ink: #28211d; --gui-muted: #5a4838; --gui-head: #211e1a;
-  --gui-line: #a3203a; --gui-lw: 2px; --gui-gap: 5px; --gui-inner: #a3203a; --gui-iw: 1px;
-  --gui-r: 18px; --gui-slot-r: 12px;
-  --gui-shadow: 0 2px 0 rgb(63 37 16 / .16), 0 18px 30px -18px rgb(63 37 16 / .55);
-  --gui-tab-bg: #a3203a; --gui-tab-ink: #fff6e6; --gui-tab-r: 6px; --gui-tab-font: 400 19px/1.25 var(--font-display);
-  --gui-rule: rgb(163 32 58 / .32); --gui-slot: rgb(163 32 58 / .05); --gui-cursor: #a3203a;
+  --gui-face: radial-gradient(circle at calc(100% - 24px) 24px, var(--bg) 0 5px, transparent 6px), var(--surface);
+  --gui-frame: 0 solid transparent; --gui-r: 28px; --gui-shadow: 0 2px 0 rgb(63 37 16 / .14);
+  --gui-sep: 1px dashed rgb(33 30 26 / .32);
+  --gui-tab-bg: var(--surface); --gui-tab-ink: var(--accent); --gui-tab-r: 22px 22px 0 0;
+  --gui-tab-font: 400 28px/1.15 var(--font-label); --gui-tab-size: clamp(24px, 2.2vw, 30px);
+  --gui-title-font: 400 23px/1.3 var(--font-label);
+  --gui-num-font: 400 30px/1 var(--font-display);
+  --gui-slot: var(--surface-2); --gui-slot-bd: 0 solid transparent; --gui-slot-r: 22px;
+  --gui-slot-empty-bd: 2px dashed rgb(33 30 26 / .24);
+  --gui-quip-bg: #fff8ea; --gui-quip-ink: #28211d; --gui-quip-bd: 2px solid #a3203a; --gui-quip-r: 14px;
   --gui-scr-ink: #211e1a; --gui-scr-cursor: #a3203a;
 }
 :root[data-skin="pixel-fc-kraft"][data-theme="dark"] {
-  --gui-bg: #352d26; --gui-ink: #eedcc0; --gui-muted: #d5bea0; --gui-head: #fff6e6;
-  --gui-line: #f09aa5; --gui-inner: #f09aa5; --gui-shadow: 0 18px 30px -18px #000;
-  --gui-tab-bg: #f09aa5; --gui-tab-ink: #28221d;
-  --gui-rule: rgb(240 154 165 / .34); --gui-slot: rgb(255 246 230 / .05); --gui-cursor: #f09aa5;
+  --gui-shadow: 0 2px 0 rgb(0 0 0 / .3); --gui-sep: 1px dashed rgb(240 224 197 / .28);
+  --gui-slot-empty-bd: 2px dashed rgb(240 224 197 / .24);
 }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-kraft"] { --gui-tab-size: 22px; --gui-title-font: 400 21px/1.3 var(--font-label); } }
 :root[data-skin="pixel-fc-kraft"] .kf-cables__wire { stroke-width: 4; }
 :root[data-skin="pixel-fc-kraft"] .kf-cables__socket { stroke-width: 4; }
 :root[data-skin="pixel-fc-kraft"] .fcs-facts { border-top-color: var(--kf-cable, var(--heading)); }
 /* 영어 로그라인은 한글보다 길어 크라프트의 큰 포스터 활자로는 다섯 줄이 되므로 한 단계 작게 */
 :root[data-skin="pixel-fc-kraft"][lang="en"] .fcs-intro .hero__title { font-size: clamp(38px, 3.7vw, 54px); }
-/* 이름표 = 종이 꼬리표: 왼쪽에 끈 구멍 */
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] main > .section:not(:first-of-type) .section__head .section__title::before {
-  content: ''; position: static; flex: none; width: 9px; height: 9px; margin: 0; border-radius: 50%;
-  background: var(--bg); box-shadow: inset 0 0 0 2px rgb(0 0 0 / .18); border: 0;
+/* 폴더 탭: 창 위에 걸치지 않고 라벨에서 이어져 올라옴 (탭 쪽 모서리는 각지게) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) { margin: 0; padding: 16px 30px 6px; min-height: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp-h, .fcc-play-heading, .cl-summary__t) + :is(.hpl, .hp-skills, .strengths, .hp-games) { padding-top: calc(var(--gui-pad) - 6px); border-top-left-radius: 0; }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] main > .section:not(:first-of-type) .section__head .section__title { padding: 14px 28px; border-radius: 22px; }
+/* 업적 칸 위의 거대한 진홍 숫자 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] .strengths > .strength::before {
+  content: counter(gui-ach, decimal-leading-zero) / ''; display: block; position: static; width: auto; height: auto;
+  margin: 0 0 4px; background: none; border: 0;
+  font: 400 60px/.9 var(--font-display); letter-spacing: -.06em; color: var(--accent);
 }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t) { padding-left: 14px; }
-/* 진열판 · 카트리지는 그대로 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] .hp-skill .hp-skill__t { font: 400 16px/1.3 var(--font-label); color: var(--heading); }
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-kraft"] .hpl-row__top { flex-direction: column; align-items: flex-start; gap: 4px; }
 
 /* ============================================================================
-   스테이지 (pixel-fc-level) — 하늘 위 남색 대화창 · 크림 테 + 파란 안선 · 크림 이름표에 물음표 블록
+   스테이지 (pixel-fc-level) — 하늘 위 '벽돌 턱 한 줄 + 크림 판 + 남색 테' 발판 · 인벤토리 칸 = 주황 물음표 블록
+   (빈 칸 = 다 쓴 블록) · 이름표 = 남색 판 + 물음표 블록
    ========================================================================== */
 :root[data-skin="pixel-fc-level"] {
   --level-type-shadow: 3px 3px 0 #171c28;
-  --gui-bg: #17345f; --gui-ink: #f4f1e4; --gui-muted: #c9d3e6; --gui-head: #fffdf3;
-  --gui-line: #fff8e4; --gui-lw: 4px; --gui-gap: 4px; --gui-inner: #5c94fc; --gui-iw: 2px;
-  --gui-r: 10px; --gui-slot-r: 6px; --gui-shadow: 6px 6px 0 rgb(10 22 48 / .45);
-  --gui-tab-bg: #fff8e4; --gui-tab-ink: #17345f; --gui-tab-r: 6px; --gui-tab-font: 400 18px/1.3 var(--font-display);
-  --gui-rule: rgb(255 248 228 / .26); --gui-slot: rgb(255 255 255 / .07); --gui-cursor: #ffdc90;
+  --gui-ink: var(--level-panel-text); --gui-muted: var(--level-panel-muted); --gui-head: var(--level-panel-text);
+  --gui-face: linear-gradient(var(--level-panel), var(--level-panel)) 0 12px / 100% calc(100% - 12px) no-repeat,
+              var(--level-ground) 0 0 / 64px 32px repeat-x;
+  --gui-frame: 4px solid #171c28; --gui-shadow: 6px 6px 0 rgb(23 28 40 / .35); --gui-pad-top: 12px;
+  --gui-sep: 2px dashed color-mix(in srgb, var(--level-panel-text) 26%, transparent);
+  --gui-tab-bg: #17345f; --gui-tab-ink: #fffdf3; --gui-tab-bd: 4px solid #171c28; --gui-tab-shadow: 4px 4px 0 rgb(23 28 40 / .35);
+  --gui-tab-font: 400 24px/1.3 var(--font-display); --gui-tab-size: 24px;
+  --gui-title-font: 800 19px/1.4 var(--font-sans);
+  --gui-num-font: 400 15px/1 var(--font-mono);
+  --gui-slot: #fca044; --gui-slot-bd: 4px solid #171c28; --gui-slot-shadow: inset 4px 4px 0 #ffda93, inset -6px -6px 0 #c84c0c;
+  --gui-slot-empty: #c84c0c; --gui-slot-empty-bd: 4px solid #171c28; --gui-slot-empty-shadow: inset 4px 4px 0 #e2793c, inset -6px -6px 0 #8f3206;
+  --gui-quip-bg: #17345f; --gui-quip-ink: #fffdf3; --gui-quip-bd: 4px solid #171c28;
   --gui-scr-ink: #17345f; --gui-scr-cursor: #a91f2c;
   --gui-sky-ink: #102346;   /* 하늘 위 작은 글자 (밝은 글자는 하늘색 위에서 대비가 모자람) */
 }
 :root[data-skin="pixel-fc-level"][data-theme="dark"] {
-  --gui-bg: #1b3463; --gui-inner: #3f6fc9; --gui-shadow: 6px 6px 0 #050b1c;
+  --gui-shadow: 6px 6px 0 #050b1c; --gui-tab-bg: #fff8e4; --gui-tab-ink: #17345f; --gui-tab-shadow: 4px 4px 0 #050b1c;
   --gui-sky-ink: #eef3ff;
   --gui-scr-ink: #fffaf0; --gui-scr-cursor: #ffdc90;   /* 스테이지는 다크에서 액정도 어두워짐(좁은 화면) */
 }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-level"] { --gui-tab-size: 18px; } }
 /* 900px 이상은 게임기를 그림(fc-body.js)이 맡아 다크에서도 액정이 크림색 — 화면 안 글자는 남색으로 */
 @media (min-width: 900px) {
   :root[data-skin="pixel-fc-level"][data-theme="dark"] { --gui-scr-ink: #17345f; --gui-scr-cursor: #a91f2c; }
@@ -540,18 +535,16 @@
 /* 이름표 왼쪽의 물음표 블록 */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t)::before,
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:not(:first-of-type) .section__head .section__title::before {
-  content: ''; position: static; flex: none; width: 22px; height: 22px; margin: 0;
+  content: ''; position: static; flex: none; width: 30px; height: 30px; margin: 0;
   background: var(--level-question) center / contain no-repeat; border: 0;
 }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t),
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main > .section:not(:first-of-type) .section__head .section__title { padding-left: 10px; }
-/* 하늘 위 한 줄 설명 · 더 보기는 밝은 글자 */
+/* 인벤토리 칸 이름은 주황 블록 위 남색 */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp-skill .hp-skill__t { color: #171c28; }
+/* 하늘 위 한 줄 설명 · 더 보기는 남색(다크에서는 밝은 글자) */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] main .section__head .section__lead { color: var(--gui-sky-ink); font-weight: 500; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .hp .hp-more { color: var(--gui-sky-ink); border-bottom-color: currentColor; }
-/* 창 안의 남색 바탕 위: 아이콘 칸 · 표 · 꼬리표 글자를 밝게 */
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.steam, .skill-card, .detail__learned, .block, .quest-strip) { --surface: #22457a; --surface-2: #22457a; --accent: #ffdc90; }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] :is(.hpl-row .hp-thumb, .hp-game__ic) { background-color: #fff8e4; }
-:root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .steam { --level-panel-2: rgb(255 255 255 / .07); }
 /* 상세 왼쪽 칸: 크림 판을 걷고 하늘 위에 바로 (안의 퀘스트 띠 · 배운 점은 창) */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info { padding: 0; background: none; border: 0; box-shadow: none; clip-path: none; --heading: var(--level-white, #fffdf3); --text: var(--gui-sky-ink); --text-muted: var(--gui-sky-ink); color: var(--text); }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__info::before,
@@ -559,22 +552,32 @@
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .detail__title { color: var(--level-white, #fffdf3); text-shadow: var(--level-type-shadow); }
 
 /* ============================================================================
-   랠리 프린트 (pixel-fc-rally) — 검은 3px 테 + 노랑 판화 그림자 창, 사선 빨강 이름표(글자는 곧게)
+   랠리 프린트 (pixel-fc-rally) — 빨강 8px 윗띠 + 검은 2px 테 + 노랑 판화 그림자의 인쇄 판,
+   이름표 = 사선으로 자른 검은 판(글자는 곧게) + 노랑 줄 · 업적 태그 = 검은 칩 · 구분선 = 가는 인쇄 선
    기울임꼴은 모두 곧은 글자로 — 한글 글꼴에는 기울임 꼴이 없어 브라우저가 억지로 눕히던 것(가짜 이탤릭)
    ========================================================================== */
 :root[data-skin="pixel-fc-rally"] {
-  --gui-bg: #fff9e9; --gui-ink: #262626; --gui-muted: #5f5a50; --gui-head: #161616;
-  --gui-line: #2b2b2b; --gui-lw: 3px; --gui-gap: 0px; --gui-iw: 0px;
-  --gui-shadow: 8px 8px 0 #e8ad23;
-  --gui-tab-bg: #ba2632; --gui-tab-ink: #fff8e5; --gui-tab-font: 900 18px/1.25 var(--font-sans);
-  --gui-rule: #cdbf9f; --gui-slot: #f4ecd6; --gui-cursor: #ba2632;
+  --gui-face: var(--surface); --gui-frame: 2px solid #2b2b2b; --gui-shadow: 6px 6px 0 #e8ad23;
+  --gui-sep: 1px solid #cdbf9f;
+  --gui-tab-bg: #161616; --gui-tab-ink: #fff8e5; --gui-tab-font: 900 24px/1.25 var(--font-sans); --gui-tab-size: 24px;
+  --gui-title-font: 900 19px/1.35 var(--font-sans);
+  --gui-num-font: 900 30px/1 var(--font-sans);
+  --gui-slot: #fffdf6; --gui-slot-bd: 2px solid #2b2b2b;
+  --gui-slot-empty: repeating-linear-gradient(125deg, transparent 0 9px, rgb(232 173 35 / .32) 9px 14px); --gui-slot-empty-bd: 2px solid #cdbf9f;
+  --gui-quip-bg: #fff; --gui-quip-ink: #302b28; --gui-quip-bd: 2px solid #302b28;
   --gui-scr-ink: #302b28; --gui-scr-cursor: #ba2632;
 }
 :root[data-skin="pixel-fc-rally"][data-theme="dark"] {
-  --gui-bg: #2b2824; --gui-ink: #f0e5cc; --gui-muted: #cabb9f; --gui-head: #fff1d2;
-  --gui-line: #e7d9bd; --gui-shadow: 8px 8px 0 #b17c19;
-  --gui-tab-bg: #b62536; --gui-rule: #5d554a; --gui-slot: #34302a; --gui-cursor: #ff806c;
+  --gui-frame: 2px solid #e7d9bd; --gui-shadow: 6px 6px 0 #b17c19; --gui-sep: 1px solid #5d554a;
+  --gui-tab-bg: #fff1d2; --gui-tab-ink: #161616;
+  --gui-slot: #2b2824; --gui-slot-bd: 2px solid #e7d9bd; --gui-slot-empty-bd: 2px solid #5d554a;
 }
+@media (max-width: 700px) { :root[data-skin="pixel-fc-rally"] { --gui-tab-size: 18px; } }
+/* 창 윗변 = 빨강 띠 (경기 프로그램의 머리띠) */
+:root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(
+  .hp .hpl, .hp .hp-skills, .hp .strengths, .hp .hp-games, .cl-summary .strengths,
+  .stat-grid, .profile, .skill-card, .timeline, .cover-block, .steam, .play,
+  .detail__learned, .quest-strip, .media-box, .block, .pager__item, .proj-empty) { border-top: 8px solid var(--accent); }
 :root[data-skin="pixel-fc-rally"] .hp--sep { border-top: 0; }
 :root[data-skin="pixel-fc-rally"] .fcs-intro .hero__title { font-size: clamp(40px, 3.9vw, 60px); line-height: 1.16; }
 /* 가짜 이탤릭 → 곧은 글자 (속도감은 사선 띠 · 사선 칩 모양이 맡음) */
@@ -587,13 +590,12 @@
 /* 눕힌 상자(skew)는 글자까지 눕히므로, 사선은 상자 모양(clip-path)으로만 */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .hero__eyebrow { transform: none; padding-inline: 16px; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .nav__link.is-active { transform: none; clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%); }
-/* 이름표: 사선 빨강 띠 + 끝에 노랑 줄 하나 */
+/* 이름표: 사선으로 자른 판 + 끝에 노랑 줄 하나 */
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.hp .hp-h, .hp .fcc-play-heading, .cl-summary .cl-summary__t),
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] main > .section:not(:first-of-type) .section__head .section__title {
-  padding: 6px 44px 6px 22px;
-  background: linear-gradient(105deg, var(--gui-tab-bg) calc(100% - 34px), #e8ad23 calc(100% - 34px) calc(100% - 24px), var(--gui-tab-bg) calc(100% - 24px));
+  padding: 6px 48px 6px 24px;
+  background: linear-gradient(105deg, var(--gui-tab-bg) calc(100% - 36px), #e8ad23 calc(100% - 36px) calc(100% - 25px), var(--gui-tab-bg) calc(100% - 25px));
   clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
-  letter-spacing: -.01em;
 }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] :is(.hp-h, .section__head, .proj-head) { border-bottom: 0; }
 :root[data-skin-theme="pixel"][data-skin="pixel-fc-rally"] .proj-head { border-bottom: 4px solid var(--heading); }
