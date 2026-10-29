@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>시안 모음 · 김지수 포트폴리오</title>
-<meta name="description" content="포트폴리오 사이트 시안 — 홈 흐름 이력 브리핑 둘(한 문단 · 계단) · 지난 안 S · 스테이지 게임기 벽돌 휴대기">
+<meta name="description" content="포트폴리오 사이트 시안 — 홈 흐름 이력 브리핑(플레이어 정보 화면) · 지난 안 S · 스테이지 게임기 벽돌 휴대기">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -252,39 +252,74 @@
 
 
 
-  /* ── 이력 브리핑 둘 — 늘어놓지 않고 해석해서: 1 한 문단(문장 + 그 위의 근거) · 2 계단(혼자 → 팀, 깃발 = 다음). 게임의 말 · 재료가 뜻을 실어 나르고, 움직임 · 캐릭터 없음 ── */
+  /* ── 이력 브리핑 — 플레이어 정보 화면: 이력 전체를 한 화면에, 내용마다 다른 모양의 창으로(나열 · 간소 둘 다 아니게). 게임의 말 · 재료는 창 이름 · 계단 · 깃발 · 땅, 움직임 없음 ── */
   .older { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
   .older > summary { cursor: pointer; padding: 8px 0; font-size: 16px; font-weight: 600; }
   .older > summary small { margin-left: 8px; color: var(--muted); font-size: 13px; font-weight: 400; }
   .older[open] > summary { margin-bottom: 20px; }
-  .brief { --ink: #102346; --muted: #3d4050; --red: #c8102e; --cream: #fff6dd; --line2: #e7dcc0; --mark: rgb(252 160 68 / .55); position: relative; overflow: clip; display: grid; gap: 24px; padding: 28px 28px 92px; border-radius: 16px; background: #5c94fc; color: var(--ink); font: 16px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
+  .brief { --ink: #102346; --muted: #3d4050; --red: #c8102e; --cream: #fff6dd; --line2: #e7dcc0; --gold: #fca044; --green: #1f9a3a; position: relative; overflow: clip; padding: 28px 28px 92px; border-radius: 16px; background: #5c94fc; color: var(--ink); font: 16px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
   .brief::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x; image-rendering: pixelated; }
-  .brief p, .brief h4 { margin: 0; padding: 0; }
+  :where(.brief) :where(p, h4, h5, ol, ul, dl) { margin: 0; padding: 0; }
+  :where(.brief) :where(ol, ul) { list-style: none; }
   .brief .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
   .bw { position: relative; min-width: 0; background: var(--cream); border: 4px solid var(--ink); box-shadow: 8px 8px 0 rgb(16 35 70 / .45); }
   .bw__tab { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; background: var(--ink); color: var(--cream); font-size: 15px; font-weight: 700; }
-  .bw__tab .ps { font-size: 16px; color: #fca044; }
+  .bw__tab .ps { font-size: 16px; color: var(--gold); }
   .bw__tab .sp { flex: 1; }
   .bw__tab small { font-size: 13px; font-weight: 500; opacity: .85; }
   .bw__in { padding: 20px 22px 22px; }
-  /* 1 · 한 문단 — 이야기는 문장으로, 숫자는 그 말을 한 구절 바로 위에(주황 밑줄 = 근거 · 빨강 = 일하는 방식) */
-  .c1 { justify-self: center; width: min(100%, 1000px); }
-  .c1 .bw__in { padding: 34px 44px 32px; }
-  .c1-txt p { font-size: 26px; font-weight: 500; line-height: 2.25; letter-spacing: -.005em; }
-  .c1-txt p + p { margin-top: 4px; }
-  .c1 em { font-style: normal; font-weight: 800; color: var(--red); }
-  .an { position: relative; padding: 0 2px; background: linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 94%, transparent 94%); -webkit-box-decoration-break: clone; box-decoration-break: clone; font-weight: 700; white-space: nowrap; }
-  .an__k { position: absolute; left: 2px; bottom: 100%; margin-bottom: 4px; display: flex; align-items: baseline; gap: 6px; height: 16px; line-height: 16px; white-space: nowrap; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: 0; }
-  .an__k b { font-size: 16px; color: var(--red); }
-  .c1-end { margin-top: 22px !important; padding-top: 22px !important; border-top: 3px dashed var(--line2); font-size: 32px; font-weight: 800; line-height: 1.35; }
-  /* 2 · 계단 — 함께 일하는 사람이 1 → 3 → 5 → 12. 블록 = 계단 블록 1배(64px), 땅 = 내내 밑에 깔린 일 */
-  .brief--c2 { padding-bottom: 64px; }
-  .c2-hd { justify-self: start; width: min(100%, 760px); }
-  .c2-hd .bw__in { padding: 24px 28px 26px; }
-  .c2-t { font-size: 36px; font-weight: 800; line-height: 1.3; letter-spacing: -.01em; }
-  .c2-s { margin-top: 12px !important; font-size: 18px; font-weight: 600; line-height: 1.6; }
-  .c2-s b { color: var(--red); }
-  .c2-st { --col: 192px; --goal: 256px; display: grid; grid-template-columns: repeat(4, var(--col)) var(--goal); align-items: end; justify-content: center; margin-top: 4px; }
+  .dboard { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 22px; align-items: start; }
+  .dboard > * { min-width: 0; }
+  .d-player { grid-column: span 8; align-self: stretch; }
+  .d-scorew { grid-column: span 4; align-self: stretch; }
+  .d-route, .d-clear { grid-column: 1 / -1; }
+  .d-log { grid-column: span 8; align-self: stretch; }
+  .d-questw { grid-column: span 4; align-self: stretch; }
+  .d-questw .bw__in { display: flex; flex-direction: column; height: calc(100% - 44px); }
+  .d-questw .d-q.d-next { margin-top: auto; }
+  .d-work { grid-column: span 6; align-self: stretch; }
+  .d-item { grid-column: span 6; align-self: stretch; }
+  .d-chip { display: inline-block; padding: 2px 8px; background: var(--red); color: #fff; font-size: 12px; font-weight: 800; line-height: 1.5; white-space: nowrap; }
+  /* 1P — 사진 · 이름 · 한 줄 결론 · 이야기 · 메뉴 */
+  .d-player .bw__in { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 28px; padding: 26px 28px 26px; }
+  .d-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border: 4px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 rgb(16 35 70 / .3); }
+  .d-quip { position: relative; margin-top: 20px !important; padding: 10px 12px; background: #fff; border: 3px solid var(--ink); font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .d-quip::before { content: ''; position: absolute; left: 26px; top: -12px; width: 14px; height: 12px; background: var(--ink); clip-path: polygon(0 100%, 50% 0, 100% 100%); }
+  .d-quip::after { content: '▼'; position: absolute; right: 8px; bottom: 2px; color: var(--red); font-size: 9px; }
+  .d-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; font-size: 30px; font-weight: 800; line-height: 1.2; }
+  .d-name small { color: var(--red); font-size: 15px; font-weight: 800; }
+  .d-head { margin-top: 16px !important; font-size: 30px; font-weight: 800; line-height: 1.32; letter-spacing: -.01em; }
+  .d-story { margin-top: 16px !important; font-size: 16.5px; line-height: 1.85; }
+  .d-story b { font-weight: 800; }
+  .d-story em { font-style: normal; font-weight: 800; color: var(--red); }
+  .d-menu { display: flex; flex-wrap: wrap; gap: 8px 26px; margin-top: 20px !important; padding-top: 16px !important; border-top: 3px dashed var(--line2); font-size: 15px; font-weight: 800; }
+  .d-menu li { position: relative; padding-left: 20px; }
+  .d-menu li:first-child::before { content: '▶'; position: absolute; left: 0; color: var(--red); }
+  /* SCORE — 숫자 넷 */
+  .d-scorew .bw__in { display: flex; flex-direction: column; height: calc(100% - 44px); }
+  .d-score { display: grid; grid-auto-rows: 1fr; gap: 10px; flex: 1; }
+  .d-score div { display: grid; grid-template-columns: 148px minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px 14px; background: #fff; border: 3px solid var(--ink); }
+  .d-score b { display: flex; align-items: baseline; gap: 4px; font-size: 24px; line-height: 1; color: var(--red); white-space: nowrap; }
+  .d-score b small { font: 800 14px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--ink); }
+  .d-score span { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--muted); }
+  /* QUEST — 진행 중 · 다음 목표 */
+  .d-q + .d-q { margin-top: 14px; padding-top: 14px; border-top: 3px dashed var(--line2); }
+  .d-q h5 { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 16px; font-weight: 800; line-height: 1.35; }
+  .d-q .m { margin-top: 2px !important; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .d-bar { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 13px; font-weight: 800; white-space: nowrap; }
+  .d-bar i { flex: 1; height: 18px; border: 3px solid var(--ink); background: #fff; }
+  .d-bar i::before { content: ''; display: block; width: var(--p); height: 100%; background: repeating-linear-gradient(90deg, var(--red) 0 8px, #e2475c 8px 12px); }
+  .d-next { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 14px; align-items: center; }
+  .d-next .f { width: 60px; height: 64px; background: var(--d-flagt) 0 0 / 60px 64px no-repeat; image-rendering: pixelated; }
+  .d-next .tg { font-size: 13px; font-weight: 800; color: var(--muted); }
+  .d-next .pd { margin-top: 4px !important; font-size: 24px; line-height: 1; }
+  .d-next .d { margin-top: 6px !important; font-size: 14px; font-weight: 700; line-height: 1.45; }
+  /* ROUTE — 계단 한 장(하늘 위에 바로, 창 없음) · 그 밑 땅 = 밑바탕 */
+  .d-tag { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 14px; background: var(--ink); color: var(--cream); font-size: 15px; font-weight: 700; box-shadow: 6px 6px 0 rgb(16 35 70 / .45); }
+  .d-tag .ps { font-size: 16px; color: var(--gold); }
+  .d-route .d-tag { margin-bottom: 8px; }
+  .d-gnd { position: relative; height: 64px; margin: 0 -28px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x; image-rendering: pixelated; }
+  .c2-st { --col: 192px; --goal: 256px; display: grid; grid-template-columns: repeat(4, var(--col)) var(--goal); align-items: end; justify-content: center; }
   .c2-step { display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
   .c2-lab { padding: 0 10px 14px 4px; }
   .c2-y { font-size: 13px; font-weight: 800; }
@@ -306,17 +341,76 @@
   .c2-sign .pd { margin-top: 8px !important; font-size: 32px; line-height: 1; color: var(--cream); text-shadow: 4px 4px 0 var(--ink); }
   .c2-sign .d { margin-top: 12px !important; font-size: 14.5px; font-weight: 800; line-height: 1.45; }
   .c2-sign .now { margin-top: 10px !important; font-size: 13px; font-weight: 700; line-height: 1.45; }
-  .c2-base { position: absolute; z-index: 1; left: 50%; bottom: 12px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--cream); border: 3px solid var(--ink); box-shadow: 4px 4px 0 rgb(0 0 0 / .45); font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .c2-base { position: absolute; z-index: 1; left: 50%; top: 12px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--cream); border: 3px solid var(--ink); box-shadow: 4px 4px 0 rgb(0 0 0 / .45); font-size: 14px; font-weight: 700; white-space: nowrap; }
   .c2-base b { padding: 2px 6px; background: var(--ink); color: var(--cream); font-size: 12px; }
   .c2-base span + span::before { content: '·'; margin-right: 10px; }
-  @media (max-width: 1139px) {        /* 계단은 두 블록 폭, 깃발 팻말은 깃대 위로 */
+  /* CLEAR — 대표 퀘스트(프로젝트) 셋: 목표 → 결과 */
+  .d-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .d-card { display: flex; flex-direction: column; gap: 10px; padding: 16px 16px 18px; background: #fff; border: 3px solid var(--ink); }
+  .d-card__top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .d-grade { padding: 3px 7px; border: 3px solid var(--ink); font-size: 8px; line-height: 1.4; }
+  .d-grade--SSR { background: var(--gold); } .d-grade--SR { background: #d9dbe6; } .d-grade--R, .d-grade--A { background: var(--cream); }
+  .d-gen { padding: 2px 7px; background: var(--cream); border: 2px solid var(--ink); font-size: 12px; font-weight: 700; line-height: 1.4; }
+  .d-card h5 { font-size: 21px; font-weight: 800; line-height: 1.3; }
+  .d-meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; font-size: 13.5px; line-height: 1.5; }
+  .d-meta dt { color: var(--muted); font-weight: 600; }
+  .d-meta dd { margin: 0; font-weight: 700; }
+  .d-quest { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; padding: 10px 12px; background: var(--cream); border: 3px solid var(--ink); }
+  .d-quest .g { grid-column: 1 / -1; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .d-quest .g b { margin-right: 6px; font-size: 8px; color: var(--ink); }
+  .d-quest .r { font-size: 20px; font-weight: 800; line-height: 1.3; color: var(--red); }
+  .d-clr { padding: 5px 7px; background: var(--green); color: #fff; font-size: 8px; line-height: 1.4; box-shadow: 3px 3px 0 var(--ink); }
+  .d-learn { display: flex; gap: 6px; margin-top: auto !important; font-size: 14px; font-weight: 600; line-height: 1.55; }
+  .d-learn i { font-style: normal; color: var(--red); }
+  /* LOG — 10년 연표(기간 막대, 겹침이 보이게) */
+  .d-log .bw__tab small b { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 10px; border: 2px solid var(--cream); vertical-align: -1px; }
+  .d-rows { position: relative; }
+  .d-row { display: grid; grid-template-columns: 196px minmax(0, 1fr); gap: 14px; align-items: center; padding: 7px 0; border-top: 2px solid var(--line2); }
+  .d-row--ruler { padding: 20px 0 4px; border-top: 0; }
+  .d-row h5 { font-size: 14.5px; font-weight: 800; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .d-row p { font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .d-trk { position: relative; height: 22px; }
+  .d-trk::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: repeating-linear-gradient(90deg, #d6ccb1 0 6px, transparent 6px 12px); }
+  .d-seg { position: absolute; top: 2px; height: 18px; border: 3px solid var(--ink); }
+  .d-seg.k-make { background: var(--red); } .d-seg.k-run { background: var(--green); } .d-seg.k-write { background: var(--gold); } .d-seg.k-learn { background: #5c94fc; }
+  .d-seg.plan { background: repeating-linear-gradient(90deg, #5c94fc 0 6px, #fff 6px 10px); }
+  .k-make { --k: #c8102e; } .k-run { --k: #1f9a3a; } .k-write { --k: #fca044; } .k-learn { --k: #5c94fc; }
+  .d-log .bw__tab small b.k-make, .d-log .bw__tab small b.k-run, .d-log .bw__tab small b.k-write, .d-log .bw__tab small b.k-learn { background: var(--k); }
+  .d-yrs { position: relative; height: 18px; }
+  .d-yrs span { position: absolute; top: 0; transform: translateX(-50%); font-size: 8px; line-height: 18px; color: var(--muted); }
+  .d-yrs span.k { font-size: 8px; color: var(--ink); }
+  .d-nowl { position: absolute; top: -9px; bottom: -9px; width: 0; border-left: 3px solid var(--red); }
+  .d-nowt { position: absolute; top: -20px; padding: 0 5px; background: var(--red); color: #fff; font-size: 11px; font-weight: 800; line-height: 16px; white-space: nowrap; transform: translateX(-50%); }
+  /* WORK — 일하는 방식 셋 + 그 근거 */
+  .d-w + .d-w { margin-top: 14px; padding-top: 14px; border-top: 3px dashed var(--line2); }
+  .d-w { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 2px 12px; }
+  .d-w > b { grid-row: 1 / 4; font-size: 16px; line-height: 1.5; color: var(--red); }
+  .d-w h5 { font-size: 16.5px; font-weight: 800; line-height: 1.4; }
+  .d-w h5 small { margin-left: 8px; font-size: 11px; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
+  .d-w p { font-size: 14.5px; line-height: 1.6; }
+  .d-w .ev { margin-top: 4px !important; font-size: 13px; font-weight: 800; color: var(--ink); }
+  .d-w .ev::before { content: '근거 · '; color: var(--red); }
+  :lang(en) .d-w .ev::before { content: 'Proof · '; }
+  /* ITEM — 쓰는 도구(실제 로고 · 판은 늘 흰색) */
+  .d-lead { margin-bottom: 14px !important; font-size: 14px; font-weight: 600; line-height: 1.55; color: var(--muted); }
+  .d-tools { display: flex; flex-wrap: wrap; gap: 18px 26px; }
+  .d-tg h5 { font-size: 14px; font-weight: 800; line-height: 1.3; }
+  .d-tg ul { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px !important; }
+  .d-tg li { width: 64px; text-align: center; font-size: 12px; font-weight: 700; line-height: 1.25; }
+  .d-tg li i { display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto 6px; background: #fff !important; border: 3px solid var(--ink); }
+  .d-tg li img { display: block; width: 30px; height: 30px; object-fit: contain; }
+  @media (max-width: 1139px) {
+    .d-player, .d-scorew, .d-log, .d-questw, .d-work, .d-item { grid-column: 1 / -1; }
+    .d-scorew .bw__in { height: auto; }
+    .d-score { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .d-score div { grid-template-columns: minmax(0, 1fr); gap: 6px; }
     .c2-st { --col: 128px; --goal: 176px; }
     .c2-goal { height: auto; display: flex; flex-direction: column; }
     .c2-sign { position: static; padding: 0 0 12px 8px; }
     .c2-pole { position: relative; }
   }
+  @media (max-width: 900px) { .d-cards { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 800px) {         /* 계단을 옆으로 눕혀 위에서 아래로: 블록 | 글 */
-    .brief--c2 { padding-bottom: 92px; }
     .c2-st { display: flex; flex-direction: column; align-items: stretch; gap: 22px; }
     .c2-step { display: grid; grid-template-columns: 256px minmax(0, 1fr); align-items: center; gap: 0 18px; }
     .c2-step .c2-lab { order: 2; padding: 0; }
@@ -324,29 +418,34 @@
     .c2-goal { display: grid; grid-template-columns: 256px minmax(0, 1fr); align-items: center; gap: 0 18px; }
     .c2-sign { order: 2; padding: 0; }
     .c2-pole { order: 1; }
-    .c2-base { position: static; z-index: auto; transform: none; width: auto; margin: 0; justify-self: start; flex-wrap: wrap; height: auto; padding: 8px 12px; white-space: normal; max-width: none; }
+    .d-route .c2-st { margin-bottom: 22px; }
+    .d-gnd { height: 128px; display: grid; place-items: center; }
+    .c2-base { position: static; transform: none; flex-wrap: wrap; justify-content: center; height: auto; padding: 8px 12px; white-space: normal; }
   }
   @media (max-width: 640px) {
-    .brief { gap: 18px; padding: 18px 12px 80px; border-radius: 12px; }
+    .brief { padding: 18px 12px 80px; border-radius: 12px; }
+    .dboard { gap: 18px; }
     .bw__in { padding: 16px 14px 18px; }
     .bw__tab small { display: none; }
-    .c1 .bw__in { padding: 24px 18px 22px; }
-    .c1-txt p { font-size: 19px; line-height: 1.95; }
-    .c1-txt p + p { margin-top: 14px; }
-    .an { white-space: normal; }
-    .an__k { position: static; display: inline-flex; vertical-align: 2px; height: auto; margin: 0 0 0 6px; padding: 3px 7px; background: var(--ink); color: var(--cream); font-size: 12px; line-height: 1.2; gap: 5px; }
-    .an__k b { font-size: 8px; color: #fca044; }
-    .c1-end { font-size: 23px; }
-    .brief--c2 { padding-bottom: 80px; }
-    .c2-t { font-size: 25px; }
-    .c2-s { font-size: 16px; }
+    .d-player .bw__in { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; padding: 18px 16px 20px; }
+    .d-player .bw__in > div:last-child { display: contents; }
+    .d-photo { grid-row: 1 / 3; }
+    .d-quip { margin-top: 12px !important; font-size: 13px; }
+    .d-name { font-size: 24px; align-self: end; }
+    .d-head, .d-story, .d-menu { grid-column: 1 / -1; }
+    .d-head { margin-top: 4px !important; font-size: 23px; }
+    .d-story { font-size: 16px; line-height: 1.8; }
+    .d-gnd { margin: 0 -12px; }
     .c2-step { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .c2-step .c2-lab { order: 1; }
     .c2-blk { order: 2; }
     .c2-goal { grid-template-columns: 112px minmax(0, 1fr); gap: 0 12px; }
     .c2-sign .d { font-size: 14px; }
-    .c2-base { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .c2-base { flex-direction: column; gap: 4px; }
     .c2-base span + span::before { content: none; }
+    .d-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .d-row--ruler > div:first-child { display: none; }
+    .d-yrs span:not(.k) { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
@@ -385,13 +484,13 @@
 <main class="wrap">
   <section class="lead">
     <h2><span class="i18n-ko">이력이 먼저 — 간단하고 확실하게.</span><span class="i18n-en">The career first — simple and clear.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 늘어놓지 않고 해석해서 — 어떤 기획자인지를 한 문단 · 한 그림으로 — 확실하게 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career is interpreted rather than listed — one paragraph or one picture that says what kind of designer this is. The console is the <b>brick handheld</b>.</span></p>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 늘어놓지도 덜어 내지도 않고, 결론부터 근거까지 한 화면에 확실하게 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career is neither listed nor stripped down: one screen that goes from the conclusion to the proof. The console is the <b>brick handheld</b>.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
   <section class="part" id="story">
-    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력을 해석하는 브리핑 둘</span><span class="i18n-en">Home flow — two briefings that interpret the career</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">"그렇다고 단순 나열만 하면 안 된다" · "이것도 단순 나열이잖아." 지난 세 구조(흐름 · 시간 · 능력)도 결국 이력 다섯을 같은 모양 칸에 하나씩 담아 늘어놓았습니다. 이번 둘은 칸을 늘어놓지 않고 <b>해석</b>합니다 — 1 한 문단(10년을 문장으로 엮고, 숫자는 그 말 바로 위에 근거로) · 2 계단(함께 일하는 사람이 1 → 3 → 5 → 12, 깃발 = 다음 목표 PD). 둘 다 움직임 없이 바로 읽힙니다. 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">"But not as a plain list either" — "this is a list too." The three structures (story, time, abilities) still put the five jobs in identical boxes, one after another. These two don't line up boxes; they <b>interpret</b>: 1 one paragraph (ten years woven into sentences, each number sitting above the claim it proves) · 2 a staircase (the people I work with grow 1 → 3 → 5 → 12, the flag is the next goal, PD). Both read at once, with no motion. The earlier pick S is folded below.</span></p>
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력 브리핑 · 플레이어 정보 화면</span><span class="i18n-en">Home flow — the career briefing as a player-info screen</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">"단순 나열만 하면 안 된다" → "이것도 단순 나열" → "너무 간소해짐." 같은 모양 칸을 늘어놓아도, 해석만 남기고 덜어 내도 안 된다는 말이라, 이번에는 이력 전체를 한 화면에 모으되 <b>다루는 것마다 다른 모양의 창</b>으로 나눴습니다 — 사진과 한 줄 결론, 숫자, 진행 중인 퀘스트, 성장 계단, 대표 프로젝트의 퀘스트 결과, 10년 연표, 일하는 방식과 근거, 도구. 위에서부터 결론 → 근거 → 자세히 순서이고 움직임은 없습니다. 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">"Not a plain list" → "this is a list too" → "now it's too sparse." Lining up identical boxes doesn't work, and neither does stripping it down to an interpretation, so this time the whole career is on one screen but split into <b>windows shaped for what they hold</b>: photo and one-line conclusion, numbers, quests in progress, the growth staircase, quest results of the main projects, a ten-year timeline, how I work with its proof, and tools. Top to bottom it reads conclusion → proof → detail, with no motion. The earlier pick S is folded below.</span></p>
     <ul class="rules" id="rules"></ul>
     <div id="drafts4"></div>
     <details class="older" id="older"><summary><span class="i18n-ko">지난 안 — S 지어지는 월드</span><span class="i18n-en">Earlier — S, a world being built</span><small><span class="i18n-ko">스크롤 연출 · 보류</span><span class="i18n-en">scroll staging · on hold</span></small></summary>
@@ -752,48 +851,32 @@
   }
 
 
-  /* ════ 이력 브리핑 둘 — 이력 항목을 같은 모양 칸에 하나씩 늘어놓지 않고 해석해서 보여 줌 ════
-     1 한 문단: 10년을 문장으로 엮고, 숫자는 그 말을 한 구절 바로 위에 근거로 · 2 계단: 함께 일하는 사람이 1 → 3 → 5 → 12, 깃발 = 다음 목표.
-     글은 이 파일의 STORY · STEPS(ko/en), 숫자 · 기간은 content.js 의 이력서 · 프로젝트 · 자기소개서와 같은 값 — 실제 홈에 넣을 때 content.js 로 옮김 */
-  /* 문장 표기: {구절|숫자|설명} = 근거가 위에 붙는 구절(주황 밑줄) · *말* = 일하는 방식(빨강) */
-  var STORY = {
-    p: [
-      { ko: '혼자 {게임 다섯 개를 만들어 내놓으며|200K|다운로드 · 2016–18} 기획부터 출시까지 전부 해 봤습니다. 시장을 몰라 기대에 못 미친 게임도 있었고, 그 뒤로는 *시장을 먼저 읽습니다*.',
-        en: 'I started alone: {I made and shipped five games|200K|downloads · 2016–18}, doing everything from design to release. Some fell short because I didn\'t know the market, so now I *read the market first*.' },
-      { ko: '세 명이 만든 타워디펜스에서는 같은 말을 듣고도 저마다 다른 게임을 떠올려 *처음으로 명세서를 썼고*, 모두가 같은 게임을 보게 되자 {결과가 따라왔습니다|100K|다운로드 · 3일 차 이탈 34 → 21%}.',
-        en: 'On a three-person tower defense game, everyone heard the same words and pictured a different game, so I *wrote my first spec*; once we all saw the same game, {the results followed|100K|downloads · day-3 churn 34 → 21%}.' },
-      { ko: '그사이 {6만 명 인디 개발 커뮤니티|60K|2019 – 지금 · 스탭}를 함께 운영하며 개발 강좌를 썼고, {게임 평론|3–5K|한 달 조회 · 2021–23}으로 왜 재밌는지를 글로 풀었습니다.',
-        en: 'Meanwhile I\'ve helped run {a 60,000-member indie dev community|60K|2019 – now · staff} and written courses for it, and in {game criticism|3–5K|views a month · 2021–23} I put into words why games are fun.' },
-      { ko: '올해는 {다섯 명 팀의 PM|STEAM|5인 · 2026.07–09}으로 *기획을 직접 만들어 보며* 석 달 만에 스팀에 냈고, 지금은 {열두 명 앞에서|12|명 · 매주} 매주 기획서를 발표합니다.',
-        en: 'This year, as {PM of a five-person team|STEAM|5 people · Jul–Sep 2026}, I *built my designs to see them play* and shipped to Steam in three months; now I present a design doc {to twelve people|12|people · weekly} every week.' }
-    ],
-    end: { ko: '문제를 *정면*으로 마주하는 기획자, 김지수입니다.', en: 'Jisu Kim — a designer who faces the problem *head-on*.' }
+  /* ════ 이력 브리핑 — 플레이어 정보 화면 ════
+     이력 전체를 한 화면에, 다루는 것마다 다른 모양의 창으로: 1P(사진 · 결론 · 이야기) · SCORE · QUEST(진행 중 · 다음 목표) · ROUTE(계단) · CLEAR(대표 프로젝트) · LOG(연표) · WORK(일하는 방식) · ITEM(도구).
+     숫자 · 기간은 content.js 의 이력서 · 프로젝트 · 자기소개서에서 읽고, 이 화면만의 글(결론 · 이야기 · 계단 칸 · 근거 · 짧은 이름)은 BOARD · STEPS · LOG 에(ko/en) — 실제 홈에 넣을 때 content.js 로 옮김 */
+  function IMG(p) { return (window.__IMG && window.__IMG[p]) || p; }          /* 아티팩트에서는 그림을 안에 넣어 둠 */
+  var NOWD = new Date(), NOWY = NOWD.getFullYear() + NOWD.getMonth() / 12;
+  function yr(s, end) {          /* '2016' · '2020.01' → 해 단위 소수(끝이면 그 달 · 그 해의 끝까지) */
+    var m = /(\d{4})(?:\.(\d{2}))?/.exec(s || ''); if (!m) return null;
+    return m[2] ? +m[1] + (+m[2] - (end ? 0 : 1)) / 12 : +m[1] + (end ? 1 : 0);
+  }
+  function per(d) {              /* 기간 글 → [시작, 끝]. '현재' = 오늘, 해만 적힌 한 해 = 그 해(오늘까지) */
+    var p = String(d || '').split(/\s*[–~-]\s*/), a = yr(p[0], false);
+    var b = p[1] ? (/현재|present|now/i.test(p[1]) ? NOWY : yr(p[1], true)) : Math.min(NOWY, yr(p[0], true));
+    return [a, b];
+  }
+  var COMM_Y = Math.floor(NOWY - 2019);            /* 커뮤니티 스탭(2019 – 지금) 햇수 */
+  var BOARD = {
+    head: { ko: '혼자 만들던 사람이,<br>팀을 맞추는 기획자로.', en: 'From making games alone<br>to keeping a team on one page.' },
+    story: { ko: '혼자 게임 다섯 개를 만들어 내놓으며 기획부터 출시까지 전부 해 봤고(**20만 다운로드**), 시장을 몰라 기대에 못 미친 뒤로는 *시장을 먼저 읽습니다*. 세 명이 만든 타워디펜스에서는 처음 쓴 명세서로 모두가 같은 게임을 보게 해 **10만 다운로드**를 냈고, 올해는 다섯 명 팀의 PM 으로 **석 달 만에 스팀**에 출시했습니다. 그사이 **6만 명** 인디 개발 커뮤니티를 ' + COMM_Y + '년 넘게 함께 운영하고 있습니다.',
+             en: 'I started by making and shipping five games alone, from design to release (**200K downloads**); after some fell short because I didn\'t know the market, I *read the market first*. On a three-person tower defense game, my first spec got everyone seeing the same game and it reached **100K downloads**; this year, as PM of a five-person team, I shipped to **Steam in three months**. All along, I\'ve helped run a **60,000-member** indie dev community for over ' + COMM_Y + ' years.' },
+    menu: [{ ko: '이력서 전체 보기', en: 'Full résumé' }, { ko: '프로젝트 보기', en: 'Projects' }, { ko: '연락하기', en: 'Contact' }],
+    next: { ko: '큰 목표를 작은 문제로 나누어 푸는 PD', en: 'A producer who breaks big goals into small problems' },
+    work: [{ ko: '리그 오브 디펜스의 첫 명세서 · 매주 기획서 발표', en: 'The first spec on League of Defense · a design doc every week' },
+           { ko: '1인 개발 5종 · 컴스톡에서 같은 주에 검증', en: 'Five solo titles · tested within the week on Comstock' },
+           { ko: '시장조사가 부족했던 1인 개발 → 매일 인기 순위 측정', en: 'Missed the market going solo → now I track the charts daily' }]
   };
-  function story(s) {
-    return esc(s).replace(/\{([^|}]+)\|([^|}]+)\|([^}]+)\}/g, function (_, a, k, n) { return '<mark class="an">' + a + '<span class="an__k"><b class="ps">' + k + '</b>' + n + '</span></mark>'; })
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  }
-  function draftC1() {
-    return '<section class="brief"><div class="bw c1"><p class="bw__tab"><b class="ps">1P</b>' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '<span class="sp"></span><small>' + T('10년을 한 문단으로', 'Ten years in one paragraph') + '</small></p><div class="bw__in">' +
-      '<div class="c1-txt">' + STORY.p.map(function (p) { return '<p>' + story(t(p)) + '</p>'; }).join('') + '</div><p class="c1-end">' + story(t(STORY.end)) + '</p></div></div></section>';
-  }
-  /* 근거 글이 문단 오른쪽 끝을 넘거나 같은 줄의 다른 근거와 겹치면 옆으로 밀기(배치만 — 움직임 없음) */
-  function fitAnn() {
-    Array.prototype.forEach.call(document.querySelectorAll('.c1-txt'), function (box) {
-      var ks = [].slice.call(box.querySelectorAll('.an__k'));
-      ks.forEach(function (k) { k.style.left = ''; });
-      if (!ks.length || getComputedStyle(ks[0]).position !== 'absolute') return;      /* 휴대폰은 구절 뒤 칩(제자리) */
-      var R = box.getBoundingClientRect().right, prev = null;
-      ks.forEach(function (k) {
-        var r = k.getBoundingClientRect(), dx = 0;
-        if (prev && Math.abs(r.top - prev.top) < 4 && r.left < prev.right + 12) dx = prev.right + 12 - r.left;
-        if (r.right + dx > R) dx = R - r.right;
-        if (dx) k.style.left = (2 + dx) + 'px';
-        prev = k.getBoundingClientRect();
-      });
-    });
-  }
-
+  function rich(s) { return s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<em>$1</em>'); }
   /* 2 · 계단 — 한 칸 = 함께 일한 사람 수가 늘어난 한 걸음(높이는 순서, 사람 수는 글로). 칸마다 역할 · 결과 · 거기서 얻어 다음 칸으로 가져간 것 */
   var STEPS = [
     { y: '2016–18', n: '1', u: { ko: '인', en: 'solo' }, r: { ko: '혼자 전부', en: 'Everything, alone' }, o: { ko: '5종 · 20만 다운로드', en: '5 titles · 200K downloads' }, g: { ko: '시장을 먼저 읽는다', en: 'Read the market first' } },
@@ -801,34 +884,103 @@
     { y: '2026', n: '5', u: { ko: '인', en: 'people' }, r: { ko: 'PM · 기획', en: 'PM · design' }, o: { ko: '석 달 만에 스팀 출시', en: 'On Steam in three months' }, g: { ko: '기획을 직접 만들어 확인한다', en: 'Build the design to test it' } },
     { y: '2026', n: '12', u: { ko: '인', en: 'people' }, r: { ko: '발표 스터디 리더', en: 'Study group lead' }, o: { ko: '매주 기획서 발표', en: 'A design doc every week' }, g: { ko: '기획을 글과 말로 전한다', en: 'Put a design into words' } }
   ];
-  var GOAL = { tg: { ko: '다음 목표', en: 'Next' }, d: { ko: '큰 목표를 작은 문제로 나누어 푸는', en: 'Breaking big goals into small problems' }, now: { ko: '▶ 게임 기획자 과정 · 2026.06–12', en: '▶ Game design course · Jun–Dec 2026' } };
-  function draftC2() {
+  function route() {
     var steps = STEPS.map(function (s, i) {
       return '<div class="c2-step" style="--h:' + (i + 1) + '"><div class="c2-lab"><p class="c2-y">' + esc(s.y) + '</p><p class="c2-n"><b class="ps">' + esc(s.n) + '</b><span>' + esc(t(s.u)) + '</span></p>' +
         '<p class="c2-r">' + esc(t(s.r)) + '</p><p class="c2-o">' + esc(t(s.o)) + '</p><p class="c2-l"><i>▲</i>' + esc(t(s.g)) + '</p></div><i class="c2-blk"></i></div>';
     }).join('');
-    return '<section class="brief brief--c2"><div class="bw c2-hd"><p class="bw__tab"><b class="ps">1P</b>' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '<span class="sp"></span><small>' + T('혼자에서 팀으로', 'From solo to team') + '</small></p><div class="bw__in">' +
-      '<h4 class="c2-t">' + t({ ko: '혼자 만들던 사람이,<br>팀을 맞추는 기획자가 되기까지.', en: 'From making games alone<br>to keeping a team on one page.' }) + '</h4>' +
-      '<p class="c2-s">' + t({ ko: '함께 일하는 사람이 <b>1명에서 12명</b>이 되는 동안, 한 칸에서 겪은 문제는 다음 칸에서 일하는 방법이 됐습니다.', en: 'As the people around me grew <b>from one to twelve</b>, each problem I hit on one step became how I worked on the next.' }) + '</p></div></div>' +
-      '<div class="c2-st">' + steps + '<div class="c2-goal"><div class="c2-sign"><p class="tg">' + esc(t(GOAL.tg)) + '</p><p class="pd ps">PD</p><p class="d">' + esc(t(GOAL.d)) + '</p><p class="now">' + esc(t(GOAL.now)) + '</p></div><div class="c2-pole"><i class="base"></i><i class="pole"></i><i class="flag"></i></div></div></div>' +
-      '<div class="c2-base"><b>' + T('밑바탕', 'Underneath') + '</b><span>' + T('2019 – 지금 · 6만 명 인디 개발 커뮤니티 스탭', '2019 – now · staff of a 60K indie dev community') + '</span><span>' + T('2021–23 · 게임 평론 블로그', '2021–23 · game criticism blog') + '</span></div></section>';
+    var course = CAREER.filter(function (c) { return c.now; })[0];
+    return '<section class="d-route"><p class="d-tag"><b class="ps">ROUTE</b>' + T('성장 경로 — 함께 일한 사람 1 → 12', 'Growth route — from 1 to 12 people') + '</p>' +
+      '<div class="c2-st">' + steps + '<div class="c2-goal"><div class="c2-sign"><p class="tg">' + T('다음 목표', 'Next') + '</p><p class="pd ps">PD</p><p class="d">' + esc(t(BOARD.next)) + '</p>' +
+        (course ? '<p class="now">▶ ' + esc(t(course.role)) + ' · ' + esc(t(course.date)) + '</p>' : '') + '</div><div class="c2-pole"><i class="base"></i><i class="pole"></i><i class="flag"></i></div></div></div>' +
+      '<div class="d-gnd"><div class="c2-base"><b>' + T('밑바탕', 'Underneath') + '</b><span>' + T('2019 – 지금 · 6만 명 인디 개발 커뮤니티 스탭', '2019 – now · staff of a 60K indie dev community') + '</span><span>' + T('2021–23 · 게임 평론 블로그', '2021–23 · game criticism blog') + '</span></div></div></section>';
+  }
+  /* LOG — 연표 줄: 이름 · 한 줄은 이 화면용 짧은 글, 기간은 content.js 에서(경력 c · 프로젝트 p) */
+  var PROJ = (C.projects && C.projects.items) || [];
+  function proj(id) { return PROJ.filter(function (p) { return p.id === id; })[0] || {}; }
+  function car(re) { return CAREER.filter(function (c) { return re.test(t(c.role)) || re.test((c.role && c.role.ko) || ''); })[0] || {}; }
+  var LOG = [
+    { k: 'make', n: { ko: '인디게임 1인 개발', en: 'Solo indie games' }, o: { ko: '플레이스토어 5종 · 20만', en: '5 titles · 200K' }, d: function () { return car(/1인 개발/).date; } },
+    { k: 'run', n: { ko: '커뮤니티 스탭', en: 'Community staff' }, o: { ko: 'KGMC · 회원 6만+', en: 'KGMC · 60K+ members' }, d: function () { return car(/스탭/).date; } },
+    { k: 'make', n: { ko: '리그 오브 디펜스', en: 'League of Defense' }, o: { ko: '3인 · PD · 10만', en: '3 people · PD · 100K' }, d: function () { return proj('league-of-defense').period; } },
+    { k: 'write', n: { ko: '블로그 · 게임 평론', en: 'Blog & criticism' }, o: { ko: '2인 · 월 3~5천 뷰', en: '2 people · 3–5K views/mo' }, d: function () { return car(/블로그/).date; } },
+    { k: 'write', n: { ko: '발표 스터디 리더', en: 'Study group lead' }, o: { ko: '12인 · 주 1회 기획서', en: '12 people · weekly docs' }, d: function () { return car(/스터디/).date; } },
+    { k: 'learn', n: { ko: '게임 기획자 과정', en: 'Game design course' }, o: { ko: '디벨로켓', en: 'Develocket' }, d: function () { return car(/과정/).date; } },
+    { k: 'make', n: { ko: '컴스톡', en: 'Comstock' }, o: { ko: '5인 · PM · 스팀', en: '5 people · PM · Steam' }, d: function () { return proj('comstock').period; } }
+  ];
+  var KINDS = [['make', { ko: '만들기', en: 'Make' }], ['run', { ko: '운영', en: 'Run' }], ['write', { ko: '글 · 발표', en: 'Write · talk' }], ['learn', { ko: '배움', en: 'Learn' }]];
+  function logWin() {
+    var Y0 = 2016, Y1 = 2027, W = Y1 - Y0, X = function (y) { return ((y - Y0) / W * 100).toFixed(2) + '%'; }, nowX = X(NOWY);
+    var yrs = ''; for (var y = Y0; y <= 2026; y++) yrs += '<span' + (y % 5 === 1 || y === 2026 ? ' class="k"' : '') + ' style="left:' + X(y + .5) + '">' + (y % 5 === 1 || y === 2026 ? y : "'" + String(y).slice(2)) + '</span>';
+    var rows = LOG.map(function (r) {
+      var q = per(t(r.d())), a = q[0], b = q[1], done = Math.min(b, NOWY), seg = '';
+      if (a != null) {
+        seg = '<i class="d-seg k-' + r.k + '" style="left:' + X(a) + ';width:calc(' + ((Math.max(.1, done - a)) / W * 100).toFixed(2) + '% )"></i>';
+        if (b > NOWY + .02) seg += '<i class="d-seg plan" style="left:' + X(NOWY) + ';width:' + ((b - NOWY) / W * 100).toFixed(2) + '%"></i>';
+      }
+      return '<div class="d-row"><div><h5>' + esc(t(r.n)) + '</h5><p>' + esc(t(r.d())) + ' · ' + esc(t(r.o)) + '</p></div><div class="d-trk">' + seg + '<i class="d-nowl" style="left:' + nowX + '"></i></div></div>';
+    }).join('');
+    var legend = KINDS.map(function (k) { return '<b class="k-' + k[0] + '"></b>' + esc(t(k[1])); }).join('');
+    return '<div class="bw d-log"><p class="bw__tab"><b class="ps">LOG</b>' + T('10년 연표', 'Ten-year log') + '<span class="sp"></span><small>' + legend + '</small></p><div class="bw__in"><div class="d-rows">' +
+      '<div class="d-row d-row--ruler"><div></div><div class="d-yrs">' + yrs + '<b class="d-nowt" style="left:' + nowX + '">' + T('지금', 'Now') + '</b></div></div>' + rows + '</div></div></div>';
+  }
+  /* CLEAR — 대표 프로젝트(게임) 셋: content.js 의 projects.items 그대로 */
+  function clearWin() {
+    var games = PROJ.filter(function (p) { return p.category === 'game'; }).slice(0, 3);
+    var cards = games.map(function (p) {
+      var q = p.quest || {}, g = String(p.grade || 'A').toUpperCase();
+      return '<article class="d-card"><div class="d-card__top"><b class="d-grade d-grade--' + esc(g) + ' ps">' + esc(g) + '</b>' + (p.genres || []).map(function (x) { return '<span class="d-gen">' + esc(t(x)) + '</span>'; }).join('') + '</div>' +
+        '<h5>' + esc(t(p.title)) + '</h5><dl class="d-meta"><dt>' + T('기간', 'When') + '</dt><dd>' + esc(t(p.period)) + '</dd><dt>' + T('인원', 'Team') + '</dt><dd>' + esc(t(p.headcount)) + '</dd><dt>' + T('역할', 'Role') + '</dt><dd>' + esc(t(p.myRole)) + '</dd><dt>' + T('출시', 'Out') + '</dt><dd>' + esc(t(p.status)) + '</dd></dl>' +
+        (q.goal ? '<div class="d-quest"><p class="g"><b class="ps">QUEST</b>' + esc(t(q.goal)) + '</p><p class="r">' + esc(t(q.result)) + '</p>' + (q.cleared ? '<b class="d-clr ps">CLEAR</b>' : '') + '</div>' : '') +
+        (p.learned && p.learned[0] ? '<p class="d-learn"><i>▲</i>' + esc(t(p.learned[0])) + '</p>' : '') + '</article>';
+    }).join('');
+    return '<div class="bw d-clear"><p class="bw__tab"><b class="ps">CLEAR</b>' + T('대표 퀘스트 — 프로젝트', 'Main quests — projects') + '<span class="sp"></span><small>' + T('목표 → 결과', 'Goal → result') + '</small></p><div class="bw__in"><div class="d-cards">' + cards + '</div></div></div>';
+  }
+  /* WORK — 자기소개서 요약 셋 + 그 근거 */
+  function workWin() {
+    var S2 = (C.coverLetter && C.coverLetter.summary && C.coverLetter.summary.items) || [];
+    return '<div class="bw d-work"><p class="bw__tab"><b class="ps">WORK</b>' + T('일하는 방식', 'How I work') + '</p><div class="bw__in">' + S2.map(function (s, i) {
+      var tag = String(s.tag || '').split('/').pop().trim();
+      return '<div class="d-w"><b class="ps">0' + (i + 1) + '</b><h5>' + esc(t(s.title)) + '<small>' + esc(tag) + '</small></h5><p>' + esc(t(s.body)) + '</p>' + (BOARD.work[i] ? '<p class="ev">' + esc(t(BOARD.work[i])) + '</p>' : '') + '</div>';
+    }).join('') + '</div></div>';
+  }
+  /* ITEM — 이력서 핵심역량의 도구(실제 로고, 판은 늘 흰색) */
+  var TOOLS = { office: ['MS Office'], figma: ['Figma'], obsidian: ['Obsidian'], agent: ['Agent', 'claude'], hermes: ['Hermes'], flow: ['Flow', 'flow', 'png'], github: ['GitHub'], notion: ['Notion'], jira: ['Jira'], sheets: ['Google Sheets'], unity: ['Unity'], godot: ['Godot'], gamemaker: ['GameMaker'], firebase: ['Firebase'], cloudflare: ['Cloudflare'] };
+  function toolSrc(k) { var it = TOOLS[k] || [k]; return 'assets/img/tools/' + (it[1] || k) + '.' + (it[2] || 'svg'); }
+  function itemWin() {
+    var sk = (C.resume && C.resume.skills) || {};
+    return '<div class="bw d-item"><p class="bw__tab"><b class="ps">ITEM</b>' + T('쓰는 도구', 'Tools') + '</p><div class="bw__in"><p class="d-lead">' + esc(t(sk.lead)) + '</p><div class="d-tools">' + (sk.cards || []).map(function (g) {
+      return '<div class="d-tg"><h5>' + esc(t(g.title)) + '</h5><ul>' + (g.tools || []).map(function (k) { var it = TOOLS[k]; if (!it) return ''; return '<li><i><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="30" height="30"></i>' + esc(it[0]) + '</li>'; }).join('') + '</ul></div>';
+    }).join('') + '</div></div></div>';
+  }
+  function draftD1() {
+    var ph = (C.home && C.home.player) || {}, quip = C.home && C.home.quips && C.home.quips[0];
+    var course = CAREER.filter(function (c) { return c.now; })[0], comm = car(/스탭/);
+    var cq = '';
+    if (course) {
+      var q = per(t(course.date)), tot = Math.round((q[1] - q[0]) * 12), el = Math.max(0, Math.min(tot, Math.floor((NOWY - q[0]) * 12 + 1e-6) + 1));
+      cq = '<div class="d-q"><h5>' + esc(t(course.role)) + '<span class="d-chip">▶ ' + T('진행 중', 'Ongoing') + '</span></h5><p class="m">' + esc(t(course.org)) + ' · ' + esc(t(course.date)) + '</p>' +
+        '<div class="d-bar"><i style="--p:' + (el / tot * 100).toFixed(1) + '%"></i>' + (L === 'en' ? 'Month ' + el + ' of ' + tot : el + ' / ' + tot + '개월') + '</div></div>';
+    }
+    var cm = comm.role ? '<div class="d-q"><h5>' + esc(t(comm.role)) + ' · KGMC<span class="d-chip">▶ ' + (L === 'en' ? COMM_Y + '+ yrs' : COMM_Y + '년 넘게') + '</span></h5><p class="m">' + esc(t(comm.date)) + ' · ' + T('회원 6만+ 인디 개발 커뮤니티', '60K+ indie dev community') + '</p></div>' : '';
+    var nx = '<div class="d-q d-next"><i class="f" aria-hidden="true"></i><div><p class="tg">' + T('다음 목표', 'Next goal') + '</p><p class="pd ps">PD</p><p class="d">' + esc(t(BOARD.next)) + '</p></div></div>';
+    var player = '<div class="bw d-player"><p class="bw__tab"><b class="ps">1P</b>' + T('플레이어 정보', 'Player info') + '</p><div class="bw__in">' +
+      '<div class="d-photo">' + (ph.photo ? '<img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt)) + '" width="481" height="640">' : '') + (quip ? '<p class="d-quip">' + esc(t(quip)) + '</p>' : '') + '</div>' +
+      '<div><p class="d-name">' + esc(NAME) + '<small>' + T('게임 기획자', 'Game designer') + '</small></p><h4 class="d-head">' + t(BOARD.head) + '</h4><p class="d-story">' + rich(esc(t(BOARD.story))) + '</p>' +
+      '<ul class="d-menu">' + BOARD.menu.map(function (m) { return '<li>' + esc(t(m)) + '</li>'; }).join('') + '</ul></div></div></div>';
+    var score = '<div class="bw d-scorew"><p class="bw__tab"><b class="ps">SCORE</b>' + T('기록', 'Records') + '</p><div class="bw__in"><div class="d-score">' + stats.map(function (s) { return '<div><b class="ps">' + esc(s.num) + '<small>' + esc(t(s.unit)) + '</small></b><span>' + esc(t(s.label)) + '</span></div>'; }).join('') + '</div></div></div>';
+    var quest = '<div class="bw d-questw"><p class="bw__tab"><b class="ps">QUEST</b>' + T('진행 중 · 다음 목표', 'In progress · next') + '</p><div class="bw__in">' + cq + cm + nx + '</div></div>';
+    return '<section class="brief"><div class="dboard">' + player + score + route() + clearWin() + logWin() + quest + workWin() + itemWin() + '</div></section>';
   }
 
   var DRAFTS4 = [
-    { id: 'c1', label: '1', plain: true, f: draftC1, w: function () { return null; }, badge: { ko: '새 안 · 늘어놓지 않고 해석하기', en: 'New · interpreted, not listed' }, name: { ko: '한 문단 — 10년을 문장으로', en: 'One paragraph — ten years in sentences' }, sub: { ko: '해석 = 이야기', en: 'Interpretation = story' },
-      pitch: { ko: '이력 다섯 줄을 칸에 하나씩 담지 않고, 한 사람의 이야기 한 문단으로 엮었습니다 — 혼자 만들다 시장을 몰라 실패해 시장을 먼저 읽게 됐고, 팀에서는 명세서로 같은 게임을 보게 했고, 그사이 커뮤니티와 평론으로 만드는 사람 · 노는 사람을 들었고, 올해는 PM 으로 출시했다는 순서입니다. 숫자는 따로 표로 빼지 않고 그 말을 한 구절 바로 위에 근거로 얹었습니다(주황 밑줄 = 근거, 빨강 = 일하는 방식). 읽으면 이야기, 훑으면 숫자.',
-               en: 'Instead of one box per job, the career is woven into one paragraph about one person: alone, I shipped games and learned to read the market after some fell short; in a team, a spec got everyone seeing the same game; all along, a community and criticism taught me how makers and players think; this year I shipped as a PM. The numbers are not pulled into a table but sit right above the phrase they prove (orange underline = evidence, red = how I work). Read it as a story, or skim the numbers.' },
-      map: [['구조', 'Structure', '한 문단 + 구절 위의 근거', 'One paragraph + evidence above phrases'], ['한눈에', 'At a glance', '숫자 여섯이 그 말 바로 위에', 'Six numbers, each above its claim'], ['게임의 말', 'Game words', '1P · 창 재료뿐', '1P · window material only']],
-      hint: { ko: '▶ 그냥 읽으면 됩니다 — 누르거나 기다릴 것 없음.', en: '▶ Just read — nothing to click or wait for.' },
-      pros: { ko: ['이력서를 다시 보여 주지 않고 해석해 줌 — \'어떤 기획자인가\'가 문장으로 남음', '숫자가 맥락과 붙어 있어 과장 없이 믿음이 감', '테마는 창 재료 정도라 가장 담백함'], en: ['Interprets the résumé rather than repeating it — what kind of designer stays with you as a sentence', 'Numbers stay attached to their context, so they read as proof, not boasting', 'The theme is only the window, the most restrained of the two'] },
-      cons: { ko: ['글을 읽어야 함 — 훑는 사람은 숫자만 보고 지나감', '문장을 고치면 근거 자리도 함께 확인해야 함'], en: ['It has to be read; a skimmer only catches the numbers', 'Editing a sentence means checking where its evidence sits'] } },
-    { id: 'c2', label: '2', plain: true, f: draftC2, w: function () { return null; }, badge: { ko: '새 안 · 늘어놓지 않고 해석하기', en: 'New · interpreted, not listed' }, name: { ko: '계단 — 혼자에서 팀으로', en: 'Staircase — from solo to team' }, sub: { ko: '해석 = 성장', en: 'Interpretation = growth' },
-      pitch: { ko: '10년을 한 줄기로 해석했습니다 — 함께 일하는 사람이 1명 → 3명 → 5명 → 12명으로 늘어난 계단 하나. 칸마다 그때의 역할 · 결과와 거기서 얻어 다음 칸으로 가져간 것(▲) 하나만 둡니다. 꼭대기 너머 깃발이 다음 목표(PD)이고, 계단 밑 땅에는 내내 깔려 있던 커뮤니티 운영 · 평론이 있습니다. 계단 블록 · 깃발 · 땅은 슈퍼 마리오 브라더스 끝 계단의 문법 그대로지만, 장식이 아니라 그림 자체가 이력입니다.',
-               en: 'Ten years read as one line — a single staircase where the people I work with grow from one to three, five and twelve. Each step keeps only its role and result, plus the one thing carried up to the next step (▲). The flag past the top is the next goal (PD), and the ground under the stairs holds what ran underneath the whole time: the community and the criticism. Stair blocks, flag and ground follow the end-of-level staircase of Super Mario Bros., but they are not decoration: the picture is the career.' },
-      map: [['구조', 'Structure', '계단 하나 = 성장', 'One staircase = growth'], ['한눈에', 'At a glance', '1 → 3 → 5 → 12 · 깃발 = 다음', '1 → 3 → 5 → 12 · flag = next'], ['게임의 말', 'Game words', '계단 블록 · 깃발 · 땅 · 1P', 'Stair blocks · flag · ground · 1P']],
-      hint: { ko: '▶ 그냥 읽으면 됩니다 — 누르거나 기다릴 것 없음. 휴대폰에서는 계단이 옆으로 누워 위에서 아래로 읽힙니다.', en: '▶ Just read — nothing to click or wait for. On a phone the staircase lies on its side and reads top to bottom.' },
-      pros: { ko: ['한 장면이 곧 결론 — \'점점 큰 팀을 맞춰 온 사람\'이 그림으로 남음', '게임 재료(계단 · 깃발 · 땅)가 뜻을 실어 나름 — 테마가 정보 안에 녹음', '글이 적어 훑기 쉬움'], en: ['One picture is the conclusion: someone who has kept ever-larger teams aligned', 'The game materials (stairs, flag, ground) carry meaning, so the theme lives inside the information', 'Little text, easy to skim'] },
-      cons: { ko: ['계단 높이는 순서(한 칸씩)이고 사람 수 비율이 아님 — 수는 글로 적음', '칸마다 한 줄씩이라 자세한 이야기는 이력서 몫'], en: ['Step height is order (one block each), not the head count; the count is written', 'One line per step, so the full story is left to the résumé'] } }
+    { id: 'd1', label: '1', plain: true, f: draftD1, w: function () { return null; }, badge: { ko: '새 안 · 이력 전체를 한 화면에', en: 'New · the whole career on one screen' }, name: { ko: '플레이어 정보 화면 — 결론부터 근거까지', en: 'Player info screen — from conclusion to proof' }, sub: { ko: '창 여덟 · 창마다 다른 모양', en: 'Eight windows, each its own shape' },
+      pitch: { ko: '간소하지도, 한 모양으로 늘어놓지도 않게 — 이력 전체를 게임의 플레이어 정보 화면처럼 한 화면에 모았습니다. 창마다 다루는 것도 모양도 다릅니다: 1P(사진 · 한 줄 결론 · 10년 이야기 · 메뉴) · SCORE(숫자 넷) · QUEST(지금 하는 과정의 진행 막대 · 커뮤니티 · 다음 목표 PD) · ROUTE(함께 일한 사람 1 → 12 계단과 깃발) · CLEAR(대표 프로젝트 셋 — 퀘스트 목표 → 결과) · LOG(10년 연표 — 겹친 기간) · WORK(일하는 방식 셋과 그 근거) · ITEM(쓰는 도구 로고). 위에서부터 결론 → 근거 → 자세히 순서로 읽히고, 숫자 · 기간은 모두 이력서 · 프로젝트 · 자기소개서와 같은 값입니다.',
+               en: 'Neither sparse nor one shape repeated: the whole career gathered on one screen, like a game\'s player-info screen. Each window covers something different and takes a different shape: 1P (photo, one-line conclusion, the ten-year story, menu) · SCORE (four numbers) · QUEST (a progress bar for the current course, the community, the next goal: PD) · ROUTE (the 1 → 12 staircase and flag) · CLEAR (three main projects, quest goal → result) · LOG (a ten-year timeline showing overlaps) · WORK (three ways of working and their proof) · ITEM (tool logos). Top to bottom it reads conclusion → proof → detail, and every number and date matches the résumé, projects and cover letter.' },
+      map: [['구조', 'Structure', '결론 → 근거 → 자세히', 'Conclusion → proof → detail'], ['한눈에', 'At a glance', '창 여덟 — 사진 · 숫자 · 막대 · 계단 · 카드 · 연표 · 로고', 'Eight windows — photo, numbers, bars, stairs, cards, timeline, logos'], ['게임의 말', 'Game words', '1P · SCORE · QUEST · ROUTE · CLEAR · LOG · ITEM · 깃발', '1P · SCORE · QUEST · ROUTE · CLEAR · LOG · ITEM · flag']],
+      hint: { ko: '▶ 그냥 읽으면 됩니다 — 누르거나 기다릴 것 없음. 휴대폰에서는 창이 한 줄로 쌓입니다.', en: '▶ Just read — nothing to click or wait for. On a phone the windows stack into one column.' },
+      pros: { ko: ['이력서 · 프로젝트 · 자기소개서의 핵심이 한 화면에 — 간소하지 않음', '창마다 모양이 달라(사진 · 숫자 · 진행 막대 · 계단 · 퀘스트 카드 · 연표 · 로고) 늘어놓은 느낌이 없음', '게임 화면의 문법(창 이름 · QUEST → CLEAR · 진행 막대 · 깃발)이 곧 정보의 틀'], en: ['The core of the résumé, projects and cover letter on one screen — not sparse', 'Every window has its own shape (photo, numbers, progress bar, stairs, quest cards, timeline, logos), so nothing feels lined up', 'Game-screen grammar (window names, QUEST → CLEAR, progress bars, the flag) is the frame for the information'] },
+      cons: { ko: ['넓은 화면 두 장 남짓 — 첫 화면 아래로 한 번 더 내려야 다 보임', '홈에 넣을 때 하위 페이지와 겹치는 창(연표 · 도구)은 줄일지 정해야 함'], en: ['About two wide screens tall — one more scroll below the title to see it all', 'When it goes on the home page, decide whether to trim windows that repeat the sub-pages (timeline, tools)'] } }
   ];
   var DRAFTS_OLD = [
     { id: 's', f: draftS6, w: wireS6, scroll: 3200, extra: function () { return palBar('s'); }, badge: { ko: '고른 안 · 팔레트 8벌', en: 'Chosen · 8 palettes' }, name: { ko: '지어지는 월드 — 완공될 때마다 튀어나오는 이력', en: 'A world being built — the career pops out at each build' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
@@ -840,9 +992,9 @@
       cons: { ko: ['2026 에 두 시기가 겹쳐 마지막이 몰림', '은유를 팻말이 꼭 받쳐야 함'], en: ['Two periods start in 2026, so the end bunches up', 'The metaphors need their signs'] } }
   ];
   var RULES4 = [
-    { h: { ko: '늘어놓지 말고 해석하기', en: 'Interpret, don\'t list' }, b: { ko: '이력 항목을 같은 모양 칸에 하나씩 담지 않습니다. 한 문단 또는 한 그림이 \'어떤 기획자인가\'를 말하고, 항목은 그 근거로 붙습니다. 자세한 이력은 이력서 페이지의 몫.', en: 'No box per job. One paragraph or one picture says what kind of designer this is, and the jobs attach as its evidence. The full detail is the résumé page\'s job.' } },
+    { h: { ko: '나열도 간소도 아니게', en: 'Neither a list nor sparse' }, b: { ko: '같은 모양 칸을 늘어놓지 않고, 덜어 내지도 않습니다. 결론(누구 · 한 줄) → 근거(숫자 · 계단 · 퀘스트 결과) → 자세히(연표 · 일하는 방식 · 도구)를 내용마다 다른 모양의 창으로.', en: 'No identical boxes in a row, and nothing stripped away: conclusion (who, one line) → proof (numbers, stairs, quest results) → detail (timeline, ways of working, tools), each in a window shaped for it.' } },
     { h: { ko: '이력이 주인공', en: 'The career leads' }, b: { ko: '"연출은 자연스럽게 녹아내는 역할만, 가장 중요한 건 이력을 잘 보여 주는 것." 숫자 · 기간은 이력서 · 프로젝트와 같은 값.', en: '"The staging only blends in; what matters most is showing the career well." Numbers and dates match the résumé and projects.' } },
-    { h: { ko: '게임은 말과 재료로만', en: 'Game as words and material' }, b: { ko: '1P · 계단 블록 · 깃발 · 땅처럼 게임의 재료가 뜻을 실어 나릅니다(계단 = 성장, 깃발 = 다음 목표, 땅 = 밑바탕). 움직임 · 캐릭터는 없습니다.', en: 'Game materials carry meaning (stairs = growth, flag = next goal, ground = what lies underneath). No motion, no characters.' } },
+    { h: { ko: '게임은 말과 재료로만', en: 'Game as words and material' }, b: { ko: '플레이어 정보 화면의 창 이름(1P · SCORE · QUEST · CLEAR · LOG · ITEM)과 계단 · 깃발 · 땅 · 진행 막대가 정보의 틀입니다(계단 = 성장, 깃발 = 다음 목표, 땅 = 밑바탕). 움직임 · 캐릭터는 없습니다.', en: 'The player-info screen\'s window names (1P, SCORE, QUEST, CLEAR, LOG, ITEM) and the stairs, flag, ground and progress bars frame the information (stairs = growth, flag = next goal, ground = underneath). No motion, no characters.' } },
     { h: { ko: '훅은 첫 화면', en: 'The hook is the first screen' }, b: { ko: '눈길은 첫 화면(게임기 타이틀)이 끌고, 그 바로 아래가 브리핑입니다. 누르거나 기다릴 것 없이 바로 읽힘.', en: 'The first screen (console title) catches the eye; the briefing sits right below, readable at once.' } }
   ];
 
@@ -869,7 +1021,6 @@
     });
     SCROLLERS.forEach(function (sc) { sc.p = undefined; });
     scrollTick();
-    fitAnn();
   }
   /* 스크롤 시안: 상자가 화면을 지나가는 만큼 = 진행(0 ~ 1) */
   var SCROLLERS = [], stTick = 0;
