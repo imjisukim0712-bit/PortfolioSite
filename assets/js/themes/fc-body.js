@@ -9,6 +9,7 @@
      · 손잡이 · 화면 자리는 각 안의 CSS 가 같은 숫자(cqw)로 맞춥니다 — 그림 1000 단위 = 판 폭 100cqw.
        크라프트: 손잡이 0–130 · 870–1000, 화면 166–834 × 56–444
        도트·스테이지: 몸통 0–970 × 0–470(+ 오른쪽·아래 두께), 손잡이 0–130 · 840–970, 화면 160–810 × 60–410
+       (스테이지는 16회차부터 패미컴 문법 그림 stageArt — 10회차 Codex 판 -cx 는 예전 levelArt 그대로)
    SKINS 에 든 시안일 때만 동작하고, [data-slot="main"] 이 다시 그려지면 다시 붙습니다.
    ========================================================================== */
 (function () {
@@ -107,6 +108,124 @@
       f(44, 2, 1, 1, '#6b7290'); f(52, 2, 1, 1, '#6b7290'); /* 나사 */
       for (var i = 0; i < 6; i++) f(70 + i * 2, 43, 1, 2, K);   /* 스피커 */
     } });
+  }
+
+  /* ── ⑩ 스테이지(16회차): 패미컴 문법 — 양옆 = 자주 컨트롤러(금색 앞판 · 검은 십자 버튼 · 고무 버튼 · 빨강 B/A),
+     가운데 = 크림 몸통(밀어 켜는 스위치 둘 · 전원등 · 홈줄) · 짙은 화면 테 · 자주 아랫단(카트리지 구멍 · 스피커).
+     격자는 5단위 한 칸(200 × 100 칸 — 예전 10단위의 두 배 촘촘), 외곽선은 실루엣 가장자리로 계산, 색마다 path 하나로 냅니다.
+     누를 수 있는 키(◀ ▶ · 메일 · B · A)는 HTML 버튼을 그림 위 같은 자리에 투명하게 얹습니다(pixel-fc-folio.css 16회차 절).
+     좌표: 십자 중심 (65, 175) · 고무 버튼 30–100 × 280–315 · B 중심 (905, 170) · A 중심 (905, 280) · 화면 165–805 × 65–405. */
+  function stageArt() {
+    var U = 5, W = 200, H = 100, BW = 194, BH = 94, D = 4, PROF = [5, 3, 2, 1, 1];
+    var K = '#171c28',
+        CR = '#efe6d1', CRh = '#fffaee', CRs = '#cfc2a4', CRd = '#a99a7a',
+        MR = '#8f1d1f', MRh = '#bb4a40', MRd = '#5c1013',
+        GD = '#d6ad55', GDh = '#f3d68a', GDd = '#a17a2a',
+        CH = '#34353f', CHh = '#4c4e5b',
+        LC = '#fff6dd', LCs = '#e3c990',
+        DP = '#14161d', DPh = '#4a5062', DPd = '#000000',
+        RB = '#c9232c', RBh = '#f16a5e', RBd = '#7c1218',
+        RU = '#2a2b33', RUh = '#50525e';
+    var g = [], x, y;
+    for (y = 0; y < H; y++) { g.push([]); for (x = 0; x < W; x++) g[y].push(null); }
+    function inBody(cx, cy) {
+      if (cx < 0 || cy < 0 || cx >= BW || cy >= BH) return false;
+      var row = Math.min(cy, BH - 1 - cy);
+      return row >= PROF.length || (cx >= PROF[row] && cx < BW - PROF[row]);
+    }
+    function inAll(cx, cy) { for (var k = 0; k <= D; k++) if (inBody(cx - k, cy - k)) return true; return false; }
+    function f(x0, y0, w, h, c) { for (var yy = y0; yy < y0 + h; yy++) for (var xx = x0; xx < x0 + w; xx++) if (inBody(xx, yy)) g[yy][xx] = c; }
+    function px(xx, yy, c) { if (inBody(xx, yy)) g[yy][xx] = c; }
+    function disc(cx, cy, r, c) { for (var yy = Math.floor(cy - r); yy <= Math.ceil(cy + r); yy++) for (var xx = Math.floor(cx - r); xx <= Math.ceil(cx + r); xx++) if ((xx + .5 - cx) * (xx + .5 - cx) + (yy + .5 - cy) * (yy + .5 - cy) <= r * r) px(xx, yy, c); }
+    /* 둥근 모서리 사각형(한 칸 깎기) */
+    function rr(x0, y0, w, h, c) { f(x0 + 1, y0, w - 2, h, c); f(x0, y0 + 1, w, h - 2, c); }
+    /* 두께(옆면): 손잡이 밑은 자주, 몸통 밑은 크림 그늘 */
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) if (inAll(x, y) && !inBody(x, y)) g[y][x] = MRd;
+
+    /* ── 몸통(크림) ── */
+    f(0, 0, BW, BH, CR);
+    f(4, 1, 186, 1, CRh);
+    /* ── 손잡이 = 컨트롤러 두 개(자주) ── */
+    [[0, 26], [168, 26]].forEach(function (s) {
+      var x0 = s[0], w = s[1];
+      f(x0, 0, w, BH, MR);
+      f(x0 + 2, 1, w - 4, 1, MRh); f(x0 + 1, 3, 1, BH - 6, MRh);       /* 윗면 · 왼쪽 빛 */
+      f(x0 + w - 2, 3, 1, BH - 6, MRd); f(x0 + 2, BH - 2, w - 4, 1, MRd);  /* 오른쪽 · 아래 그늘 */
+      /* 금색 앞판 */
+      f(x0 + 3, 14, 20, 66, GD);
+      f(x0 + 3, 14, 20, 1, GDh); f(x0 + 3, 14, 1, 66, GDh);
+      f(x0 + 3, 79, 20, 1, GDd); f(x0 + 22, 14, 1, 66, GDd);
+    });
+    /* 손잡이와 몸통 사이 홈 */
+    f(26, 0, 1, BH, MRd); f(27, 0, 1, BH, CRs); f(167, 0, 1, BH, MRd); f(166, 0, 1, BH, CRs);
+
+    /* ── 왼쪽 컨트롤러: 십자 버튼 ── */
+    f(5, 32, 16, 6, DP); f(10, 27, 6, 16, DP);               /* 십자(검정) — 금색 판 위라 따로 외곽선 없이 */
+    f(5, 32, 5, 1, DPh); f(16, 32, 5, 1, DPh); f(10, 27, 6, 1, DPh);   /* 윗변 빛 한 줄 */
+    f(11, 33, 4, 4, '#262a35');                               /* 가운데 오목 */
+    /* 화살표(◀ ▶ 는 누를 수 있는 키, ▲ ▼ 는 그림) — 회색 세모 */
+    var AR = '#6b7184';
+    f(7, 34, 1, 2, AR); f(8, 33, 1, 4, AR);
+    f(18, 34, 1, 2, AR); f(17, 33, 1, 4, AR);
+    f(12, 29, 2, 1, AR); f(11, 30, 4, 1, AR);
+    f(12, 40, 2, 1, AR); f(11, 39, 4, 1, AR);
+    /* 고무 버튼(메일) */
+    rr(6, 56, 14, 7, K); rr(7, 57, 12, 5, RU); f(8, 57, 10, 1, RUh);
+
+    /* ── 오른쪽 컨트롤러: B · A 둥근 버튼(어두운 홈 위) ── */
+    [[181, 34], [181, 56]].forEach(function (c) {
+      var cx = c[0], cy = c[1];
+      rr(cx - 8, cy - 8, 16, 16, MRd);                          /* 어두운 홈 */
+      disc(cx, cy, 6.4, K); disc(cx + .5, cy + .5, 5.4, RBd);   /* 검은 테 · 아래 오른쪽 그늘 */
+      disc(cx - .3, cy - .3, 5.0, RB);                          /* 빨강 면 */
+      f(cx - 3, cy - 4, 3, 1, RBh); f(cx - 4, cy - 3, 1, 3, RBh);   /* 위 왼쪽 반사 */
+    });
+
+    /* ── 가운데 몸통 ── */
+    /* 윗면: 밀어 켜는 스위치 둘 · 전원등 · 나사 */
+    rr(34, 3, 10, 5, K); f(35, 4, 8, 3, MR); f(35, 4, 4, 1, MRh);
+    rr(47, 3, 10, 5, K); f(48, 4, 8, 3, MR); f(52, 4, 4, 1, MRh);
+    f(60, 4, 3, 3, K); f(61, 5, 1, 1, '#ff3b30');              /* 전원등 */
+    for (x = 100; x < 160; x += 3) f(x, 3, 2, 5, CRs);    /* 윗면 홈줄 */
+    /* 화면 테(짙은 회색) + 액정 */
+    f(30, 10, 134, 74, K); f(31, 11, 132, 72, CH); f(31, 11, 132, 1, CHh); f(31, 11, 1, 72, CHh);
+    f(32, 12, 130, 70, K);
+    f(33, 13, 128, 68, LC); f(33, 13, 128, 1, LCs); f(33, 14, 1, 67, LCs);
+    /* 아랫단: 자주 띠 · 카트리지 구멍 · 스피커 */
+    f(28, 85, 138, 9, MR); f(28, 85, 138, 1, MRh); f(28, 84, 138, 1, CRs);
+    rr(78, 87, 38, 4, K); f(80, 88, 34, 1, '#000');        /* 카트리지 구멍 */
+    for (y = 87; y < 92; y += 2) f(140, y, 20, 1, K);      /* 스피커 */
+    disc(36, 89, 1.4, MRd); disc(42, 89, 1.4, MRd);         /* 나사 */
+
+    /* 외곽선 */
+    var out = function (cx, cy) { return !inAll(cx, cy); };
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      if (!inAll(x, y)) continue;
+      var edge = out(x - 1, y) || out(x + 1, y) || out(x, y - 1) || out(x, y + 1);
+      var seam = inBody(x, y) && (!inBody(x + 1, y) || !inBody(x, y + 1) || !inBody(x + 1, y + 1));
+      if (edge || seam) g[y][x] = K;
+    }
+    /* 같은 색 가로 줄을 모으고, 바로 윗줄과 폭 · 자리가 같으면 세로로 이어 붙여 색마다 path 하나로 */
+    var open = {}, done = [], i, k;
+    for (y = 0; y < H; y++) {
+      var next = {};
+      for (x = 0; x < W;) {
+        var c = g[y][x]; if (!c) { x++; continue; }
+        for (i = x + 1; i < W && g[y][i] === c; i++) {}
+        k = c + ' ' + x + ' ' + (i - x);
+        if (open[k]) { open[k].h++; next[k] = open[k]; delete open[k]; }
+        else next[k] = { c: c, x: x, y: y, w: i - x, h: 1 };
+        x = i;
+      }
+      for (k in open) done.push(open[k]);
+      open = next;
+    }
+    for (k in open) done.push(open[k]);
+    var paths = {};
+    done.forEach(function (r) { (paths[r.c] = paths[r.c] || []).push('M' + r.x * U + ' ' + r.y * U + 'h' + r.w * U + 'v' + r.h * U + 'h-' + r.w * U + 'z'); });
+    var s = '';
+    for (k in paths) s += '<path fill="' + k + '" d="' + paths[k].join('') + '"/>';
+    return '<svg class="fcb-art" viewBox="0 0 1000 500" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true" focusable="false">' + s + '</svg>';
   }
 
   /* ── ⑨ 크라프트: 기념 포스터의 2색 — 크림 몸통, 진홍 손잡이 · 화면 테.
@@ -218,7 +337,7 @@
     return svgWrap(d, b);
   }
 
-  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': levelArt, 'pixel-fc-kraft': kraftArt,
+  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': stageArt, 'pixel-fc-kraft': kraftArt,
               'pixel-fc-gold': goldArt, 'pixel-fc-metal': metalArt, 'pixel-fc-museum': museumArt,
               /* 10회차 Codex 다듬기 안 — 원본과 같은 게임기 그림에서 출발 */
               'pixel-fc-dot-cx': dotArt, 'pixel-fc-level-cx': levelArt, 'pixel-fc-kraft-cx': kraftArt };

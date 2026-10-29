@@ -13,7 +13,7 @@ for (const w of [1440, 390]) for (const pg of PAGES) {
   await p.waitForTimeout(400);
   const r = await p.evaluate(() => {
     const out = new Set();
-    const skip = (el) => el.closest('.gcard, .card-back, .fc-grip, .quip__more');
+    const skip = (el) => el.closest('.gcard, .card-back, .quip__more');
     const sprite = (el, pseudo) => {
       const c = getComputedStyle(el, pseudo);
       if (!c.backgroundImage.includes('data:image/svg') || c.display === 'none') return;

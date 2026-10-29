@@ -1,5 +1,5 @@
 # 스테이지(pixel-fc-level) 소품 — 슈퍼 마리오 브라더스(1985) 1-1 · 1-2 의 그림 문법을 따라 한 칸씩 찍은 격자 그림을 CSS data URI 로 뽑습니다.
-# 사용법: python3 tools/fc-pixel/stage-props.py  → 출력된 --lv-* 줄을 assets/css/themes/pixel-fc-folio.css 의 스테이지 13회차 절에 붙여 넣기.
+# 사용법: python3 tools/fc-pixel/stage-props.py  → 출력된 --lv-* 줄을 assets/css/themes/pixel-fc-folio.css 의 스테이지 13회차 절(소품) · 16회차 절(--lv-c-* 좁은 화면 게임기)에 붙여 넣기.
 #
 # 따르는 규칙(원작에서 확인한 것):
 #   · 색은 원작 롬의 팔레트 묶음 그대로 — GroundPaletteData / UndergroundPaletteData (6502disassembly.com/nes-smb, $8CC8 · $8CEC)
@@ -19,6 +19,12 @@ PAL = {
     'w': '#fcfcfc', 'c': '#3cbcfc',        # 구름 묶음 $30 · $21
     'o': '#fc9838',                        # 물음표 블록 · 동전 $27 (갈색은 $17 = 'm')
     'u': '#a4e4fc', 'v': '#008888',        # 지하 땅 · 벽돌 묶음 $3C · $1C
+    # 게임기(좁은 화면) — fc-body.js 의 stageArt 와 같은 색
+    'C': '#efe6d1', 'h': '#fffaee',        # 크림 몸통 · 윗변 빛
+    'M': '#8f1d1f', 'D': '#5c1013',        # 자주(손잡이) · 두께(옆면) · 어두운 홈
+    'P': '#14161d', 'p': '#4a5062', 'q': '#262a35', 'a': '#6b7184',   # 십자 버튼 · 빛 · 가운데 오목 · 화살표
+    'R': '#c9232c', 'r': '#f16a5e', 'd': '#7c1218',                   # 빨강 버튼 · 반사 · 그늘
+    'U': '#2a2b33', 'e': '#50525e',        # 고무 버튼 · 빛
 }
 
 def svg(rows):
@@ -164,6 +170,72 @@ S['cloud'] = paint(cloud, [(x, y) for y in (9, 10) for x in range(2, 26)] + [(9,
 # 덤불 (32×14칸 = 128×56) — 구름과 같은 문법을 초록 묶음으로(밝은 초록 몸통 · 어두운 초록 무늬 · 아랫변은 땅에 묻힘)
 bush = outline(puffs(32, 14, [(6.5, 9, 5), (13, 6.5, 6.2), (19.5, 6.5, 6.2), (25.5, 9, 5)], 9), 'g', ground=True)
 S['bush'] = paint(bush, [(8, 7), (9, 6), (14, 4), (15, 3), (20, 4), (21, 3), (26, 7), (27, 6)], 'G')
+
+# ── 좁은 화면(900px 미만)의 게임기 — 넓은 화면은 fc-body.js 의 stageArt 가 그림 한 장으로 그리고, 좁은 화면은 세운 휴대기라 CSS 로 짓습니다 ──
+# 몸통 9조각(16×16칸, 조각 7칸 = 28px — CSS border-image) : 크림 앞면 + 오른쪽 · 아래로 2칸 두께(자주 그늘), 둥근 모서리 4·2·1·1칸.
+# 외곽선은 stageArt 와 같은 규칙 — 앞면 + 두께를 합친 실루엣의 가장자리와, 앞면이 두께와 맞닿는 이음매.
+def body9(n=16, d=2, prof=(4, 2, 1, 1)):
+    f = n - d
+    def front(x, y):
+        if not (0 <= x < f and 0 <= y < f): return False
+        r = min(y, f - 1 - y)
+        return r >= len(prof) or prof[r] <= x < f - prof[r]
+    def union(x, y): return any(front(x - k, y - k) for k in range(d + 1))
+    rows = []
+    for y in range(n):
+        row = ''
+        for x in range(n):
+            if not union(x, y): row += '.'; continue
+            edge = any(not union(a, b) for a, b in ((x-1, y), (x+1, y), (x, y-1), (x, y+1)))
+            seam = front(x, y) and (not front(x+1, y) or not front(x, y+1) or not front(x+1, y+1))
+            if edge or seam: row += 'K'
+            elif not front(x, y): row += 'D'
+            elif y == 1: row += 'h'
+            else: row += 'C'
+        rows.append(row)
+    return rows
+S['c-body'] = body9()
+
+# 십자 버튼 (13×13칸 = 52px) — 팔 폭 5칸 · 길이 4칸, 윗변 빛 한 줄, 가운데 오목, 회색 세모 넷(◀ ▶ 자리는 CSS 의 투명 키가 덮음)
+dp = [['.'] * 13 for _ in range(13)]
+for y in range(13):
+    for x in range(13):
+        if 4 <= y <= 8 or 4 <= x <= 8: dp[y][x] = 'P'
+for x in list(range(0, 4)) + list(range(9, 13)): dp[4][x] = 'p'
+for x in range(4, 9): dp[0][x] = 'p'
+for y in range(5, 8):
+    for x in range(5, 8): dp[y][x] = 'q'
+for x, y in [(1, 6), (2, 5), (2, 6), (2, 7), (11, 6), (10, 5), (10, 6), (10, 7),
+             (6, 1), (5, 2), (6, 2), (7, 2), (6, 11), (5, 10), (6, 10), (7, 10)]: dp[y][x] = 'a'
+S['c-dpad'] = [''.join(r) for r in dp]
+
+# 고무 버튼(메일, 10×5칸 = 40×20) — 검은 테 안 고무, 윗줄 빛
+S['c-rubber'] = ['.KKKKKKKK.', 'KeeeeeeeeK', 'KUUUUUUUUK', 'KUUUUUUUUK', '.KKKKKKKK.']
+
+# 빨강 둥근 버튼 B · A (9×9칸 = 36px) — 어두운 홈 위 검은 테 · 빨강 면 · 아래 오른쪽 그늘 · 위 왼쪽 반사
+S['c-btn'] = [
+    '.DDDDDDD.',
+    'DDDKKKDDD',
+    'DDKrRRKDD',
+    'DKrRRRdKD',
+    'DKRRRRdKD',
+    'DKRRRddKD',
+    'DDKdddKDD',
+    'DDDKKKDDD',
+    '.DDDDDDD.',
+]
+# 눌린 B · A — 반사가 사라지고 위 왼쪽에 그늘(면이 홈 안으로 들어간 모양)
+S['c-btn-dn'] = [
+    '.DDDDDDD.',
+    'DDDKKKDDD',
+    'DDKddRKDD',
+    'DKdRRRRKD',
+    'DKRRRRRKD',
+    'DKRRRRRKD',
+    'DDKRRRKDD',
+    'DDDKKKDDD',
+    '.DDDDDDD.',
+]
 
 if __name__ == '__main__':
     for name, rows in S.items():
