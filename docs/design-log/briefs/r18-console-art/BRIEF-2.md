@@ -132,3 +132,51 @@ Improve (craft, not ornament — do not add new decorative elements):
 
 Deliverables in `out5/`: `1.svg` (the source), `1.png` (1536 × 1024 render of it, palette-exact), `controls.json` (same format; only key "1"),
 `NOTES.md` (what you changed). Do not touch anything outside `out5/`.
+
+---
+
+## 6차 — 그림 1을 더 옛날 게임기로(레트로 두 갈래)
+
+사용자: "게임기는 1번이 가장 낫긴 한데 더 옛날 게임기 느낌으로 하고 싶긴 해. 레트로 느낌 강하게" → 그림 1의 빨강 몸통 · 금색 · 검은 조작부는 두고
+1980년대 하드웨어로 다시 디자인(Codex, `out6/a.svg` · `b.svg`) — A = 1983 가정용 게임기 컨트롤러(금색 금속 앞판), B = 1989 벽돌 휴대기(깊은 화면 판 · 나사 · 스피커 구멍).
+화면 자리 · 팔레트 · SVG 구조는 5차 그대로라 변환(`svg-console.py`) · 자리 CSS(`console-art-css.py`)도 그대로.
+
+### Brief for Codex — round 6 (English): image 1, but a strongly RETRO old console — two takes
+
+The user still likes **image 1** best (`out5/1.svg` / `out5/1.png`, the red console with gold accents), but says it looks too modern:
+"I want it to feel like a **much older game console — a strong retro feel**." Today it reads like a recent hybrid handheld
+(soft rounded grips, glossy domes, a thin bezel). Please redesign it as **1980s / early-1990s hardware** while keeping what the user likes:
+the red body, gold accents, black controls, and the overall "wide screen in the middle, a Famicom-style controller as each grip" idea.
+You are the designer — the shapes and details are your call. Make **two different takes** so the user can choose:
+
+- **Take A — "1983 home-console controller"**: the grips read like the original 8-bit home console's wired controllers —
+  hard-edged rectangular plastic, a **gold metal faceplate** inset on each grip with an engraved border line, a chunky black plus-shaped D-pad
+  with square arm ends, round red buttons sitting in a dark recessed strip, a dark rubber pill key. Body: boxy, flat front face, small corner radii.
+- **Take B — "1989 brick handheld"**: a thick, heavy brick of a handheld — very chunky proportions, a deep moulded **screen bezel plate**
+  (dark, with a thin coloured pinstripe line framing the screen and a small round power lamp), visible moulded seams / ridges, a row of
+  speaker slots or a grille, a big lower "chin" with the cartridge slot. Still red + gold + black.
+
+Retro cues to use (pick what serves each take; no ornament for its own sake — every detail should read as real hardware):
+straight edges and small radii (about 12–28 px) instead of big soft curves · flat front faces with thick moulded edges ·
+engraved panel lines and seams · screws/vents only if they look like real parts · matte plastic (no glossy domes, no big glare highlights) ·
+chunky controls with clear recesses · a visible top or bottom cartridge slot.
+
+Keep exactly (both takes):
+1. Canvas **1536 × 1024**, background flat **#5c94fc** edge to edge, front view, console centred, about 88–92 % of the canvas width.
+2. **Screen rectangle exactly (334, 246, 867, 455)**, flat **#fff6dd**, nothing inside (live web content goes there).
+3. Controls: left grip — a D-pad and one small rubber key; right grip — two round buttons (one above the other). Under the D-pad, the rubber key
+   and each round button keep a small **plain label area**. Positions may move a little if the design needs it — just measure them.
+4. No text, letters, logos, brand names, trademarks or characters anywhere.
+5. Conversion-friendly, like round 5: flat fills only (no gradients, no texture), the round-5 palette only —
+   black `#0f0a0c` (outline) · `#1e1519` · `#30242a` · `#4b3c42` · `#6e5d63`; red `#3a0610` · `#8c0e22` · `#c8102e` · `#ea3a33` · `#ff8a6a`;
+   gold `#3d290c` · `#9a6a1e` · `#d4a23e` · `#f0cc6a` · `#fff2b8`; screen `#fff6dd`; background `#5c94fc` (white `#ffffff` only for a rare tiny glint, preferably none).
+   A uniform **8 px `#0f0a0c` outline** around the silhouette and every part; light from the top-left; shading as a few clean bands ≥ 14 px; no feature thinner than 7 px except outlines.
+   The pixel version is made by rasterizing your SVG onto ~7 px cells (about 200 cells wide), so keep shapes bold and readable at that scale.
+6. Same SVG structure as round 5: per part `<defs><clipPath>` + base fill path + `<g clip-path>` shade paths + an 8 px `#0f0a0c` stroke path;
+   the screen frame + flat screen rect last.
+
+Deliverables in `out6/`:
+- `a.svg`, `a.png`, `b.svg`, `b.png` (1536 × 1024 PNG renders of the SVGs, palette-exact).
+- `controls.json` with keys `"a"` and `"b"`, same fields as `out5/controls.json` (dpad, rubber, btnUpper, btnLower, labelDpad, labelRubber, labelUpper, labelLower — px boxes).
+- `NOTES.md`: per take, what makes it read as retro, and confirm the screen rect and palette.
+Check each render against the specs (screen rect and flatness, background, palette, no text) and fix before finishing. Do not touch anything outside `out6/`.

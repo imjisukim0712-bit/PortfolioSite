@@ -29,35 +29,38 @@ BG = np.array([0x5c, 0x94, 0xfc], float)
 
 
 def flatten(d, steps=24):
-    """SVG 경로(M L H V Q A Z, 절대 좌표) → 닫힌 다각형들."""
-    toks = re.findall(r'[MLHVQAZ]|-?\d*\.?\d+(?:e-?\d+)?', d)
-    polys, cur, x, y, i, cmd = [], [], 0.0, 0.0, 0, None
-    num = lambda: float(toks[i])
+    """SVG 경로(M L H V Q A Z — 대문자 절대 · 소문자 상대 좌표) → 닫힌 다각형들."""
+    toks = re.findall(r'[MLHVQAZmlhvqaz]|-?\d*\.?\d+(?:e-?\d+)?', d)
+    polys, cur, x, y, i, cmd, sx, sy = [], [], 0.0, 0.0, 0, None, 0.0, 0.0
     while i < len(toks):
         t = toks[i]
-        if re.match(r'[MLHVQAZ]', t):
+        if re.match(r'[A-Za-z]', t):
             cmd = t; i += 1
-            if cmd == 'Z':
+            if cmd in 'Zz':
                 if cur: polys.append(cur); cur = []
+                x, y = sx, sy
                 continue
-        if cmd == 'M':
-            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+        rel = cmd.islower(); c = cmd.upper(); ox, oy = (x, y) if rel else (0.0, 0.0)
+        if c == 'M':
+            x, y = ox + float(toks[i]), oy + float(toks[i + 1]); i += 2
             if cur: polys.append(cur)
-            cur = [(x, y)]; cmd = 'L'
-        elif cmd == 'L':
-            x, y = float(toks[i]), float(toks[i + 1]); i += 2; cur.append((x, y))
-        elif cmd == 'H':
-            x = float(toks[i]); i += 1; cur.append((x, y))
-        elif cmd == 'V':
-            y = float(toks[i]); i += 1; cur.append((x, y))
-        elif cmd == 'Q':
+            cur = [(x, y)]; sx, sy = x, y; cmd = 'l' if rel else 'L'
+        elif c == 'L':
+            x, y = ox + float(toks[i]), oy + float(toks[i + 1]); i += 2; cur.append((x, y))
+        elif c == 'H':
+            x = ox + float(toks[i]); i += 1; cur.append((x, y))
+        elif c == 'V':
+            y = oy + float(toks[i]); i += 1; cur.append((x, y))
+        elif c == 'Q':
             cx, cy, ex, ey = [float(v) for v in toks[i:i + 4]]; i += 4
-            for s in range(1, steps + 1):
-                u = s / steps
+            cx, cy, ex, ey = ox + cx, oy + cy, ox + ex, oy + ey
+            for st in range(1, steps + 1):
+                u = st / steps
                 cur.append(((1 - u) ** 2 * x + 2 * (1 - u) * u * cx + u * u * ex, (1 - u) ** 2 * y + 2 * (1 - u) * u * cy + u * u * ey))
             x, y = ex, ey
-        elif cmd == 'A':
+        elif c == 'A':
             rx, ry, rot, la, sw, ex, ey = [float(v) for v in toks[i:i + 7]]; i += 7
+            ex, ey = ox + ex, oy + ey
             cur += arc(x, y, rx, ry, rot, int(la), int(sw), ex, ey, steps * 2); x, y = ex, ey
         else:
             i += 1

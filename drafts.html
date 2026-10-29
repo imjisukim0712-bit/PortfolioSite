@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>시안 모음 · 김지수 포트폴리오</title>
-<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저, 스테이지 문법으로) 시안 5개 · 스테이지 게임기 그림 시안 5개.">
+<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저, 스테이지 문법으로) 시안 6개 · 스테이지 게임기 그림 시안 7개.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -49,6 +49,7 @@
   .draft__id { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--fg); color: var(--bg); font: 700 15px/1 ui-monospace, Menlo, monospace; }
   .draft__head h4 { margin: 0; font-size: 20px; font-weight: 600; }
   .draft__head small { color: var(--muted); font-size: 13px; }
+  .draft__badge { padding: 3px 10px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 600; }
   .draft__pitch { margin: 0 0 12px; font-size: 15px; max-width: 920px; }
   .map { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; padding: 0; }
   .map div { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); font-size: 13.5px; }
@@ -93,8 +94,10 @@
   .s-bush { width: 128px; height: 56px; background-image: var(--lv-bush) !important; }
   .s-cloud { width: 112px; height: 48px; background-image: var(--lv-cloud) !important; }
   .s-ghost { width: 48px; height: 56px; background-image: var(--d-ghost) !important; }
-  .s-castle { width: 288px; height: 320px; background-image: var(--d-castle) !important; }
+  .s-castle { width: 288px; height: 256px; background-image: var(--d-castle) !important; }
   .s-flag { width: 88px; height: 384px; background-image: var(--d-flag) !important; }
+  .s-pole { width: 88px; height: 208px; background-image: var(--d-pole) !important; }
+  .s-flagt { width: 60px; height: 64px; background-image: var(--d-flagt) !important; }
   .m-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
   .m-nav { position: absolute; z-index: 6; left: 0; right: 0; top: 0; height: 60px; display: flex; align-items: center; gap: 28px; padding: 0 36px; background: #17345f; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; }
   .m-nav .cur { padding: 6px 10px; background: #fff6dd; color: #c8102e; }
@@ -276,6 +279,45 @@
   .e-lock .e-cart--red { filter: grayscale(.6) brightness(.85); }
   .e-lock .e-shelf--port::after { content: attr(data-lock); position: absolute; inset: 0; display: grid; place-items: center; background: rgb(16 35 70 / .82); color: #fff6dd; font: 11px/1.5 'Galmuri11', monospace; }
 
+
+  /* F · A + D — 직접 쳐서 여는 1-1 코스 (소품은 모두 쓰임이 있음 · 장식 없음) */
+  .f-hud { position: absolute; z-index: 4; left: 0; right: 0; top: 60px; height: 96px; display: grid; grid-template-columns: 300px 190px 130px 1fr; gap: 24px; align-items: center; padding: 8px 48px; color: #fcfcfc; text-shadow: 4px 4px 0 #102346; pointer-events: none; }
+  .f-hud > div > span { display: block; margin-bottom: 10px; font-size: 11px; text-shadow: 2px 2px 0 #102346; }
+  .f-hud b { display: block; font-size: 16px; font-weight: 400; line-height: 1; white-space: nowrap; }
+  .f-hud b .s { margin-right: 8px; vertical-align: -4px; }
+  .f-hud .keys { font: 11px/1.6 'Galmuri11', monospace; text-shadow: 2px 2px 0 #102346; }
+  .f-band { z-index: 4; left: 48px; right: 48px; top: 164px; pointer-events: none; }
+  .f-band .m-win__bar .ps { font-size: 8px; color: #fca044; }
+  .f-band__in { display: grid; grid-template-columns: minmax(0, 1fr) 470px; gap: 22px; padding: 10px 18px 12px; min-height: 96px; }
+  .f-era .m-role span { margin-left: 10px; font-size: 14px; font-weight: 400; color: #3d4050; }
+  .f-era .m-body { margin-top: 6px !important; }
+  .f-abl { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; align-items: center; padding-left: 20px; border-left: 2px dashed #b9b2a0; }
+  .f-abl .nm { font-size: 22px; line-height: 1.2; }
+  .f-abl .nm small { margin-left: 8px; font: 700 14px/1 'Pretendard Variable', Pretendard, sans-serif; color: #c8102e; }
+  .f-abl .pp { margin-top: 6px !important; font: 11px/1 'Galmuri11', monospace; color: #c8102e; letter-spacing: 1px; }
+  .f-abl .ev { margin-top: 6px !important; font-size: 14px; line-height: 1.5; color: #3d4050; }
+  .f-abl .tip { font-size: 15px; line-height: 1.6; }
+  .f-q { position: absolute; z-index: 1; width: 64px; height: 64px; padding: 0; border: 0; background: var(--lv-qblock) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; cursor: pointer; }
+  .f-q:hover { filter: brightness(1.08); }
+  .f-q:focus-visible { outline: 4px solid #fff6dd; outline-offset: 2px; }
+  .f-q.is-used { background-image: var(--d-used); cursor: default; animation: bump .28s ease-out; }
+  .f-q .f-coin { left: 20px; top: -44px; opacity: 0; }
+  .f-q.is-used .f-coin { animation: coinUp .7s ease-out forwards; }
+  .f-lab { position: absolute; z-index: 1; margin: 0; transform: translate(-50%, 8px); opacity: 0; transition: opacity .25s .2s, transform .25s .2s; pointer-events: none; }
+  .f-lab.on { opacity: 1; transform: translate(-50%, 0); }
+  .f-warp { position: absolute; z-index: 1; transform: translateX(-50%); padding: 6px 8px; border: 2px solid #102346; background: #fff6dd; color: #102346; font-size: 11px; cursor: pointer; }
+  .f-warp:hover { background: #fca044; }
+  .f-ghost { z-index: 3; left: 312px; bottom: 128px; }
+  .f-ghost.is-run { animation: bob .2s steps(2) infinite; }
+  .f-ghost.is-jump { animation: fJump .44s cubic-bezier(.3, .6, .4, 1); }
+  @keyframes fJump { 45% { transform: translateY(-112px); } 100% { transform: translateY(0); } }
+  .f-flagt { transform: translateY(104px); transition: transform 1.2s steps(14); }
+  .f-done .f-flagt { transform: none; }
+  .f-go { position: absolute; z-index: 1; display: flex; gap: 14px; }
+  .f-door { position: absolute; z-index: 1; width: 48px; height: 64px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .f-door:hover, .f-door:focus-visible { outline: 4px solid #fca044; outline-offset: -4px; }
+  .f-done .f-go .m-btn--sub { display: none; }
+
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
   /* 게임기 그림 */
@@ -312,7 +354,7 @@
 <main class="wrap">
   <section class="lead">
     <h2><span class="i18n-ko">이력이 먼저 — 나열하지 않고, 플레이하게.</span><span class="i18n-en">The career first — not listed, played.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 두되, 연표로 늘어놓지 않고 스테이지의 놀이 방식 자체로 들려주는 다섯 안을 만들었습니다. 각 화면은 이 페이지에서 직접 밀고 · 누르고 · 꽂아 볼 수 있습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio — not as a timeline, but told through the Stage's own way of playing. Five ways below; every screen can be scrolled, pressed or plugged in right on this page.</span></p>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 두되, 연표로 늘어놓지 않고 스테이지의 놀이 방식 자체로 들려주는 다섯 안을 만들었습니다. 각 화면은 이 페이지에서 직접 밀고 · 누르고 · 꽂아 볼 수 있습니다. 맨 위 F 는 A 와 D 를 합치고 소품을 모두 '쓰임'으로 바꾼 안입니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio — not as a timeline, but told through the Stage's own way of playing. Five ways below; every screen can be scrolled, pressed or plugged in right on this page. F, at the top, merges A and D and turns every prop into something you use.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
@@ -324,8 +366,8 @@
   </section>
 
   <section class="part" id="consoles">
-    <div class="part__head"><span class="part__num">PART 02</span><h3><span class="i18n-ko">스테이지 게임기 그림 — 다섯 안</span><span class="i18n-en">Stage console drawings — five drafts</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">스테이지 시안 그대로에 게임기 그림만 바꾼 다섯 안입니다. 아래 그림은 사이트에 쓰는 도트 데이터를 그대로, 칸 하나를 정수 픽셀로 찍은 것입니다(흐림 없음). 누르면 그 게임기가 입혀진 실제 사이트가 열립니다.</span><span class="i18n-en">The Stage draft with only the console drawing swapped. Each picture below is the site's own pixel data, every cell drawn as a whole number of screen pixels (no blur). Click to open the real site wearing that console.</span></p>
+    <div class="part__head"><span class="part__num">PART 02</span><h3><span class="i18n-ko">스테이지 게임기 그림 — 일곱 안</span><span class="i18n-en">Stage console drawings — seven drafts</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">스테이지 시안 그대로에 게임기 그림만 바꾼 안입니다. 2 · 3번은 1번을 '더 옛날 게임기 · 레트로 느낌 강하게'로 Codex 가 다시 그린 새 안입니다. 아래 그림은 사이트에 쓰는 도트 데이터를 그대로, 칸 하나를 정수 픽셀로 찍은 것입니다(흐림 없음). 누르면 그 게임기가 입혀진 실제 사이트가 열립니다.</span><span class="i18n-en">The Stage draft with only the console drawing swapped. Nos. 2 and 3 are new: Codex redrew No. 1 to feel like a much older, strongly retro console. Each picture below is the site's own pixel data, every cell drawn as a whole number of screen pixels (no blur). Click to open the real site wearing that console.</span></p>
     <div class="cgrid" id="cgrid"></div>
   </section>
 </main>
@@ -343,6 +385,8 @@
 <script src="assets/js/themes/fc-level-art-ink.js" charset="utf-8"></script>
 <script src="assets/js/themes/fc-level-art-gouache.js" charset="utf-8"></script>
 <script src="assets/js/themes/fc-level-art-mecha.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-retro.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-brick.js" charset="utf-8"></script>
 <script>
 (function () {
   'use strict';
@@ -385,24 +429,24 @@
     if ((x === 2 || x === 13) && (y === 2 || y === 13)) return 'K';
     return 'm';
   });
-  /* 성 (72 × 80칸) — 벽돌 결 · 성가퀴 · 탑 · 문 · 창, 아랫변은 땅에 묻힘 */
+  /* 성 (72 × 64칸) — 벽돌 결 · 성가퀴 · 탑 · 문 · 창, 아랫변은 땅에 묻힘 */
   function castleIn(x, y) {
-    if (x < 0 || y < 0 || x >= 72 || y >= 80) return false;
-    if (y >= 40) return true;
-    if (y >= 32) return (x >= 16 && x < 56) || Math.floor(x / 8) % 2 === 0;
+    if (x < 0 || y < 0 || x >= 72 || y >= 64) return false;
+    if (y >= 32) return true;
+    if (y >= 24) return (x >= 16 && x < 56) || Math.floor(x / 8) % 2 === 0;
     if (y >= 8) return x >= 16 && x < 56;
     return x >= 16 && x < 56 && Math.floor((x - 16) / 8) % 2 === 0;
   }
   function castleHole(x, y) {
-    if (x >= 30 && x < 42 && y >= 62) return true;
-    if (x >= 32 && x < 40 && y >= 59 && y < 62) return true;
-    if (y >= 16 && y < 28 && ((x >= 22 && x < 28) || (x >= 44 && x < 50))) return true;
+    if (x >= 30 && x < 42 && y >= 48) return true;
+    if (x >= 32 && x < 40 && y >= 45 && y < 48) return true;
+    if (y >= 12 && y < 20 && ((x >= 22 && x < 28) || (x >= 44 && x < 50))) return true;
     return false;
   }
-  var CASTLE = grid(72, 80, function (x, y) {
+  var CASTLE = grid(72, 64, function (x, y) {
     if (!castleIn(x, y)) return '.';
     if (castleHole(x, y)) return 'K';
-    if (!castleIn(x - 1, y) || !castleIn(x + 1, y) || !castleIn(x, y - 1) || (y < 79 && !castleIn(x, y + 1))) return 'K';
+    if (!castleIn(x - 1, y) || !castleIn(x + 1, y) || !castleIn(x, y - 1) || (y < 63 && !castleIn(x, y + 1))) return 'K';
     return BR[y % 8][x % 16];
   });
   /* 깃대 (22 × 96칸) — 공 · 장대 · 흰 깃발 */
@@ -417,8 +461,21 @@
     }
     return '.';
   });
+  /* 깃대(공 + 장대)와 깃발(삼각형)을 따로 — F 안에서 깃발이 오르내림 */
+  var POLE = grid(22, 52, function (x, y) {
+    function ball(a, b) { return (a + .5 - 16) * (a + .5 - 16) + (b + .5 - 4) * (b + .5 - 4) <= 16; }
+    function pole(a, b) { return b >= 8 && a >= 15 && a <= 16; }
+    function any(a, b) { return ball(a, b) || pole(a, b); }
+    if (!any(x, y)) return '.';
+    return (!any(x - 1, y) || !any(x + 1, y) || !any(x, y - 1) || !any(x, y + 1)) ? 'K' : 'g';
+  });
+  var FLAGT = grid(15, 16, function (x, y) {
+    function f(a, b) { if (b < 0 || b > 15 || a < 0 || a > 14) return false; return a >= Math.round(Math.abs(b - 7.5) / 7.5 * 14); }
+    if (!f(x, y)) return '.';
+    return (!f(x - 1, y) || !f(x + 1, y) || !f(x, y - 1) || !f(x, y + 1)) ? 'K' : 'w';
+  });
   var UBRICK = BR.concat(BR).map(function (r) { return r.replace(/l/g, 'u').replace(/m/g, 'v'); });
-  [['--d-ghost', GHOST], ['--d-hard', HARD], ['--d-used', USED], ['--d-castle', CASTLE], ['--d-flag', FLAG], ['--d-ubrick', UBRICK]].forEach(function (p) { document.documentElement.style.setProperty(p[0], spr(p[1])); });
+  [['--d-ghost', GHOST], ['--d-hard', HARD], ['--d-used', USED], ['--d-castle', CASTLE], ['--d-flag', FLAG], ['--d-pole', POLE], ['--d-flagt', FLAGT], ['--d-ubrick', UBRICK]].forEach(function (p) { document.documentElement.style.setProperty(p[0], spr(p[1])); });
   function S(k, x, y, extra) { return '<i class="s s-' + k + (extra ? ' ' + extra : '') + '" style="left:' + x + 'px;' + (typeof y === 'string' ? y : 'top:' + y + 'px') + '"></i>'; }
 
   /* ── 육각형 능력(시안용 — 고르면 content.js 로 옮김). 칸 수는 예시, 근거는 이력서 내용 ── */
@@ -526,7 +583,7 @@
       '<h5 class="px14">' + T('육각형 완성!', 'Hexagon complete!') + '</h5><div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false }) + '</div>' +
       '<p class="m-body" style="margin:0 0 14px!important">' + T('달려 온 길이 여섯 칸을 고르게 채웠습니다. 성 안에 포트폴리오가 있습니다.', 'The road so far filled all six evenly. The portfolio waits inside the castle.') + '</p>' +
       '<span class="m-btn"><span class="key">A</span>' + T('성 안으로 — 포트폴리오', 'Enter the castle — portfolio') + '</span></div></div>' +
-      stairs + S('hard', E + 800, 498) + S('flag', E + 770, 114) + S('castle', E + 896, 242);
+      stairs + S('hard', E + 800, 498) + S('flag', E + 770, 114) + S('castle', E + 896, 306);
     var start = '<div class="m-win a-start"><div class="m-win__bar"><span class="tag">1-1</span>' + T('달려 온 길 · 2016 →', 'The road so far · 2016 →') + '</div><div class="m-win__in">' +
       '<p class="m-role">' + T(YRS + '년짜리 코스입니다', 'A ' + YRS + '-year course') + '</p><p class="m-body">' + T('오른쪽으로 달리면 시기마다 물음표 블록이 열리고, 그때 익힌 능력이 위 점수판의 육각형에 쌓입니다. 끝의 성 안에 포트폴리오가 있습니다.', 'Run right: each period opens its ? blocks and the abilities learned there stack onto the hexagon in the scoreboard. The portfolio is inside the castle at the end.') + '</p>' +
       '<p class="m-k" style="margin-top:10px">' + T('▶ 휠 · 끌기 · ← → 로 달리기', '▶ Wheel, drag or ← → to run') + '</p></div></div>';
@@ -767,7 +824,127 @@
     scr.innerHTML = sys();
   }
 
+
+  /* ── F · A + D — 직접 쳐서 여는 1-1 코스: 블록 = 능력(쳐야 열림) · 관 = 다음 시기 · 깃발 = 육각형 완성 · 성 = 포트폴리오 ── */
+  var F_X0 = 480, F_ZW = 768, F_WC = F_X0 + F_ZW * 5 + 1200, F_GX = 312, F_N = GAIN.reduce(function (n, g) { return n + Object.keys(g).length; }, 0);
+  function pips(n) { return new Array(n + 1).join('■'); }
+  function draftF() {
+    var zones = ERAS.map(function (c, i) {
+      var x = F_X0 + i * F_ZW, keys = Object.keys(GAIN[i]), n = keys.length, s = '';
+      keys.forEach(function (k, j) {
+        var left = x + 384 - (n - 1) * 80 + j * 160 - 32, a = ax(k);
+        s += '<button type="button" class="f-q" data-z="' + i + '" data-k="' + k + '" style="left:' + left + 'px;top:330px" aria-label="' + esc(year(c) + ' · ' + t(a.n)) + '"><i class="s s-coin f-coin"></i></button>' +
+          '<span class="m-chip f-lab" data-lab="' + i + '-' + k + '" style="left:' + (left + 32) + 'px;top:294px">+' + esc(t(a.n)) + ' ' + pips(GAIN[i][k]) + '</span>';
+      });
+      if (i < 4) s += S('pipe', x + 736, 'bottom:128px') + '<button type="button" class="f-warp px" data-warp="' + (i + 1) + '" style="left:' + (x + 800) + 'px;top:396px">▶ ' + esc(year(ERAS[i + 1])) + '</button>';
+      return '<div class="f-zone" data-x="' + x + '">' + s + '</div>';
+    }).join('');
+    var E = F_WC - 1200;
+    var end = S('hard', E + 548, 498) + S('pole', E + 518, 290) + S('flagt', E + 518, 330, 'f-flagt') + S('castle', E + 860, 306) +
+      '<button type="button" class="f-door" data-f-go style="left:' + (E + 980) + 'px;top:498px" aria-label="' + T('성 문 — 포트폴리오', 'Castle door — portfolio') + '"></button><div class="f-go" style="left:' + (E + 64) + 'px;top:392px"><span class="m-btn" data-f-go><span class="key">A</span>' + T('성 안으로 — 포트폴리오', 'Into the castle — portfolio') + '</span><span class="m-btn m-btn--sub" data-f-all><span class="key">B</span>' + T('남은 블록 한 번에', 'Open the rest') + '</span></div>';
+    return '<div class="mock mock-f">' + nav() +
+      '<div class="f-hud"><div><span class="px">' + esc(NAME) + ' · ' + esc(t(CLS)) + '</span><b class="ps" data-f="year">YEAR ----</b></div>' +
+        '<div><span class="px">' + T('연 블록', 'BLOCKS') + '</span><b class="ps"><i class="s in s-coin-s"></i>×<span data-f="coin">00</span>/' + F_N + '</b></div>' +
+        '<div><span class="px">WORLD</span><b class="ps" data-f="world">1-0</b></div>' +
+        '<div class="keys">' + T('← → 달리기 · SPACE 점프 · 블록 · 관을 눌러도 됩니다', '← → run · SPACE jump · or click blocks and pipes') + '</div></div>' +
+      '<div class="m-win f-band"><div class="m-win__bar"><span class="tag" data-f="tag">1-1</span><span data-f="date"></span><span class="sp"></span><span class="ps" data-f="cnt"></span></div>' +
+        '<div class="f-band__in"><div class="f-era" data-f="era"></div><div class="f-abl"><div data-f="abl"></div><div class="hexwrap" data-f="hex"></div></div></div></div>' +
+      '<div class="a-cam f-cam" tabindex="0" aria-label="' + T('1-1 코스 — 옆으로 밀어 달리고 블록을 쳐 보세요', 'Course 1-1 — scroll to run, hit the blocks') + '"><div class="a-course" style="width:' + F_WC + 'px">' +
+        zones + end + '<i class="m-ground"></i></div></div>' +
+      S('ghost', F_GX, 'bottom:128px', 'f-ghost') + '</div>';
+  }
+  function wireF(root) {
+    var mock = root.querySelector('.mock-f'), cam = root.querySelector('.f-cam'), gh = root.querySelector('.f-ghost');
+    var qs = [].slice.call(root.querySelectorAll('.f-q')), f = {};
+    ['year', 'coin', 'world', 'tag', 'date', 'cnt', 'era', 'abl', 'hex'].forEach(function (k) { f[k] = root.querySelector('[data-f="' + k + '"]'); });
+    var hit = {}, last = null, shown = '', rt, dir = 0, raf = 0;
+    function n() { return Object.keys(hit).length; }
+    function vals() {
+      var v = { dev: 0, ship: 0, comm: 0, crit: 0, docs: 0, team: 0 };
+      Object.keys(hit).forEach(function (key) { var p = key.split('-'); v[p[1]] += GAIN[+p[0]][p[1]]; });
+      return AX.map(function (a) { return Math.min(MAX, v[a.k]); });
+    }
+    function cur() { var gx = cam.scrollLeft + F_GX + 24; return gx >= F_WC - 1200 ? 5 : Math.max(-1, Math.min(4, Math.floor((gx - F_X0) / F_ZW))); }
+    function abl(i) {
+      if (last && (last.i === i || i < 0 || i > 4)) {
+        var a = ax(last.k), v = vals()[AX.indexOf(a)], other = ERAS.map(function (c, j) { return j !== last.i && GAIN[j][last.k] ? year(c) + ' ' + t(SHORT[j]) + ' +' + GAIN[j][last.k] : null; }).filter(Boolean);
+        return '<p class="nm px">' + esc(t(a.n)) + '<small>+' + GAIN[last.i][last.k] + ' ' + T('이 시기', 'here') + '</small></p><p class="pp">' + pips(v) + new Array(MAX - v + 1).join('□') + ' ' + T('지금까지', 'so far') + ' ' + v + '/' + MAX + '</p>' +
+          '<p class="ev">' + esc(t(a.ev)) + (other.length ? ' · ' + T('같은 능력: ', 'also from: ') + esc(other.join(', ')) : '') + '</p>';
+      }
+      if (i < 0) return '<p class="tip">' + T('물음표 블록 하나 = 그 시기에 얻은 능력 하나. 밑에서 쳐야 열립니다 — 달리는 것만으로는 열리지 않아요.', 'One ? block = one ability earned in that period. Hit it from below to open it — running past is not enough.') + '</p>';
+      if (i > 4) return '<p class="tip">' + (n() === F_N ? T('여섯 칸이 다 찼습니다 — 깃발이 올랐어요.', 'All six are full — the flag is up.') : T('아직 ' + (F_N - n()) + '개 남았습니다. 다 열면 깃발이 올라갑니다.', (F_N - n()) + ' blocks left. Open them all to raise the flag.')) + '</p>';
+      var keys = Object.keys(GAIN[i]), k2 = keys.filter(function (k) { return hit[i + '-' + k]; }).length;
+      return '<p class="tip">' + T('이 시기의 블록 ' + keys.length + '개 중 ' + k2 + '개 열림 — 쳐서 여세요.', k2 + ' of ' + keys.length + ' blocks open here — hit them.') + '</p>';
+    }
+    function upd(force) {
+      var i = cur(), key = i + '|' + n() + '|' + (last ? last.i + last.k : '');
+      if (key === shown && !force) return; shown = key;
+      var c = i >= 0 && i <= 4 ? ERAS[i] : null;
+      f.year.textContent = 'YEAR ' + (c ? year(c) : i > 4 ? year(ERAS[4]) : '----');
+      f.coin.textContent = (n() < 10 ? '0' : '') + n();
+      f.world.textContent = i > 4 ? 'GOAL' : '1-' + (i + 1);
+      f.tag.textContent = i > 4 ? 'GOAL' : '1-' + Math.max(1, i + 1);
+      f.date.textContent = c ? t(c.date) : i > 4 ? T('2016 → 지금', '2016 → now') : T('2016 → 지금 · ' + YRS + '년', '2016 → now · ' + YRS + ' years');
+      f.cnt.textContent = n() + ' / ' + F_N;
+      f.era.innerHTML = c ? '<p class="m-role">' + esc(t(c.role)) + '<span>' + esc(t(c.org)) + '</span></p><p class="m-body">' + esc(t(c.body)) + '</p>'
+        : i > 4 ? '<p class="m-role">' + T(YRS + '년 코스 끝', 'End of the ' + YRS + '-year course') + '</p><p class="m-body">' + T('깃대 뒤 성 안에 포트폴리오(메뉴 · 카트리지)가 있습니다.', 'The portfolio (menu and cartridges) is inside the castle past the flag.') + '</p>'
+        : '<p class="m-role">' + T('직접 쳐서 여는 ' + YRS + '년', YRS + ' years you open yourself') + '</p><p class="m-body">' + T('오른쪽으로 달리면 시기가 바뀌고, 블록을 치면 그 시기에 얻은 능력이 육각형에 쌓입니다.', 'Run right to move through the periods; hit blocks to stack what each period taught onto the hexagon.') + '</p>';
+      f.abl.innerHTML = abl(i);
+      f.hex.innerHTML = hex({ values: vals(), labels: false });
+    }
+    function hitBlock(b) {
+      var key = b.getAttribute('data-z') + '-' + b.getAttribute('data-k'); if (hit[key]) return;
+      hit[key] = 1; last = { i: +b.getAttribute('data-z'), k: b.getAttribute('data-k') };
+      b.classList.add('is-used'); root.querySelector('[data-lab="' + key + '"]').classList.add('on');
+      if (n() === F_N) mock.classList.add('f-done');
+      upd(true);
+    }
+    function jump() {
+      if (gh.classList.contains('is-jump')) return;
+      gh.classList.add('is-jump');
+      setTimeout(function () { var gx = cam.scrollLeft + F_GX + 24; qs.forEach(function (b) { var l = parseFloat(b.style.left); if (gx >= l - 8 && gx <= l + 72) hitBlock(b); }); }, RM ? 0 : 200);
+      setTimeout(function () { gh.classList.remove('is-jump'); }, RM ? 0 : 450);
+    }
+    function goTo(x, then) {
+      var target = Math.max(0, Math.min(cam.scrollWidth - cam.clientWidth, x - (F_GX + 24)));
+      var far = Math.abs(target - cam.scrollLeft);
+      cam.scrollTo({ left: target, behavior: RM ? 'auto' : 'smooth' });
+      if (then) setTimeout(then, RM ? 0 : Math.min(700, 120 + far / 3));
+    }
+    cam.addEventListener('scroll', function () { upd(); gh.classList.add('is-run'); clearTimeout(rt); rt = setTimeout(function () { gh.classList.remove('is-run'); }, 160); }, { passive: true });
+    cam.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      var max = cam.scrollWidth - cam.clientWidth;
+      if ((e.deltaY > 0 && cam.scrollLeft < max - 1) || (e.deltaY < 0 && cam.scrollLeft > 0)) { e.preventDefault(); cam.scrollLeft += e.deltaY; }
+    }, { passive: false });
+    function loop() { if (!dir) { raf = 0; return; } cam.scrollLeft += dir * 7; raf = requestAnimationFrame(loop); }
+    cam.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); dir = e.key === 'ArrowRight' ? 1 : -1; if (!raf) raf = requestAnimationFrame(loop); }
+      else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'z' || e.key === 'Z') { e.preventDefault(); jump(); }
+    });
+    cam.addEventListener('keyup', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') dir = 0; });
+    cam.addEventListener('blur', function () { dir = 0; });
+    var dx = null, sl = 0;
+    cam.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.target.closest('button, .m-btn')) return; dx = e.clientX; sl = cam.scrollLeft; cam.classList.add('is-drag'); cam.setPointerCapture(e.pointerId); });
+    cam.addEventListener('pointermove', function (e) { if (dx === null) return; var z = parseFloat(mock.style.zoom) || 1; cam.scrollLeft = sl - (e.clientX - dx) / z; });
+    cam.addEventListener('pointerup', function () { dx = null; cam.classList.remove('is-drag'); });
+    root.addEventListener('click', function (e) {
+      var q = e.target.closest('.f-q'); if (q) { cam.focus({ preventScroll: true }); if (!q.classList.contains('is-used')) goTo(parseFloat(q.style.left) + 32, jump); return; }
+      var w = e.target.closest('[data-warp]'); if (w) { cam.focus({ preventScroll: true }); goTo(F_X0 + (+w.getAttribute('data-warp')) * F_ZW + 120); return; }
+      if (e.target.closest('[data-f-all]')) { qs.forEach(function (b, j) { setTimeout(function () { hitBlock(b); }, RM ? 0 : j * 90); }); return; }
+      if (e.target.closest('[data-f-go]')) { f.abl.innerHTML = '<p class="tip">' + T('→ 실제 홈에서는 여기서 메뉴 화면 · 카트리지(포트폴리오)로 넘어갑니다.', '→ On the real home this leads to the menu screen and cartridges (portfolio).') + '</p>'; }
+    });
+    upd(true);
+  }
+
   var DRAFTS = [
+    { id: 'f', f: draftF, w: wireF, badge: { ko: 'A + D 합친 안', en: 'A + D combined' }, name: { ko: '직접 쳐서 여는 1-1 코스', en: 'Course 1-1 you open yourself' }, sub: { ko: '가로 스크롤 · 소품 = 기능 · 장식 없음', en: 'Side-scrolling · every prop does something · no decoration' },
+      pitch: { ko: 'A 의 코스에 D 의 \'쳐서 열기\'를 얹은 안입니다. 달리기만으로는 아무것도 열리지 않고, 물음표 블록을 밑에서 쳐야(SPACE · 블록 누르기) 그 시기에 얻은 능력이 열리며 위 창에 근거와 \'같은 능력을 얻은 다른 시기\'가, 오른쪽 육각형에 칸이 쌓입니다. 관을 누르면 다음 시기로 건너가고, 블록 ' + F_N + '개를 다 열면 깃발이 올라가고, 성 안이 포트폴리오. 언덕 · 덤불 · 구름 · 벽돌 같은 장식은 모두 뺐습니다.',
+               en: 'A\'s course with D\'s "hit to open". Running past opens nothing: hit a ? block from below (SPACE or click it) to open the ability earned in that period — the window above shows its evidence and the other periods that built it, and the hexagon fills. Pipes skip to the next period, opening all ' + F_N + ' blocks raises the flag, and the castle holds the portfolio. Hills, bushes, clouds and filler bricks are gone.' },
+      map: [['블록', 'Block', '그 시기에 얻은 능력 하나 — 쳐야 열림', 'One ability from that period — opens only when hit'], ['관', 'Pipe', '다음 시기로 건너가기', 'Skip to the next period'], ['깃발', 'Flag', '육각형이 다 차면 올라감', 'Rises when the hexagon is full'], ['성', 'Castle', '포트폴리오', 'The portfolio'], ['장식', 'Decoration', '없음 — 언덕 · 덤불 · 구름 · 벽돌 뺌', 'None — no hills, bushes, clouds or filler bricks']],
+      flow: ['title', 'story', 'menu'], hint: { ko: '▶ 화면을 한 번 누른 뒤 ← → 로 달리고 SPACE 로 점프. 블록 · 관을 바로 눌러도 됩니다(고스트가 달려가서 칩니다).', en: '▶ Click the screen, then ← → to run and SPACE to jump. Or click a block or pipe — the ghost runs over and hits it.' },
+      pros: { ko: ['모든 소품이 뜻을 가짐 — 보는 사람이 치는 만큼 이력이 열림', '시간 순서(A)와 능력 → 근거(D)를 한 화면에', '장식을 빼서 화면이 단순하고 글이 잘 읽힘'], en: ['Every prop means something — the career opens as you hit it', 'Chronology (A) and ability → evidence (D) on one screen', 'No decoration, so the screen is calm and the text reads well'] },
+      cons: { ko: ['블록 ' + F_N + '개 — 바쁜 사람을 위해 \'남은 블록 한 번에\' · 건너뛰기 필요', '휴대폰은 세로 코스로 따로(블록을 누르는 조작은 그대로)'], en: [F_N + ' blocks — needs "open the rest" and a skip for busy visitors', 'Phones need a vertical course (tapping blocks still works)'] } },
     { id: 'a', f: draftA, w: wireA, name: { ko: '1-1 코스 — 달려 온 길', en: 'Course 1-1 — the road so far' }, sub: { ko: '가로 스크롤 · 시간 = 거리', en: 'Side-scrolling · time = distance' },
       pitch: { ko: '게임기를 누르면 화면 속에서 ' + YRS + '년짜리 코스가 시작됩니다. 아래로 밀면 고스트(1P)가 오른쪽으로 달리고, 관으로 나뉜 구간 하나가 한 시기 — 블록을 지나면 그 시기에 익힌 능력이 튀어나와 점수판의 육각형에 쌓입니다. 계단 · 깃대를 지나 성 안으로 들어가면 포트폴리오.',
                en: 'Pressing the console starts a ' + YRS + '-year course on its screen. Scrolling makes the ghost (1P) run right; each pipe-separated stretch is one period, and passing its blocks pops the abilities learned then onto the scoreboard hexagon. Past the stairs and flag, the castle holds the portfolio.' },
@@ -819,10 +996,10 @@
     });
   }
   function renderDrafts() {
-    document.getElementById('toc').innerHTML = DRAFTS.map(function (d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#consoles">' + T('게임기 그림 5안', '5 console drawings') + '</a>';
+    document.getElementById('toc').innerHTML = DRAFTS.map(function (d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#consoles">' + T('게임기 그림 7안', '7 console drawings') + '</a>';
     document.getElementById('rules').innerHTML = RULES.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
     document.getElementById('drafts').innerHTML = DRAFTS.map(function (d) {
-      return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small></div>' +
+      return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
         '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
         '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
         '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' +
@@ -838,6 +1015,10 @@
   var CONSOLES = [
     { art: 'riso', name: { ko: '리소', en: 'Riso' }, hero: true, badge: { ko: '1순위 · 마감까지 다듬은 안', en: 'Top pick · most refined' },
       desc: { ko: '진홍 몸통 · 금색 화면 테 · 금테 두른 버튼. 부품 모양을 따르는 음영, 홈에 앉은 십자 · 돔 버튼까지 마감한 판.', en: 'A crimson body, gold screen frame and gold-ringed buttons, finished with form shading, a recessed D-pad and domed buttons.' } },
+    { art: 'retro', name: { ko: '레트로 컨트롤러', en: 'Retro controller' }, badge: { ko: '새 안 · 1번을 더 옛날 게임기로', en: 'New · No. 1 made older' },
+      desc: { ko: '1번(리소)을 1983년 가정용 게임기 컨트롤러처럼 — 각진 빨강 몸통, 새김선 두른 금색 금속 앞판, 끝이 네모난 십자 버튼, 어두운 홈에 앉은 무광 빨강 버튼.', en: 'No. 1 redrawn like a 1983 home-console controller — a boxy red case, engraved gold metal faceplates, a square-ended D-pad and matte red buttons in a dark recessed strip.' } },
+    { art: 'brick', name: { ko: '벽돌 휴대기', en: 'Brick handheld' }, badge: { ko: '새 안 · 1번을 더 옛날 게임기로', en: 'New · No. 1 made older' },
+      desc: { ko: '1번(리소)을 1989년 벽돌 같은 휴대기로 — 두툼한 몸통, 금색 줄 두른 깊은 검은 화면 판과 전원등, 나사 · 이음매, 아래 턱의 카트리지 입구와 스피커 구멍.', en: 'No. 1 redrawn as a 1989 brick handheld — a chunky case, a deep black screen plate with a gold pinstripe and power lamp, screws and seams, and a cartridge mouth and speaker slots in the chin.' } },
     { art: 'cutpaper', name: { ko: '컷페이퍼', en: 'Cut paper' }, desc: { ko: '오려 붙인 종이처럼 각진 면 — 빨강 손잡이 · 넓은 금색 화면 테 · 검은 두께 띠.', en: 'Angular cut-paper planes — red grips, a broad gold frame, a black thickness band.' } },
     { art: 'ink', name: { ko: '잉크', en: 'Ink' }, desc: { ko: '판 이음선으로 나눈 검은 몸통에 빨강 버튼 · 금색 어깨와 고무 버튼.', en: 'A black body split by panel seams, with red buttons and gold shoulders and key.' } },
     { art: 'gouache', name: { ko: '과슈', en: 'Gouache' }, desc: { ko: '검은 몸통에 금색 붓 자국을 큰 면으로 정리, 빨강 화면 테 · 금색 버튼.', en: 'A black body with gold brush marks turned into broad inlays, a red frame and gold buttons.' } },
