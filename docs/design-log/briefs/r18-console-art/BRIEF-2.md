@@ -180,3 +180,47 @@ Deliverables in `out6/`:
 - `controls.json` with keys `"a"` and `"b"`, same fields as `out5/controls.json` (dpad, rubber, btnUpper, btnLower, labelDpad, labelRubber, labelUpper, labelLower — px boxes).
 - `NOTES.md`: per take, what makes it read as retro, and confirm the screen rect and palette.
 Check each render against the specs (screen rect and flatness, background, palette, no text) and fix before finishing. Do not touch anything outside `out6/`.
+
+## 7차 — 벽돌 휴대기: 화면을 키우고 덧붙은 부품 빼기
+
+사용자: "벽돌 휴대기로 바꾸되 화면 비중을 더 늘려야 함. 너무 부가 요소가 많아." → 6차 B(벽돌 휴대기)를 바탕으로, 바깥 실루엣은 그대로 두고 화면 자리를 (334, 246, 867 × 455) → **(268, 212, 1000 × 600)** 으로 키움(게임기 면적의 약 38 % → 58 %). 나사 · 스피커 구멍 · 턱 줄 · 카트리지 입구 · 전원등 · 따로 붙은 손잡이 판 · 이음매를 뺌. 변환: `svg-console.py out7/b.svg out7/b.png brick --screen 268,212,1000,600`, CSS: `console-art-css.py tools/fc-pixel/console-controls.json 1:riso 2:cutpaper 3:ink 4:gouache 5:mecha a:retro b:brick`.
+
+### Brief for Codex — round 7 (English): the brick handheld, with a much bigger screen and almost no extras
+
+The user picked **take B — the 1989 brick handheld** (`out6/b.svg` / `out6/b.png`) over every other console. Their feedback:
+"Go with the brick handheld, but the **screen has to take up much more of the console — there are too many extra parts**."
+Today the screen is only about 38 % of the console's area; the rest is screws, a chin with a cartridge mouth and ridges, speaker slots,
+a power lamp, separate grip panels and a thick bezel plate. Please redraw it so it is **mostly screen**, while still reading as the same
+chunky red brick handheld (red + gold + black, matte, flat front, small corner radii).
+
+What to keep (this is what makes it the brick handheld — nothing else):
+- the thick red case with small corner radii (about 20–28 px) and **one** moulded thickness band along the bottom edge (the "brick" depth);
+- a dark bezel around the screen with a thin **gold pinstripe** framing it — but make the bezel **narrow** (about 32–40 px from the screen edge to the bezel's outer edge, outline included);
+- left grip: a chunky black plus-shaped D-pad and one dark rubber pill key under it; right grip: two round matte red buttons, one above the other;
+- light from the top-left, a few clean flat shade bands.
+
+What to remove (the user called these "too many extras"): the four screws, the speaker slots, the chin ridges, the cartridge mouth / slot,
+the power lamp, the separate raised grip panels (controls sit directly on the red case), extra seams and the big chin below the screen.
+Do not add new ornaments in their place.
+
+Keep exactly:
+1. Canvas **1536 × 1024**, background flat **#5c94fc** edge to edge, front view.
+2. **Same outer silhouette bounds as round 6 B**: the case (outline included) spans **x 76 – 1460, y 152 – 904** (so the site's placement does not move).
+3. **New screen rectangle exactly (268, 212, 1000, 600)** — that is x 268 – 1267, y 212 – 811 — flat **#fff6dd**, nothing inside (live web content goes there).
+   This makes the screen about 58 % of the case area. The grips are what is left on each side (about 150 px): fit the D-pad, the rubber key and the two
+   buttons there, centred vertically on the screen, with a small **plain label area** under the D-pad, the rubber key and each button (flat red, nothing painted).
+4. No text, letters, logos, brand names, trademarks or characters anywhere.
+5. Conversion-friendly, same as rounds 5–6: flat fills only (no gradients, no texture), the round-5 palette only —
+   black `#0f0a0c` (outline) · `#1e1519` · `#30242a` · `#4b3c42` · `#6e5d63`; red `#3a0610` · `#8c0e22` · `#c8102e` · `#ea3a33` · `#ff8a6a`;
+   gold `#3d290c` · `#9a6a1e` · `#d4a23e` · `#f0cc6a` · `#fff2b8`; screen `#fff6dd`; background `#5c94fc` (no white glints).
+   A uniform **8 px `#0f0a0c` outline** around the silhouette and every part; shading as a few clean bands ≥ 14 px; no feature thinner than 7 px except outlines
+   (the gold pinstripe may be 8 px). The pixel version rasterizes your SVG onto ~7 px cells (about 200 cells wide), so keep shapes bold.
+6. Same SVG structure as rounds 5–6: per part `<defs><clipPath>` + base fill path + `<g clip-path>` shade paths + an 8 px `#0f0a0c` stroke path;
+   the screen frame + flat screen rect last.
+
+Deliverables in `out7/`:
+- `b.svg`, `b.png` (1536 × 1024 PNG render of the SVG, palette-exact).
+- `controls.json` with the key `"b"` only, same fields as `out6/controls.json` (dpad, rubber, btnUpper, btnLower, labelDpad, labelRubber, labelUpper, labelLower — `[x, y, w, h]` px boxes).
+- `NOTES.md`: what you removed, the screen share of the case area, and confirm the silhouette bounds, screen rect and palette.
+Check the render against the specs (silhouette bounds, screen rect and flatness, background, palette, no text, nothing left from the removed list) and fix before finishing.
+Do not touch anything outside `out7/`.
