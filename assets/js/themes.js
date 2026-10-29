@@ -19,7 +19,7 @@
 
   var G = 'https://fonts.googleapis.com/css2?display=swap&family=';
 
-  /* ── 테마 8종 · 시안 42개 ─────────────────────────────────────────────── */
+  /* ── 테마 8종 · 시안 47개 ─────────────────────────────────────────────── */
   var THEMES = [
     {
       id: 'pixel',
@@ -132,6 +132,38 @@
           scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-body.js'],
           css: ['css/themes/pixel-fc-folio.css'],
           swatch: ['#5c94fc', '#c84c0c', '#fca044', '#00a800'] },
+        /* 18회차 — 스테이지는 그대로, 게임기 그림만 다섯 갈래. Codex 가 규격만 받고 '도트가 아닌 그림'을 그리고(검빨금 · docs/design-log/briefs/r18-console-art),
+           tools/fc-pixel/pixelize-console.py 가 그림 그대로 도트로 옮김 · base 로 스테이지 파일을 함께 쓰고 art 로 그림 · 키 자리만 바꿈 */
+        { id: 'fc-level-riso', name: { ko: '스테이지 · 리소', en: 'Stage · Riso' },
+          desc: { ko: '스테이지 시안에서 게임기만 바꾼 안 — Codex 가 규격만 받고 그린 리소 판화풍 그림(진홍 몸통 · 금색 테 · 검은 잉크 점묘)을 도트로 옮겼습니다(검정 · 빨강 · 금색).',
+                  en: 'The Stage draft with only the console swapped: a risograph-style drawing Codex made from specs alone — a crimson body, gold trim and black stippled ink — translated into pixel art in black, red and gold.' },
+          base: 'fc-level', scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-level-art.js', 'js/themes/fc-level-art-riso.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css', 'css/themes/pixel-fc-level-art.css'],
+          art: 'riso', swatch: ['#c8102e', '#7a0e1c', '#d4a849', '#141114'] },
+        { id: 'fc-level-cutpaper', name: { ko: '스테이지 · 컷페이퍼', en: 'Stage · Cut Paper' },
+          desc: { ko: '스테이지 시안에서 게임기만 바꾼 안 — Codex 가 규격만 받고 그린 오려 붙인 종이 같은 굵은 그래픽(빨강 손잡이 · 넓은 금색 화면 테 · 검은 외곽선과 두께 띠)을 도트로 옮겼습니다(검정 · 빨강 · 금색).',
+                  en: 'The Stage draft with only the console swapped: bold cut-paper graphics Codex made from specs alone — red grips, a broad gold screen frame, black outlines and a thickness band — translated into pixel art in black, red and gold.' },
+          base: 'fc-level', scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-level-art.js', 'js/themes/fc-level-art-cutpaper.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css', 'css/themes/pixel-fc-level-art.css'],
+          art: 'cutpaper', swatch: ['#e0242f', '#d4a849', '#141114', '#2a2226'] },
+        { id: 'fc-level-ink', name: { ko: '스테이지 · 잉크', en: 'Stage · Ink' },
+          desc: { ko: '스테이지 시안에서 게임기만 바꾼 안 — Codex 가 규격만 받고 그린 정밀 잉크 선화(검은 몸통 · 빨강 버튼 · 금색 장식, 가는 선과 빗금)을 도트로 옮겼습니다(검정 · 빨강 · 금색).',
+                  en: 'The Stage draft with only the console swapped: precise ink line art Codex made from specs alone — a black body, red buttons and gold details with fine lines and hatching — translated into pixel art in black, red and gold.' },
+          base: 'fc-level', scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-level-art.js', 'js/themes/fc-level-art-ink.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css', 'css/themes/pixel-fc-level-art.css'],
+          art: 'ink', swatch: ['#141114', '#2a2226', '#e0242f', '#d4a849'] },
+        { id: 'fc-level-gouache', name: { ko: '스테이지 · 과슈', en: 'Stage · Gouache' },
+          desc: { ko: '스테이지 시안에서 게임기만 바꾼 안 — Codex 가 규격만 받고 그린 과슈 붓그림(검정 · 금색 붓결 몸통 · 빨강 화면 테 · 금색 버튼)을 도트로 옮겼습니다(검정 · 빨강 · 금색).',
+                  en: 'The Stage draft with only the console swapped: a gouache painting Codex made from specs alone — a black-and-gold brushed body, a red screen frame and gold buttons — translated into pixel art in black, red and gold.' },
+          base: 'fc-level', scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-level-art.js', 'js/themes/fc-level-art-gouache.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css', 'css/themes/pixel-fc-level-art.css'],
+          art: 'gouache', swatch: ['#141114', '#d4a849', '#c8102e', '#494044'] },
+        { id: 'fc-level-mecha', name: { ko: '스테이지 · 메카', en: 'Stage · Mecha' },
+          desc: { ko: '스테이지 시안에서 게임기만 바꾼 안 — Codex 가 규격만 받고 그린 애니 메카 셀화(금색 장갑 · 검은 컨트롤러 면 · 빨강 버튼과 띠)을 도트로 옮겼습니다(검정 · 빨강 · 금색).',
+                  en: 'The Stage draft with only the console swapped: anime mecha cel art Codex made from specs alone — gold armour panels, black controller faces, red buttons and inserts — translated into pixel art in black, red and gold.' },
+          base: 'fc-level', scripts: ['js/themes/pixel-fc-level.js', 'js/themes/fc-stage.js', 'js/themes/fc-level-art.js', 'js/themes/fc-level-art-mecha.js', 'js/themes/fc-body.js'],
+          css: ['css/themes/pixel-fc-folio.css', 'css/themes/pixel-fc-level-art.css'],
+          art: 'mecha', swatch: ['#d4a849', '#f0cb6a', '#141114', '#e0242f'] },
         { id: 'fc-gold', name: { ko: '패미컴 · 기념판', en: 'Famicom · Anniversary Edition' },
           desc: { ko: '기념판 패키지 감성. 칠기 같은 진홍 바탕에 금박 테두리와 월계관 엠블럼, 상아색 증서 같은 카드, 세리프 제목.',
                   en: 'An anniversary-edition package feel: lacquer red, gold-foil borders and a laurel emblem, ivory certificate-like cards and serif headings.' },
