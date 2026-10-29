@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>시안 모음 · 김지수 포트폴리오</title>
-<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저, 스테이지 문법으로) 시안 6개 · 스테이지 게임기 그림 시안 7개.">
+<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저) 2차 시안 5개 · 1차 6개 · 스테이지 게임기 그림 시안 7개.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -318,6 +318,123 @@
   .f-door:hover, .f-door:focus-visible { outline: 4px solid #fca044; outline-offset: -4px; }
   .f-done .f-go .m-btn--sub { display: none; }
 
+
+  /* ── 2차(G ~ K) — 손동작 하나 · 이력은 물건에 붙음 · 끝 화면 = 이력 한 장 ── */
+  .mock-r2 { cursor: default; outline: none; }
+  .mock-r2:focus-visible { box-shadow: inset 0 0 0 4px #fca044; }
+  .r2-title { position: absolute; z-index: 2; left: 48px; top: 88px; width: 460px; color: #fcfcfc; pointer-events: none; }
+  .r2-title h5 { font-size: 28px; line-height: 1.45; text-shadow: 4px 4px 0 #102346; }
+  .r2-title p { margin-top: 8px !important; font-size: 15px; line-height: 1.6; text-shadow: 2px 2px 0 #102346; }
+  .mock .r2-title .r2-count { padding: 7px 9px; }
+  .r2-count { display: inline-block; margin-top: 14px !important; padding: 7px 9px; background: #102346; font-size: 8px !important; line-height: 1 !important; text-shadow: none !important; }
+  .r2-skip { position: absolute; z-index: 5; }
+  .r2-go { position: absolute; z-index: 5; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity .3s .3s, transform .3s .3s; }
+  .is-done .r2-go { opacity: 1; pointer-events: auto; transform: none; }
+  .is-done .r2-skip { display: none; }
+  .r2-jump { animation: fJump .44s cubic-bezier(.3, .6, .4, 1); }
+  .r2-bump { animation: bump .28s ease-out; }
+  .r2-coin { opacity: 0; }
+  .r2-coin.pop { animation: coinUp .7s ease-out forwards; }
+  .mock-r2 .m-chip { margin: 0; }
+
+  /* G · 쌓기 */
+  .g-blk { position: absolute; z-index: 3; left: 296px; top: 390px; width: 64px; height: 64px; padding: 0; border: 0; background: var(--lv-qblock) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; cursor: pointer; }
+  .g-blk:focus-visible { outline: 4px solid #fff6dd; outline-offset: 2px; }
+  .is-done .g-blk { background-image: var(--d-used); cursor: default; }
+  .g-blk .g-coin { left: 20px; top: -44px; }
+  .g-ghost { z-index: 4; left: 304px; top: 566px; }
+  .g-floor { position: absolute; z-index: 2; width: 560px; height: 92px; background: var(--lv-bricks) 0 0 / 64px 32px repeat; image-rendering: pixelated; border: 4px solid #171c28; visibility: hidden; }
+  .g-floor.on { visibility: visible; }
+  .g-lab { position: absolute; inset: 8px 12px; display: grid; grid-template-columns: 70px minmax(0, 1fr) 176px; gap: 12px; align-items: center; padding: 0 12px; background: #fff6dd; border: 4px solid #102346; image-rendering: auto; }
+  .g-lab > b { font-size: 16px; font-weight: 400; color: #c8102e; }
+  .g-lab .r { font-size: 17px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .g-lab .o { font-size: 13px; line-height: 1.35; color: #3d4050; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .g-ch { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+
+  /* H · 시간 돌리기 */
+  .h-hud { position: absolute; z-index: 3; left: 48px; right: 48px; top: 76px; height: 84px; display: grid; grid-template-columns: 210px 1fr auto; gap: 28px; align-items: center; color: #fcfcfc; text-shadow: 3px 3px 0 #102346; }
+  .h-hud span.px { display: block; margin-bottom: 8px; font-size: 11px; text-shadow: 2px 2px 0 #102346; }
+  .h-hud b.ps { font-size: 24px; font-weight: 400; }
+  .h-track { display: flex; gap: 12px; align-items: center; }
+  .h-track i { display: block; width: 24px; height: 40px; background: var(--lv-coin) 0 0 / 100% 100%; image-rendering: pixelated; opacity: .25; filter: grayscale(1); transition: opacity .15s, filter .15s; }
+  .h-track i.on { opacity: 1; filter: none; }
+  .h-ctl { display: flex; gap: 10px; align-items: center; }
+  .h-ctl .m-btn { padding: 8px 12px; }
+  .h-ctl [data-h-step] .key { font: 11px/1 'Galmuri11', monospace; }
+  .h-world { position: absolute; inset: 0; cursor: ew-resize; touch-action: pan-y; }
+  .h-plq { position: absolute; z-index: 2; top: 184px; width: 216px; padding: 10px 12px 12px; background: #fff6dd; border: 4px solid #102346; box-shadow: 6px 6px 0 rgb(16 35 70 / .5); opacity: 0; transform: translateY(-12px); transition: opacity .25s, transform .25s steps(4); }
+  .h-plq::after { content: ''; position: absolute; left: 50%; bottom: -16px; margin-left: -10px; border: 10px solid transparent; border-top: 8px solid #102346; border-bottom: 0; }
+  .h-plq .y { font: 11px/1 'Galmuri11', monospace; color: #c8102e; }
+  .h-plq .r { margin-top: 6px !important; font-size: 16px; font-weight: 700; line-height: 1.3; }
+  .h-plq .o { margin-top: 2px !important; font-size: 12.5px; line-height: 1.4; color: #3d4050; }
+  .h-plq .c { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .h-p { opacity: 0; transform: translateY(var(--from, 40px)); transition: opacity .2s, transform .45s steps(6); }
+  .h-slot.on .h-plq, .h-slot.on .h-p { opacity: 1; transform: none; }
+  .h-slot.on .h-p { transition-delay: var(--d, 0s); }
+  .h-flag { transform: translateY(120px); transition: transform 1s steps(12); }
+  .is-done .h-flag { transform: none; }
+
+  /* I · 건너기 */
+  .i-plat { position: absolute; z-index: 2; width: 208px; }
+  .i-plat .br { height: 32px; background: var(--lv-bricks) 0 0 / 64px 32px repeat; image-rendering: pixelated; border: 4px solid #171c28; border-bottom: 0; }
+  .i-plat .face { height: 120px; padding: 6px 10px 8px; background: #e6dcc2; border: 4px solid #102346; color: #5b5f6e; transition: background .2s, color .2s; overflow: hidden; }
+  .i-plat .y { font-size: 8px; color: #8d6b5a; }
+  .i-plat .r { margin-top: 6px !important; font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .i-plat .o { margin-top: 2px !important; font-size: 12px; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .i-plat .c { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; visibility: hidden; }
+  .i-plat.on .face { background: #fff6dd; color: #102346; }
+  .i-plat.on .y { color: #c8102e; }
+  .i-plat.on .c { visibility: visible; }
+  .i-plat.on .br { animation: bump .28s ease-out; }
+  .i-ghost { z-index: 4; }
+
+  /* J · 벽 깨기 */
+  .j-mural { position: absolute; z-index: 1; left: 88px; top: 238px; width: 1024px; height: 384px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #fff6dd; border: 4px solid #102346; }
+  .j-mural > div { display: flex; flex-direction: column; padding: 18px 16px 16px; border-left: 2px dashed #b9b2a0; }
+  .j-mural .n { margin-top: auto !important; padding-top: 12px; border-top: 2px solid #102346; font-size: 12px; color: #3d4050; }
+  .j-mural .n b { display: block; margin-bottom: 6px; font-size: 16px; font-weight: 400; color: #102346; }
+  .j-mural > div:first-child { border-left: 0; }
+  .j-mural .d { font: 11px/1 'Galmuri11', monospace; color: #c84c0c; }
+  .j-mural .y { display: block; margin-top: 8px; font-size: 16px; color: #c8102e; }
+  .j-mural .r { margin-top: 12px !important; font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .j-mural .o { margin-top: 4px !important; font-size: 13px; line-height: 1.45; color: #3d4050; }
+  .j-mural .b { margin-top: 10px !important; font-size: 13.5px; line-height: 1.55; }
+  .j-mural .c { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+  .j-wall { position: absolute; z-index: 2; left: 88px; top: 238px; width: 1024px; height: 384px; cursor: crosshair; touch-action: none; }
+  .j-wall i { position: absolute; width: 64px; height: 32px; background: var(--lv-bricks) 0 0 / 64px 32px; image-rendering: pixelated; }
+  .j-deb { position: absolute; z-index: 3; width: 32px; height: 16px; background: var(--lv-bricks) 0 0 / 64px 32px; image-rendering: pixelated; pointer-events: none; }
+
+  /* K · 깃대 */
+  .k-pole { left: 560px; top: 94px; width: 88px; height: 464px; background-image: var(--d-pole2) !important; }
+  .k-flag { z-index: 2; left: 560px; }
+  .k-ghost { z-index: 4; left: 628px; cursor: grab; pointer-events: auto !important; touch-action: none; }
+  .k-ghost:active { cursor: grabbing; }
+  .k-plq { position: absolute; z-index: 2; right: 680px; height: 88px; width: 132px; display: flex; flex-direction: row-reverse; background: #fff6dd; border: 4px solid #102346; box-shadow: 6px 6px 0 rgb(16 35 70 / .5); overflow: hidden; transition: width .45s steps(9); }
+  .k-plq.on { width: 424px; }
+  .k-plq .yr { flex: 0 0 124px; display: grid; place-content: center; gap: 6px; text-align: center; background: #102346; color: #fff6dd; }
+  .k-plq .yr b { font-size: 16px; font-weight: 400; color: #fca044; }
+  .k-plq .yr span { font-size: 11px; }
+  .k-plq .tx { flex: 0 0 292px; padding: 6px 14px; }
+  .k-plq .r { font-size: 16px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .k-plq .o { margin-top: 1px !important; font-size: 12.5px; color: #3d4050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .k-plq .c { display: flex; flex-wrap: nowrap; gap: 4px; margin-top: 4px; }
+  .k-rod { position: absolute; z-index: 1; left: 520px; width: 92px; height: 4px; background: #102346; }
+  .k-num { position: absolute; z-index: 2; left: 712px; height: 84px; display: flex; flex-direction: column; justify-content: center; color: #fcfcfc; opacity: 0; }
+  .k-num.on { opacity: 1; }
+  .k-num b { font-size: 24px; font-weight: 400; text-shadow: 4px 4px 0 #102346; }
+  .k-num span { margin-top: 8px; font-size: 11px; text-shadow: 2px 2px 0 #102346; }
+  .k-head { position: absolute; z-index: 2; top: 74px; color: #fcfcfc; font-size: 15px; text-shadow: 2px 2px 0 #102346; pointer-events: none; }
+  .k-head.px { font-size: 11px; }
+  .h-plq, .h-plq * { pointer-events: none; }
+  .h-slot:not(.on) .h-flag { opacity: 0; }
+  .h-flag { transform: translateY(100px); }
+  .h-ctl .r2-go { position: static; }
+  .mock-h.is-done [data-h-step="1"] { display: none; }
+  .older { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .older > summary { cursor: pointer; padding: 8px 0; font-size: 16px; font-weight: 600; }
+  .older > summary small { margin-left: 8px; color: var(--muted); font-size: 13px; font-weight: 400; }
+  .older[open] > summary { margin-bottom: 20px; }
+
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
   /* 게임기 그림 */
@@ -353,16 +470,19 @@
 
 <main class="wrap">
   <section class="lead">
-    <h2><span class="i18n-ko">이력이 먼저 — 나열하지 않고, 플레이하게.</span><span class="i18n-en">The career first — not listed, played.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 두되, 연표로 늘어놓지 않고 스테이지의 놀이 방식 자체로 들려주는 다섯 안을 만들었습니다. 각 화면은 이 페이지에서 직접 밀고 · 누르고 · 꽂아 볼 수 있습니다. 맨 위 F 는 A 와 D 를 합치고 소품을 모두 '쓰임'으로 바꾼 안입니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio — not as a timeline, but told through the Stage's own way of playing. Five ways below; every screen can be scrolled, pressed or plugged in right on this page. F, at the top, merges A and D and turns every prop into something you use.</span></p>
+    <h2><span class="i18n-ko">이력이 먼저 — 해 나가다 보면 보이게.</span><span class="i18n-en">The career first — shown by playing.</span></h2>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 둡니다. 2차 다섯 안(G ~ K)은 손동작 하나로 해 나가다 보면 이력을 볼 수밖에 없고, 다 하고 나면 한 화면에 10년이 다 남습니다. 각 화면은 이 페이지에서 직접 해 볼 수 있습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio. In the five round-2 drafts (G–K) a single gesture walks you through the career whether you meant to read it or not, and when you finish, the ten years sit on one screen. Every screen can be played right on this page.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
   <section class="part" id="story">
-    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 일대기를 스테이지 문법으로</span><span class="i18n-en">Home flow — the story in Stage grammar</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">지금은 타이틀 화면 → (게임기를 누르면) 메뉴 화면 · 카트리지(포트폴리오)입니다. 다섯 안 모두 그 사이에 일대기를 끼우고, 끝은 같습니다 — 육각형이 다 차면 포트폴리오로.</span><span class="i18n-en">Today it is title screen → (press the console) menu screen and cartridges (portfolio). Each draft slots the story in between, and they all end the same way — once the hexagon is full, on to the portfolio.</span></p>
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 2차 — 해 나가다 보면 이력이 보이게</span><span class="i18n-en">Home flow, round 2 — play it and the career shows</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">1차(A ~ F)에 받은 말 — "합치기보다 새로운 방식을. 경험으로 느껴지되 복잡하지 않고, 눈이 즐겁고, 이력이 한눈에 들어와야 함. 이력을 따로 띄우지 말고, 상호작용해 나가며 볼 수밖에 없게." 그래서 손동작이 서로 다른 다섯 안을 새로 만들었습니다. 지금 흐름(타이틀 → 메뉴 · 카트리지) 사이에 들어가는 한 화면입니다.</span><span class="i18n-en">Feedback on round 1 (A–F): "rather than merging, try new ways — felt through play but not complicated, a joy to look at, the career readable at a glance; don't pop the career up separately, make the interaction itself show it." So here are five new drafts, each with a different gesture — one screen between today's title and menu/cartridges.</span></p>
     <ul class="rules" id="rules"></ul>
-    <div id="drafts"></div>
+    <div id="drafts2"></div>
+    <details class="older" id="older"><summary><span class="i18n-ko">1차 시안 여섯 개 다시 보기</span><span class="i18n-en">Round 1 — six drafts</span><small>A ~ F</small></summary>
+      <div id="drafts"></div>
+    </details>
   </section>
 
   <section class="part" id="consoles">
@@ -474,8 +594,15 @@
     if (!f(x, y)) return '.';
     return (!f(x - 1, y) || !f(x + 1, y) || !f(x, y - 1) || !f(x, y + 1)) ? 'K' : 'w';
   });
+  var POLE2 = grid(22, 116, function (x, y) {
+    function ball(a, b) { return (a + .5 - 16) * (a + .5 - 16) + (b + .5 - 4) * (b + .5 - 4) <= 16; }
+    function pole(a, b) { return b >= 8 && a >= 15 && a <= 16; }
+    function any(a, b) { return ball(a, b) || pole(a, b); }
+    if (!any(x, y)) return '.';
+    return (!any(x - 1, y) || !any(x + 1, y) || !any(x, y - 1) || !any(x, y + 1)) ? 'K' : 'g';
+  });
   var UBRICK = BR.concat(BR).map(function (r) { return r.replace(/l/g, 'u').replace(/m/g, 'v'); });
-  [['--d-ghost', GHOST], ['--d-hard', HARD], ['--d-used', USED], ['--d-castle', CASTLE], ['--d-flag', FLAG], ['--d-pole', POLE], ['--d-flagt', FLAGT], ['--d-ubrick', UBRICK]].forEach(function (p) { document.documentElement.style.setProperty(p[0], spr(p[1])); });
+  [['--d-ghost', GHOST], ['--d-hard', HARD], ['--d-used', USED], ['--d-castle', CASTLE], ['--d-flag', FLAG], ['--d-pole', POLE], ['--d-pole2', POLE2], ['--d-flagt', FLAGT], ['--d-ubrick', UBRICK]].forEach(function (p) { document.documentElement.style.setProperty(p[0], spr(p[1])); });
   function S(k, x, y, extra) { return '<i class="s s-' + k + (extra ? ' ' + extra : '') + '" style="left:' + x + 'px;' + (typeof y === 'string' ? y : 'top:' + y + 'px') + '"></i>'; }
 
   /* ── 육각형 능력(시안용 — 고르면 content.js 로 옮김). 칸 수는 예시, 근거는 이력서 내용 ── */
@@ -937,6 +1064,296 @@
     upd(true);
   }
 
+  /* ════ 2차(G ~ K) — 손동작 하나로 해 나가다 보면 이력을 볼 수밖에 없게, 끝 화면은 이력 한 장 ════ */
+  /* 시기마다 대표 숫자(이력서 문구에서 — 20만 다운로드 · 회원 6만 · 월 3~5천 뷰 · 12인 · 6개월) */
+  var NUMS = [
+    { v: '200K', u: { ko: '다운로드 · 5종 출시', en: 'downloads · 5 titles' } },
+    { v: '60K', u: { ko: '커뮤니티 회원', en: 'community members' } },
+    { v: '3-5K', u: { ko: '한 달 조회', en: 'views a month' } },
+    { v: '12', u: { ko: '명 모임 · 주 1회 발표', en: 'people · weekly talks' } },
+    { v: '6', u: { ko: '개월 과정', en: 'month course' } }
+  ];
+  function q4(v) { return Math.round(v / 4) * 4; }
+  /* 포물선 뛰기 — 도착 자리를 먼저 놓고, 출발 자리에서 되돌아오는 칸 단위 움직임 */
+  function hop(el, x0, y0, x1, y1, h, ms, done) {
+    el.style.left = x1 + 'px'; el.style.top = y1 + 'px';
+    if (RM || !el.animate) { if (done) done(); return; }
+    var fr = [];
+    for (var k = 0; k <= 14; k++) { var u = k / 14; fr.push({ transform: 'translate(' + q4((x0 - x1) * (1 - u)) + 'px,' + q4((y0 - y1) * (1 - u) - h * 4 * u * (1 - u)) + 'px)' }); }
+    var a = el.animate(fr, { duration: ms, easing: 'linear' }); a.onfinish = function () { if (done) done(); };
+  }
+  function flash(el, cls, ms) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms || 700); }
+  function keyed(root, fn) { var m = root.querySelector('.mock'); m.addEventListener('keydown', function (e) { fn(e); }); }
+
+  /* ── G · 쌓기 — 이력 블록을 칠 때마다 한 시기가 떨어져 탑이 됨 ───────────── */
+  var G_X = 580, G_FH = 92, G_GR = 622;
+  function gFloor(i) { return { x: G_X + (i % 2 ? 0 : 24), y: G_GR - (i + 1) * G_FH }; }
+  function draftG() {
+    var floors = ERAS.map(function (c, i) {
+      var p = gFloor(i);
+      return '<div class="g-floor" data-g="' + i + '" style="left:' + p.x + 'px;top:' + p.y + 'px"><div class="g-lab"><b class="ps">' + esc(year(c)) + '</b>' +
+        '<div><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.date)) + ' · ' + esc(t(c.org)) + '</p></div><span class="g-ch">' + chips(i) + '</span></div></div>';
+    }).join('');
+    var top = gFloor(4);
+    return '<div class="mock mock-r2 mock-g" tabindex="0" aria-label="' + T('쌓기 — SPACE 나 블록을 눌러 한 층씩', 'Stack — SPACE or the block, one floor at a time') + '">' + nav() +
+      '<div class="r2-title"><h5 class="px14">' + T('칠 때마다 한 층씩', 'One floor per hit') + '</h5><p>' + T('물음표 블록을 쳐 보세요. 지난 ' + YRS + '년이 오래된 시기부터 한 층씩 떨어져 탑이 됩니다.', 'Hit the ? block. The last ' + YRS + ' years drop in one floor at a time, oldest first, and become a tower.') + '</p><p class="r2-count ps" data-g-n>0 / 5</p></div>' +
+      '<button type="button" class="g-blk" data-g-hit aria-label="' + T('이력 블록 치기', 'Hit the career block') + '"><i class="s s-coin r2-coin g-coin"></i></button>' +
+      floors + S('ghost', 304, 'top:566px', 'g-ghost') +
+      '<span class="m-btn r2-go" style="left:' + (top.x + 24) + 'px;top:' + (top.y - 58) + 'px" data-go><span class="key">A</span>' + T('꼭대기에서 — 포트폴리오', 'From the top — portfolio') + '</span>' +
+      '<span class="m-btn m-btn--sub r2-skip" style="left:48px;top:548px" data-g-all><span class="key">B</span>' + T('한 번에 쌓기', 'Stack all') + '</span>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireG(root) {
+    var mock = root.querySelector('.mock-g'), blk = root.querySelector('[data-g-hit]'), gh = root.querySelector('.g-ghost'), cnt = root.querySelector('[data-g-n]');
+    var floors = [].slice.call(root.querySelectorAll('.g-floor')), n = 0, busy = false;
+    function drop(i, fast) {
+      var f = floors[i], p = gFloor(i); f.classList.add('on');
+      if (!RM && f.animate) f.animate([{ transform: 'translateY(-' + (p.y + 140) + 'px)' }, { transform: 'translateY(0)', offset: .78 }, { transform: 'translateY(-12px)', offset: .88 }, { transform: 'translateY(0)' }], { duration: fast ? 380 : 620, easing: 'steps(16, end)' });
+    }
+    function done() {
+      mock.classList.add('is-done');
+      var p = gFloor(4); setTimeout(function () { hop(gh, 304, 566, p.x + 480, p.y - 56, 140, 760); }, RM ? 0 : 500);
+    }
+    function hit() {
+      if (busy || n >= 5) return; busy = true;
+      gh.classList.add('r2-jump'); setTimeout(function () { gh.classList.remove('r2-jump'); }, RM ? 0 : 450);
+      setTimeout(function () {
+        flash(blk, 'r2-bump', 300); flash(blk.querySelector('.g-coin'), 'pop', 700);
+        drop(n); n++; cnt.textContent = n + ' / 5';
+        setTimeout(function () { busy = false; if (n === 5) done(); }, RM ? 0 : 420);
+      }, RM ? 0 : 190);
+    }
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-g-all]')) { for (var i = n; i < 5; i++) (function (k) { setTimeout(function () { drop(k, true); }, RM ? 0 : (k - n) * 160); })(i); var left = 5 - n; n = 5; cnt.textContent = '5 / 5'; setTimeout(done, RM ? 0 : left * 160 + 300); return; }
+      if (e.target.closest('[data-go]')) return;
+      if (e.target.closest('.mock-g')) { mock.focus({ preventScroll: true }); hit(); }
+    });
+    keyed(root, function (e) { if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowUp') { e.preventDefault(); hit(); } });
+  }
+
+  /* ── H · 시간 돌리기 — 해를 넘길수록 월드가 지어지고, 소품이 곧 그 시기 ───── */
+  var H_STEPS = ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2026.06'], H_START = [0, 3, 5, 10, 11];
+  function hSlot(i) { return 24 + i * 232; }
+  function hProps(i, x) {
+    function P(k, l, top, d, from, cls) { return '<i class="s s-' + k + ' h-p' + (cls ? ' ' + cls : '') + '" style="left:' + (x + l) + 'px;top:' + top + 'px;--d:' + d + 's;--from:' + (from || '40px') + '"></i>'; }
+    var s = '', j;
+    if (i === 0) { s += P('pipe', 48, 494, 0, '128px'); for (j = 0; j < 5; j++) s += P('coin', 100 + (j - 2) * 38, 420 - (2 - Math.abs(j - 2)) * 20, .15 + j * .08, '-24px'); }
+    if (i === 1) { s += P('hill', 16, 546, 0, '76px'); for (j = 0; j < 4; j++) s += P('ghost', 12 + j * 50, 566, .15 + j * .1, '-40px'); }
+    if (i === 2) { s += P('cloud', 20, 336, 0, '-24px') + P('cloud', 96, 404, .12, '-24px') + P('ghost', 50, 566, .2, '-40px') + P('ghost', 112, 566, .28, '-40px'); }
+    if (i === 3) { s += P('hard', 20, 558, 0, '64px') + P('ghost', 28, 502, .15, '-40px'); for (j = 0; j < 3; j++) s += P('ghost', 96 + j * 40, 566, .25 + j * .08, '-40px'); s += '<span class="m-chip h-p" style="position:absolute;left:' + (x + 160) + 'px;top:520px;--d:.5s;--from:-12px">×12</span>'; }
+    if (i === 4) { s += P('hard', 92, 558, 0, '64px') + P('pole', 62, 350, .1, '208px') + '<i class="s s-flagt h-flag" style="left:' + (x + 62) + 'px;top:390px"></i>'; }
+    return s;
+  }
+  function draftH() {
+    var slots = ERAS.map(function (c, i) {
+      var x = hSlot(i);
+      return '<div class="h-slot" data-h="' + i + '"><div class="h-plq" style="left:' + x + 'px"><p class="y">' + esc(t(c.date)) + '</p><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><div class="c">' + chips(i) + '</div></div>' + hProps(i, x) + '</div>';
+    }).join('');
+    var track = H_STEPS.map(function (y, k) { return '<i data-h-c="' + k + '" title="' + y + '"></i>'; }).join('');
+    return '<div class="mock mock-r2 mock-h" tabindex="0" aria-label="' + T('시간 돌리기 — ← → 나 끌어서 해를 넘기기', 'Turn time — ← → or drag to move through the years') + '">' + nav() +
+      '<div class="h-world" data-h-world></div>' +
+      '<div class="h-hud"><div><span class="px">YEAR</span><b class="ps" data-h-y>2016</b></div><div class="h-track">' + track + '</div>' +
+        '<div class="h-ctl"><span class="m-btn m-btn--sub" data-h-step="-1"><span class="key">◀</span></span><span class="m-btn" data-h-step="1"><span class="key">▶</span>' + T('다음 해', 'Next year') + '</span><span class="m-btn r2-go" data-go><span class="key">A</span>' + T('지금 — 포트폴리오', 'Now — portfolio') + '</span></div></div>' +
+      slots +
+      '<p class="k-head" style="left:300px;top:440px;font-size:15px" data-h-tip>' + T('끌거나 ▶ 를 눌러 시간을 돌려 보세요 — 해마다 월드가 지어집니다.', 'Drag or press ▶ to turn time — the world builds itself year by year.') + '</p>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireH(root) {
+    var mock = root.querySelector('.mock-h'), yEl = root.querySelector('[data-h-y]'), coins = [].slice.call(root.querySelectorAll('[data-h-c]'));
+    var slots = [].slice.call(root.querySelectorAll('.h-slot')), tip = root.querySelector('[data-h-tip]'), step = 0;
+    function set(k) {
+      step = Math.max(0, Math.min(H_STEPS.length - 1, k));
+      yEl.textContent = H_STEPS[step];
+      coins.forEach(function (c, j) { c.classList.toggle('on', j <= step); });
+      slots.forEach(function (s, i) { s.classList.toggle('on', step >= H_START[i]); });
+      mock.classList.toggle('is-done', step === H_STEPS.length - 1);
+      tip.style.visibility = step ? 'hidden' : 'visible';
+    }
+    root.addEventListener('click', function (e) { var b = e.target.closest('[data-h-step]'); if (b) set(step + (+b.getAttribute('data-h-step'))); });
+    keyed(root, function (e) { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); set(step + 1); } else if (e.key === 'ArrowLeft') { e.preventDefault(); set(step - 1); } });
+    var world = root.querySelector('[data-h-world]'), x0 = null, s0 = 0;
+    world.addEventListener('pointerdown', function (e) { x0 = e.clientX; s0 = step; world.setPointerCapture(e.pointerId); mock.focus({ preventScroll: true }); });
+    world.addEventListener('pointermove', function (e) { if (x0 === null) return; var z = parseFloat(mock.style.zoom) || 1; set(s0 + Math.round((e.clientX - x0) / z / 64)); });
+    world.addEventListener('pointerup', function () { x0 = null; });
+    var acc = 0;
+    mock.addEventListener('wheel', function (e) {
+      var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if ((d > 0 && step < H_STEPS.length - 1) || (d < 0 && step > 0)) { e.preventDefault(); acc += d; if (Math.abs(acc) > 60) { set(step + (acc > 0 ? 1 : -1)); acc = 0; } }
+    }, { passive: false });
+    set(0);
+  }
+
+  /* ── I · 건너기 — 처음부터 다섯 발판이 다 보이고, 뛰어 오를 때마다 그 발판이 켜짐 ── */
+  function iPlat(i) { return { x: 112 + i * 216, y: 470 - i * 86 }; }
+  function draftI() {
+    var plats = ERAS.map(function (c, i) {
+      var p = iPlat(i);
+      return '<div class="i-plat" data-i="' + i + '" style="left:' + p.x + 'px;top:' + p.y + 'px"><div class="br"></div><div class="face"><p class="y ps">' + esc(year(c)) + '</p><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><div class="c">' + chips(i) + '</div></div></div>';
+    }).join('');
+    return '<div class="mock mock-r2 mock-i" tabindex="0" aria-label="' + T('건너기 — SPACE 나 화면을 눌러 다음 발판으로', 'Hop — SPACE or click for the next platform') + '">' + nav() +
+      '<div class="r2-title"><h5 class="px14">' + T('한 칸씩 올라가기', 'Climb one step at a time') + '</h5><p>' + T('발판 다섯이 지난 ' + YRS + '년입니다. 누를 때마다 다음 발판으로 뛰어오르고, 밟은 발판이 켜지며 그때 얻은 능력이 드러납니다.', 'The five platforms are the last ' + YRS + ' years. Each press jumps to the next one; the platform you land on lights up and shows what it taught.') + '</p><p class="r2-count ps" data-i-n>0 / 5</p></div>' +
+      plats + S('ghost', 40, 'top:566px', 'i-ghost') + '<i class="s s-coin r2-coin" data-i-coin style="left:56px;top:520px"></i>' +
+      '<span class="m-btn r2-go" style="left:540px;top:150px" data-go><span class="key">A</span>' + T('꼭대기 — 포트폴리오', 'The top — portfolio') + '</span>' +
+      '<span class="m-btn m-btn--sub r2-skip" style="left:880px;top:548px" data-i-all><span class="key">B</span>' + T('한 번에 오르기', 'Climb all') + '</span>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireI(root) {
+    var mock = root.querySelector('.mock-i'), gh = root.querySelector('.i-ghost'), coin = root.querySelector('[data-i-coin]'), cnt = root.querySelector('[data-i-n]');
+    var plats = [].slice.call(root.querySelectorAll('.i-plat')), n = 0, busy = false, gx = 40, gy = 566;
+    function land(i) { plats[i].classList.add('on'); coin.style.left = (iPlat(i).x + 92) + 'px'; coin.style.top = (iPlat(i).y - 100) + 'px'; flash(coin, 'pop', 700); n = i + 1; cnt.textContent = n + ' / 5'; if (n === 5) mock.classList.add('is-done'); }
+    function next(fast) {
+      if (busy || n >= 5) return; busy = true;
+      var p = iPlat(n), x1 = p.x + 80, y1 = p.y - 56, i = n;
+      hop(gh, gx, gy, x1, y1, 110, fast ? 260 : 520, function () { gx = x1; gy = y1; land(i); busy = false; if (fast) next(true); });
+    }
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-i-all]')) { next(true); return; }
+      if (e.target.closest('[data-go]')) return;
+      if (e.target.closest('.mock-i')) { mock.focus({ preventScroll: true }); next(); }
+    });
+    keyed(root, function (e) { if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowUp' || e.key === 'ArrowRight') { e.preventDefault(); next(); } });
+  }
+
+  /* ── J · 벽 깨기 — 벽돌을 문지르면 깨지고, 뒤에 이력 한 장이 있음 ─────────── */
+  var J_C = 16, J_R = 12;
+  function draftJ() {
+    var cols = ERAS.map(function (c, i) {
+      return '<div><p class="d">' + esc(t(c.date)) + '</p><b class="y ps">' + esc(year(c)) + '</b><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><p class="b">' + esc(t(c.body)) + '</p><div class="c">' + chips(i) + '</div><p class="n px"><b class="ps">' + esc(NUMS[i].v) + '</b>' + esc(t(NUMS[i].u)) + '</p></div>';
+    }).join('');
+    var bricks = '';
+    for (var r = 0; r < J_R; r++) for (var k = 0; k < J_C; k++) bricks += '<i data-j="' + (r * J_C + k) + '" style="left:' + k * 64 + 'px;top:' + r * 32 + 'px"></i>';
+    return '<div class="mock mock-r2 mock-j">' + nav() +
+      '<div class="r2-title" style="width:720px"><h5 class="px14">' + T('벽돌을 문질러 깨 보세요', 'Rub the bricks to break them') + '</h5><p>' + T('마우스를 벽 위에서 움직이거나 손가락으로 쓸면 벽돌이 깨집니다. 벽 뒤에 지난 ' + YRS + '년이 한 장에 있습니다.', 'Move the mouse over the wall, or swipe a finger, and the bricks break. Behind the wall are the last ' + YRS + ' years on one sheet.') + '</p><p class="r2-count ps" data-j-n>0%</p></div>' +
+      '<div class="j-mural">' + cols + '</div><div class="j-wall" data-j-wall>' + bricks + '</div>' +
+      '<span class="m-btn r2-go" style="left:900px;top:150px" data-go><span class="key">A</span>' + T('포트폴리오 보기', 'See the portfolio') + '</span>' +
+      '<span class="m-btn m-btn--sub r2-skip" style="left:900px;top:150px" data-j-all><span class="key">B</span>' + T('한 번에 깨기', 'Break it all') + '</span>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireJ(root) {
+    var mock = root.querySelector('.mock-j'), wall = root.querySelector('[data-j-wall]'), cnt = root.querySelector('[data-j-n]');
+    var bricks = [].slice.call(wall.children), alive = J_C * J_R, auto = false;
+    function debris(b) {
+      if (RM || !mock.animate) return;
+      var l = parseFloat(b.style.left) + 88, tp = parseFloat(b.style.top) + 238;
+      [[0, 0, -1], [32, 0, 1], [0, 16, -1], [32, 16, 1]].forEach(function (d, j) {
+        var el = document.createElement('i'); el.className = 'j-deb';
+        el.style.left = (l + d[0]) + 'px'; el.style.top = (tp + d[1]) + 'px'; el.style.backgroundPosition = (-d[0]) + 'px ' + (-d[1]) + 'px';
+        mock.appendChild(el);
+        var vx = d[2] * (28 + Math.random() * 36), up = j < 2 ? 64 : 32, fr = [];
+        for (var k = 0; k <= 10; k++) { var u = k / 10; fr.push({ transform: 'translate(' + q4(vx * u) + 'px,' + q4(-up * 4 * u * (1 - u) + 220 * u * u) + 'px)', opacity: u > .8 ? 1 - (u - .8) * 5 : 1 }); }
+        el.animate(fr, { duration: 620, easing: 'linear' }).onfinish = function () { el.remove(); };
+      });
+    }
+    function brk(b) {
+      if (!b || b.dataset.x) return; b.dataset.x = 1; b.style.visibility = 'hidden'; debris(b); alive--;
+      var pct = Math.round((1 - alive / (J_C * J_R)) * 100); cnt.textContent = pct + '%';
+      if (!auto && pct >= 55) { auto = true; crumble(); }
+      if (alive === 0) mock.classList.add('is-done');
+    }
+    function crumble() { bricks.filter(function (b) { return !b.dataset.x; }).forEach(function (b, j) { setTimeout(function () { brk(b); }, RM ? 0 : 40 + j * 14); }); }
+    function at(e) {
+      var r = wall.getBoundingClientRect(), z = parseFloat(mock.style.zoom) || 1, sx = r.width / 1024;
+      var x = (e.clientX - r.left) / sx, y = (e.clientY - r.top) / sx;
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
+        var cx = x + dx * 26, cy = y + dy * 16, k = Math.floor(cx / 64), rr = Math.floor(cy / 32);
+        if (k >= 0 && k < J_C && rr >= 0 && rr < J_R && Math.hypot(dx * 26, dy * 16) < 34) brk(bricks[rr * J_C + k]);
+      }
+    }
+    wall.addEventListener('pointermove', at);
+    wall.addEventListener('pointerdown', function (e) { wall.setPointerCapture(e.pointerId); at(e); });
+    root.addEventListener('click', function (e) { if (e.target.closest('[data-j-all]')) { auto = true; crumble(); } });
+  }
+
+  /* ── K · 깃대 — 깃대를 타고 내려가면 연도마다 이력 판이 펼쳐지고 숫자가 점수로 ── */
+  var K_Y0 = 120, K_Y1 = 502;
+  function kRow(i) { return 112 + i * 92; }
+  function draftK() {
+    var rows = ERAS.map(function (c, i) {
+      var y = kRow(i);
+      return '<div class="k-plq" data-k="' + i + '" style="top:' + y + 'px"><div class="yr"><b class="ps">' + esc(year(c)) + '</b><span class="px">' + esc(t(SHORT[i])) + '</span></div>' +
+        '<div class="tx"><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><div class="c">' + chips(i) + '</div></div></div>' +
+        '<i class="k-rod" style="top:' + (y + 40) + 'px"></i>' +
+        '<div class="k-num" data-k-n="' + i + '" style="top:' + y + 'px"><b class="ps">' + esc(NUMS[i].v) + '</b><span class="px">' + esc(t(NUMS[i].u)) + '</span></div>';
+    }).join('');
+    return '<div class="mock mock-r2 mock-k" tabindex="0" aria-label="' + T('깃대 — 고스트를 끌어 내리거나 ↓ · 휠', 'Flagpole — drag the ghost down, or ↓ / wheel') + '">' + nav() +
+      '<p class="k-head" style="left:96px">' + T('고스트를 끌어 깃대를 타고 내려가 보세요 (↓ · 휠도 됩니다)', 'Drag the ghost down the pole (↓ or the wheel work too)') + '</p>' +
+      '<p class="k-head px" style="left:712px">SCORE — ' + T('이력의 숫자', 'the numbers') + '</p>' +
+      '<i class="s k-pole"></i>' + S('hard', 590, 558) + S('flagt', 560, K_Y0 + 14, 'k-flag') + rows +
+      S('ghost', 628, 'top:' + K_Y0 + 'px', 'k-ghost') +
+      '<span class="m-btn r2-go" style="left:760px;top:566px" data-go><span class="key">A</span>' + T('성으로 — 포트폴리오', 'To the castle — portfolio') + '</span>' +
+      '<span class="m-btn m-btn--sub r2-skip" style="left:760px;top:566px" data-k-all><span class="key">▼</span>' + T('끝까지 미끄러지기', 'Slide to the bottom') + '</span>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireK(root) {
+    var mock = root.querySelector('.mock-k'), gh = root.querySelector('.k-ghost'), flag = root.querySelector('.k-flag');
+    var plq = [].slice.call(root.querySelectorAll('.k-plq')), nums = [].slice.call(root.querySelectorAll('.k-num')), p = 0, raf = 0;
+    function set(v) {
+      p = Math.max(0, Math.min(1, v));
+      var y = q4(K_Y0 + p * (K_Y1 - K_Y0)); gh.style.top = y + 'px'; flag.style.top = (y + 14) + 'px';
+      plq.forEach(function (el, i) {
+        var mark = kRow(i) + 42, on = y + 28 >= mark;
+        if (on && !el.classList.contains('on')) {
+          el.classList.add('on'); var nm = nums[i]; nm.classList.add('on');
+          if (!RM && nm.animate) nm.animate([{ transform: 'translate(-84px,' + (y - kRow(i)) + 'px)', opacity: 0 }, { transform: 'translate(-84px,' + (y - kRow(i) - 40) + 'px)', opacity: 1, offset: .35 }, { transform: 'translate(0,0)', opacity: 1 }], { duration: 700, easing: 'steps(14, end)' });
+        }
+      });
+      mock.classList.toggle('is-done', p >= 1);
+    }
+    function slide() { cancelAnimationFrame(raf); var t0 = null, from = p; function f(ts) { if (t0 === null) t0 = ts; var u = Math.min(1, (ts - t0) / (RM ? 1 : 2400 * (1 - from))); set(from + (1 - from) * u); if (u < 1) raf = requestAnimationFrame(f); } raf = requestAnimationFrame(f); }
+    var y0 = null, p0 = 0;
+    gh.addEventListener('pointerdown', function (e) { y0 = e.clientY; p0 = p; gh.setPointerCapture(e.pointerId); mock.focus({ preventScroll: true }); e.preventDefault(); });
+    gh.addEventListener('pointermove', function (e) { if (y0 === null) return; var z = parseFloat(mock.style.zoom) || 1; set(p0 + (e.clientY - y0) / z / (K_Y1 - K_Y0)); });
+    gh.addEventListener('pointerup', function () { y0 = null; });
+    mock.addEventListener('wheel', function (e) { if ((e.deltaY > 0 && p < 1) || (e.deltaY < 0 && p > 0)) { e.preventDefault(); set(p + e.deltaY / 900); } }, { passive: false });
+    keyed(root, function (e) { if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); set(p + .08); } else if (e.key === 'ArrowUp') { e.preventDefault(); set(p - .08); } });
+    root.addEventListener('click', function (e) { if (e.target.closest('[data-k-all]')) slide(); });
+    set(0);
+  }
+
+  var DRAFTS2 = [
+    { id: 'g', f: draftG, w: wireG, name: { ko: '쌓기 — 이력 탑', en: 'Stack — the career tower' }, sub: { ko: '손동작: 치기', en: 'Gesture: hit' },
+      pitch: { ko: '물음표 블록 하나를 칠 때마다(SPACE · 클릭) 지난 시기가 하늘에서 한 층씩 떨어져 오른쪽에 탑으로 쌓입니다. 층 하나 = 시기 하나(연도 · 역할 · 소속 · 얻은 능력). 다섯 번 치면 2016 이 바닥, 지금이 꼭대기인 탑이 서고, 고스트가 꼭대기로 뛰어올라 포트폴리오로.',
+               en: 'Each hit on the single ? block (SPACE or click) drops one past period from the sky onto a tower on the right. One floor = one period (year, role, place, abilities). Five hits build a tower with 2016 at the bottom and now at the top; the ghost leaps to the top and on to the portfolio.' },
+      map: [['손동작', 'Gesture', '블록 치기 × 5', 'Hit the block × 5'], ['이력이 붙는 곳', 'Where the career lives', '탑의 층 하나하나', 'Each floor of the tower'], ['끝 화면', 'End screen', '2016 → 지금이 쌓인 탑 하나', 'One tower, 2016 → now']],
+      hint: { ko: '▶ 블록이나 화면을 누르거나 SPACE. 바쁘면 B 한 번에 쌓기.', en: '▶ Click the block or the screen, or press SPACE. Busy? B stacks all.' },
+      pros: { ko: ['조작이 가장 단순 — 누르기만', '\'쌓아 온 경력\'이 그대로 그림이 됨(바닥이 가장 오래된 시기)', '끝 화면이 탑 하나라 한눈에 읽힘'], en: ['The simplest controls — just press', '"A career built up" becomes the picture itself (oldest at the bottom)', 'The end screen is one tower — readable at a glance'] },
+      cons: { ko: ['같은 동작 다섯 번 — 층마다 떨어지는 모습을 달리하면 보완', '층이 가로로 길어 휴대폰에서는 탑을 세로로 좁혀야 함'], en: ['The same move five times — vary each floor\'s fall to keep it fresh', 'Floors are wide; phones need a narrower tower'] } },
+    { id: 'h', f: draftH, w: wireH, name: { ko: '시간 돌리기 — 지어지는 월드', en: 'Turn time — a world that builds itself' }, sub: { ko: '손동작: 끌기 · ▶', en: 'Gesture: drag · ▶' },
+      pitch: { ko: '화면을 끌거나 ▶ 를 누르면 해가 넘어가고(2016 → 2026, 위 동전 줄이 하나씩 켜짐), 그 해에 시작한 시기가 월드에 지어집니다. 소품이 곧 그 시기 — 관과 동전 다섯 = 혼자 낸 다섯 작품, 언덕의 고스트 무리 = 6만 커뮤니티, 구름과 둘 = 2인 블로그, 단상과 사람들 = 12인 발표, 깃발 = 다음 팀. 마지막 해에 깃발이 오르고 왼쪽 → 오른쪽이 그대로 연표.',
+               en: 'Drag the screen or press ▶ to turn the years (2016 → 2026; the coin row lights up), and each period is built into the world in the year it began. The props are the periods — a pipe and five coins = five solo releases, a crowd of ghosts on a hill = the 60K community, two ghosts under clouds = the two-person blog, a podium and listeners = the 12-person talks, a flag = the next team. In the last year the flag rises, and left to right is the timeline.' },
+      map: [['손동작', 'Gesture', '끌기 · 휠 · ◀ ▶', 'Drag · wheel · ◀ ▶'], ['이력이 붙는 곳', 'Where the career lives', '소품 묶음 + 그 위 팻말', 'A set of props + its sign'], ['끝 화면', 'End screen', '왼쪽 → 오른쪽 = 2016 → 지금인 월드 한 장', 'One world, left to right = 2016 → now']],
+      hint: { ko: '▶ 화면을 옆으로 끌거나 ▶ · 휠 · ← →.', en: '▶ Drag sideways, or ▶ · wheel · ← →.' },
+      pros: { ko: ['시간이 흐르며 월드가 지어지는 모습이 가장 눈이 즐거움', '소품 하나하나가 이력의 은유 — 장식이 아니라 내용', '끝 화면이 \'내 10년 월드\' 한 장'], en: ['A world building itself over time is the most fun to watch', 'Every prop is a metaphor for the career — content, not decoration', 'The end screen is "my ten-year world" in one picture'] },
+      cons: { ko: ['은유를 읽어야 해서 팻말이 꼭 함께 있어야 함', '2026 에 두 시기가 겹쳐 마지막 두 칸이 한 해에 몰림'], en: ['The metaphors need their signs to read', 'Two periods start in 2026, so the last two arrive together'] } },
+    { id: 'i', f: draftI, w: wireI, name: { ko: '건너기 — 발판 다섯', en: 'Hop — five platforms' }, sub: { ko: '손동작: 뛰기', en: 'Gesture: jump' },
+      pitch: { ko: '한 화면에 발판 다섯이 계단처럼 떠 있고, 처음부터 연도와 역할이 다 보입니다(흐린 상태). 누를 때마다 고스트가 다음 발판으로 뛰어오르고, 밟은 발판이 켜지며 얻은 능력이 드러납니다. 맨 위 발판에서 포트폴리오로.',
+               en: 'Five platforms float like stairs on one screen, every year and role visible from the start (dimmed). Each press makes the ghost jump to the next; the platform it lands on lights up and shows the abilities. From the top platform, on to the portfolio.' },
+      map: [['손동작', 'Gesture', '뛰기 × 5', 'Jump × 5'], ['이력이 붙는 곳', 'Where the career lives', '발판의 앞면', 'The face of each platform'], ['끝 화면', 'End screen', '다 켜진 발판 다섯 = 오르막 연표', 'Five lit platforms = an uphill timeline']],
+      hint: { ko: '▶ 화면을 누르거나 SPACE · →.', en: '▶ Click the screen, or SPACE · →.' },
+      pros: { ko: ['가장 \'게임\'다운 손맛(점프)', '처음부터 연도 · 역할이 다 보여서 한눈에 → 밟으면 자세히', '올라갈수록 성장한다는 그림'], en: ['The most game-like feel (jumping)', 'Years and roles are visible from the start; landing adds detail', 'Climbing reads as growth'] },
+      cons: { ko: ['발판이 좁아 글이 짧아야 함(소속은 한 줄로 줄임)'], en: ['Narrow platforms need short text (the place is cut to one line)'] } },
+    { id: 'j', f: draftJ, w: wireJ, name: { ko: '벽 깨기 — 벽 뒤의 이력', en: 'Break the wall — the career behind it' }, sub: { ko: '손동작: 문지르기', en: 'Gesture: rub' },
+      pitch: { ko: '벽돌 벽 위를 마우스로 문지르거나 손가락으로 쓸면 벽돌이 원작처럼 네 조각으로 깨져 떨어지고, 벽 뒤에 그려 둔 이력 한 장(다섯 시기의 연도 · 역할 · 소속 · 한 줄 · 능력)이 드러납니다. 절반 넘게 깨면 나머지가 와르르 무너지고, 포트폴리오로.',
+               en: 'Rub the brick wall with the mouse or a finger and the bricks shatter into four pieces like the original, revealing the career sheet behind it (five periods: year, role, place, one line, abilities). Past halfway the rest collapses, then on to the portfolio.' },
+      map: [['손동작', 'Gesture', '문지르기 · 쓸기', 'Rub · swipe'], ['이력이 붙는 곳', 'Where the career lives', '벽 뒤의 벽화', 'The mural behind the wall'], ['끝 화면', 'End screen', '다섯 칸짜리 이력 한 장', 'A five-column career sheet']],
+      hint: { ko: '▶ 벽 위에서 마우스를 움직여 보세요(누를 필요 없음). 휴대폰은 손가락으로 쓸기.', en: '▶ Just move the mouse over the wall (no click needed). On a phone, swipe.' },
+      pros: { ko: ['문지르는 손맛 · 벽돌 깨지는 연출이 시원함', '조작을 배울 필요가 없음(올리기만 해도 깨짐)', '끝 화면이 가장 정보가 많은 이력 한 장'], en: ['Satisfying to rub; the breaking bricks feel great', 'Nothing to learn — hovering is enough', 'The end screen carries the most information'] },
+      cons: { ko: ['다 깨기 전에는 이력이 가려짐 → 55% 에서 자동으로 무너지게 함', '벽 · 벽화가 커서 휴대폰에서는 세로 벽으로'], en: ['The career is hidden until broken → it collapses on its own at 55%', 'Wall and mural are large; phones need a tall version'] } },
+    { id: 'k', f: draftK, w: wireK, name: { ko: '깃대 — 미끄러지며 보는 연표', en: 'Flagpole — a timeline you slide down' }, sub: { ko: '손동작: 끌어내리기', en: 'Gesture: drag down' },
+      pitch: { ko: '스테이지 끝의 깃대가 곧 연표입니다. 고스트를 끌어 내리면(↓ · 휠) 깃발과 함께 미끄러지며 연도 표시를 지날 때마다 왼쪽에 이력 판이 펼쳐지고, 그 시기의 숫자(20만 다운로드 · 6만 회원 …)가 원작의 깃대 점수처럼 튀어 올라 오른쪽 점수판에 쌓입니다. 바닥에 닿으면 성으로.',
+               en: 'The flagpole at the end of a stage is the timeline. Drag the ghost down (↓ or the wheel): it slides with the flag, and each year mark it passes unfolds a career plate on the left while that period\'s number (200K downloads, 60K members…) pops like the original flagpole score and lands in the scoreboard on the right. At the bottom, on to the castle.' },
+      map: [['손동작', 'Gesture', '끌어내리기 · ↓ · 휠', 'Drag down · ↓ · wheel'], ['이력이 붙는 곳', 'Where the career lives', '깃대에 걸린 판 + 점수', 'Plates on the pole + score'], ['끝 화면', 'End screen', '왼쪽 연표 | 깃대 | 오른쪽 숫자', 'Timeline | pole | numbers']],
+      hint: { ko: '▶ 고스트를 잡고 아래로 끌거나, 화면을 누른 뒤 ↓ · 휠.', en: '▶ Grab the ghost and drag down, or click the screen and use ↓ or the wheel.' },
+      pros: { ko: ['원작의 깃대 미끄러지기 그대로 — 아는 사람은 바로 웃음', '왼쪽 연표 + 오른쪽 숫자로 이력서 숫자까지 한눈에', '세로라 휴대폰에도 그대로 맞음'], en: ['The original flagpole slide — instantly recognisable', 'Timeline on the left, numbers on the right — the résumé figures at a glance', 'Vertical, so it fits phones as is'] },
+      cons: { ko: ['위 → 아래가 2016 → 지금이라 처음엔 낯설 수 있음', '판이 펼쳐지기 전에는 연도만 보임'], en: ['Top → bottom is 2016 → now, which may feel unusual at first', 'Only the years show until the plates unfold'] } }
+  ];
+  var RULES2 = [
+    { h: { ko: '손동작 하나', en: 'One gesture' }, b: { ko: '안마다 한 가지만 — 치기 · 돌리기 · 뛰기 · 문지르기 · 끌어내리기. 배울 게 없습니다.', en: 'Each draft has just one — hit, turn, jump, rub, drag down. Nothing to learn.' } },
+    { h: { ko: '이력은 물건에 붙음', en: 'The career is the object' }, b: { ko: '따로 뜨는 창이 없습니다. 탑의 층 · 월드의 소품 · 발판 · 벽화 · 깃대의 판이 곧 이력이라, 해 나가다 보면 볼 수밖에 없습니다.', en: 'No separate windows. Tower floors, world props, platforms, the mural and the pole\'s plates are the career — playing means reading it.' } },
+    { h: { ko: '끝 화면 = 이력 한 장', en: 'End screen = the career on one sheet' }, b: { ko: '다 하고 나면 한 화면에 10년이 다 보입니다. 그대로 캡처해도 이력 요약.', en: 'When you finish, the ten years fit on one screen — a screenshot of it is a résumé summary.' } },
+    { h: { ko: '장식 없음 · 건너뛰기', en: 'No decoration · a skip' }, b: { ko: '쓰임 없는 소품은 빼고, 바쁜 사람은 B 로 한 번에.', en: 'Props without a job are gone; the busy press B to do it at once.' } }
+  ];
+
   var DRAFTS = [
     { id: 'f', f: draftF, w: wireF, badge: { ko: 'A + D 합친 안', en: 'A + D combined' }, name: { ko: '직접 쳐서 여는 1-1 코스', en: 'Course 1-1 you open yourself' }, sub: { ko: '가로 스크롤 · 소품 = 기능 · 장식 없음', en: 'Side-scrolling · every prop does something · no decoration' },
       pitch: { ko: 'A 의 코스에 D 의 \'쳐서 열기\'를 얹은 안입니다. 달리기만으로는 아무것도 열리지 않고, 물음표 블록을 밑에서 쳐야(SPACE · 블록 누르기) 그 시기에 얻은 능력이 열리며 위 창에 근거와 \'같은 능력을 얻은 다른 시기\'가, 오른쪽 육각형에 칸이 쌓입니다. 관을 누르면 다음 시기로 건너가고, 블록 ' + F_N + '개를 다 열면 깃발이 올라가고, 성 안이 포트폴리오. 언덕 · 덤불 · 구름 · 벽돌 같은 장식은 모두 뺐습니다.',
@@ -995,20 +1412,23 @@
       m.style.zoom = z < 1 ? z.toFixed(4) : '';
     });
   }
-  function renderDrafts() {
-    document.getElementById('toc').innerHTML = DRAFTS.map(function (d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#consoles">' + T('게임기 그림 7안', '7 console drawings') + '</a>';
-    document.getElementById('rules').innerHTML = RULES.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
-    document.getElementById('drafts').innerHTML = DRAFTS.map(function (d) {
-      return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
+  function draftHTML(d) {
+    return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
         '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
         '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
-        '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' +
+        (d.flow ? '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' : '') +
         '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div><p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
         '<div class="notes"><div><h5>' + T('좋은 점', 'Strengths') + '</h5><ul>' + d.pros[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
-    }).join('');
+  }
+  function renderDrafts() {
+    function toc(d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }
+    document.getElementById('toc').innerHTML = DRAFTS2.map(toc).join('') + '<a href="#older">' + T('1차 시안 A ~ F', 'Round 1: A–F') + '</a><a href="#consoles">' + T('게임기 그림 7안', '7 console drawings') + '</a>';
+    document.getElementById('rules').innerHTML = RULES2.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
+    document.getElementById('drafts2').innerHTML = DRAFTS2.map(draftHTML).join('');
+    document.getElementById('drafts').innerHTML = DRAFTS.map(draftHTML).join('');
     fit();
-    DRAFTS.forEach(function (d) { d.w(document.querySelector('.mockbox[data-draft="' + d.id + '"]')); });
+    DRAFTS2.concat(DRAFTS).forEach(function (d) { d.w(document.querySelector('.mockbox[data-draft="' + d.id + '"]')); });
   }
 
   /* ── 게임기 그림: 사이트 도트 데이터를 정수 배율로 ──────────────────────── */
@@ -1059,6 +1479,7 @@
   }
   function render() { applyLang(); renderDrafts(); renderConsoles(); }
   render();
+  document.getElementById('older').addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); renderConsoles(); }, 150); });
   document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   document.querySelector('[data-dark]').addEventListener('click', function () {
