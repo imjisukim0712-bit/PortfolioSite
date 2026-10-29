@@ -3,6 +3,8 @@
    ----------------------------------------------------------------------------
    · 기본 디자인(style.css) 위에 assets/css/themes/<테마>.css + <테마>-<시안>.css 를 덧입힙니다.
      시안 항목에 css: [...] 가 있으면 그 파일들을 시안 CSS 뒤에 더 읽습니다(공용 다듬기 파일).
+     시안 항목에 base: '<다른 시안>' 이 있으면 그 시안의 CSS · data-skin 을 그대로 쓰고(파일을 복제하지 않음),
+     art: '<이름>' 을 <html data-skin-art> 로 찍어 그림만 바꿉니다(스테이지 게임기 그림 시안 — fc-body.js).
    · 시안 고르기 :  ?skin=pixel-gameboy  (주소에 붙이면 그 뒤로 모든 페이지에 유지)
                     ?skin=default        (기본 디자인으로 되돌리기)
    · 확정하기   :  아래 DEFAULT_SKIN 에 시안 id 를 적으면 방문자 모두에게 그 디자인이 보입니다.
@@ -352,7 +354,7 @@
 
   function hrefs(sel) {
     if (!sel) return { css: [], fonts: [], js: [] };
-    var css = [ASSETS + 'css/themes/' + sel.theme.id + '.css', ASSETS + 'css/themes/' + sel.theme.id + '-' + sel.variant.id + '.css']
+    var css = [ASSETS + 'css/themes/' + sel.theme.id + '.css', ASSETS + 'css/themes/' + sel.theme.id + '-' + (sel.variant.base || sel.variant.id) + '.css']
       .concat((sel.variant.css || []).map(function (f) { return ASSETS + f; }));   /* 시안 CSS 뒤에 덧입히는 공용 다듬기 파일 */
     var fonts = (sel.theme.fonts || []).concat(sel.variant.fonts || []);
     var js = (sel.theme.scripts || []).concat(sel.variant.scripts || []).map(function (f) { return ASSETS + f; });   /* 홈 구성을 바꾸는 테마·시안의 스크립트 */
@@ -381,8 +383,10 @@
   }
   function mark(sel) {
     var root = document.documentElement;
-    if (sel) { root.setAttribute('data-skin', sel.id); root.setAttribute('data-skin-theme', sel.theme.id); }
+    /* base 가 있는 시안은 그 시안의 이름으로 찍어 CSS · 스크립트가 그대로 알아보게 하고, 그림 갈래만 data-skin-art 로 */
+    if (sel) { root.setAttribute('data-skin', sel.theme.id + '-' + (sel.variant.base || sel.variant.id)); root.setAttribute('data-skin-theme', sel.theme.id); }
     else { root.removeAttribute('data-skin'); root.removeAttribute('data-skin-theme'); }
+    if (sel && sel.variant.art) root.setAttribute('data-skin-art', sel.variant.art); else root.removeAttribute('data-skin-art');
   }
   if (hit) { mark(hit); writeLinks(hit); }
 

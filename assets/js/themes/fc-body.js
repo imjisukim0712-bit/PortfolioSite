@@ -349,16 +349,20 @@
     return svgWrap(d, b);
   }
 
-  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': stageArt, 'pixel-fc-kraft': kraftArt,
+  /* 스테이지는 그림 갈래(<html data-skin-art>, 18회차 — fc-level-art.js)가 있으면 그 화풍으로, 없으면 stageArt */
+  function stageAny() { var a = art(); return (a && window.FcLevelArt && window.FcLevelArt.draw(a)) || stageArt(); }
+  var ART = { 'pixel-fc-dot': dotArt, 'pixel-fc-level': stageAny, 'pixel-fc-kraft': kraftArt,
               'pixel-fc-gold': goldArt, 'pixel-fc-metal': metalArt, 'pixel-fc-museum': museumArt,
               /* 10회차 Codex 다듬기 안 — 원본과 같은 게임기 그림에서 출발 */
               'pixel-fc-dot-cx': dotArt, 'pixel-fc-level-cx': levelArt, 'pixel-fc-kraft-cx': kraftArt };
 
   function skin() { return document.documentElement.getAttribute('data-skin'); }
+  function art() { return document.documentElement.getAttribute('data-skin-art') || ''; }
+  function key() { return skin() + (art() ? '|' + art() : ''); }
   function paint() {
     var draw = ART[skin()];
     Array.prototype.forEach.call(document.querySelectorAll('.fcb-art'), function (el) {
-      if (!draw || el.getAttribute('data-for') !== skin()) el.parentNode.removeChild(el);
+      if (!draw || el.getAttribute('data-for') !== key()) el.parentNode.removeChild(el);
     });
     if (!draw) return;
     Array.prototype.forEach.call(document.querySelectorAll('.fcs-rig > .hero'), function (hero) {
@@ -366,7 +370,7 @@
       var box = document.createElement('div');
       box.innerHTML = draw();
       var svg = box.firstChild;
-      svg.setAttribute('data-for', skin());
+      svg.setAttribute('data-for', key());
       hero.insertBefore(svg, hero.firstChild);
     });
   }
@@ -377,7 +381,7 @@
     var queued = false;
     var later = function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; paint(); }); };
     if (main) new MutationObserver(later).observe(main, { childList: true, subtree: true });
-    new MutationObserver(later).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin'] });
+    new MutationObserver(later).observe(document.documentElement, { attributes: true, attributeFilter: ['data-skin', 'data-skin-art'] });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
