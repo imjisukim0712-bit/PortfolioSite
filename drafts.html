@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>시안 모음 · 김지수 포트폴리오</title>
-<meta name="description" content="포트폴리오 사이트 시안 — 홈 흐름 S 지어지는 월드 + 5차 새 안 넷(V ~ Y, 스크롤만) · 스테이지 게임기 벽돌 휴대기">
+<meta name="description" content="포트폴리오 사이트 시안 — 홈 흐름 이력 브리핑(연출 없이 한 장) · 지난 안 S · 스테이지 게임기 벽돌 휴대기">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -251,111 +251,78 @@
   .s6-ghost.run { animation: bob .18s steps(2) infinite; }
 
 
-  /* ── 5차(V ~ Y) — S 와 같은 바탕 위의 새 방식 넷 ── */
-  .s-cur { width: 44px; height: 64px; background-image: var(--d-cur) !important; }
-  /* V · 레벨 에디터 */
-  .v-bar { position: absolute; z-index: 4; left: 32px; top: 76px; width: 1136px; height: 96px; background: #fff6dd; border: 4px solid #102346; box-shadow: 0 0 0 4px #000; }
-  .v-mode { position: absolute; left: 12px; top: 16px; width: 88px; height: 48px; display: grid; place-items: center; background: #c8102e; color: #fff6dd; border: 4px solid #000; font: 16px/1 'Press Start 2P', monospace; }
-  .v-mode.play { background: #00a800; }
-  .v-tool { position: absolute; top: 8px; height: 72px; display: grid; place-items: center; overflow: hidden; background: #5c94fc; border: 4px solid #102346; }
-  .v-tool.on { border-color: #c8102e; background: #fca044; }
-  .v-pipe { display: block; width: 128px; height: 64px; background: var(--lv-pipe) 0 0 / 128px 128px no-repeat; image-rendering: pixelated; align-self: start; }
-  .v-tool--pipe { place-items: start center; padding-top: 0; }
-  .v-chip { position: absolute; top: 8px; width: 76px; height: 72px; padding: 10px 0 0; text-align: center; background: #ede5cf; border: 4px dashed #a59c86; color: #a59c86; }
-  .v-chip .y { display: block; font-size: 16px; line-height: 1; }
-  .v-chip .r { display: block; margin-top: 12px; font-size: 11px; line-height: 1.2; white-space: nowrap; overflow: hidden; }
-  .v-chip.on { background: #fff; border: 4px solid #102346; color: #102346; }
-  .v-chip.on .y { color: #c8102e; }
-  .v-grid { position: absolute; z-index: 0; left: 24px; top: 174px; width: 1152px; height: 448px; background: linear-gradient(90deg, rgb(255 255 255 / .3) 2px, transparent 2px) 0 0 / 64px 64px, linear-gradient(rgb(255 255 255 / .3) 2px, transparent 2px) 0 0 / 64px 64px; transition: opacity .4s; }
-  .v-grid.off { opacity: 0; }
-  .v-t { opacity: 0; transform: scale(.4); transition: opacity .08s, transform .16s steps(4); }
-  .v-t.on { opacity: 1; transform: none; }
-  .mock .v-x12 { position: absolute; margin: 0; }
-  .v-flag { translate: 0 100px; transition: opacity .08s, transform .16s steps(4), translate 1s steps(12); }
-  .v-flag.up { translate: none; }
-  .v-cur { z-index: 7; }
-  .v-ghost { z-index: 5; opacity: 0; }
-  .v-ghost.on { opacity: 1; }
-  .v-ghost.run { animation: bob .18s steps(2) infinite; }
-  /* W · 한 자리 10년 */
-  .w-board { position: absolute; z-index: 3; left: 32px; top: 140px; width: 336px; padding: 0 0 8px; background: #fff6dd; border: 4px solid #102346; box-shadow: 0 0 0 4px #000; }
-  .w-board::before, .w-board::after { content: ''; position: absolute; z-index: -1; top: 100%; width: 16px; height: 132px; background: #c84c0c; border: 4px solid #000; border-top: 0; }
-  .w-board::before { left: 40px; } .w-board::after { right: 40px; }
-  .mock .w-board__t { display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 14px; background: #102346; color: #fca044; }
-  .w-board__t .ps { font-size: 16px; } .w-board__t .px { color: #fff6dd; font-size: 11px; }
-  .w-row { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; gap: 8px; height: 52px; margin: 8px 10px 0; padding: 0 10px; background: #f1e9d2; border: 3px dashed #b8ad92; }
-  .w-row .y { font-size: 16px; color: #a59c86; }
-  .w-row .q { font-size: 16px; color: #c9bfa6; }
-  .w-row .full { display: none; min-width: 0; }
-  .w-row.on { background: #fff; border: 3px solid #102346; }
-  .w-row.on .y { color: #c8102e; } .w-row.on .q { display: none; } .w-row.on .full { display: block; }
-  .w-row .r { font-size: 15px; font-weight: 700; line-height: 1.25; color: #102346; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .w-row .o { margin-top: 2px !important; font-size: 12px; line-height: 1.3; color: #3d4050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mock-w .s-pipe { z-index: 2; }
-  .w-ghost { z-index: 1; }
-  .w-light .smb-hud { color: #102346; text-shadow: none; }
-  .w-light .smb-hud b.ps, .w-light .smb-hud .px { color: #c8102e; }
-  .w-ghost.run, .w-crowd.run { animation: bob .18s steps(2) infinite; }
-  .w-flag { translate: 0 100px; opacity: 0; transition: translate 1s steps(12); }
-  .w-flag.on { opacity: 1; }
-  .s2-done .w-flag { translate: none; }
-  /* X · 벽돌 휴대기 속 */
-  .mock-x .x-cons { position: absolute; z-index: 1; }
-  .mock-x .x-cons svg { display: block; }
-  .x-scr { position: absolute; z-index: 2; overflow: hidden; background: #5c94fc; }
-  .x-world { position: absolute; left: 0; top: 0; height: 100%; will-change: translate; }
-  .x-gnd { position: absolute; left: 0; right: 0; top: 302px; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
-  .x-yr { position: absolute; top: 134px; color: #fff6dd; font-size: 16px; text-shadow: 4px 4px 0 rgb(0 0 0 / .45); }
-  .x-blk.used { background-image: var(--d-used) !important; }
-  .x-coin { opacity: 0; }
-  .x-coin.pop { animation: coinUp .7s ease-out forwards; }
-  .x-ghost { z-index: 3; }
-  .x-ghost.run { animation: bob .18s steps(2) infinite; }
-  .x-hud { position: absolute; z-index: 4; left: 16px; top: 16px; display: flex; gap: 24px; color: #fcfcfc; text-shadow: 4px 4px 0 rgb(0 0 0 / .45); }
-  .x-hud .ps { font-size: 16px; line-height: 1; }
-  .x-hud b { font-weight: 400; color: #fff6dd; }
-  .x-chip { position: absolute; z-index: 4; top: 12px; width: 60px; height: 36px; display: grid; place-items: center; background: rgb(255 246 221 / .35); border: 4px dashed rgb(255 246 221 / .8); color: #fff6dd; font-size: 16px; }
-  .x-chip.on { background: #fff6dd; border: 4px solid #102346; color: #c8102e; }
-  .x-press { position: absolute; z-index: 3; background: rgb(15 10 12 / .42); opacity: 0; pointer-events: none; }
-  .x-press--a { border-radius: 50%; }
-  .x-press.on { opacity: 1; }
-  .x-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x; image-rendering: pixelated; }
-  .x-menu { position: absolute; z-index: 5; inset: 0; padding: 20px 24px; background: #fff6dd; color: #102346; opacity: 0; transition: opacity .3s; }
-  .x-menu.on { opacity: 1; }
-  .mock .x-menu__t { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; border-bottom: 4px dashed #c9bfa6; font: 700 22px/1 'Pretendard Variable', Pretendard, sans-serif; }
-  .x-menu__t b { padding: 8px 10px; background: #c8102e; color: #fff6dd; font-size: 16px; }
-  .x-menu__t span { margin-left: auto; color: #c8102e; font-size: 16px; }
-  .x-menu__in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; margin-top: 18px; }
-  .x-menu ol, .x-menu ul { margin: 0; padding: 0; list-style: none; }
-  .x-menu ol li { display: flex; align-items: center; gap: 12px; height: 52px; border-bottom: 2px solid #ede5cf; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .x-menu ol li b { font-size: 16px; color: #c8102e; }
-  .x-menu ul li { height: 52px; display: flex; align-items: center; padding-left: 28px; font: 22px/1 'Galmuri11', monospace; }
-  .x-menu ul li.on { padding-left: 0; color: #c8102e; }
-  /* Y · 육각형 채우기 */
-  .y-board { position: absolute; z-index: 1; left: 560px; top: 132px; width: 608px; height: 478px; background: #fff6dd; border: 4px solid #102346; box-shadow: 0 0 0 4px #000; }
-  .mock .y-board__t { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
-  .y-board__t .ps { padding: 6px 8px; background: #102346; color: #fca044; font-size: 16px; }
-  .y-board__t .px { font-size: 22px; color: #102346; }
-  .y-hexbg { position: absolute; z-index: 2; left: 677px; top: 197px; width: 374px; height: 374px; }
-  .y-hexbg svg { display: block; width: 100%; height: 100%; }
-  .y-slot { position: absolute; z-index: 3; width: 28px; height: 28px; border: 2px dashed rgb(16 35 70 / .35); }
-  .y-lab { position: absolute; z-index: 3; color: #102346; font-size: 15px; font-weight: 700; white-space: nowrap; transform: translateY(-50%); }
-  .y-lab--r { transform: translate(-100%, -50%); }
-  .y-lab--c { transform: translate(-50%, -50%); }
-  .y-fb { position: absolute; z-index: 6; left: 0; top: 0; width: 28px; height: 28px; border: 3px solid #000; box-shadow: inset 4px 4px 0 rgb(255 255 255 / .45); visibility: hidden; }
-  .y-blk { z-index: 4; }
-  .y-blk.used { background-image: var(--d-used) !important; }
-  .y-ghost { z-index: 4; }
-  .y-leg { position: absolute; z-index: 3; left: 24px; top: 642px; width: 1152px; height: 84px; background: #fff6dd; border: 4px solid #102346; box-shadow: 0 0 0 4px #000; }
-  .y-leg__i { position: absolute; top: 8px; width: 220px; height: 60px; display: grid; grid-template-columns: 24px auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 10px; row-gap: 6px; align-content: center; padding: 0 10px; border: 3px dashed #c9bfa6; color: #a59c86; }
-  .y-leg__i i { grid-row: 1 / 3; width: 24px; height: 24px; border: 3px solid #000; opacity: .35; align-self: center; }
-  .y-leg__i b { font-size: 16px; line-height: 1; }
-  .y-leg__i .q { grid-column: 2 / 4; font-size: 16px; line-height: 1; color: #c9bfa6; }
-  .y-leg__i .r { display: none; }
-  .y-leg__i.on { border: 3px solid #102346; background: #fff; color: #102346; }
-  .y-leg__i.on i { opacity: 1; }
-  .y-leg__i.on .q { display: none; }
-  .y-leg__i.on .r { display: block; grid-column: 2 / 4; font-size: 13px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ── 이력 브리핑 — 이력이 주인공. 테마는 재료(크림 창 · 남색 테 · 도트 숫자 · 연도)로만 녹임, 소품 · 캐릭터 · 움직임 없음 ── */
+  .older { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .older > summary { cursor: pointer; padding: 8px 0; font-size: 16px; font-weight: 600; }
+  .older > summary small { margin-left: 8px; color: var(--muted); font-size: 13px; font-weight: 400; }
+  .older[open] > summary { margin-bottom: 20px; }
+  .brief { --ink: #102346; --muted: #3d4050; --red: #c8102e; --cream: #fff6dd; position: relative; overflow: clip; padding: 32px 32px 96px; border-radius: 16px; background: #5c94fc; color: var(--ink); font: 16px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
+  .brief::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x; image-rendering: pixelated; }
+  .brief p, .brief h5, .brief ol, .brief ul { margin: 0; padding: 0; }
+  .brief .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .brief__grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .bw { position: relative; background: var(--cream); border: 4px solid var(--ink); box-shadow: 8px 8px 0 rgb(16 35 70 / .45); }
+  .bw__tab { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px; background: var(--ink); color: var(--cream); font-size: 15px; font-weight: 700; }
+  .bw__tab .ps { font-size: 16px; color: #fca044; }
+  .bw__tab .sp { flex: 1; }
+  .bw__tab small { font-size: 13px; font-weight: 500; opacity: .8; }
+  .bw__in { padding: 22px 24px 24px; }
+  /* 나 */
+  .bme { position: sticky; top: 92px; }
+  .bme__name { font-size: 28px; font-weight: 800; line-height: 1.2; letter-spacing: -.01em; }
+  .bme__role { margin-top: 4px !important; color: var(--red); font-size: 15px; font-weight: 700; }
+  .bme__lead { margin-top: 14px !important; font-size: 17px; line-height: 1.65; }
+  .bme__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+  .bme__stats div { padding: 12px 14px; background: #fff; border: 3px solid var(--ink); }
+  .bme__stats b { display: block; font-size: 24px; line-height: 1; color: var(--red); }
+  .bme__stats b small { margin-left: 4px; font: 700 15px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--ink); }
+  .bme__stats span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.35; color: var(--muted); }
+  .bme__go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .bme__go a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border: 4px solid var(--ink); background: var(--red); color: var(--cream); font-size: 15px; font-weight: 700; box-shadow: 4px 4px 0 var(--ink); }
+  .bme__go a + a { background: #fff; color: var(--ink); }
+  /* 경력 */
+  .btl { list-style: none; }
+  .btl li { position: relative; display: grid; grid-template-columns: 132px minmax(0, 1fr) 132px; gap: 18px; padding: 20px 24px 20px 52px; border-top: 3px solid #e7dcc0; }
+  .btl li:first-child { border-top: 0; }
+  .btl li::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 4px; background: #d9cca8; }
+  .btl li:first-child::before { top: 30px; } .btl li:last-child::before { bottom: auto; height: 30px; }
+  .btl li::after { content: ''; position: absolute; left: 16px; top: 24px; width: 16px; height: 16px; background: #fca044; border: 4px solid var(--ink); }
+  .btl li.now::after { background: var(--red); }
+  .btl__when b { display: block; font-size: 16px; line-height: 1; color: var(--ink); }
+  .btl__when span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+  .btl__when em { display: inline-block; margin-top: 8px; padding: 3px 7px; background: var(--red); color: #fff; font-size: 12px; font-style: normal; font-weight: 700; }
+  .btl__what h5 { font-size: 20px; font-weight: 800; line-height: 1.3; }
+  .btl__what .o { margin-top: 2px !important; font-size: 14px; color: var(--muted); }
+  .btl__what .b { margin-top: 8px !important; font-size: 16px; line-height: 1.7; }
+  .btl__num { text-align: right; }
+  .btl__num b { display: block; font-size: 24px; line-height: 1; color: var(--red); }
+  .btl__num span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.35; color: var(--muted); }
+  /* 강점 */
+  .bst3 { margin-top: 28px; }
+  .bst3 .bw__in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding: 0; }
+  .bst3__i { padding: 20px 24px 22px; border-left: 3px solid #e7dcc0; }
+  .bst3__i:first-child { border-left: 0; }
+  .bst3__i .t { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--red); }
+  .bst3__i h5 { margin-top: 6px !important; font-size: 18px; font-weight: 800; line-height: 1.35; }
+  .bst3__i p { margin-top: 6px !important; font-size: 15px; line-height: 1.65; color: var(--muted); }
+  @media (max-width: 980px) {
+    .brief__grid { grid-template-columns: minmax(0, 1fr); }
+    .bme { position: static; }
+  }
+  @media (max-width: 640px) {
+    .brief { padding: 20px 14px 84px; border-radius: 12px; }
+    .bw__in { padding: 18px 16px 20px; }
+    .btl li { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 18px 16px 18px 44px; }
+    .btl li::before { left: 18px; } .btl li::after { left: 12px; top: 22px; }
+    .btl__when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+    .btl__when span, .btl__when em { margin-top: 0; }
+    .btl__num { display: flex; align-items: baseline; gap: 8px; text-align: left; }
+    .btl__num span { margin-top: 0; }
+    .bst3 .bw__in { grid-template-columns: minmax(0, 1fr); }
+    .bst3__i { border-left: 0; border-top: 3px solid #e7dcc0; }
+    .bst3__i:first-child { border-top: 0; }
+  }
 
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
@@ -392,16 +359,19 @@
 
 <main class="wrap">
   <section class="lead">
-    <h2><span class="i18n-ko">이력이 먼저 — 스크롤만 하면.</span><span class="i18n-en">The career first — just scroll.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 둡니다. 여러 차례 낸 시안 가운데 <b>지어지는 월드</b>(S)를 골랐고, 같은 바탕으로 새 방식 넷(V ~ Y)을 더 냈습니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio. Of the many drafts, <b>a world being built</b> (S) was chosen, and four new takes on the same base (V–Y) follow. The console is the <b>brick handheld</b>.</span></p>
+    <h2><span class="i18n-ko">이력이 먼저 — 간단하고 확실하게.</span><span class="i18n-en">The career first — simple and clear.</span></h2>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 연출 없이 한 장으로 확실하게 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career is shown plainly and clearly on one page. The console is the <b>brick handheld</b>.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
   <section class="part" id="story">
-    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 고른 S + 5차 새 안 넷</span><span class="i18n-en">Home flow — the chosen S + four new drafts</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">1 ~ 4차 시안(A ~ U) 가운데 고른 S 를 맨 위에 두고, 그 아래에 S 와 같은 바탕(스크롤만 · 빨강 고스트 · 닿는 자리에서 큰 대화창 · 늘 밝게)으로 새로 낸 5차 넷(V ~ Y)을 붙였습니다. 누를 것이 하나도 없고, 화면이 그 자리에 붙은 채 스크롤하는 만큼 안에서 움직이고 글이 써집니다.</span><span class="i18n-en">The chosen S (from rounds 1–4, A–U) stays on top; below it are four new round-5 drafts (V–Y) on the same base — scroll only, the red ghost, a big dialog from the spot touched, always bright. There is nothing to click: the screen stays in place while things move and the text writes itself as far as you scroll.</span></p>
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력 브리핑</span><span class="i18n-en">Home flow — the career briefing</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">"연출은 자연스럽게 녹아내는 역할만 하는 것이고, 가장 중요한 건 이력을 잘 보여 주는 것." 그래서 화면을 더 복잡하게 만드는 대신, 첫 화면(게임기 타이틀) 바로 아래에 이력을 한 장으로 둡니다. 5차 넷(V ~ Y)은 폐기했고, 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">"The staging only blends in; what matters most is showing the career well." So instead of making the screen more complex, the career sits on one page right below the first screen (the console title). The four round-5 drafts (V–Y) are dropped, and the earlier pick S is folded below.</span></p>
     <ul class="rules" id="rules"></ul>
     <div id="drafts4"></div>
+    <details class="older" id="older"><summary><span class="i18n-ko">지난 안 — S 지어지는 월드</span><span class="i18n-en">Earlier — S, a world being built</span><small><span class="i18n-ko">스크롤 연출 · 보류</span><span class="i18n-en">scroll staging · on hold</span></small></summary>
+      <div id="drafts-old"></div>
+    </details>
   </section>
 
   <section class="part" id="consoles">
@@ -753,368 +723,61 @@
     return api;
   }
 
-  /* ════ 5차(V ~ Y) — S 와 같은 바탕(스크롤만 · 빨강 고스트 · 닿는 자리에서 큰 대화창 · 밝게) 위의 새 방식 넷 ════ */
-  var SHORT = [{ ko: '1인 개발', en: 'Solo dev' }, { ko: '커뮤니티', en: 'Community' }, { ko: '블로그', en: 'Blog' }, { ko: '스터디', en: 'Study' }, { ko: '기획 과정', en: 'Course' }];   /* 오래된 순 — 짧은 이름 */
-  var ERA_Y = [2016, 2019, 2021, 2026, 2026.5];
-  /* 다 쓴 블록 — 갈색 면 · 네 귀 리벳 · 검은 테 */
-  var USED = grid(16, 16, function (x, y) {
-    if (x === 0 || y === 0 || x === 15 || y === 15) return 'K';
-    if ((x === 2 || x === 13) && (y === 2 || y === 13)) return 'K';
-    return 'm';
-  });
-  /* 편집기 커서(화살표) — 흰 면 · 검은 테 */
-  var CUR = ['K..........', 'KK.........', 'KwK........', 'KwwK.......', 'KwwwK......', 'KwwwwK.....', 'KwwwwwK....', 'KwwwwwwK...', 'KwwwwwwwK..', 'KwwwwwwwwK.', 'KwwwwwKKKKK', 'KwwKwwK....', 'KwK.KwwK...', 'KK..KwwK...', 'K....KwwK..', '.....KKKK..'];
-  [['--d-used', USED], ['--d-cur', CUR]].forEach(function (q) { document.documentElement.style.setProperty(q[0], spr(q[1])); });
-  /* 게임기 그림(사이트 도트 데이터 → SVG, 칸 단위 viewBox) */
-  function artSVG(d) {
-    var paths = {}, shade = [];
-    d.rows.forEach(function (row, j) {
-      var y = d.y + j, x = d.x, re = /([.,A-Za-z])(\d*)/g, m;
-      while ((m = re.exec(row))) {
-        var n = m[2] ? +m[2] : 1, c = m[1];
-        if (c !== '.') { var seg = 'M' + x + ' ' + y + 'h' + n + 'v1h-' + n + 'z'; if (c === ',') shade.push(seg); else { var col = d.pal[c <= 'Z' ? c.charCodeAt(0) - 65 : c.charCodeAt(0) - 71]; (paths[col] = paths[col] || []).push(seg); } }
-        x += n;
-      }
-    });
-    var s = '<svg viewBox="' + [d.x, d.y, d.w, d.h].join(' ') + '" width="100%" height="100%" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">';
-    if (shade.length) s += '<path fill="#06103a" fill-opacity=".32" d="' + shade.join('') + '"/>';
-    Object.keys(paths).forEach(function (c) { s += '<path fill="' + c + '" d="' + paths[c].join('') + '"/>'; });
-    return s + '</svg>';
-  }
-  function yearAt(seg, l, upto) {          /* 시기 사이를 지나는 동안 해가 넘어감(타임랩스) */
-    if (seg >= 5) return 'NOW';
-    var a = seg === 0 ? 2016 : ERA_Y[seg - 1], b = ERA_Y[seg], v = a + (b - a) * clamp01(l / upto);
-    return seg === 4 && l >= upto ? '2026.06' : String(Math.floor(v));
-  }
-  function finBox(sub, btn) {
-    return '<div class="gc gc--fin" data-fin><div class="gc__hd"><b class="gc__yr ps">CLEAR</b><span class="gc__dt"><span class="ps">5/5</span>' + T(YRS + '년 · 다섯 시기', YRS + ' years · five periods') + '</span></div>' +
-      '<div class="gc__fin"><div><p class="gc__r">' + esc(t(CLS)) + '</p><p class="gc__o">' + sub + '</p><span class="m-btn"><span class="key">A</span>' + btn + '</span></div>' +
-      '<div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false, ink: '#fff6dd', grid: 'rgba(255,246,221,.3)' }) + '</div></div></div>';
-  }
-  function cardsFX() { return ERAS.map(function (c, i) { return gameCard(c, i) + fxHTML(i); }).join(''); }
-  function runTag(el, gx, st) { if (gx !== st.x) { el.classList.add('run'); clearTimeout(st.t); st.t = setTimeout(function () { el.classList.remove('run'); }, 140); st.x = gx; } }
-  /* 꺾은선 + 포물선 길: pts = [[x, y, 뛰는 높이], …] — u(0 ~ 1) 만큼 간 자리 */
-  function pathAt(pts, u) {
-    var len = [0], i, tot = 0;
-    for (i = 1; i < pts.length; i++) { tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) + pts[i][2]; len.push(tot); }
-    var d = clamp01(u) * tot;
-    for (i = 1; i < pts.length; i++) if (d <= len[i] || i === pts.length - 1) {
-      var s = (d - len[i - 1]) / Math.max(1, len[i] - len[i - 1]), a = pts[i - 1], b = pts[i];
-      s = clamp01(s); return { x: a[0] + (b[0] - a[0]) * s, y: a[1] + (b[1] - a[1]) * s - pts[i][2] * 4 * s * (1 - s) };
-    }
-    return { x: pts[0][0], y: pts[0][1] };
-  }
 
-  /* ── V · 레벨 에디터 — 기획자의 커서가 칸에 맞춰 타일을 놓아 코스를 짜고, 끝에 고스트가 직접 달려 봄 ── */
-  var V_COL = function (c) { return 24 + 64 * c; }, V_ROW = function (r) { return 622 - 64 * (r + 1); };
-  var V_TOOLS = [['qb', 112, 72], ['brick', 190, 72], ['hard', 268, 72], ['coin', 346, 72], ['ghostc', 424, 72], ['flagt', 502, 72], ['pipe', 580, 136]];
-  /* 시기마다 놓는 타일: [도구, 왼쪽, 위, 종류] — 칸(64px)에 맞춤 */
-  var V_SEC = (function () {
-    var s = [[], [], [], [], []], j;
-    s[0].push(['pipe', V_COL(1), V_ROW(1), 'pipe']);
-    [[0, 3], [1, 4], [2, 4], [3, 4], [4, 3]].forEach(function (q) { s[0].push(['coin', V_COL(q[0]) + 20, V_ROW(q[1]) + 12, 'coin']); });
-    for (j = 5; j <= 7; j++) s[1].push(['brick', V_COL(j), V_ROW(2), 'brick']);
-    for (j = 5; j <= 7; j++) s[1].push(['ghostc', V_COL(j) + 8, 566, 'ghostc']);
-    s[1].push(['ghostc', V_COL(6) + 8, V_ROW(2) - 56, 'ghostc']);
-    for (j = 8; j <= 10; j++) s[2].push(['qb', V_COL(j), V_ROW(2), 'qb']);
-    for (j = 8; j <= 10; j++) s[2].push(['coin', V_COL(j) + 20, V_ROW(3) + 12, 'coin']);
-    [[11, 0], [12, 0], [12, 1], [13, 0], [13, 1], [13, 2]].forEach(function (q) { s[3].push(['hard', V_COL(q[0]), V_ROW(q[1]), 'hard']); });
-    s[3].push(['ghostc', V_COL(12) + 8, V_ROW(1) - 56, 'ghostc']);
-    s[4].push(['hard', V_COL(16), V_ROW(0), 'hard']); s[4].push(['flagt', V_COL(16) - 64, 350, 'pole']);
-    return s;
-  })();
-  function vTop(i) { var a = V_SEC[i], m = 999; a.forEach(function (q) { m = Math.min(m, q[2]); }); return m; }
-  function vCx(i) { var a = V_SEC[i], lo = 1e9, hi = -1e9; a.forEach(function (q) { lo = Math.min(lo, q[1]); hi = Math.max(hi, q[1] + 64); }); return (lo + hi) / 2; }
-  function vChip(i) { return { x: 32 + 4 + 728 + 80 * i, y: 76 + 4 + 8, w: 76, h: 72 }; }
-  function draftV() {
-    var tools = V_TOOLS.map(function (q, j) {
-      var k = q[0], inner = k === 'pipe' ? '<span class="v-pipe"></span>' : '<i class="s s-' + k + ' in"></i>';
-      return '<span class="v-tool' + (k === 'pipe' ? ' v-tool--pipe' : '') + '" data-v-tool="' + k + '" style="left:' + q[1] + 'px;width:' + q[2] + 'px">' + inner + '</span>';
+  /* ════ 이력 브리핑 — 연출은 거들 뿐, 이력을 한 장으로(시기 · 역할 · 한 일 · 숫자). 최신 시기가 위 ════ */
+  var BRIEF = {
+    lead: { ko: '혼자 만들어 출시하고, 커뮤니티를 운영하고, 글로 분석하고, 팀 앞에서 발표해 온 10년.', en: 'Ten years of shipping games solo, running a community, writing analysis and presenting to a team.' },
+    now: { ko: '진행 중', en: 'Ongoing' }, go: { ko: '프로젝트 보기 →', en: 'See the projects →' }, cv: { ko: '이력서 전체', en: 'Full résumé' }
+  };
+  function ongoing(c) {          /* '현재' 이거나, 끝 달이 아직 지나지 않음 */
+    var d = (c.date && c.date.ko) || '';
+    if (/현재/.test(d)) return true;
+    var m = /(\d{4})\.(\d{2})\s*$/.exec(d); if (!m) return false;
+    var now = new Date(); return +m[1] * 12 + +m[2] >= now.getFullYear() * 12 + now.getMonth() + 1;
+  }
+  function draftBrief() {
+    var st = stats.map(function (q) { return '<div><b class="ps">' + esc(q.num) + '<small>' + esc(t(q.unit)) + '</small></b><span>' + esc(t(q.label)) + '</span></div>'; }).join('');
+    var items = CAREER.map(function (c, j) {
+      var n = NUMS[CAREER.length - 1 - j], now = ongoing(c);
+      return '<li' + (now ? ' class="now"' : '') + '><div class="btl__when"><b class="ps">' + esc(year(c)) + '</b><span>' + esc(t(c.date)) + '</span>' + (now ? '<em>▶ ' + esc(t(BRIEF.now)) + '</em>' : '') + '</div>' +
+        '<div class="btl__what"><h5>' + esc(t(c.role)) + '</h5><p class="o">' + esc(t(c.org)) + '</p><p class="b">' + esc(t(c.body)) + '</p></div>' +
+        '<div class="btl__num">' + (n ? '<b class="ps">' + esc(n.v) + '</b><span>' + esc(t(n.u)) + '</span>' : '') + '</div></li>';
     }).join('');
-    var chips = ERAS.map(function (c, i) { return '<span class="v-chip" data-v-chip="' + i + '" style="left:' + (728 + 80 * i) + 'px"><b class="y ps">' + esc(year(c)) + '</b><span class="r px">' + esc(t(SHORT[i])) + '</span></span>'; }).join('');
-    var tiles = V_SEC.map(function (a, i) {
-      return a.map(function (q, j) {
-        if (q[3] === 'pole') return '<i class="s s-pole v-t" data-v-t="' + i + '-' + j + '" style="left:' + q[1] + 'px;top:' + q[2] + 'px"></i><i class="s s-flagt v-t v-flag" data-v-t="' + i + '-' + j + 'f" style="left:' + q[1] + 'px;top:390px"></i>';
-        return '<i class="s s-' + q[3] + ' v-t" data-v-t="' + i + '-' + j + '" style="left:' + q[1] + 'px;top:' + q[2] + 'px"></i>';
-      }).join('') + (i === 3 ? '<span class="m-chip v-t v-x12" data-v-x="3" style="left:' + (V_COL(11) + 4) + 'px;top:' + (V_ROW(1) + 20) + 'px">×12</span>' : '');
-    }).join('');
-    return '<div class="mock mock-r2 mock-s2 mock-v">' + fixNav() +
-      '<div class="v-bar"><span class="v-mode" data-v-mode>EDIT</span>' + tools + chips + '</div>' +
-      '<div class="v-grid" data-v-grid></div>' + tiles +
-      S('ghost', 40, 'top:566px', 'v-ghost') + S('cur', 600, 300, 'v-cur') + '<i class="m-ground"></i>' + fixCue() + '</div>' +
-      cardsFX() + finBox(T('위 코스 지도 다섯 칸이 지나온 이력입니다. 다음 코스가 포트폴리오입니다.', 'The five course-map cells above are the career so far. The next course is the portfolio.'), T('다음 코스 — 포트폴리오', 'Next course — portfolio')) +
-      dock('▲ 커서가 한 시기를 다 짓는 순간, 그 시기의 이력이 여기 뜹니다', '▲ The moment the cursor finishes a period, it appears here');
-  }
-  function wireV(root) {
-    var gh = root.querySelector('.v-ghost'), cur = root.querySelector('.v-cur'), grid = root.querySelector('[data-v-grid]'), mode = root.querySelector('[data-v-mode]'), fin = root.querySelector('[data-fin]');
-    var cards = all(root, '.gc[data-gc]'), bsts = all(root, '.bst2'), pops = all(root, '.popn'), chips = all(root, '[data-v-chip]');
-    var toolEl = {}; all(root, '[data-v-tool]').forEach(function (el) { toolEl[el.getAttribute('data-v-tool')] = el; });
-    var tileEl = V_SEC.map(function (a, i) { return a.map(function (q, j) { return all(root, '[data-v-t="' + i + '-' + j + '"], [data-v-t="' + i + '-' + j + 'f"]'); }); });
-    var x12 = root.querySelector('[data-v-x="3"]'), prev = [0, 0, 0, 0, 0], st = {};
-    function toolPos(k) { var q = V_TOOLS.filter(function (v) { return v[0] === k; })[0]; return { x: 32 + 4 + q[1] + q[2] / 2 - 4, y: 76 + 4 + 8 + 36 }; }
-    /* 한 시기의 커서 길: 도구 → 그 도구로 놓을 칸들 → (다음 도구) … */
-    var PATHS = V_SEC.map(function (a) {
-      var pts = [], last = '';
-      a.forEach(function (q, j) {
-        if (q[0] !== last) { pts.push({ p: toolPos(q[0]), tool: q[0] }); last = q[0]; }
-        pts.push({ p: { x: q[1] + 24, y: q[2] + 24 }, tool: q[0], put: j });
-      });
-      return pts;
-    });
-    var RUN = [[40, 566, 0], [244, 566, 170], [344, 374, 60], [488, 374, 0], [600, 566, 36], [712, 566, 0], [728, 502, 48], [856, 374, 150], [1036, 420, 56], [1036, 502, 0]];
-    return { prog: function (p) {
-      var g = root.__geo; if (!g) return;
-      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg;
-      g.camX = 0; camApply(root, g);
-      var activeTool = '', cp = null;
-      for (var i = 0; i < 5; i++) {
-        var path = PATHS[i], n = path.length, u = seg > i ? 1 : seg < i ? 0 : clamp01(l / .34), at = u * (n - 1);
-        path.forEach(function (w, j) { if (w.put != null) tileEl[i][w.put].forEach(function (el) { el.classList.toggle('on', at >= j - .02); }); });
-        if (seg === i && l < .36) {
-          var a = Math.min(n - 1, Math.floor(at)), b = Math.min(n - 1, a + 1), f = ease(at - a), A = path[a].p, B = path[b].p;
-          cp = { x: A.x + (B.x - A.x) * f, y: A.y + (B.y - A.y) * f }; activeTool = path[b].tool;
-        }
-        if (i === 3) x12.classList.toggle('on', seg > 3 || (seg === 3 && u >= 1));
-        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .36) / .64), P = { x: vCx(i), y: vTop(i) };
-        gcFrame(root, g, { card: cards[i], bst: bsts[i], pop: pops[i], k: k, prevK: prev[i], W: 480, P: P, Cc: { x: P.x < 600 ? P.x + 380 : P.x - 380, y: 400 }, T: vChip(i), text: t(ERAS[i].body) });
-        prev[i] = k;
-        chips[i].classList.toggle('on', seg > i || (seg === i && k >= .97));
-      }
-      if (!cp && seg < 5) { var lp = PATHS[seg][PATHS[seg].length - 1].p; cp = lp; }
-      Object.keys(toolEl).forEach(function (k) { toolEl[k].classList.toggle('on', k === activeTool); });
-      cur.style.display = seg < 5 ? '' : 'none';
-      if (cp) { cur.style.left = q4(cp.x) + 'px'; cur.style.top = q4(cp.y) + 'px'; }
-      /* 끝: 편집 → 시험 주행. 고스트가 지어진 코스를 직접 달려 깃발까지 */
-      var play = seg === 5; mode.textContent = play ? 'PLAY' : 'EDIT'; mode.classList.toggle('play', play); grid.classList.toggle('off', play);
-      gh.classList.toggle('on', play);
-      if (play) { var q = pathAt(RUN, l / .4), gx = q4(q.x); gh.style.left = gx + 'px'; gh.style.top = q4(q.y) + 'px'; runTag(gh, gx, st); }
-      root.querySelector('.v-flag').classList.toggle('up', play && l > .4);
-      finSet(fin, g, play && l > .42, { x: 420, y: 400 });
-      cueSet(root, p);
-    } };
-  }
-
-  /* ── W · 한 자리 10년 — 같은 자리를 그대로 두고 시간만 흘러, 빈 땅이 마을이 됨 ── */
-  var W_PAL = ['day', 'day', 'sunset', 'snow', 'day'];
-  var W_P = [{ x: 484, y: 494 }, { x: 752, y: 566 }, { x: 736, y: 430 }, { x: 984, y: 494 }, { x: 1114, y: 350 }];
-  var W_C = [{ x: 860, y: 300 }, { x: 620, y: 330 }, { x: 760, y: 250 }, { x: 640, y: 300 }, { x: 760, y: 300 }];
-  var W_CROWD = [604, 654, 704, 760, 810, 860];
-  function wRow(i) { return { x: 32 + 4 + 10, y: 140 + 4 + 44 + 8 + i * 60, w: 308, h: 52 }; }
-  function draftW() {
-    function P(i, k, l, top, d, from) { return '<i class="s s-' + k + ' s2-p" data-w-p="' + i + '" style="left:' + l + 'px;top:' + top + 'px;--d:' + d + 's;--from:' + (from || '40px') + '"></i>'; }
-    var s = P(0, 'pipe', 420, 494, 0, '128px'), j;
-    for (j = 0; j < 5; j++) s += P(0, 'coin', 472 + (j - 2) * 38, 400 - (2 - Math.abs(j - 2)) * 20, .3 + j * .1, '64px');
-    for (j = 0; j < 3; j++) s += P(2, 'qb', 672 + j * 64, 430, j * .12, '-48px');
-    s += P(2, 'cloud', 880, 196, .2, '-24px') + P(2, 'cloud', 1010, 250, .32, '-24px');
-    s += P(3, 'hard', 920, 558, 0, '64px') + P(3, 'hard', 984, 558, .06, '64px') + P(3, 'hard', 952, 494, .12, '128px');
-    s += '<span class="m-chip s2-p" data-w-p="3" style="position:absolute;left:880px;top:520px;--d:.3s;--from:-12px">×12</span>';
-    s += P(4, 'hard', 1100, 558, 0, '64px') + P(4, 'pole', 1070, 350, .08, '208px') + '<i class="s s-flagt w-flag" style="left:1070px;top:390px"></i>';
-    var crowd = W_CROWD.map(function (x, j) { return S('ghostc', 1260, 'top:566px', 'w-crowd'); }).join('');
-    var rows = ERAS.map(function (c, i) { return '<div class="w-row" data-w-row="' + i + '"><b class="y ps">' + esc(year(c)) + '</b><span class="q ps">????</span><div class="full"><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p></div></div>'; }).join('');
-    return '<div class="mock mock-r2 mock-s2 mock-w">' + fixNav() +
-      '<div class="smb-hud" data-fix><div><span class="ps">QUEST</span><b class="ps" data-h-q>0/5</b></div><div><span class="ps">YEAR</span><b class="ps" data-h-y>2016</b></div><div><span class="ps">SEASON</span><b class="px" data-h-w></b></div></div>' +
-      '<div class="w-board"><p class="w-board__t"><b class="ps">TOWN LOG</b><span class="px">' + T('마을 연혁', 'Town history') + '</span></p>' + rows + '</div>' +
-      s + crowd + S('ghost', 460, 'top:494px', 'w-ghost') + '<i class="m-ground"></i>' + fixCue() + '</div>' +
-      cardsFX() + finBox(T('왼쪽 마을 연혁 다섯 줄이 지나온 이력입니다. 마을 너머가 포트폴리오입니다.', 'The five lines of the town history are the career so far. The portfolio is beyond the town.'), T('마을 너머 — 포트폴리오', 'Beyond the town — portfolio')) +
-      dock('▲ 마을에 새 것이 생기는 순간, 그 시기의 이력이 여기 뜹니다', '▲ The moment something new appears in town, that period appears here');
-  }
-  function wireW(root) {
-    var mock = root.querySelector('.mock'), gh = root.querySelector('.w-ghost'), fin = root.querySelector('[data-fin]'), flag = root.querySelector('.w-flag');
-    var cards = all(root, '.gc[data-gc]'), bsts = all(root, '.bst2'), pops = all(root, '.popn'), rows = all(root, '[data-w-row]'), crowd = all(root, '.w-crowd');
-    var props = ERAS.map(function (c, i) { return all(root, '[data-w-p="' + i + '"]'); });
-    var hq = root.querySelector('[data-h-q]'), hy = root.querySelector('[data-h-y]'), hw = root.querySelector('[data-h-w]'), prev = [0, 0, 0, 0, 0], st = {}, curPal = '';
-    var SEASON = { day: { ko: '봄 · 낮', en: 'Spring day' }, sunset: { ko: '가을 · 노을', en: 'Autumn dusk' }, snow: { ko: '겨울', en: 'Winter' } };
-    /* 고스트가 시기마다 가는 자리(위 왼쪽): 관 안 → 관 위 → 땅 / 무리 옆 / 블록 밑 / 단상 위 / 깃대 */
-    var GW = [[[460, 494, 0], [460, 438, 0], [552, 566, 64]], [[552, 566, 0], [552, 566, 0]], [[552, 566, 0], [552, 566, 0]], [[552, 566, 0], [952, 438, 170]], [[952, 438, 0], [1088, 420, 60], [1088, 502, 0]]];
-    return { prog: function (p) {
-      var g = root.__geo; if (!g) return;
-      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg, done = 0;
-      g.camX = 0; camApply(root, g);
-      var key = W_PAL[Math.min(4, seg)]; if (key !== curPal) { curPal = key; applyPal(mock, key); hw.textContent = t(SEASON[key]); mock.classList.toggle('w-light', key === 'snow'); }
-      for (var i = 0; i < 5; i++) {
-        var built = seg > i || (seg === i && l > .14);
-        props[i].forEach(function (el) { el.classList.toggle('on', built); });
-        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .3) / .7);
-        gcFrame(root, g, { card: cards[i], bst: bsts[i], pop: pops[i], k: k, prevK: prev[i], W: 480, P: W_P[i], Cc: W_C[i], T: wRow(i), text: t(ERAS[i].body), onHit: function () { flash(gh, 'r2-jump', 450); } });
-        prev[i] = k;
-        var on = seg > i || (seg === i && k >= .97); if (on) done++;
-        rows[i].classList.toggle('on', on);
-      }
-      /* 2019 — 무리가 오른쪽에서 걸어 들어와 모임 */
-      var cu = seg > 1 ? 1 : seg < 1 ? 0 : clamp01(l / .3);
-      crowd.forEach(function (el, j) { var u = clamp01(cu * 1.6 - j * .12), cx = q4(1260 + (W_CROWD[j] - 1260) * ease(u)); el.style.left = cx + 'px'; el.classList.toggle('run', u > 0 && u < 1); });
-      var gu = seg === 0 ? clamp01((l - .16) / .14) : clamp01(l / .28), gp = seg < 5 ? pathAt(GW[seg], gu) : { x: 1088, y: 502 }, gx = q4(gp.x);
-      gh.style.left = gx + 'px'; gh.style.top = q4(gp.y) + 'px'; gh.style.visibility = seg === 0 && l < .16 ? 'hidden' : ''; runTag(gh, gx, st);
-      flag.classList.toggle('on', seg > 4 || (seg === 4 && l > .14)); mock.classList.toggle('s2-done', seg === 5);
-      hq.textContent = done + '/5'; hy.textContent = yearAt(seg, l, .28);
-      finSet(fin, g, seg === 5 && l > .3, { x: 760, y: 300 });
-      cueSet(root, p);
-    } };
-  }
-
-  /* ── X · 벽돌 휴대기 속 — 고른 게임기 화면 안에서 이야기가 플레이되고, 끝나면 그 화면이 메뉴가 됨 ── */
-  var X_ART = (window.__ART || {}).brick, X_CELL = 5, X_LEFT = 60, X_TOP = 96;
-  var X_DPAD = [109, 366, 112, 112], X_BTN_A = [1315, 546, 112, 112];   /* tools/fc-pixel/console-controls.json 의 b (그림 px) */
-  var X_STOP = [480, 1080, 1680, 2280, 2880], X_WW = 3360;
-  function xScr() { var d = X_ART; return { x: X_LEFT + (d.screen[0] - d.x) * X_CELL, y: X_TOP + (d.screen[1] - d.y) * X_CELL, w: d.screen[2] * X_CELL, h: d.screen[3] * X_CELL }; }
-  function xPx(b) { var d = X_ART, m = d.map; return { x: X_LEFT + ((b[0] - m[0]) / m[2] - d.x) * X_CELL, y: X_TOP + ((b[1] - m[1]) / m[2] - d.y) * X_CELL, w: b[2] / m[2] * X_CELL, h: b[3] / m[2] * X_CELL }; }
-  function draftX() {
-    if (!X_ART) return '<div class="mock"></div>';
-    var sc = xScr(), dp = xPx(X_DPAD), ba = xPx(X_BTN_A), d = X_ART;
-    var world = X_STOP.map(function (wx, i) {
-      var s = '<b class="x-yr ps" style="left:' + (wx - 80) + 'px">' + esc(year(ERAS[i])) + '</b>' + S('qb', wx, 110, 'x-blk" data-x-blk="' + i) + S('coin', wx + 20, 70, 'x-coin" data-x-coin="' + i);
-      if (i === 0) s += S('pipe', wx + 168, 174);
-      if (i === 1) s += S('ghostc', wx + 140, 246) + S('ghostc', wx + 192, 246) + S('ghostc', wx + 244, 246);
-      if (i === 2) s += S('cloud', wx + 150, 40) + S('cloud', wx + 270, 90);
-      if (i === 3) s += S('hard', wx + 168, 238) + S('hard', wx + 232, 238) + S('hard', wx + 200, 174) + S('ghostc', wx + 208, 118);
-      return s;
-    }).join('');
-    var chips = ERAS.map(function (c, i) { return '<span class="x-chip ps" data-x-chip="' + i + '" style="left:' + (375 + 66 * i) + 'px">\'' + esc(year(c).slice(2)) + '</span>'; }).join('');
-    var menu = '<div class="x-menu" data-x-menu><p class="x-menu__t"><b class="ps">1P</b>' + T('메뉴', 'Menu') + '<span class="ps">CLEAR 5/5</span></p><div class="x-menu__in"><ol>' +
-      ERAS.map(function (c) { return '<li><b class="ps">' + esc(year(c)) + '</b>' + esc(t(c.role)) + '</li>'; }).join('') + '</ol><ul>' +
-      [T('프로젝트', 'Projects'), T('이력서', 'Résumé'), T('자기소개서', 'Cover letter'), T('게임플레이', 'Play')].map(function (m, j) { return '<li' + (j === 0 ? ' class="on"' : '') + '>' + (j === 0 ? '▶ ' : '') + m + '</li>'; }).join('') + '</ul></div></div>';
-    return '<div class="mock mock-r2 mock-x">' + fixNav() +
-      '<div class="x-cons" style="left:' + X_LEFT + 'px;top:' + X_TOP + 'px;width:' + d.w * X_CELL + 'px;height:' + d.h * X_CELL + 'px">' + artSVG(d) + '</div>' +
-      '<div class="x-scr" style="left:' + sc.x + 'px;top:' + sc.y + 'px;width:' + sc.w + 'px;height:' + sc.h + 'px"><div class="x-world" data-x-world style="width:' + X_WW + 'px">' + world + '<i class="x-gnd"></i>' + S('ghost', 200, 246, 'x-ghost') + '</div>' +
-        '<div class="x-hud"><span class="ps">QUEST <b data-h-q>0/5</b></span><span class="ps" data-h-y>2016</span></div>' + chips + menu + '</div>' +
-      '<i class="x-press x-press--d" style="left:' + q4(dp.x + dp.w * .62) + 'px;top:' + q4(dp.y + dp.h * .3) + 'px;width:' + q4(dp.w * .38) + 'px;height:' + q4(dp.h * .4) + 'px"></i>' +
-      '<i class="x-press x-press--a" style="left:' + q4(ba.x) + 'px;top:' + q4(ba.y) + 'px;width:' + q4(ba.w) + 'px;height:' + q4(ba.h) + 'px"></i>' +
-      '<i class="x-ground"></i>' + fixCue() + '</div>' + cardsFX() +
-      dock('▲ 게임기 속 고스트가 블록을 치는 순간, 그 시기의 이력이 여기 뜹니다', '▲ The moment the ghost in the console hits a block, that period appears here');
-  }
-  function wireX(root) {
-    if (!X_ART) return null;
-    var sc = xScr(), world = root.querySelector('[data-x-world]'), gh = root.querySelector('.x-ghost'), menu = root.querySelector('[data-x-menu]');
-    var blks = all(root, '[data-x-blk]'), coins = all(root, '[data-x-coin]'), chips = all(root, '[data-x-chip]'), pd = root.querySelector('.x-press--d'), pa = root.querySelector('.x-press--a');
-    var cards = all(root, '.gc[data-gc]'), bsts = all(root, '.bst2'), pops = all(root, '.popn');
-    var hq = root.querySelector('[data-h-q]'), hy = root.querySelector('[data-h-y]'), prev = [0, 0, 0, 0, 0], st = {};
-    return { prog: function (p) {
-      var g = root.__geo; if (!g) return;
-      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg, done = 0;
-      g.camX = 0; camApply(root, g);
-      var from = seg === 0 ? 200 : X_STOP[Math.min(4, seg - 1)] + 8, to = seg < 5 ? X_STOP[seg] + 8 : X_WW - 400, wx = from + (to - from) * ease(seg < 5 ? l / .22 : l / .3);
-      var jump = seg < 5 && l >= .22 && l < .32, hop = jump ? 76 * Math.sin(Math.PI * (l - .22) / .1) : 0;
-      wx = q4(wx); var cam = Math.max(0, Math.min(X_WW - sc.w, wx - 200));
-      world.style.translate = (-cam) + 'px 0'; gh.style.left = wx + 'px'; gh.style.top = q4(246 - hop) + 'px'; runTag(gh, wx, st);
-      pd.classList.toggle('on', (seg < 5 && l < .22) || (seg === 5 && l < .3)); pa.classList.toggle('on', jump);
-      for (var i = 0; i < 5; i++) {
-        var hit = seg > i || (seg === i && l >= .27);
-        blks[i].classList.toggle('used', hit); coins[i].classList.toggle('pop', seg === i && l >= .27 && l < .5);
-        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .27) / .73);
-        var P = { x: sc.x + X_STOP[i] + 32 - cam, y: sc.y + 174 };
-        gcFrame(root, g, { card: cards[i], bst: bsts[i], pop: pops[i], k: k, prevK: prev[i], W: 560, P: P, Cc: { x: sc.x + sc.w / 2, y: sc.y + sc.h / 2 + 16 }, T: { x: sc.x + 375 + 66 * i, y: sc.y + 12, w: 60, h: 36 }, text: t(ERAS[i].body) });
-        prev[i] = k;
-        var on = seg > i || (seg === i && k >= .97); if (on) done++;
-        chips[i].classList.toggle('on', on);
-      }
-      hq.textContent = done + '/5'; hy.textContent = yearAt(seg, l, .22);
-      menu.classList.toggle('on', seg === 5 && l > .32);
-      cueSet(root, p);
-    } };
-  }
-
-  /* ── Y · 육각형 채우기 — 시기마다 블록을 치면, 그 시기에 얻은 능력만큼 블록이 날아가 육각형을 채움(색 = 시기) ── */
-  var Y_C = { x: 864, y: 384 }, Y_STEP = 34, Y_COL = ['#e45c10', '#f8b800', '#00a844', '#0078f8', '#8b4ef0'];
-  var Y_FLY = (function () {          /* [시기, 축, 칸] — 안쪽 칸부터 */
-    var fill = {}, out = []; AX.forEach(function (a) { fill[a.k] = 0; });
-    GAIN.forEach(function (gn, i) { var n = 0; Object.keys(gn).forEach(function (k) { for (var j = 0; j < gn[k] && fill[k] < MAX; j++) out.push({ i: i, a: AX.map(function (q) { return q.k; }).indexOf(k), s: fill[k]++, n: n++ }); }); });
-    return out;
-  })();
-  function ySlot(a, s) { var ang = -Math.PI / 2 + a * Math.PI / 3, r = Y_STEP * (s + 1); return { x: Y_C.x + Math.cos(ang) * r, y: Y_C.y + Math.sin(ang) * r }; }
-  function yLeg(i) { return { x: 24 + 4 + 8 + 228 * i, y: 642 + 4 + 8, w: 220, h: 60 }; }
-  function draftY() {
-    var slots = '', labels = '', a, s2;
-    for (a = 0; a < 6; a++) {
-      for (s2 = 0; s2 < MAX; s2++) { var q = ySlot(a, s2); slots += '<i class="y-slot" style="left:' + q4(q.x - 14) + 'px;top:' + q4(q.y - 14) + 'px"></i>'; }
-      var ang = -Math.PI / 2 + a * Math.PI / 3, lx = Y_C.x + Math.cos(ang) * 222, ly = Y_C.y + Math.sin(ang) * 222, al = Math.abs(Math.cos(ang)) < .1 ? 'c' : Math.cos(ang) > 0 ? 'l' : 'r';
-      labels += '<span class="y-lab y-lab--' + al + '" style="left:' + Math.round(lx) + 'px;top:' + Math.round(ly) + 'px">' + esc(t(AX[a].n)) + '</span>';
-    }
-    var fly = Y_FLY.map(function (f, j) { return '<i class="y-fb" data-y-fb="' + j + '" style="background:' + Y_COL[f.i] + '"></i>'; }).join('');
-    var leg = ERAS.map(function (c, i) { return '<div class="y-leg__i" data-y-leg="' + i + '" style="left:' + (8 + 228 * i) + 'px"><i style="background:' + Y_COL[i] + '"></i><b class="ps">' + esc(year(c)) + '</b><span class="q ps">????</span><span class="r">' + esc(t(c.role)) + '</span></div>'; }).join('');
-    var blocks = ERAS.map(function (c, i) { return S('qb', 216, 470, 'y-blk" data-y-blk="' + i); }).join('');
-    return '<div class="mock mock-r2 mock-y">' + fixNav() +
-      '<div class="smb-hud" data-fix><div><span class="ps">QUEST</span><b class="ps" data-h-q>0/5</b></div><div><span class="ps">YEAR</span><b class="ps" data-h-y>2016</b></div></div>' +
-      '<div class="y-board"><p class="y-board__t"><b class="ps">STATUS</b><span class="px">' + esc(t(CLS)) + '</span></p></div><div class="y-hexbg">' + hex({ values: [0, 0, 0, 0, 0, 0], labels: false, grid: 'rgba(16,35,70,.2)' }) + '</div>' + slots + labels + fly + blocks +
-      S('ghost', 224, 'top:566px', 'y-ghost') + '<i class="m-ground"></i><div class="y-leg">' + leg + '</div>' + fixCue() + '</div>' +
-      cardsFX() + finBox(T('오른쪽 육각형의 색이 곧 그 능력을 키운 시기입니다. 다음 화면이 포트폴리오입니다.', 'The colours in the hexagon show which period built each ability. The portfolio comes next.'), T('포트폴리오 보기', 'See the portfolio')) +
-      dock('▲ 고스트가 블록을 치는 순간, 그 시기의 이력이 여기 뜹니다', '▲ The moment the ghost hits a block, that period appears here');
-  }
-  function wireY(root) {
-    var gh = root.querySelector('.y-ghost'), fin = root.querySelector('[data-fin]');
-    var cards = all(root, '.gc[data-gc]'), bsts = all(root, '.bst2'), pops = all(root, '.popn'), legs = all(root, '[data-y-leg]'), blks = all(root, '[data-y-blk]'), fbs = all(root, '[data-y-fb]');
-    var hq = root.querySelector('[data-h-q]'), hy = root.querySelector('[data-h-y]'), prev = [0, 0, 0, 0, 0];
-    var O = { x: 248, y: 470 };
-    return { prog: function (p) {
-      var g = root.__geo; if (!g) return;
-      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg, done = 0;
-      g.camX = 0; camApply(root, g);
-      for (var i = 0; i < 5; i++) {
-        /* 이 시기의 블록: 위에서 떨어져 고스트 머리 위에 섬 → 맞으면 다 쓴 블록 → 다음 시기가 오면 사라짐 */
-        var b = blks[i], drop = seg === i ? clamp01(l / .12) : seg > i ? 1 : 0;
-        b.style.display = seg === i || (seg === 5 && i === 4) ? '' : 'none';
-        b.style.top = q4(-80 + (470 + 80) * ease(drop)) + 'px';
-        b.classList.toggle('used', seg > i || (seg === i && l >= .2));
-        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .2) / .8);
-        gcFrame(root, g, { card: cards[i], bst: bsts[i], pop: pops[i], k: k, prevK: prev[i], W: 480, P: { x: 248, y: 534 }, Cc: { x: 290, y: 292 }, T: yLeg(i), text: t(ERAS[i].body), noPop: true, onHit: function () { flash(b, 'r2-bump', 300); } });
-        prev[i] = k;
-        var on = seg > i || (seg === i && k >= .97); if (on) done++;
-        legs[i].classList.toggle('on', on);
-      }
-      var hop = seg < 5 && l >= .14 && l < .26 ? 36 * Math.sin(Math.PI * (l - .14) / .12) : 0; gh.style.top = q4(566 - hop) + 'px';
-      Y_FLY.forEach(function (f, j) {
-        var el = fbs[j], u = seg > f.i ? 1 : seg < f.i ? 0 : clamp01((l - .22 - f.n * .035) / .2), E = ySlot(f.a, f.s);
-        el.style.visibility = u > 0 ? 'visible' : 'hidden';
-        var px = O.x + (E.x - O.x) * ease(u), py = O.y + (E.y - O.y) * ease(u) - 160 * 4 * u * (1 - u);
-        el.style.transform = 'translate(' + q4(px - 14) + 'px,' + q4(py - 14) + 'px)';
-      });
-      hq.textContent = done + '/5'; hy.textContent = yearAt(seg, l, .14);
-      finSet(fin, g, seg === 5 && l > .2, { x: 290, y: 300 });
-      cueSet(root, p);
-    } };
+    var sm = (C.coverLetter && C.coverLetter.summary) || { items: [] };
+    var str = sm.items.map(function (q) { return '<div class="bst3__i"><p class="t">' + esc(q.tag) + '</p><h5>' + esc(t(q.title)) + '</h5><p>' + esc(t(q.body)) + '</p></div>'; }).join('');
+    var cl = (C.resume && C.resume.career && C.resume.career.title) || { ko: '경력 · 활동', en: 'Career & activity' };
+    return '<section class="brief"><div class="brief__grid">' +
+      '<div class="bw bme"><p class="bw__tab"><b class="ps">1P</b>' + T('플레이어 정보', 'Player info') + '</p><div class="bw__in">' +
+        '<p class="bme__name">' + esc(NAME) + '</p><p class="bme__role">' + T('게임 기획자', 'Game designer') + ' · ' + esc(t(CLS)) + '</p>' +
+        '<p class="bme__lead">' + esc(t(BRIEF.lead)) + '</p><div class="bme__stats">' + st + '</div>' +
+        '<p class="bme__go"><a href="projects.html">' + esc(t(BRIEF.go)) + '</a><a href="resume.html">' + esc(t(BRIEF.cv)) + '</a></p></div></div>' +
+      '<div class="bw"><p class="bw__tab"><b class="ps">LOG</b>' + esc(t(cl)) + '<span class="sp"></span><small>' + T('최신 순 · ' + CAREER.length + '개', 'Newest first · ' + CAREER.length) + '</small></p><ol class="btl">' + items + '</ol></div>' +
+      '</div><div class="bw bst3"><p class="bw__tab"><b class="ps">TIP</b>' + esc(t(sm.title || '')) + '</p><div class="bw__in">' + str + '</div></div></section>';
   }
 
   var DRAFTS4 = [
+    { id: 'brief', label: '1', plain: true, f: draftBrief, w: function () { return null; }, badge: { ko: '새 1순위 · 연출 없음', en: 'New first pick · no gimmicks' }, name: { ko: '이력 브리핑 — 한 장으로 확실하게', en: 'Career briefing — clear, on one page' }, sub: { ko: '연출은 거들 뿐', en: 'The theme only supports it' },
+      pitch: { ko: '첫 화면(게임기 타이틀)이 눈길을 끄는 일을 맡고, 바로 아래에서 10년의 이력을 한 장으로 읽습니다. 왼쪽은 나(이름 · 한 줄 · 숫자 넷 · 바로가기), 오른쪽은 경력을 최신 순으로 — 시기 · 역할 · 소속 · 한 일 · 대표 숫자를 한 줄씩. 진행 중인 것은 ▶ 표시. 아래에 \'함께 일하면, 이런 기획자입니다\' 세 가지. 움직이는 것 · 소품 · 캐릭터는 없고, 테마는 스테이지의 창(크림 판 · 남색 테 · 그림자)과 도트 숫자 · 연도로만 녹였습니다.',
+               en: 'The first screen (the console title) does the attention-grabbing; right below it, ten years of career read on one page. On the left, who I am (name, one line, four numbers, links); on the right, the career newest first — period, role, organisation, what I did and the key number, one row each, with ▶ on what is ongoing. Below, the three "this is how I work" points. No motion, props or characters: the theme blends in only through the Stage windows (cream face, navy frame, shadow) and the pixel numbers and years.' },
+      map: [['보는 법', 'How to read', '그냥 읽기 — 누르거나 기다릴 것 없음', 'Just read — nothing to click or wait for'], ['한눈에', 'At a glance', '숫자 넷 + 경력 다섯 줄', 'Four numbers + five career rows'], ['테마', 'Theme', '창 재료 · 도트 숫자만', 'Window material and pixel numbers only']],
+      hint: { ko: '▶ 휴대폰에서는 한 줄로 쌓입니다(나 → 경력 → 강점).', en: '▶ On a phone it stacks into one column (me → career → strengths).' },
+      pros: { ko: ['이력이 바로 읽힘 — 채용 담당자가 찾는 순서(누구 · 무엇을 · 얼마나)', '연출이 없어 고장 날 것도, 기다릴 것도 없음', '실제 사이트(스테이지)의 창 재료 그대로라 넣기 쉬움'], en: ['The career reads at once — in the order a recruiter looks (who, what, how much)', 'Nothing to break or wait for', 'Uses the real Stage window material, so it drops straight in'] },
+      cons: { ko: ['\'게임처럼\' 보이는 맛은 첫 화면이 다 맡음', '대표 숫자는 이력서 문구에서 뽑은 것(바꾸려면 NUMS)'], en: ['The "game" feel rests entirely on the first screen', 'The key numbers come from the résumé text (change them in NUMS)'] } },
+  ];
+  var DRAFTS_OLD = [
     { id: 's', f: draftS6, w: wireS6, scroll: 3200, extra: function () { return palBar('s'); }, badge: { ko: '고른 안 · 팔레트 8벌', en: 'Chosen · 8 palettes' }, name: { ko: '지어지는 월드 — 완공될 때마다 튀어나오는 이력', en: 'A world being built — the career pops out at each build' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
       pitch: { ko: '스크롤하면 빨강 고스트가 다음 공사장으로 걸어가 닿고, 그 순간 그 시기의 소품(관과 동전 다섯 · 고스트 무리 · 구름 · 단상 · 깃발)이 솟아 지어집니다. 화면이 흔들리고 꼭대기에서 숫자와 큰 글씨 대화창이 튀어나와 옆에 머문 뒤(본문은 스크롤만큼 써짐) 위의 잠긴 팻말(?)로 접혀 들어갑니다. 기본은 밝은 낮(1-1)이고, 위 \'팔레트\' 줄로 월드 색을 바꿔 볼 수 있습니다(\'시간 따라\'를 고르면 시기마다 1-1 낮 → 1-2 지하 → 노을 → 밤 → 1-4 성). 휴대폰에서는 카메라가 고스트를 따라가고 대화창은 장면 아래에 원래 크기로 뜹니다.',
                en: 'Scrolling walks the red ghost to the next site; the moment it arrives, that period\'s props (a pipe and five coins, a crowd of ghosts, clouds, a podium, a flag) rise into place. The screen shakes and a number and a big-type dialog window spring from its top and stay beside it (the text writes as you scroll), then fold into the locked sign (?) above. The default is a bright daytime world (1-1); the palette row recolours it (\'by period\' runs 1-1 day → 1-2 underground → sunset → night → 1-4 castle). On a phone the camera follows the ghost and the window appears full-size under the scene.' },
       map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '걷기 · 짓기 · 대화창 · 접기', 'Walk, build, dialog, fold'], ['읽게 되는 곳', 'What you read', '방금 지어진 곳에서 튀어나온 대화창 → 켜진 팻말', 'The dialog from what was just built → the lit sign']],
       hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
       pros: { ko: ['가장 눈이 즐거움 — 내리는 만큼 월드가 자람', '소품 = 이력의 은유라 장식이 아님', '끝 화면 = 왼쪽 → 오른쪽 연표 한 장'], en: ['The most fun to watch — the world grows as you scroll', 'Props are career metaphors, not decoration', 'End screen = one left-to-right timeline'] },
-      cons: { ko: ['2026 에 두 시기가 겹쳐 마지막이 몰림', '은유를 팻말이 꼭 받쳐야 함'], en: ['Two periods start in 2026, so the end bunches up', 'The metaphors need their signs'] } },
-    { id: 'v', f: draftV, w: wireV, scroll: 3600, camW: 1200, badge: { ko: '5차 새 안', en: 'Round 5 · new' }, name: { ko: '레벨 에디터 — 기획자가 짜는 코스', en: 'Level editor — the designer builds the course' }, sub: { ko: '스크롤 = 타일 놓기', en: 'Scroll = placing tiles' },
-      pitch: { ko: '화면이 레벨 에디터입니다. 스크롤하면 기획자의 커서가 위 도구 줄에서 타일(관 · 벽돌 · 물음표 블록 · 계단 · 동전 · 고스트 · 깃발)을 집어 칸에 맞춰 놓아, 시기마다 코스 한 구간을 짓습니다. 한 구간이 다 지어지는 순간 마지막 타일에서 큰 글씨 대화창이 튀어나와 그 시기의 이력이 써지고, 위 코스 지도 칸으로 접혀 들어갑니다. 다섯 구간이 다 지어지면 EDIT → PLAY — 격자가 걷히고 빨강 고스트가 방금 지은 코스를 처음부터 깃발까지 직접 달립니다.',
-               en: 'The screen is a level editor. As you scroll, the designer\'s cursor picks tiles from the tool bar (pipe, bricks, ? blocks, stairs, coins, ghosts, flag) and snaps them to the grid, building one section of the course per period. The moment a section is finished, a big-type dialog springs from its last tile, writes out that period and folds into its cell on the course map. When all five are built it switches from EDIT to PLAY: the grid lifts and the red ghost runs the course you just watched being built, all the way to the flag.' },
-      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '타일 놓기 · 대화창 · 시험 주행', 'Placing tiles, dialog, test run'], ['읽게 되는 곳', 'What you read', '방금 지은 구간에서 튀어나온 대화창 → 코스 지도', 'The dialog from the section just built → the course map']],
-      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
-      pros: { ko: ['게임 기획자라는 일 자체를 보여 줌 — 이력 = 내가 짠 코스', '짓는 과정 + 끝의 시험 주행, 볼거리가 두 번', '끝 화면 = 위 코스 지도 다섯 칸'], en: ['Shows the job itself — the career is a course I designed', 'Building, then a test run at the end: two things to watch', 'End screen = the five cells of the course map'] },
-      cons: { ko: ['편집기 화면이라 처음 보는 사람에겐 도구 줄이 낯설 수 있음', '타일이 많아 휴대폰에서는 장면이 작게 보임'], en: ['The editor tool bar may be unfamiliar at first', 'Many tiles, so the scene is small on a phone'] } },
-    { id: 'w', f: draftW, w: wireW, scroll: 3200, camW: 1200, badge: { ko: '5차 새 안', en: 'Round 5 · new' }, name: { ko: '한 자리 10년 — 빈 땅이 마을이 됨', en: 'One spot, ten years — an empty field becomes a town' }, sub: { ko: '스크롤 = 시간(타임랩스)', en: 'Scroll = time (time-lapse)' },
-      pitch: { ko: '카메라는 한 자리에 그대로 두고 시간만 흐릅니다. 스크롤하는 만큼 해가 넘어가고(점수판의 해가 2016 → 2026 으로 올라감) 계절이 바뀌며, 빈 땅에 시기마다 새 것이 생깁니다 — 관이 솟고 빨강 고스트가 튀어나와 동전 다섯을 내놓고(1인 개발), 무리가 걸어 들어와 모이고(커뮤니티), 하늘에 물음표 블록이 뜨고(블로그), 단상이 솟아 고스트가 올라서고(발표 스터디), 깃발이 오릅니다(기획 과정). 새 것이 생기는 순간 그 자리에서 대화창이 튀어나와 왼쪽 마을 연혁판의 잠긴 줄로 접혀 들어갑니다.',
-               en: 'The camera stays on one spot and only time moves. As you scroll the years tick by on the scoreboard (2016 → 2026) and the seasons change, and something new appears on the empty field each period: a pipe rises and the red ghost pops out with five coins (solo dev), a crowd walks in and gathers (community), ? blocks appear in the sky (the blog), a podium rises and the ghost steps up (the study group), and a flag goes up (the course). The moment something appears, a dialog springs from that spot and folds into its locked line on the town history board on the left.' },
-      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '해 넘기기 · 계절 · 마을이 자람', 'Years, seasons, the town grows'], ['읽게 되는 곳', 'What you read', '새로 생긴 것에서 튀어나온 대화창 → 마을 연혁판', 'The dialog from what just appeared → the town board']],
-      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
-      pros: { ko: ['S 의 \'지어지는 맛\'을 한 자리에 모아 더 진하게 — 끝에 마을 하나가 남음', '넘어가는 해 · 바뀌는 계절로 시간이 몸으로 느껴짐', '끝 화면 = 왼쪽 연혁판(목록) + 오른쪽 마을(그림)'], en: ['S\'s pleasure of building, concentrated in one place — a whole town at the end', 'Ticking years and seasons make the time felt', 'End screen = the board (list) + the town (picture)'] },
-      cons: { ko: ['한 자리에 쌓이다 보니 마지막엔 화면이 꽉 참', '계절 색은 밝은 것만(낮 · 노을 · 겨울)'], en: ['Everything piles up in one place, so the end is busy', 'Only bright seasons (day, dusk, winter)'] } },
-    { id: 'x', f: draftX, w: wireX, scroll: 3200, camW: 1200, badge: { ko: '5차 새 안', en: 'Round 5 · new' }, name: { ko: '벽돌 휴대기 속 — 고른 게임기로 플레이', en: 'Inside the brick handheld — played on the chosen console' }, sub: { ko: '스크롤 = 플레이', en: 'Scroll = play' },
-      pitch: { ko: '고른 벽돌 휴대기가 화면 가운데 크게 놓이고, 그 화면 안에서 이야기가 플레이됩니다. 스크롤하면 십자 버튼 → 가 눌리며 고스트가 오른쪽으로 걷고, 시기마다 물음표 블록 밑에서 A 가 눌려 뛰어 칩니다. 치는 순간 블록에서 큰 글씨 대화창이 튀어나와 게임기 화면을 채우고, 다 읽히면 화면 위 칸으로 접혀 들어갑니다. 다섯 블록을 다 치면 게임기 화면이 그대로 메뉴(프로젝트 · 이력서 …)가 됩니다 — 실제 홈의 \'타이틀 → 메뉴\' 흐름과 이어짐.',
-               en: 'The chosen brick handheld sits large in the middle and the story is played on its screen. As you scroll, the D-pad\'s → is pressed and the ghost walks right; under each period\'s ? block, A is pressed and it jumps. The moment it hits, a big-type dialog springs from the block and fills the console screen, then folds into its cell at the top of the screen. After the fifth block the console screen simply becomes the menu (Projects, Résumé …), continuing straight into the real home\'s title → menu flow.' },
-      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '버튼 눌림 · 걷기 · 블록 치기 · 메뉴', 'Buttons press, walking, block hits, menu'], ['읽게 되는 곳', 'What you read', '게임기 화면을 채운 대화창 → 화면 위 칸', 'The dialog filling the console screen → the cells on top']],
-      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
-      pros: { ko: ['고른 게임기와 홈 흐름이 하나로 이어짐(끝 화면 = 실제 메뉴)', '버튼이 저절로 눌려 \'플레이하는 느낌\'', '글이 게임기 화면 한 곳에만 나와 시선이 모임'], en: ['Joins the chosen console and the home flow (the end screen is the real menu)', 'Buttons press themselves — it feels played', 'Text appears only on the console screen, so the eye stays put'] },
-      cons: { ko: ['게임기가 화면을 많이 차지해 월드가 작음', '휴대폰에서는 게임기 전체가 작게 보이고 글은 아래 칸에'], en: ['The console takes much of the screen, so the world is small', 'On a phone the console is small and the text sits below'] } },
-    { id: 'y', f: draftY, w: wireY, scroll: 3200, camW: 1200, badge: { ko: '5차 새 안', en: 'Round 5 · new' }, name: { ko: '육각형 채우기 — 시기가 능력을 채움', en: 'Filling the hexagon — each period builds abilities' }, sub: { ko: '스크롤 = 블록 치기', en: 'Scroll = hitting blocks' },
-      pitch: { ko: '오른쪽은 능력치 판(여섯 능력의 육각형, 축마다 빈 칸 다섯)입니다. 스크롤하면 시기마다 물음표 블록이 고스트 머리 위로 떨어지고, 고스트가 뛰어 치는 순간 블록에서 큰 글씨 대화창이 튀어나오면서 그 시기에 얻은 능력만큼 블록이 날아가 육각형의 빈 칸에 박힙니다(색 = 시기). 대화창은 아래 범례의 잠긴 칸으로 접혀 들어갑니다. 끝 화면에서는 육각형의 색만 봐도 어느 시기가 어떤 능력을 키웠는지 한눈에 보입니다.',
-               en: 'On the right is a status board: a hexagon of six abilities with five empty cells per axis. As you scroll, a ? block drops above the ghost for each period; the moment the ghost jumps and hits it, a big-type dialog springs out and blocks fly from it into the empty hexagon cells, one per ability gained (colour = period). The dialog folds into its locked cell in the legend below. At the end the colours alone show which period built which ability.' },
-      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '블록 떨어짐 · 치기 · 능력 블록이 날아감', 'Blocks drop, hits, ability blocks fly'], ['읽게 되는 곳', 'What you read', '튀어나온 대화창 → 육각형 · 범례', 'The dialog → the hexagon and legend']],
-      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
-      pros: { ko: ['\'육각형 기획자\'를 가장 직접 보여 줌 — 이력과 능력이 색으로 이어짐', '블록이 날아가 박히는 맛', '끝 화면 = 색으로 나뉜 육각형 + 범례 다섯 칸'], en: ['The most direct "hexagon designer" — colours link each ability to its period', 'Blocks flying into place are satisfying', 'End screen = a colour-coded hexagon + five legend cells'] },
-      cons: { ko: ['육각형 칸 수가 아직 예시(content.js 로 옮길 때 확정)', '풍경(월드)은 가장 적음'], en: ['The hexagon values are still placeholders (settled when moved to content.js)', 'The least scenery'] } }
+      cons: { ko: ['2026 에 두 시기가 겹쳐 마지막이 몰림', '은유를 팻말이 꼭 받쳐야 함'], en: ['Two periods start in 2026, so the end bunches up', 'The metaphors need their signs'] } }
   ];
   var RULES4 = [
-    { h: { ko: '스크롤만', en: 'Scroll only' }, b: { ko: '"생각하고 누르는 건 안 돼. 바로 작동 안 하면 꺼 버릴 것" — 누를 것도, 배울 것도 없습니다.', en: '"No thinking and clicking — if it doesn\'t work right away, people close the site." Nothing to click, nothing to learn.' } },
-    { h: { ko: '첫 스크롤에 바로', en: 'Moves on the first scroll' }, b: { ko: '화면은 멈춘 채(그 자리에 붙어) 안에서만 움직여, 조금만 내려도 바로 반응합니다. 위로 올리면 되감기.', en: 'The screen holds still while things move inside, so even a small scroll responds. Scroll up to rewind.' } },
-    { h: { ko: '읽는 속도 = 내리는 속도', en: 'Read at scroll speed' }, b: { ko: '글은 움직임이 일어나는 바로 그 자리에, 내리는 만큼 나타납니다. 눈이 움직임을 따라가다 글을 읽게 됩니다.', en: 'Text appears exactly where the motion happens, as far as you scroll — the eye follows the motion into the words.' } },
-    { h: { ko: '끝 화면 = 이력 한 장', en: 'End screen = the career' }, b: { ko: '끝까지 내리면 한 화면에 10년이 남고, 바로 아래가 포트폴리오.', en: 'At the bottom the ten years remain on one screen, with the portfolio right below.' } }
+    { h: { ko: '이력이 주인공', en: 'The career leads' }, b: { ko: '"연출은 자연스럽게 녹아내는 역할만, 가장 중요한 건 이력을 잘 보여 주는 것." 시기 · 역할 · 한 일 · 숫자가 먼저 보입니다.', en: '"The staging only blends in; what matters most is showing the career well." Period, role, work and numbers come first.' } },
+    { h: { ko: '한 장에 10년', en: 'Ten years on one page' }, b: { ko: '스크롤 연출 없이 한 화면에서 다 읽힙니다. 최신 시기가 맨 위.', en: 'Readable on one screen with no scroll effects. Newest first.' } },
+    { h: { ko: '테마는 재료로만', en: 'Theme as material only' }, b: { ko: '스테이지의 창(크림 판 · 남색 테)과 도트 숫자 · 연도만 빌려 씁니다. 소품 · 캐릭터 · 움직임 없음.', en: 'Borrows only the Stage windows (cream face, navy frame) and pixel numbers and years. No props, characters or motion.' } },
+    { h: { ko: '훅은 첫 화면', en: 'The hook is the first screen' }, b: { ko: '눈길은 첫 화면(게임기 타이틀)이 끌고, 그 바로 아래가 이 브리핑입니다.', en: 'The first screen (console title) catches the eye; this briefing sits right below it.' } }
   ];
 
   var FIT = { w: 0, h: 0 }, CAM_W = 680;
@@ -1153,20 +816,22 @@
   }
   window.addEventListener('scroll', function () { if (!stTick) stTick = requestAnimationFrame(function () { stTick = 0; scrollTick(); }); }, { passive: true });
   function draftHTML(d) {
-    return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
+    return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + esc(d.label || d.id.toUpperCase()) + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
         '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
         '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
         (d.flow ? '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' : '') +
-        (d.extra ? d.extra() : '') + (d.scroll ? '<div class="mockbox mockbox--scroll" data-draft="' + d.id + '" data-len="' + d.scroll + '"' + (d.camW ? ' data-camw="' + d.camW + '"' : '') + '><div class="sstick">' + d.f() + '</div></div>' : '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div>') + '<p class="hint">' + esc(t(d.hint)) + '</p>' +
+        (d.extra ? d.extra() : '') + (d.plain ? d.f() : d.scroll ? '<div class="mockbox mockbox--scroll" data-draft="' + d.id + '" data-len="' + d.scroll + '"' + (d.camW ? ' data-camw="' + d.camW + '"' : '') + '><div class="sstick">' + d.f() + '</div></div>' : '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div>') + '<p class="hint">' + esc(t(d.hint)) + '</p>' +
         '<div class="notes"><div><h5>' + T('좋은 점', 'Strengths') + '</h5><ul>' + d.pros[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
   function renderDrafts() {
-    document.getElementById('toc').innerHTML = DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
+    document.getElementById('toc').innerHTML = DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · S', 'Earlier · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
     document.getElementById('rules').innerHTML = RULES4.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
     document.getElementById('drafts4').innerHTML = DRAFTS4.map(draftHTML).join('');
+    document.getElementById('drafts-old').innerHTML = DRAFTS_OLD.map(draftHTML).join('');
     SCROLLERS = [];
-    DRAFTS4.forEach(function (d) {
+    DRAFTS4.concat(DRAFTS_OLD).forEach(function (d) {
+      if (d.plain) return;
       var box = document.querySelector('.mockbox[data-draft="' + d.id + '"]'), r = d.w(box);
       if (d.scroll && r && r.prog) SCROLLERS.push({ box: box, stick: box.querySelector('.sstick'), prog: r.prog });
     });
@@ -1213,6 +878,7 @@
   }
   function render() { applyLang(); renderDrafts(); renderConsoles(); }
   render();
+  document.getElementById('older').addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); renderConsoles(); }, 150); });
   document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   document.querySelector('[data-dark]').addEventListener('click', function () {
