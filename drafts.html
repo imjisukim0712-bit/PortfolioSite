@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ko" data-skin="pixel-fc-level">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>시안 모음 · 김지수 포트폴리오</title>
+<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저, 스테이지 문법으로) 시안 5개 · 스테이지 게임기 그림 시안 5개.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P">
+<!-- 스테이지 소품 그림(--lv-ground · --lv-qblock …)만 빌려 씀: html[data-skin="pixel-fc-level"] 에 걸린 토큰. 사이트 규칙은 [data-skin-theme] 이 없어 적용되지 않음 -->
+<link rel="stylesheet" href="assets/css/themes/pixel-fc-folio.css">
+<style>
+  /* ── 페이지(시안 갤러리와 같은 차림) ─────────────────────────────────── */
+  :root { --bg: #f4f2ec; --fg: #1d1c1a; --muted: #6b6963; --line: #dcd8cc; --card: #fffdf8; --accent: #c15f3c; color-scheme: light; }
+  :root[data-theme="dark"] { --bg: #1b1b19; --fg: #efece4; --muted: #a29f95; --line: #34332f; --card: #232320; --accent: #e58a6b; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Pretendard Variable', Pretendard, -apple-system, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; word-break: keep-all; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1296px; margin: 0 auto; padding: 0 24px; }
+  @media (max-width: 600px) { .wrap { padding: 0 16px; } }
+  .top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 60px; padding-block: 8px; }
+  .top h1 { margin: 0; font-size: 17px; font-weight: 600; }
+  .top .sp { flex: 1; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); font-size: 13px; cursor: pointer; color: inherit; font-family: inherit; }
+  .btn:hover { border-color: var(--accent); }
+  .lead { padding: 56px 0 20px; max-width: 840px; }
+  .lead h2 { margin: 0 0 12px; font-size: clamp(28px, 4vw, 44px); line-height: 1.15; letter-spacing: -.02em; font-weight: 600; }
+  .lead p { margin: 0; color: var(--muted); font-size: 16px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 8px; }
+  .toc a { padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; background: var(--card); }
+  .toc a:hover { border-color: var(--accent); color: var(--accent); }
+  .part { padding: 44px 0 12px; border-top: 1px solid var(--line); margin-top: 32px; }
+  .part__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 6px; }
+  .part__num { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--accent); letter-spacing: .1em; }
+  .part__head h3 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.01em; }
+  .part__desc { margin: 0 0 18px; color: var(--muted); font-size: 15px; max-width: 860px; }
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 0 0 36px; padding: 0; list-style: none; }
+  .rules li { padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); font-size: 14px; }
+  .rules b { display: block; margin-bottom: 2px; font-size: 12px; letter-spacing: .04em; color: var(--accent); font-weight: 600; }
+  .draft { margin: 0 0 56px; }
+  .draft__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 10px; }
+  .draft__id { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--fg); color: var(--bg); font: 700 15px/1 ui-monospace, Menlo, monospace; }
+  .draft__head h4 { margin: 0; font-size: 20px; font-weight: 600; }
+  .draft__head small { color: var(--muted); font-size: 13px; }
+  .draft__pitch { margin: 0 0 12px; font-size: 15px; max-width: 920px; }
+  .map { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; padding: 0; }
+  .map div { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); font-size: 13.5px; }
+  .map dt { color: var(--accent); font-weight: 600; font-size: 12px; white-space: nowrap; }
+  .map dd { margin: 0; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 14px; font-size: 12.5px; color: var(--muted); }
+  .flow b { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; font-weight: 500; color: var(--fg); background: var(--card); }
+  .flow b.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+  .notes div { padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); font-size: 14px; }
+  .notes h5 { margin: 0 0 4px; font-size: 12px; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .notes ul { margin: 0; padding-left: 18px; }
+  .hint { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+  .hint--narrow { display: none; }
+  @media (max-width: 640px) { .hint--narrow { display: block; margin-top: 2px; } }
+  .foot { padding: 40px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; margin-top: 24px; }
+  .foot code { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; padding: 2px 6px; border-radius: 6px; background: var(--line); color: var(--fg); }
+
+  /* ── 시안 화면 — 설계 폭 1200px 고정(소품 그림이 원래 크기 1배 = 칸 4px). 좁은 화면은 JS 가 zoom 으로 줄임 ── */
+  .mockbox { overflow-x: auto; overflow-y: hidden; border-radius: 16px; border: 1px solid var(--line); background: #5c94fc; -webkit-overflow-scrolling: touch; }
+  .mockbox::-webkit-scrollbar { height: 8px; } .mockbox::-webkit-scrollbar-thumb { background: rgba(16, 35, 70, .4); border-radius: 4px; }
+  .mock { position: relative; margin: 0 auto; width: 1200px; height: 750px; overflow: hidden; background: #5c94fc; color: #102346; font: 15px/1.6 'Pretendard Variable', Pretendard, 'Noto Sans KR', sans-serif; word-break: keep-all; -webkit-user-select: none; user-select: none; }
+  .mock--tall { height: auto; }
+  .mock *, .mock *::before, .mock *::after { box-sizing: border-box; }
+  .mock p, .mock h5, .mock ul { margin: 0; padding: 0; }
+  .mock button { font: inherit; color: inherit; }
+  .mock .px { font-family: 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .mock .px14 { font-family: 'Galmuri14', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .mock .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .mock .sp { flex: 1; }
+  /* 소품(1배) — 스테이지 시안의 --lv-* 그림 + 이 페이지에서 같은 문법으로 찍은 --d-* (고스트 · 계단 블록 · 다 쓴 블록 · 성 · 깃대) */
+  .mock .s { position: absolute; display: block; background: 0 0 / 100% 100% no-repeat; image-rendering: pixelated; pointer-events: none; }
+  .mock .s.in { position: relative; display: inline-block; vertical-align: middle; }
+  .s-qb { width: 64px; height: 64px; background-image: var(--lv-qblock) !important; }
+  .s-brick { width: 64px; height: 64px; background-image: var(--lv-brick) !important; }
+  .s-used { width: 64px; height: 64px; background-image: var(--d-used) !important; }
+  .s-hard { width: 64px; height: 64px; background-image: var(--d-hard) !important; }
+  .s-coin { width: 24px; height: 40px; background-image: var(--lv-coin) !important; }
+  .s-coin-s { width: 16px; height: 24px; background-image: var(--lv-coin-s) !important; }
+  .s-pipe { width: 128px; height: 128px; background-image: var(--lv-pipe) !important; }
+  .s-hill { width: 192px; height: 76px; background-image: var(--lv-hill) !important; }
+  .s-bush { width: 128px; height: 56px; background-image: var(--lv-bush) !important; }
+  .s-cloud { width: 112px; height: 48px; background-image: var(--lv-cloud) !important; }
+  .s-ghost { width: 48px; height: 56px; background-image: var(--d-ghost) !important; }
+  .s-castle { width: 288px; height: 320px; background-image: var(--d-castle) !important; }
+  .s-flag { width: 88px; height: 384px; background-image: var(--d-flag) !important; }
+  .m-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
+  .m-nav { position: absolute; z-index: 6; left: 0; right: 0; top: 0; height: 60px; display: flex; align-items: center; gap: 28px; padding: 0 36px; background: #17345f; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; }
+  .m-nav .cur { padding: 6px 10px; background: #fff6dd; color: #c8102e; }
+  .m-nav .ps { font-size: 8px; color: #fca044; }
+  /* 창(스테이지 창 재료): 크림 판 + 남색 4px 테 + 남색 그림자 */
+  .m-win { position: absolute; background: #fff6dd; border: 4px solid #102346; box-shadow: 8px 8px 0 rgb(16 35 70 / .55); }
+  .m-win__bar { display: flex; align-items: center; gap: 12px; height: 36px; padding: 0 14px; background: #102346; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; }
+  .m-win__bar .tag { padding: 4px 6px; background: #c8102e; color: #fff; font: 8px/1 'Press Start 2P', monospace; }
+  .m-win__in { padding: 14px 18px 16px; }
+  .m-role { font-size: 20px; font-weight: 700; line-height: 1.3; }
+  .m-org { margin-top: 2px !important; font-size: 14px; color: #3d4050; }
+  .m-body { margin-top: 8px !important; font-size: 15px; line-height: 1.6; }
+  .m-k { font: 11px/1.4 'Galmuri11', monospace; color: #c84c0c; }
+  .m-btn { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; background: #c8102e; color: #fff6dd; border: 4px solid #102346; box-shadow: 4px 4px 0 #102346; font: 700 15px/1.2 'Pretendard Variable', Pretendard, sans-serif; cursor: pointer; white-space: nowrap; }
+  .m-btn--sub { background: #fff6dd; color: #102346; }
+  .m-btn .key { display: inline-grid; place-items: center; width: 24px; height: 24px; background: #fff6dd; color: #c8102e; font: 8px/1 'Press Start 2P', monospace; }
+  .m-btn--sub .key { background: #102346; color: #fff6dd; }
+  .m-btn:active { transform: translate(4px, 4px); box-shadow: none; }
+  .m-chip { display: inline-block; padding: 5px 8px; margin: 0 6px 6px 0; border: 2px solid #102346; background: #fca044; color: #102346; font: 11px/1 'Galmuri11', monospace; white-space: nowrap; }
+  .hexwrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+  @keyframes bump { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-16px); } }
+  @keyframes coinUp { 0% { opacity: 1; transform: translateY(0); } 70% { opacity: 1; transform: translateY(-72px); } 100% { opacity: 0; transform: translateY(-48px); } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes bob { 50% { transform: translateY(-4px); } }
+
+  /* A · 1-1 코스 */
+  .a-cam { position: absolute; left: 0; right: 0; top: 60px; bottom: 0; overflow-x: auto; overflow-y: hidden; outline: none; cursor: grab; scrollbar-width: thin; scrollbar-color: #102346 transparent; }
+  .a-cam:focus-visible { box-shadow: inset 0 0 0 4px #fca044; }
+  .a-cam.is-drag { cursor: grabbing; }
+  .a-course { position: relative; height: 690px; }
+  .a-hud { position: absolute; z-index: 4; left: 0; right: 0; top: 60px; height: 96px; display: grid; grid-template-columns: 300px 150px 130px 1fr 80px; gap: 24px; align-items: center; padding: 8px 48px; color: #fcfcfc; text-shadow: 4px 4px 0 #102346; pointer-events: none; }
+  .a-hud > div > span { display: block; margin-bottom: 10px; font-size: 11px; text-shadow: 2px 2px 0 #102346; }
+  .a-hud b { display: block; font-size: 16px; font-weight: 400; line-height: 1; white-space: nowrap; }
+  .a-hud b .s { margin-right: 8px; vertical-align: -4px; }
+  .a-hud .now { font: 700 15px/1.4 'Pretendard Variable', Pretendard, sans-serif; text-shadow: 2px 2px 0 #102346; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .a-hud__hex { width: 80px; filter: drop-shadow(4px 4px 0 #102346); }
+  .a-ghost { z-index: 3; left: 312px; bottom: 128px; }
+  .a-ghost.is-run { animation: bob .2s steps(2) infinite; }
+  .a-era { top: 112px; width: 360px; }
+  .a-q, .a-coin, .a-pop { position: absolute; }
+  .a-coin { opacity: 0; }
+  .a-pop { opacity: 0; transform: translate(-50%, 12px); transition: opacity .25s .25s, transform .25s .25s; }
+  .a-zone.is-hit .a-q { background-image: var(--d-used) !important; animation: bump .28s ease-out; }
+  .a-zone.is-hit .a-coin { animation: coinUp .7s ease-out forwards; }
+  .a-zone.is-hit .a-pop { opacity: 1; transform: translate(-50%, 0); }
+  .a-start { left: 48px; top: 112px; width: 420px; }
+  .a-clear { left: 4352px; top: 112px; width: 448px; }
+  .a-clear .hexwrap { width: 136px; margin: 0 auto 2px; }
+  .a-clear .m-win__in { text-align: center; padding-bottom: 18px; }
+  .a-clear h5 { font-size: 28px; line-height: 1.5; color: #c8102e; }
+
+  /* B · 땅 밑 지층 */
+  .b-top { position: relative; height: 440px; }
+  .b-title { position: absolute; left: 48px; top: 104px; width: 470px; color: #fcfcfc; }
+  .b-title h5 { font-size: 28px; line-height: 1.5; text-shadow: 4px 4px 0 #102346; }
+  .b-title p { margin-top: 12px !important; font-size: 16px; line-height: 1.75; text-shadow: 2px 2px 0 #102346; }
+  .b-title .go { display: inline-block; margin-top: 18px; padding: 8px 12px; background: #102346; font-size: 11px; animation: bob 1s steps(2) infinite; }
+  .b-console { position: absolute; left: 528px; top: 92px; width: 648px; height: 348px; }
+  .b-scr { position: absolute; left: 138px; top: 66px; width: 372px; height: 195px; display: grid; place-content: center; justify-items: center; gap: 12px; font-size: 11px; color: #17345f; text-align: center; }
+  .b-scr .ps { font-size: 8px; color: #c8102e; }
+  .b-scr b { font-weight: 400; color: #c8102e; animation: blink .9s steps(2) infinite; }
+  .b-layer { position: relative; height: 384px; background: var(--mat) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
+  .b-depth { position: absolute; left: 16px; top: 88px; width: 96px; padding: 12px 6px; background: #102346; border: 4px solid #000; color: #fff6dd; text-align: center; image-rendering: auto; }
+  .b-depth b { display: block; font-size: 16px; color: #fca044; font-weight: 400; }
+  .b-depth span { display: block; margin-top: 10px; font-size: 11px; line-height: 1.5; }
+  .b-cave { position: absolute; left: 128px; right: 64px; top: 64px; bottom: 64px; background: #000; image-rendering: auto; }
+  .b-era { left: 32px; top: 32px; width: 470px; box-shadow: none; }
+  .b-gain { position: absolute; left: 544px; right: 24px; top: 28px; bottom: 20px; display: grid; grid-template-columns: 1fr 176px; gap: 20px; align-items: start; color: #edf1f8; }
+  .b-gain h5 { margin-bottom: 14px !important; font-size: 11px; color: #bcc6da; }
+  .b-gain .m-chip { opacity: 0; transform: translateY(-8px); transition: opacity .3s .2s, transform .3s .2s; }
+  .b-gain .pips { display: block; margin-top: 10px; font-size: 11px; color: #bcc6da; line-height: 1.8; }
+  .b-gain .hexwrap { opacity: .25; transition: opacity .5s .3s; }
+  .b-q { top: 0; }
+  .b-layer.is-hit .b-q { background-image: var(--d-used) !important; animation: bump .28s ease-out; }
+  .b-layer.is-hit .b-gain .m-chip { opacity: 1; transform: none; }
+  .b-layer.is-hit .b-gain .hexwrap { opacity: 1; }
+  .b-deep { position: relative; height: 520px; background: #000; }
+  .b-deep .m-ground { background-image: var(--lv-uground); }
+  .b-final { left: 160px; top: 40px; width: 520px; }
+  .b-final .hexwrap { width: 300px; margin: 0 auto; }
+  .b-exit { position: absolute; left: 808px; top: 176px; }
+
+  /* C · 오프닝 컷신 */
+  .c-stage { position: relative; height: 750px; overflow: hidden; }
+  .c-art { position: absolute; left: 60px; top: 70px; width: 1080px; height: 580px; }
+  .c-scr { position: absolute; left: 290px; top: 180px; width: 620px; height: 325px; overflow: hidden; display: grid; grid-template-rows: 30px 190px 1fr; background: #fff6dd; cursor: pointer; }
+  .c-head { display: flex; align-items: center; gap: 12px; padding: 0 14px; font-size: 11px; color: #17345f; }
+  .c-head .ps { font-size: 8px; color: #c8102e; }
+  .c-dio { position: relative; overflow: hidden; background: #5c94fc; }
+  .c-dio .m-ground { height: 64px; }
+  .c-dio .s-ghost { bottom: 64px; }
+  .c-say { position: relative; margin: 8px; padding: 10px 34px 10px 14px; background: #102346; color: #fff6dd; font-size: 15px; line-height: 1.55; }
+  .c-say::after { content: '▼'; position: absolute; right: 12px; bottom: 8px; font: 11px/1 'Galmuri11', monospace; color: #fca044; animation: blink .9s steps(2) infinite; }
+  .c-say.is-typing::after { content: none; }
+  .c-dio.is-hit .c-q { background-image: var(--d-used) !important; animation: bump .28s ease-out; }
+  .c-walk { animation: cWalk 3.2s steps(20) infinite; }
+  @keyframes cWalk { 80%, 100% { transform: translateX(320px); } }
+  .c-up { right: 14px; top: 38px; width: 248px; z-index: 2; opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
+  .c-up.on { opacity: 1; transform: none; }
+  .c-up .m-win__bar { background: #c8102e; }
+  .c-up .m-win__in { display: grid; grid-template-columns: 1fr 84px; gap: 10px; align-items: center; padding: 10px 12px; }
+  .c-up p { font-size: 13px; line-height: 1.45; color: #3d4050; margin-top: 6px !important; }
+  .c-hot { position: absolute; width: 82px; height: 82px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; }
+  .c-hot:focus-visible { outline: 4px solid #fca044; }
+  .c-ctl { position: absolute; left: 0; right: 0; bottom: 40px; display: flex; justify-content: center; gap: 20px; z-index: 2; }
+  .c-board { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; padding: 24px 36px 32px; background: #17345f; }
+  .c-board button { display: block; padding: 10px 12px 12px; background: #fff6dd; border: 4px solid #102346; box-shadow: 4px 4px 0 #000; text-align: left; cursor: pointer; color: #102346; }
+  .c-board button.on { background: #fca044; }
+  .c-board .ps { display: block; font-size: 8px; color: #c8102e; margin-bottom: 8px; }
+  .c-board b { display: block; font-size: 14px; line-height: 1.4; }
+  .c-board i { display: block; margin-top: 6px; font: normal 11px/1.5 'Galmuri11', monospace; color: #3d4050; }
+  .c-end { position: absolute; inset: 0; display: grid; grid-template-columns: 190px 1fr; gap: 18px; align-items: center; padding: 0 28px; background: #102346; color: #fff6dd; }
+  .c-end h5 { font-size: 28px; line-height: 1.5; color: #fca044; }
+  .c-end p { margin-top: 6px !important; font-size: 15px; line-height: 1.6; }
+
+  /* D · 여섯 블록 */
+  .d-title { position: absolute; left: 48px; top: 92px; width: 330px; color: #fcfcfc; }
+  .d-title h5 { font-size: 28px; line-height: 1.45; text-shadow: 4px 4px 0 #102346; }
+  .d-title p { margin-top: 8px !important; font-size: 15px; line-height: 1.6; text-shadow: 2px 2px 0 #102346; }
+  .d-rad { position: absolute; left: 300px; top: 228px; width: 264px; height: 264px; }
+  .d-rad svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .d-count { position: absolute; left: 300px; top: 344px; width: 264px; text-align: center; pointer-events: none; }
+  .d-count b { display: inline-block; padding: 6px 8px; background: #102346; color: #fff6dd; font-size: 8px; font-weight: 400; }
+  .d-blk { position: absolute; width: 64px; height: 64px; padding: 0; border: 0; background: var(--lv-qblock) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; cursor: pointer; }
+  .d-blk:hover { transform: translateY(-4px); }
+  .d-blk:focus-visible { outline: 4px solid #fff6dd; outline-offset: 2px; }
+  .d-blk.is-used { background-image: var(--d-used); cursor: default; animation: bump .28s ease-out; transform: none; }
+  .d-blk .coin { position: absolute; left: 20px; top: -44px; opacity: 0; }
+  .d-blk.is-used .coin { animation: coinUp .7s ease-out forwards; }
+  .d-lab { position: absolute; padding: 5px 8px; background: #102346; color: #fff6dd; font-size: 11px; white-space: nowrap; pointer-events: none; }
+  .d-lab.is-on { background: #fca044; color: #102346; }
+  .d-panel { left: 720px; top: 92px; width: 432px; height: 380px; }
+  .d-panel .m-win__in { display: flex; flex-direction: column; height: calc(100% - 36px); }
+  .d-panel .nm { font-size: 28px; line-height: 1.4; }
+  .d-panel .pips { margin: 4px 0 8px !important; font-size: 16px; color: #c8102e; letter-spacing: 2px; }
+  .d-panel .ev { font-size: 15px; line-height: 1.6; }
+  .d-panel h6 { margin: 14px 0 6px; font: 11px/1 'Galmuri11', monospace; color: #c84c0c; }
+  .d-src { display: grid; gap: 6px; }
+  .d-src div { display: grid; grid-template-columns: 136px 1fr auto; gap: 10px; align-items: baseline; padding: 6px 10px; background: #fff; border: 2px solid #102346; font-size: 14px; }
+  .d-src div .px { font-size: 11px; color: #c84c0c; }
+  .d-src div .ps { font-size: 8px; color: #c8102e; }
+  .d-line { margin-top: auto !important; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding-top: 12px; }
+  .d-line span { padding: 6px 6px 7px; border: 2px solid #b9b2a0; color: #9a9384; font-size: 11px; line-height: 1.35; text-align: center; transition: .25s; }
+  .d-line span.on { border-color: #102346; background: #fca044; color: #102346; }
+  .d-pipe { left: 1000px; bottom: 0; transform: translateY(128px); transition: transform .6s steps(8); }
+  .d-done .d-pipe { transform: translateY(-128px); }
+  .d-go { position: absolute; left: 736px; top: 548px; opacity: 0; pointer-events: none; transition: opacity .3s .5s; }
+  .d-done .d-go { opacity: 1; pointer-events: auto; }
+  .d-skip { position: absolute; left: 48px; top: 548px; }
+
+  /* E · 본편 카트리지 */
+  .e-crop { position: absolute; left: 250px; top: 80px; width: 700px; height: 405px; }
+  .e-scr { position: absolute; left: 290px; top: 120px; width: 620px; height: 325px; display: grid; grid-template-rows: 30px 1fr; overflow: hidden; }
+  .e-head { display: flex; align-items: center; gap: 12px; padding: 0 14px; font-size: 11px; color: #17345f; border-bottom: 2px dashed #d8c9a3; }
+  .e-head .ps { font-size: 8px; color: #c8102e; }
+  .e-body { display: grid; grid-template-columns: 1fr 200px; gap: 18px; align-items: center; padding: 14px 20px 16px; }
+  .e-body .y { font-size: 16px; color: #c8102e; }
+  .e-body h6 { margin: 12px 0 6px; font: 11px/1 'Galmuri11', monospace; color: #c84c0c; }
+  .e-body .note { font-size: 15px; line-height: 1.65; }
+  .e-shelf { position: absolute; left: 64px; right: 64px; padding: 16px; background: var(--lv-bricks) 0 0 / 64px 32px repeat; image-rendering: pixelated; }
+  .e-in { padding: 40px 28px 28px; background: #17345f; image-rendering: auto; }
+  .e-shelf__tab { position: absolute; left: 24px; top: -6px; padding: 7px 10px; background: #fff6dd; border: 4px solid #102346; font-size: 11px; color: #102346; }
+  .e-shelf__tab b { color: #c8102e; font-weight: 400; }
+  .e-row { display: flex; justify-content: center; gap: 24px; }
+  .e-cart { position: relative; width: 168px; height: 208px; padding: 22px 12px 0; border: 4px solid #3d290c; background: #d4a23e; box-shadow: 6px 6px 0 #000; cursor: pointer; text-align: left; color: #102346; transition: transform .2s steps(3); }
+  .e-cart::before { content: ''; position: absolute; left: 30px; right: 30px; top: 6px; height: 8px; background: #3d290c; }
+  .e-cart::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 8px; height: 12px; background: repeating-linear-gradient(90deg, #9a6a1e 0 8px, transparent 8px 12px); }
+  .e-cart:hover { transform: translateY(-4px); }
+  .e-cart:focus-visible { outline: 4px solid #fff6dd; outline-offset: 2px; }
+  .e-cart.is-in { transform: translateY(-20px); outline: 4px solid #fff6dd; }
+  .e-lab { display: block; height: 150px; padding: 10px 10px 8px; background: #fff6dd; border: 2px solid #3d290c; border-top: 8px solid #c8102e; overflow: hidden; }
+  .e-lab .ps { display: block; font-size: 8px; color: #c8102e; }
+  .e-lab .yr { display: block; margin-top: 8px; font-size: 16px; }
+  .e-lab b { display: block; margin-top: 8px; font-size: 15px; line-height: 1.35; }
+  .e-cart .done { position: absolute; right: -8px; top: -12px; padding: 5px 6px; background: #c8102e; color: #fff; font-size: 8px; border: 2px solid #102346; opacity: 0; }
+  .e-cart.is-played .done { opacity: 1; }
+  .e-cart--red { width: 148px; height: 180px; background: #c8102e; border-color: #5c1013; cursor: default; }
+  .e-cart--red::before { background: #5c1013; }
+  .e-cart--red::after { background: repeating-linear-gradient(90deg, #8f1d1f 0 8px, transparent 8px 12px); }
+  .e-cart--red .e-lab { height: 124px; border-color: #5c1013; border-top-color: #102346; }
+  .e-cart--red .e-lab b { font-size: 14px; }
+  .e-lock .e-cart--red { filter: grayscale(.6) brightness(.85); }
+  .e-lock .e-shelf--port::after { content: attr(data-lock); position: absolute; inset: 0; display: grid; place-items: center; background: rgb(16 35 70 / .82); color: #fff6dd; font: 11px/1.5 'Galmuri11', monospace; }
+
+  @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
+
+  /* 게임기 그림 */
+  .cgrid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); }
+  .cart { border: 1px solid var(--line); border-radius: 18px; background: var(--card); overflow: hidden; }
+  .cart--hero { grid-column: 1 / -1; }
+  .cart__art { display: block; background: #5c94fc; line-height: 0; }
+  :root[data-theme="dark"] .cart__art { background: #152d54; }
+  .cart__art canvas { display: block; margin: 0 auto; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .cart__body { padding: 14px 18px 18px; display: grid; gap: 8px; }
+  .cart__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+  .cart__title b { font-size: 17px; font-weight: 600; } .cart__title small { color: var(--muted); font-size: 12.5px; }
+  .cart__title .badge { padding: 2px 9px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11.5px; }
+  .cart__desc { margin: 0; color: var(--muted); font-size: 14px; }
+  .links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .links a { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; }
+  .links a:hover { border-color: var(--accent); color: var(--accent); }
+  .links a.main { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .links a.main:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+<script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <h1><span class="i18n-ko">시안 모음</span><span class="i18n-en">Drafts</span></h1>
+  <span class="sp"></span>
+  <a class="btn" href="themes.html"><span class="i18n-ko">디자인 테마 갤러리</span><span class="i18n-en">Theme gallery</span></a>
+  <a class="btn" href="index.html?skin=pixel-fc-level-riso"><span class="i18n-ko">사이트로</span><span class="i18n-en">Open site</span></a>
+  <button type="button" class="btn" data-lang><span class="i18n-ko">EN</span><span class="i18n-en">KR</span></button>
+  <button type="button" class="btn" data-dark><span class="i18n-ko">다크/라이트</span><span class="i18n-en">Dark / Light</span></button>
+</div></header>
+
+<main class="wrap">
+  <section class="lead">
+    <h2><span class="i18n-ko">이력이 먼저 — 나열하지 않고, 플레이하게.</span><span class="i18n-en">The career first — not listed, played.</span></h2>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 두되, 연표로 늘어놓지 않고 스테이지의 놀이 방식 자체로 들려주는 다섯 안을 만들었습니다. 각 화면은 이 페이지에서 직접 밀고 · 누르고 · 꽂아 볼 수 있습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio — not as a timeline, but told through the Stage's own way of playing. Five ways below; every screen can be scrolled, pressed or plugged in right on this page.</span></p>
+    <nav class="toc" id="toc"></nav>
+  </section>
+
+  <section class="part" id="story">
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 일대기를 스테이지 문법으로</span><span class="i18n-en">Home flow — the story in Stage grammar</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">지금은 타이틀 화면 → (게임기를 누르면) 메뉴 화면 · 카트리지(포트폴리오)입니다. 다섯 안 모두 그 사이에 일대기를 끼우고, 끝은 같습니다 — 육각형이 다 차면 포트폴리오로.</span><span class="i18n-en">Today it is title screen → (press the console) menu screen and cartridges (portfolio). Each draft slots the story in between, and they all end the same way — once the hexagon is full, on to the portfolio.</span></p>
+    <ul class="rules" id="rules"></ul>
+    <div id="drafts"></div>
+  </section>
+
+  <section class="part" id="consoles">
+    <div class="part__head"><span class="part__num">PART 02</span><h3><span class="i18n-ko">스테이지 게임기 그림 — 다섯 안</span><span class="i18n-en">Stage console drawings — five drafts</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">스테이지 시안 그대로에 게임기 그림만 바꾼 다섯 안입니다. 아래 그림은 사이트에 쓰는 도트 데이터를 그대로, 칸 하나를 정수 픽셀로 찍은 것입니다(흐림 없음). 누르면 그 게임기가 입혀진 실제 사이트가 열립니다.</span><span class="i18n-en">The Stage draft with only the console drawing swapped. Each picture below is the site's own pixel data, every cell drawn as a whole number of screen pixels (no blur). Click to open the real site wearing that console.</span></p>
+    <div class="cgrid" id="cgrid"></div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <span class="i18n-ko">홈 흐름 시안은 아직 사이트에 들어가지 않은 화면입니다 — 고르시면 그 안을 실제 홈(스테이지 시안)에 넣습니다. 육각형 칸 수는 예시(여섯 칸 모두 같은 높이)이고, 글 · 숫자 · 근거는 <code>assets/content.js</code> 의 이력서 내용입니다. 게임기 그림: <code>assets/js/themes/fc-level-art-&lt;이름&gt;.js</code> (Codex 벡터 원본 → <code>tools/fc-pixel/svg-console.py</code>).</span>
+  <span class="i18n-en">The home-flow drafts are mock screens, not yet on the site — pick one and it goes into the real home (Stage draft). Hexagon values are placeholders (all six equal); the words, numbers and evidence are the résumé in <code>assets/content.js</code>. Console drawings: <code>assets/js/themes/fc-level-art-&lt;name&gt;.js</code> (Codex vector source → <code>tools/fc-pixel/svg-console.py</code>).</span>
+</div></footer>
+
+<script src="assets/content.js" charset="utf-8"></script>
+<!-- 게임기 그림 데이터: fc-level-art-<이름>.js 가 FcLevelArt.add(이름, 데이터) 를 부르므로 받아 두기만 함 -->
+<script>window.FcLevelArt = { add: function (n, d) { (window.__ART = window.__ART || {})[n] = d; }, draw: function () { return null; } };</script>
+<script src="assets/js/themes/fc-level-art-riso.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-cutpaper.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-ink.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-gouache.js" charset="utf-8"></script>
+<script src="assets/js/themes/fc-level-art-mecha.js" charset="utf-8"></script>
+<script>
+(function () {
+  'use strict';
+  var C = window.PORTFOLIO_CONTENT || {};
+  var L = (function () { try { return localStorage.getItem('portfolio:lang') === 'en' ? 'en' : 'ko'; } catch (e) { return 'ko'; } })();
+  var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function t(f) { return f == null ? '' : typeof f === 'string' ? f : (f[L] || f.ko || ''); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function T(ko, en) { return esc(L === 'en' ? en : ko); }
+
+  /* ── 소품 그림 — stage-props.py 와 같은 문법(원작 1픽셀 = 4px 칸 · 검은 외곽선 · 같은 팔레트 묶음)으로 이 페이지에서 찍음 ── */
+  var PAL = { K: '#171c28', g: '#80d010', G: '#00a800', l: '#fcbcb0', m: '#c84c0c', w: '#fcfcfc', o: '#fc9838', u: '#a4e4fc', v: '#008888', n: '#f6efe0' };
+  function spr(rows) {
+    var w = rows[0].length, b = '';
+    rows.forEach(function (r, y) {
+      for (var x = 0; x < w;) {
+        var ch = r[x], n = 1; if (ch === '.') { x++; continue; }
+        while (x + n < w && r[x + n] === ch) n++;
+        b += "<rect x='" + x * 4 + "' y='" + y * 4 + "' width='" + n * 4 + "' height='4' fill='" + PAL[ch] + "'/>"; x += n;
+      }
+    });
+    return 'url("data:image/svg+xml,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='" + w * 4 + "' height='" + rows.length * 4 + "' viewBox='0 0 " + w * 4 + ' ' + rows.length * 4 + "' shape-rendering='crispEdges'>" + b + '</svg>') + '")';
+  }
+  function grid(w, h, f) { var r = []; for (var y = 0; y < h; y++) { var s = ''; for (var x = 0; x < w; x++) s += f(x, y); r.push(s); } return r; }
+  var BR = ['lllllllKlllllllK', 'mmmmmmmKmmmmmmmK', 'mmmmmmmKmmmmmmmK', 'KKKKKKKKKKKKKKKK', 'lllKlllllllKllll', 'mmmKmmmmmmmKmmmm', 'mmmKmmmmmmmKmmmm', 'KKKKKKKKKKKKKKKK'];
+  /* 사이트 고스트(1P) — 캐릭터 대신 사이트 자신의 마스코트 */
+  var GHOST = ['....KKKK....', '..KKnnnnKK..', '.KnnnnnnnnK.', '.KnnnnnnnnK.', 'KnnnnnnnnnnK', 'KnnKKnnKKnnK', 'KnnKKnnKKnnK', 'KnnKKnnKKnnK', 'KnnnnnnnnnnK', 'KnnnnnnnnnnK', 'KnnnnnnnnnnK', 'KnnnnnnnnnnK', 'KnKnnKKnnKnK', 'KK.KK..KK.KK'];
+  /* 계단 블록 — 밝은 윗 · 왼 빗면, 어두운 아래 · 오른 빗면, 가운데 면 */
+  var HARD = grid(16, 16, function (x, y) {
+    if (x === 15 || y === 15) return 'K';
+    if (x === 0 || y === 0) return 'l';
+    if (x >= 4 && x <= 11 && y >= 4 && y <= 11) return (x === 11 || y === 11) ? 'l' : (x === 4 || y === 4) ? 'K' : 'm';
+    if (y < 4 && y <= x && x <= 14 - y) return 'l';
+    if (x < 4 && x <= y && y <= 14 - x) return 'l';
+    return 'm';
+  });
+  /* 다 쓴 블록 — 갈색 면 · 네 귀 리벳 · 검은 테 */
+  var USED = grid(16, 16, function (x, y) {
+    if (x === 0 || y === 0 || x === 15 || y === 15) return 'K';
+    if ((x === 2 || x === 13) && (y === 2 || y === 13)) return 'K';
+    return 'm';
+  });
+  /* 성 (72 × 80칸) — 벽돌 결 · 성가퀴 · 탑 · 문 · 창, 아랫변은 땅에 묻힘 */
+  function castleIn(x, y) {
+    if (x < 0 || y < 0 || x >= 72 || y >= 80) return false;
+    if (y >= 40) return true;
+    if (y >= 32) return (x >= 16 && x < 56) || Math.floor(x / 8) % 2 === 0;
+    if (y >= 8) return x >= 16 && x < 56;
+    return x >= 16 && x < 56 && Math.floor((x - 16) / 8) % 2 === 0;
+  }
+  function castleHole(x, y) {
+    if (x >= 30 && x < 42 && y >= 62) return true;
+    if (x >= 32 && x < 40 && y >= 59 && y < 62) return true;
+    if (y >= 16 && y < 28 && ((x >= 22 && x < 28) || (x >= 44 && x < 50))) return true;
+    return false;
+  }
+  var CASTLE = grid(72, 80, function (x, y) {
+    if (!castleIn(x, y)) return '.';
+    if (castleHole(x, y)) return 'K';
+    if (!castleIn(x - 1, y) || !castleIn(x + 1, y) || !castleIn(x, y - 1) || (y < 79 && !castleIn(x, y + 1))) return 'K';
+    return BR[y % 8][x % 16];
+  });
+  /* 깃대 (22 × 96칸) — 공 · 장대 · 흰 깃발 */
+  var FLAG = grid(22, 96, function (x, y) {
+    function ball(a, b) { return (a + .5 - 16) * (a + .5 - 16) + (b + .5 - 4) * (b + .5 - 4) <= 16; }
+    function pole(a, b) { return b >= 8 && a >= 15 && a <= 16; }
+    function flag(a, b) { if (b < 10 || b > 25 || a > 13) return false; return a >= Math.round(Math.abs(b - 17.5) / 7.5 * 13); }
+    function any(a, b) { return ball(a, b) || pole(a, b) || flag(a, b); }
+    if (any(x, y)) {
+      if (!any(x - 1, y) || !any(x + 1, y) || !any(x, y - 1) || !any(x, y + 1)) return 'K';
+      return flag(x, y) ? 'w' : 'g';
+    }
+    return '.';
+  });
+  var UBRICK = BR.concat(BR).map(function (r) { return r.replace(/l/g, 'u').replace(/m/g, 'v'); });
+  [['--d-ghost', GHOST], ['--d-hard', HARD], ['--d-used', USED], ['--d-castle', CASTLE], ['--d-flag', FLAG], ['--d-ubrick', UBRICK]].forEach(function (p) { document.documentElement.style.setProperty(p[0], spr(p[1])); });
+  function S(k, x, y, extra) { return '<i class="s s-' + k + (extra ? ' ' + extra : '') + '" style="left:' + x + 'px;' + (typeof y === 'string' ? y : 'top:' + y + 'px') + '"></i>'; }
+
+  /* ── 육각형 능력(시안용 — 고르면 content.js 로 옮김). 칸 수는 예시, 근거는 이력서 내용 ── */
+  var AX = [
+    { k: 'dev',  n: { ko: '개발', en: 'Build' },             ev: { ko: '1인 개발 5종 · 유니티 · 고도', en: 'Five solo titles · Unity · Godot' } },
+    { k: 'ship', n: { ko: '출시 · 운영', en: 'Ship & run' },   ev: { ko: '7종 출시 · 누적 30만 다운로드', en: '7 titles · 300K downloads' } },
+    { k: 'comm', n: { ko: '커뮤니티', en: 'Community' },      ev: { ko: '회원 6만 개발 카페 스탭', en: 'Staff of a 60K dev community' } },
+    { k: 'crit', n: { ko: '분석 · 글', en: 'Analysis' },       ev: { ko: '게임 평론 블로그 · 월 3~5천 뷰', en: 'Game criticism blog · 3–5K views/mo' } },
+    { k: 'docs', n: { ko: '문서 · 발표', en: 'Docs & talks' },  ev: { ko: '주 1회 기획서 발표 · 12인 리더', en: 'Weekly design talks · leading 12' } },
+    { k: 'team', n: { ko: '협업 · 도구', en: 'Team & tools' },  ev: { ko: '5인 팀 스팀 출시 · 깃허브 · 지라', en: '5-person Steam team · GitHub · Jira' } }
+  ];
+  var MAX = 5, FULL = [4, 4, 4, 4, 4, 4];
+  /* 시기마다 오른 능력 — 이력서 경력 항목을 오래된 순으로 */
+  var GAIN = [
+    { dev: 3, ship: 3 },            /* 2016–2018 인디게임 1인 개발 */
+    { comm: 4, docs: 1, ship: 1 },  /* 2019– 커뮤니티 스탭 */
+    { crit: 4, docs: 1 },           /* 2021–2023 블로그 · 평론 */
+    { docs: 1, team: 2 },           /* 2026 발표 스터디 리더 */
+    { docs: 1, team: 2, dev: 1 }    /* 2026 게임 기획자 과정 */
+  ];
+  var CAREER = (C.resume && C.resume.career && C.resume.career.items) || [];
+  var ERAS = CAREER.slice().reverse();                 /* 오래된 순 — GAIN 과 짝 */
+  var stats = (C.resume && C.resume.stats) || [];
+  var NAME = t(C.resume && C.resume.profile && C.resume.profile.items && C.resume.profile.items[0] && C.resume.profile.items[0].value) || '김지수';
+  var CLS = { ko: '육각형 기획자', en: 'Hexagon game designer' };
+  var YRS = (stats[3] && stats[3].num) || '10';
+  var PROJ = ((C.projects && C.projects.items) || []).slice(0, 4);
+  var SHORT = [{ ko: '1인 개발', en: 'Solo dev' }, { ko: '커뮤니티', en: 'Community' }, { ko: '블로그', en: 'Blog' }, { ko: '스터디', en: 'Study' }, { ko: '기획 과정', en: 'Course' }];   /* 오래된 순 — 짧은 이름 */
+  function ax(k) { return AX.filter(function (a) { return a.k === k; })[0]; }
+  function year(c) { var m = /\d{4}/.exec(t(c.date)); return m ? m[0] : ''; }
+  function sumOf(idx) {
+    var v = { dev: 0, ship: 0, comm: 0, crit: 0, docs: 0, team: 0 };
+    idx.forEach(function (i) { Object.keys(GAIN[i]).forEach(function (k) { v[k] += GAIN[i][k]; }); });
+    return AX.map(function (a) { return Math.min(MAX, v[a.k]); });
+  }
+  function upTo(i) { var a = []; for (var j = 0; j <= i; j++) a.push(j); return a; }
+  function only(i) { return sumOf([i]); }
+  function chips(i) { return Object.keys(GAIN[i]).map(function (k) { return '<span class="m-chip">+' + esc(t(ax(k).n)) + '</span>'; }).join(''); }
+
+  /* 육각형 그림(SVG) — 도트 느낌으로 각진 선(crispEdges) */
+  function hex(o) {
+    o = o || {};
+    var R = 100, lab = o.labels !== false, ink = o.ink || '#102346', gr = o.grid || 'rgba(16,35,70,.28)', vals = o.values || FULL;
+    function pt(i, r) { var a = -Math.PI / 2 + i * Math.PI / 3; return [Math.round(Math.cos(a) * r), Math.round(Math.sin(a) * r)]; }
+    function poly(v) { return v.map(function (x, i) { return pt(i, R * x / MAX).join(','); }).join(' '); }
+    var s = '<svg viewBox="' + (lab ? '-178 -134 356 268' : '-110 -110 220 220') + '" shape-rendering="crispEdges" role="img" aria-label="' + T('여섯 능력 육각형', 'Hexagon of six abilities') + '">';
+    for (var g = 1; g <= MAX; g++) s += '<polygon points="' + poly([g, g, g, g, g, g]) + '" fill="none" stroke="' + gr + '" stroke-width="' + (g === MAX ? 4 : 2) + '"/>';
+    for (var i = 0; i < 6; i++) { var p = pt(i, R); s += '<line x1="0" y1="0" x2="' + p[0] + '" y2="' + p[1] + '" stroke="' + gr + '" stroke-width="2"/>'; }
+    if (o.under) s += '<polygon points="' + poly(o.under) + '" fill="' + (o.fill || '#c8102e') + '" fill-opacity=".22" stroke="' + ink + '" stroke-opacity=".45" stroke-width="2"/>';
+    if (vals.some(function (v) { return v > 0; })) {
+      s += '<polygon points="' + poly(vals) + '" fill="' + (o.fill || '#c8102e') + '" fill-opacity=".8" stroke="' + ink + '" stroke-width="4"/>';
+      vals.forEach(function (v, i) { if (!v) return; var p = pt(i, R * v / MAX); s += '<rect x="' + (p[0] - 6) + '" y="' + (p[1] - 6) + '" width="12" height="12" fill="#fff6dd" stroke="' + ink + '" stroke-width="3"/>'; });
+    }
+    if (lab) AX.forEach(function (a, i) {
+      var p = pt(i, R + 26), anchor = Math.abs(p[0]) < 10 ? 'middle' : p[0] > 0 ? 'start' : 'end';
+      s += '<text x="' + p[0] + '" y="' + (p[1] + 7) + '" text-anchor="' + anchor + '" font-family="Galmuri11, monospace" font-size="22" fill="' + (o.text || ink) + '">' + esc(t(a.n)) + '</text>';
+    });
+    return s + '</svg>';
+  }
+
+  /* 게임기 그림(사이트 도트 데이터 → SVG, 칸 단위 viewBox 로 잘라 씀) */
+  function artSVG(d, crop) {
+    var paths = {}, shade = [];
+    d.rows.forEach(function (row, j) {
+      var y = d.y + j, x = d.x, re = /([.,A-Za-z])(\d*)/g, m;
+      while ((m = re.exec(row))) {
+        var n = m[2] ? +m[2] : 1, c = m[1];
+        if (c !== '.') { var seg = 'M' + x + ' ' + y + 'h' + n + 'v1h-' + n + 'z'; if (c === ',') shade.push(seg); else { var col = d.pal[c <= 'Z' ? c.charCodeAt(0) - 65 : c.charCodeAt(0) - 71]; (paths[col] = paths[col] || []).push(seg); } }
+        x += n;
+      }
+    });
+    var s = '<svg viewBox="' + (crop || [d.x, d.y, d.w, d.h]).join(' ') + '" width="100%" height="100%" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">';
+    if (shade.length) s += '<path fill="#06103a" fill-opacity=".32" d="' + shade.join('') + '"/>';
+    Object.keys(paths).forEach(function (c) { s += '<path fill="' + c + '" d="' + paths[c].join('') + '"/>'; });
+    return s + '</svg>';
+  }
+  var RISO = (window.__ART || {}).riso;
+
+  function nav(world) {
+    return '<div class="m-nav"><b>' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '</b><span class="sp"></span><span class="cur">▶ ' + T('홈', 'Home') + '</span><span>' + T('이력서', 'Résumé') + '</span><span>' + T('자기소개서', 'Cover letter') + '</span><span>' + T('프로젝트', 'Projects') + '</span><span>' + T('게임플레이', 'Play') + '</span><span class="sp"></span><span class="ps">' + esc(world || 'WORLD 1-1') + '</span></div>';
+  }
+  function eraWin(c, tag, cls, style) {
+    return '<div class="m-win ' + cls + '"' + (style ? ' style="' + style + '"' : '') + '><div class="m-win__bar"><span class="tag">' + esc(tag) + '</span>' + esc(t(c.date)) + '</div>' +
+      '<div class="m-win__in"><p class="m-role">' + esc(t(c.role)) + '</p><p class="m-org">' + esc(t(c.org)) + '</p><p class="m-body">' + esc(t(c.body)) + '</p></div></div>';
+  }
+
+  /* ── A · 1-1 코스 — 오른쪽으로 달리면 시기마다 물음표 블록 ───────────────── */
+  var A_X0 = 480, A_ZW = 768, A_WC = A_X0 + A_ZW * 5 + 1200, A_GX = 312;
+  function draftA() {
+    var zones = ERAS.map(function (c, i) {
+      var x = A_X0 + i * A_ZW, keys = Object.keys(GAIN[i]), n = keys.length, qi = 0;
+      var pat = n === 1 ? 'bqb' : n === 2 ? 'bqbqb' : 'qbqbq', bx = x + 560 - pat.length * 32, blocks = '';
+      pat.split('').forEach(function (p, j) {
+        var left = bx + j * 64;
+        if (p === 'b') { blocks += S('brick', left, 306); return; }
+        blocks += S('qb', left, 306, 'a-q') + S('coin', left + 20, 260, 'a-coin') + '<span class="m-chip a-pop" style="left:' + (left + 32) + 'px;top:262px">+' + esc(t(ax(keys[qi++]).n)) + '</span>';
+      });
+      return '<div class="a-zone" data-x="' + x + '">' +
+        (i % 2 ? S('bush', x + 150, 'bottom:128px') : S('hill', x + 90, 'bottom:128px')) + S('cloud', x + 470, 140) +
+        eraWin(c, '1-' + (i + 1), 'a-era', 'left:' + (x + 40) + 'px') + blocks + (i < 4 ? S('pipe', x + 736, 'bottom:128px') : '') + '</div>';
+    }).join('');
+    var E = A_WC - 1200, stairs = '';
+    for (var k = 0; k < 4; k++) for (var h = 0; h <= k; h++) stairs += S('hard', E + 528 + k * 64, 498 - h * 64);
+    var end = '<div class="m-win a-clear"><div class="m-win__bar"><span class="tag">CLEAR</span>' + T(YRS + '년 코스 완주', YRS + '-year course cleared') + '</div><div class="m-win__in">' +
+      '<h5 class="px14">' + T('육각형 완성!', 'Hexagon complete!') + '</h5><div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false }) + '</div>' +
+      '<p class="m-body" style="margin:0 0 14px!important">' + T('달려 온 길이 여섯 칸을 고르게 채웠습니다. 성 안에 포트폴리오가 있습니다.', 'The road so far filled all six evenly. The portfolio waits inside the castle.') + '</p>' +
+      '<span class="m-btn"><span class="key">A</span>' + T('성 안으로 — 포트폴리오', 'Enter the castle — portfolio') + '</span></div></div>' +
+      stairs + S('hard', E + 800, 498) + S('flag', E + 770, 114) + S('castle', E + 896, 242);
+    var start = '<div class="m-win a-start"><div class="m-win__bar"><span class="tag">1-1</span>' + T('달려 온 길 · 2016 →', 'The road so far · 2016 →') + '</div><div class="m-win__in">' +
+      '<p class="m-role">' + T(YRS + '년짜리 코스입니다', 'A ' + YRS + '-year course') + '</p><p class="m-body">' + T('오른쪽으로 달리면 시기마다 물음표 블록이 열리고, 그때 익힌 능력이 위 점수판의 육각형에 쌓입니다. 끝의 성 안에 포트폴리오가 있습니다.', 'Run right: each period opens its ? blocks and the abilities learned there stack onto the hexagon in the scoreboard. The portfolio is inside the castle at the end.') + '</p>' +
+      '<p class="m-k" style="margin-top:10px">' + T('▶ 휠 · 끌기 · ← → 로 달리기', '▶ Wheel, drag or ← → to run') + '</p></div></div>';
+    return '<div class="mock mock-a">' + nav() +
+      '<div class="a-hud"><div><span class="px">' + esc(NAME) + ' · ' + esc(t(CLS)) + '</span><b class="ps" data-a="year">YEAR ----</b></div>' +
+        '<div><span class="px">' + T('능력', 'ABILITY') + '</span><b class="ps"><i class="s in s-coin-s"></i>×<span data-a="coin">00</span></b></div>' +
+        '<div><span class="px">WORLD</span><b class="ps" data-a="world">1-0</b></div>' +
+        '<div><span class="px" data-a="date">' + T('출발', 'Start') + '</span><p class="now" data-a="role">' + T('오른쪽으로 →', 'Run right →') + '</p></div>' +
+        '<div class="a-hud__hex hexwrap" data-a="hex">' + hex({ values: [0, 0, 0, 0, 0, 0], labels: false, grid: 'rgba(252,252,252,.6)', ink: '#102346' }) + '</div></div>' +
+      '<div class="a-cam" tabindex="0" aria-label="' + T('1-1 코스 — 옆으로 밀어 달리기', 'Course 1-1 — scroll sideways to run') + '"><div class="a-course" style="width:' + A_WC + 'px">' +
+        S('hill', 40, 'bottom:128px') + S('cloud', 620, 150) + start + zones + end + '<i class="m-ground"></i></div></div>' +
+      S('ghost', A_GX, 'bottom:128px', 'a-ghost') + '</div>';
+  }
+  function wireA(root) {
+    var cam = root.querySelector('.a-cam'), gh = root.querySelector('.a-ghost'), zones = [].slice.call(root.querySelectorAll('.a-zone'));
+    var f = {}; ['year', 'coin', 'world', 'date', 'role', 'hex'].forEach(function (k) { f[k] = root.querySelector('[data-a="' + k + '"]'); });
+    var last = -2, rt;
+    function upd() {
+      var gx = cam.scrollLeft + A_GX + 24, hit = -1, coins = 0;
+      zones.forEach(function (z, i) { if (gx >= +z.getAttribute('data-x') + 400) z.classList.add('is-hit'); if (z.classList.contains('is-hit')) { hit = i; coins += Object.keys(GAIN[i]).length; } });
+      var cur = Math.min(4, Math.floor((gx - A_X0) / A_ZW)), clear = gx >= A_WC - 1200;
+      var key = cur + '|' + hit + '|' + clear; if (key === last) return; last = key;
+      f.coin.textContent = (coins < 10 ? '0' : '') + coins;
+      f.world.textContent = clear ? 'CLEAR' : '1-' + (cur + 1);
+      f.year.textContent = 'YEAR ' + (cur >= 0 ? year(ERAS[cur]) : '----');
+      f.date.textContent = clear ? T('코스 끝', 'Goal') : cur >= 0 ? t(ERAS[cur].date) : T('출발', 'Start');
+      f.role.textContent = clear ? T('성 안으로 → 포트폴리오', 'Into the castle → portfolio') : cur >= 0 ? t(ERAS[cur].role) : T('오른쪽으로 →', 'Run right →');
+      f.hex.innerHTML = hex({ values: hit >= 0 ? sumOf(upTo(hit)) : [0, 0, 0, 0, 0, 0], labels: false, grid: 'rgba(252,252,252,.6)' });
+    }
+    cam.addEventListener('scroll', function () { upd(); gh.classList.add('is-run'); clearTimeout(rt); rt = setTimeout(function () { gh.classList.remove('is-run'); }, 160); }, { passive: true });
+    cam.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      var max = cam.scrollWidth - cam.clientWidth;
+      if ((e.deltaY > 0 && cam.scrollLeft < max - 1) || (e.deltaY < 0 && cam.scrollLeft > 0)) { e.preventDefault(); cam.scrollLeft += e.deltaY; }
+    }, { passive: false });
+    cam.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); cam.scrollBy({ left: (e.key === 'ArrowRight' ? 1 : -1) * 384, behavior: RM ? 'auto' : 'smooth' }); }
+    });
+    var dx = null, sl = 0;
+    cam.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; dx = e.clientX; sl = cam.scrollLeft; cam.classList.add('is-drag'); cam.setPointerCapture(e.pointerId); });
+    cam.addEventListener('pointermove', function (e) { if (dx === null) return; var z = parseFloat(root.firstElementChild.style.zoom) || 1; cam.scrollLeft = sl - (e.clientX - dx) / z; });
+    cam.addEventListener('pointerup', function () { dx = null; cam.classList.remove('is-drag'); });
+    upd();
+  }
+
+  /* ── B · 땅 밑 지층 — 내려갈수록 옛 시기 ────────────────────────────────── */
+  var MATS = ['--lv-ground', '--lv-brick', '--lv-uground', '--d-ubrick', '--d-hard'];
+  function draftB() {
+    var layers = CAREER.map(function (c, i) {
+      var gi = CAREER.length - 1 - i, keys = Object.keys(GAIN[gi]), blocks = '';
+      keys.forEach(function (k, j) { blocks += S('qb', 128 + 544 + j * 96, 0, 'b-q'); });
+      var pips = keys.map(function (k) { return esc(t(ax(k).n)) + ' ' + new Array(GAIN[gi][k] + 1).join('■'); }).join('<br>');
+      return '<section class="b-layer" style="--mat:var(' + MATS[i] + ')">' +
+        '<div class="b-depth"><b class="ps">B' + (i + 1) + '</b><span class="px">' + T('지하 ' + (i + 1) + '층', 'Level B' + (i + 1)) + '<br>' + esc(year(c)) + '</span></div>' +
+        '<div class="b-cave">' + eraWin(c, 'B' + (i + 1), 'b-era') +
+          '<div class="b-gain"><div><h5 class="px">' + T('이 층이 더한 능력 (흐린 면 = 이 층까지 쌓인 육각형)', 'Added by this layer (faint = the hexagon up to here)') + '</h5>' + chips(gi) + '<span class="pips px">' + pips + '</span></div>' +
+          '<div class="hexwrap">' + hex({ values: only(gi), under: sumOf(upTo(gi)), labels: false, ink: '#fff6dd', grid: 'rgba(237,241,248,.35)', fill: '#fc9838' }) + '</div></div></div>' +
+        blocks + '</section>';
+    }).join('');
+    var art = RISO ? '<div class="b-console">' + artSVG(RISO) + '<p class="b-scr px"><span class="ps">1P</span>' + T('지난 이야기는 이 땅 밑에', 'The story so far lies beneath') + '<b>▼</b></p></div>' : '';
+    return '<div class="mock mock--tall mock-b">' + nav() +
+      '<div class="b-top">' + S('cloud', 440, 296) + S('cloud', 1060, 72) +
+        '<div class="b-title"><h5 class="px14">' + T('아래로 — ' + YRS + '년 동안 다져 온 땅', 'Down — ' + YRS + ' years of solid ground') + '</h5>' +
+        '<p>' + T('게임기가 서 있는 이 땅이 지난 경력입니다. 한 층 내려갈 때마다 한 시기씩, 그 시기가 받쳐 준 능력이 블록에서 튀어나옵니다.', 'The ground the console stands on is the career. Each layer down is one period, and the abilities it holds up pop out of its blocks.') + '</p>' +
+        '<span class="go px">▼ ' + T('아래로 밀어 파 내려가기', 'Scroll down to dig') + '</span></div>' + art + '</div>' +
+      layers +
+      '<div class="b-deep"><div class="m-win b-final"><div class="m-win__bar"><span class="tag">B6</span>' + T('맨 밑 — 다섯 층이 받치는 것', 'The bottom — what five layers hold up') + '</div><div class="m-win__in">' +
+        '<div class="hexwrap">' + hex({ values: sumOf(upTo(4)) }) + '</div>' +
+        '<p class="m-body" style="text-align:center">' + T('혼자 만들고 · 사람을 돕고 · 쓰고 · 발표하고 · 함께 만든 시간이 고르게 쌓였습니다.', 'Building alone, helping people, writing, presenting and building together — stacked evenly.') + '</p></div></div>' +
+        S('pipe', 920, 'bottom:128px') + '<div class="b-exit"><span class="m-btn"><span class="key">↓</span>' + T('관으로 — 포트폴리오', 'Down the pipe — portfolio') + '</span></div>' +
+        '<i class="m-ground"></i></div></div>';
+  }
+  function wireB(root) {
+    var ls = [].slice.call(root.querySelectorAll('.b-layer'));
+    if (!('IntersectionObserver' in window)) { ls.forEach(function (l) { l.classList.add('is-hit'); }); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-hit'); io.unobserve(e.target); } }); }, { threshold: .55 });
+    ls.forEach(function (l) { io.observe(l); });
+  }
+
+  /* ── C · 오프닝 컷신 — 게임기 화면의 장면 + 대화창 ─────────────────────── */
+  var CH = [
+    { ko: '2016년, 혼자 게임을 만들기 시작했다. 기획 · 그림 · 코드 · 출시까지 전부 혼자 — 3년 동안 다섯 작품, 20만 다운로드.', en: '2016. I started making games alone — design, art, code and release, all by myself. Five titles and 200K downloads in three years.' },
+    { ko: '2019년, 회원 6만 명의 인디게임 개발 카페에 스탭으로 들어갔다. 질문에 답하고 강좌를 쓰며, 지금도 함께 운영한다.', en: '2019. I joined the staff of a 60,000-member indie dev community — answering questions, writing courses, and still helping run it.' },
+    { ko: '2021년, 둘이서 게임 블로그를 열었다. 리뷰 · 공략 · 평론으로 \'왜 재미있는가\'를 글로 풀었고, 한 달에 3~5천 명이 읽었다.', en: '2021. Two of us opened a game blog — reviews, guides and criticism putting "why is this fun?" into words, read by 3–5K people a month.' },
+    { ko: '2026년, 열두 명의 기획자 모임을 이끌었다. 매주 기획서를 쓰고, 사람들 앞에서 발표했다.', en: '2026. I led a group of twelve designers — writing a design doc every week and presenting it to the room.' },
+    { ko: '그리고 지금, 기획을 팀에 잘 전달하는 법을 배우고 있다. 다음 스테이지는 — 함께 만들 팀이다.', en: 'And now I am learning how to hand a design to a team. The next stage — a team to build with.' }
+  ];
+  function dio(i) {
+    var s = '', j;
+    if (i === 0) { s += S('ghost', 28, 'bottom:64px'); for (j = 0; j < 5; j++) s += S('qb', 130 + j * 80, 22, 'c-q'); }
+    if (i === 1) { for (j = 0; j < 9; j++) s += S('ghost', 30 + j * 62, 'bottom:64px;animation:bob ' + (.8 + (j % 3) * .2) + 's steps(2) infinite'); s += S('cloud', 470, 14); }
+    if (i === 2) { s += S('ghost', 40, 'bottom:64px') + S('ghost', 100, 'bottom:64px');
+      s += '<div class="m-win" style="left:190px;top:14px;width:300px;box-shadow:4px 4px 0 rgb(16 35 70/.5)"><div class="m-win__bar" style="height:28px"><span class="tag">BLOG</span>' + T('하라리 랩스', 'Harari Labs') + '</div><div class="m-win__in ps" style="font-size:8px;line-height:2.2;padding:8px 12px">REVIEW · GUIDE · CRITIC<br>3-5K / MONTH</div></div>'; }
+    if (i === 3) { s += S('hard', 30, 'bottom:64px') + S('ghost', 38, 'bottom:128px'); for (j = 0; j < 7; j++) s += S('ghost', 150 + j * 58, 'bottom:64px');
+      s += '<span class="m-chip" style="position:absolute;left:560px;top:24px;margin:0">×12</span>'; }
+    if (i === 4) { s += S('ghost', 60, 'bottom:64px', 'c-walk') + S('pipe', 440, 'bottom:64px') + S('cloud', 220, 16) + '<span class="m-chip" style="position:absolute;left:300px;top:84px;margin:0;background:#fff6dd">NEXT STAGE ▶</span>'; }
+    return s + '<i class="m-ground"></i>';
+  }
+  function draftC() {
+    var art = RISO ? '<div class="c-art">' + artSVG(RISO) + '</div>' : '';
+    var board = ERAS.map(function (c, i) {
+      return '<button type="button" data-ch="' + i + '"><span class="ps">' + (i + 1) + ' · ' + esc(year(c)) + '</span><b>' + esc(t(c.role)) + '</b><i>' + Object.keys(GAIN[i]).map(function (k) { return '+' + esc(t(ax(k).n)); }).join(' ') + '</i></button>';
+    }).join('') + '<button type="button" data-ch="5"><span class="ps">THE END?</span><b>' + T('다음 스테이지', 'Next stage') + '</b><i>' + T('→ 포트폴리오', '→ portfolio') + '</i></button>';
+    /* 손잡이 A · B 자리(riso 그림의 부품 자리, 칸 → px: (칸 + 8) × 5) */
+    var hot = '<button type="button" class="c-hot" data-c="b" style="left:962px;top:224px" aria-label="B — ' + T('건너뛰기', 'skip') + '"></button><button type="button" class="c-hot" data-c="a" style="left:962px;top:320px" aria-label="A — ' + T('다음', 'next') + '"></button>';
+    return '<div class="mock mock--tall mock-c">' + nav() +
+      '<div class="c-stage">' + S('cloud', 60, 90) + S('cloud', 1040, 70) + art +
+        '<div class="c-scr" data-c="a" role="button" tabindex="0" aria-label="' + T('다음 장면', 'Next scene') + '"><div class="c-head px"><span class="ps">1P</span>' + T('지난 이야기', 'The story so far') + '<span class="sp"></span><span class="ps" data-c-no>1 / 5</span></div>' +
+          '<div class="c-dio" data-c-dio></div><p class="c-say" data-c-say></p>' +
+          '<div class="m-win c-up" data-c-up><div class="m-win__bar"><span class="tag" style="background:#102346">LEVEL UP!</span>' + T('능력치가 올랐다', 'Abilities up') + '</div><div class="m-win__in"><div><div data-c-chips></div><p>' + T('A — 다음 장으로', 'A — next chapter') + '</p></div><div class="hexwrap" data-c-hex></div></div></div></div>' +
+        hot + '<div class="c-ctl"><span class="m-btn m-btn--sub" data-c="b"><span class="key">B</span>' + T('건너뛰기 · 바로 포트폴리오', 'Skip to the portfolio') + '</span><span class="m-btn" data-c="a"><span class="key">A</span>' + T('다음', 'Next') + '</span></div>' +
+        '<i class="m-ground"></i></div>' +
+      '<div class="c-board">' + board + '</div></div>';
+  }
+  function wireC(root) {
+    var ch = 0, stage = 0, tm = null, full = '';           /* stage 0 = 글 나오는 중 · 1 = 글 끝 · 2 = 레벨 업 창 */
+    var say = root.querySelector('[data-c-say]'), dioEl = root.querySelector('[data-c-dio]'), up = root.querySelector('[data-c-up]');
+    var no = root.querySelector('[data-c-no]'), chipEl = root.querySelector('[data-c-chips]'), hexEl = root.querySelector('[data-c-hex]');
+    var scr = root.querySelector('.c-scr'), btns = [].slice.call(root.querySelectorAll('.c-board button'));
+    function type() {
+      clearInterval(tm); say.classList.add('is-typing'); var k = 0;
+      if (RM) { say.textContent = full; done(); return; }
+      tm = setInterval(function () { k += 2; say.textContent = full.slice(0, k); if (k >= full.length) done(); }, 32);
+    }
+    function done() { clearInterval(tm); say.textContent = full; say.classList.remove('is-typing'); stage = 1; }
+    function show(i) {
+      ch = i; stage = 0; up.classList.remove('on'); dioEl.classList.remove('is-hit');
+      btns.forEach(function (b, j) { b.classList.toggle('on', j === i); });
+      var old = scr.querySelector('.c-end'); if (old) old.parentNode.removeChild(old);
+      if (i >= 5) {
+        no.textContent = 'END'; clearInterval(tm); say.textContent = ''; dioEl.innerHTML = '';
+        var end = document.createElement('div'); end.className = 'c-end';
+        end.innerHTML = '<div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false, ink: '#fff6dd', grid: 'rgba(255,246,221,.35)', fill: '#fc9838' }) + '</div><div><h5 class="px14">' + T('육각형 완성', 'Hexagon complete') + '</h5><p>' + T('혼자 만들고, 돕고, 쓰고, 이끌며 고르게 채운 여섯 칸. 이야기는 포트폴리오로 이어집니다.', 'Six abilities filled evenly — building, helping, writing, leading. The story continues in the portfolio.') + '</p><p style="margin-top:14px!important"><span class="m-btn"><span class="key">A</span>' + T('포트폴리오 보기 ▶', 'See the portfolio ▶') + '</span></p></div>';
+        scr.appendChild(end); return;
+      }
+      no.textContent = (i + 1) + ' / 5 · ' + year(ERAS[i]);
+      dioEl.innerHTML = dio(i); full = t(CH[i]); type();
+      chipEl.innerHTML = chips(i);
+      hexEl.innerHTML = hex({ values: sumOf(upTo(i)), labels: false });
+    }
+    function next() {
+      if (ch >= 5) { show(0); return; }
+      if (stage === 0) { done(); return; }
+      if (stage === 1) { stage = 2; up.classList.add('on'); dioEl.classList.add('is-hit'); return; }
+      show(ch + 1);
+    }
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ch]'); if (b) { show(+b.getAttribute('data-ch')); return; }
+      var c = e.target.closest('[data-c]'); if (!c) return;
+      if (c.getAttribute('data-c') === 'b') show(5); else next();
+    });
+    scr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } });
+    show(0);
+  }
+
+  /* ── D · 여섯 블록 — 육각형 꼭짓점의 물음표 블록을 쳐서 능력 · 얻은 곳 열기 ── */
+  var D_C = [432, 360], D_R = 184;
+  function draftD() {
+    var blk = AX.map(function (a, i) {
+      var ang = -Math.PI / 2 + i * Math.PI / 3, cx = Math.round(D_C[0] + Math.cos(ang) * D_R), cy = Math.round(D_C[1] + Math.sin(ang) * D_R);
+      var side = Math.abs(cx - D_C[0]) < 10 ? 'r' : cx > D_C[0] ? 'r' : 'l';
+      var lab = side === 'r' ? 'left:' + (cx + 42) + 'px' : 'right:' + (1200 - cx + 42) + 'px';
+      return '<button type="button" class="d-blk" data-d="' + i + '" style="left:' + (cx - 32) + 'px;top:' + (cy - 32) + 'px" aria-label="' + esc(t(a.n)) + '"><i class="s s-coin coin"></i></button>' +
+        '<span class="d-lab px" data-d-lab="' + i + '" style="' + lab + ';top:' + (cy - 12) + 'px">' + esc(t(a.n)) + '</span>';
+    }).join('');
+    var line = ERAS.map(function (c, i) { return '<span class="px" data-d-era="' + i + '">' + esc(year(c)) + '<br>' + esc(t(SHORT[i])) + '</span>'; }).join('');
+    return '<div class="mock mock-d">' + nav() + S('cloud', 470, 96) + S('bush', 600, 'bottom:128px') +
+      '<div class="d-title"><h5 class="px14">' + T('물음표 블록 여섯 개', 'Six ? blocks') + '</h5><p>' + esc(NAME) + ' — ' + esc(t(CLS)) + '. ' + T('블록마다 능력 하나와, 그 능력을 얻은 곳이 들어 있습니다. 쳐 보세요.', 'Each block holds one ability and where it was earned. Hit them.') + '</p></div>' +
+      '<div class="d-rad" data-d-rad>' + hex({ values: [0, 0, 0, 0, 0, 0], labels: false, grid: 'rgba(16,35,70,.4)' }) + '</div><div class="d-count"><b class="ps" data-d-count>0 / 6</b></div>' + blk +
+      '<div class="m-win d-panel"><div class="m-win__bar"><span class="tag" data-d-tag>?</span>' + T('능력 정보', 'Ability info') + '</div><div class="m-win__in" data-d-info>' +
+        '<p class="nm px14">' + T('블록을 쳐 보세요', 'Hit a block') + '</p><p class="ev">' + T('능력을 먼저, 그 능력을 만든 이력을 그다음에 — 여섯 개를 다 열면 육각형이 완성되고 땅에서 관이 솟습니다.', 'The ability first, then the career that built it — open all six to complete the hexagon and a pipe rises from the ground.') + '</p>' +
+        '<div class="d-line">' + line + '</div></div></div>' +
+      S('pipe', 1000, 'bottom:0', 'd-pipe') + '<i class="m-ground"></i>' +
+      '<span class="m-btn d-go"><span class="key">↓</span>' + T('관으로 — 포트폴리오', 'Down the pipe — portfolio') + '</span>' +
+      '<span class="m-btn m-btn--sub d-skip" data-d-all><span class="key">B</span>' + T('한 번에 열기', 'Open all') + '</span></div>';
+  }
+  function wireD(root) {
+    var open = [false, false, false, false, false, false], seen = {};
+    var rad = root.querySelector('[data-d-rad]'), info = root.querySelector('[data-d-info]'), tag = root.querySelector('[data-d-tag]'), cnt = root.querySelector('[data-d-count]');
+    function render(i) {
+      var vals = FULL.map(function (v, j) { return open[j] ? v : 0; }), n = open.filter(Boolean).length;
+      rad.innerHTML = hex({ values: vals, labels: false, grid: 'rgba(16,35,70,.4)' });
+      cnt.textContent = n + ' / 6';
+      if (n === 6) root.querySelector('.mock-d').classList.add('d-done');
+      if (i == null) return;
+      var a = AX[i], src = ERAS.map(function (c, j) { return GAIN[j][a.k] ? { c: c, j: j, v: GAIN[j][a.k] } : null; }).filter(Boolean);
+      src.forEach(function (s) { seen[s.j] = 1; });
+      tag.textContent = (i + 1) + '/6';
+      info.innerHTML = '<p class="nm px14">' + esc(t(a.n)) + '</p><p class="pips ps">' + new Array(FULL[i] + 1).join('■') + new Array(MAX - FULL[i] + 1).join('□') + '</p><p class="ev">' + esc(t(a.ev)) + '</p>' +
+        '<h6>' + T('얻은 곳', 'Earned at') + '</h6><div class="d-src">' + src.map(function (s) { return '<div><span class="px">' + esc(t(s.c.date)) + '</span><span>' + esc(t(s.c.role)) + '</span><span class="ps">+' + s.v + '</span></div>'; }).join('') + '</div>' +
+        '<div class="d-line">' + ERAS.map(function (c, j) { return '<span class="px' + (seen[j] ? ' on' : '') + '">' + esc(year(c)) + '<br>' + esc(t(SHORT[j])) + '</span>'; }).join('') + '</div>';
+    }
+    function hit(i) {
+      if (open[i]) { render(i); return; }
+      open[i] = true; var b = root.querySelector('[data-d="' + i + '"]'); b.classList.add('is-used');
+      root.querySelector('[data-d-lab="' + i + '"]').classList.add('is-on'); render(i);
+    }
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-d]'); if (b) { hit(+b.getAttribute('data-d')); return; }
+      if (e.target.closest('[data-d-all]')) AX.forEach(function (a, i) { setTimeout(function () { hit(i); }, RM ? 0 : i * 140); });
+    });
+  }
+
+  /* ── E · 본편 카트리지 — 경력 = 금색 본편 시리즈, 포트폴리오 = 빨강 수록작 ── */
+  function draftE() {
+    var crop = RISO ? '<div class="e-crop">' + artSVG(RISO, [30, 6, 140, 81]) + '</div>' : '';
+    var golds = ERAS.map(function (c, i) {
+      return '<button type="button" class="e-cart" data-e="' + i + '"><span class="e-lab"><span class="ps">JISU KIM ' + (i + 1) + '</span><span class="yr ps">' + esc(year(c)) + '</span><b>' + esc(t(c.role)) + '</b></span><span class="done ps">CLEAR</span></button>';
+    }).join('');
+    var reds = PROJ.map(function (p) {
+      return '<div class="e-cart e-cart--red"><span class="e-lab"><span class="ps">' + esc(p.grade || '') + '</span><b>' + esc(t(p.title)) + '</b><span class="m-k" style="display:block;margin-top:6px">' + esc(t(p.tag)) + '</span></span></div>';
+    }).join('');
+    return '<div class="mock mock--tall mock-e e-lock" style="height:1300px">' + nav() + S('cloud', 70, 120) + S('cloud', 1010, 96) + crop +
+      '<div class="e-scr" data-e-scr></div>' +
+      '<div class="e-shelf" style="top:512px"><span class="e-shelf__tab px"><b>' + T('본편', 'MAIN SERIES') + '</b> — ' + T('지나온 시기 · 오래된 순 · 눌러서 꽂기', 'Periods so far · oldest first · press to plug in') + '</span><div class="e-in"><div class="e-row">' + golds + '</div></div></div>' +
+      '<div class="e-shelf e-shelf--port" style="top:852px" data-lock="' + T('본편 다섯 장을 다 꽂으면 수록작이 열립니다 (건너뛰기도 가능)', 'Plug in all five to unlock the collection (or skip)') + '"><span class="e-shelf__tab px"><b>' + T('수록작', 'COLLECTION') + '</b> — ' + T('포트폴리오', 'Portfolio') + '</span><div class="e-in"><div class="e-row">' + reds + '</div></div></div>' +
+      '<i class="m-ground"></i></div>';
+  }
+  function wireE(root) {
+    var played = {}, scr = root.querySelector('[data-e-scr]'), mock = root.querySelector('.mock-e'), carts = [].slice.call(root.querySelectorAll('.e-cart[data-e]'));
+    function sys() {
+      var idx = Object.keys(played).map(Number).sort(), n = idx.length;
+      return '<div class="e-head px"><span class="ps">SYSTEM</span>' + T('게임기 정보', 'Console info') + '<span class="sp"></span><span class="ps">' + n + ' / 5</span></div>' +
+        '<div class="e-body"><div><p class="m-role">' + (n === 5 ? T('본편 완결 — 수록작이 열렸습니다 ▼', 'Series complete — the collection is open ▼') : T('카트리지를 꽂아 보세요', 'Plug in a cartridge')) + '</p>' +
+        '<p class="note" style="margin-top:8px">' + T('금색 카트리지 한 장 = 지나온 시기 하나. 꽂을 때마다 그 시기에 익힌 능력이 이 게임기에 설치되고, 다섯 장을 다 꽂으면 빨강 카트리지(포트폴리오)가 열립니다.', 'One gold cartridge = one period. Each one installs the abilities learned then onto this console; plug in all five and the red cartridges (portfolio) open.') + '</p></div>' +
+        '<div class="hexwrap">' + hex({ values: n ? sumOf(idx) : [0, 0, 0, 0, 0, 0], labels: false }) + '</div></div>';
+    }
+    function play(i) {
+      played[i] = 1; var c = ERAS[i], idx = Object.keys(played).map(Number);
+      carts.forEach(function (b, j) { b.classList.toggle('is-in', j === i); b.classList.toggle('is-played', !!played[j]); });
+      scr.innerHTML = '<div class="e-head px"><span class="ps">JISU KIM ' + (i + 1) + '</span>' + esc(t(c.date)) + '<span class="sp"></span><span class="ps">' + idx.length + ' / 5</span></div>' +
+        '<div class="e-body"><div><p class="m-role">' + esc(t(c.role)) + '</p><p class="m-org">' + esc(t(c.org)) + '</p><p class="m-body">' + esc(t(c.body)) + '</p>' +
+        '<h6>' + T('이번 작에서 설치된 능력', 'Installed by this one') + '</h6>' + chips(i) + '</div>' +
+        '<div class="hexwrap">' + hex({ values: sumOf(idx), labels: false }) + '</div></div>';
+      if (idx.length === 5) mock.classList.remove('e-lock');
+    }
+    root.addEventListener('click', function (e) { var b = e.target.closest('[data-e]'); if (b) play(+b.getAttribute('data-e')); });
+    scr.innerHTML = sys();
+  }
+
+  var DRAFTS = [
+    { id: 'a', f: draftA, w: wireA, name: { ko: '1-1 코스 — 달려 온 길', en: 'Course 1-1 — the road so far' }, sub: { ko: '가로 스크롤 · 시간 = 거리', en: 'Side-scrolling · time = distance' },
+      pitch: { ko: '게임기를 누르면 화면 속에서 ' + YRS + '년짜리 코스가 시작됩니다. 아래로 밀면 고스트(1P)가 오른쪽으로 달리고, 관으로 나뉜 구간 하나가 한 시기 — 블록을 지나면 그 시기에 익힌 능력이 튀어나와 점수판의 육각형에 쌓입니다. 계단 · 깃대를 지나 성 안으로 들어가면 포트폴리오.',
+               en: 'Pressing the console starts a ' + YRS + '-year course on its screen. Scrolling makes the ghost (1P) run right; each pipe-separated stretch is one period, and passing its blocks pops the abilities learned then onto the scoreboard hexagon. Past the stairs and flag, the castle holds the portfolio.' },
+      map: [['시간', 'Time', '오른쪽으로 달리는 거리', 'Distance run to the right'], ['시기', 'Period', '관으로 나뉜 구간', 'A stretch between pipes'], ['능력', 'Ability', '물음표 블록 → 점수판 육각형', '? blocks → scoreboard hexagon'], ['포트폴리오', 'Portfolio', '끝의 성', 'The castle at the end']],
+      flow: ['title', 'story', 'menu'], hint: { ko: '▶ 화면 안에서 휠 · 끌기 · ← → 로 달려 보세요.', en: '▶ Inside the screen: wheel, drag or ← → to run.' },
+      pros: { ko: ['스테이지 시안의 문법 그대로라 가장 \'게임다운\' 첫인상', '스크롤 한 방향으로 이력 → 포트폴리오가 끊김 없이 이어짐', '점수판이 이력서 숫자 · 육각형을 실시간으로 보여 줌'], en: ['Pure Stage grammar — the most game-like first impression', 'One scroll direction carries you from career into the portfolio', 'The scoreboard shows the résumé numbers and hexagon live'] },
+      cons: { ko: ['세로 휠을 가로 이동으로 바꿔야 함 — 키보드 ← → · 건너뛰기 필수', '휴대폰 세로 화면은 위에서 아래로 내려가는 코스로 따로 짜야 함'], en: ['Vertical wheel has to become horizontal travel — needs ← → and a skip', 'Phones need a separate top-to-bottom course'] } },
+    { id: 'b', f: draftB, w: wireB, name: { ko: '땅 밑 지층 — 다져 온 땅', en: 'Underground strata — solid ground' }, sub: { ko: '세로 스크롤 · 시간 = 깊이', en: 'Vertical scroll · time = depth' },
+      pitch: { ko: '게임기가 서 있는 땅이 곧 경력입니다. 타이틀에서 아래로 밀면 땅 밑으로 파 내려가고, 지층 한 겹이 한 시기(내려갈수록 옛날) — 층마다 천장의 블록이 튀며 그 시기가 받쳐 준 능력이 드러납니다. 맨 밑에서 다섯 층이 받치는 육각형을 보고, 관으로 내려가면 포트폴리오.',
+               en: 'The ground the console stands on is the career. Scrolling down from the title digs underground; each stratum is one period (deeper = older), and the blocks in its ceiling pop out the abilities it holds up. At the bottom, the hexagon five layers support — then down the pipe to the portfolio.' },
+      map: [['시간', 'Time', '땅 밑 깊이 (B1 = 지금)', 'Depth underground (B1 = now)'], ['시기', 'Period', '지층 한 겹 · 재료가 층마다 다름', 'One stratum, each in its own block'], ['능력', 'Ability', '층이 받치는 능력 · 층별 육각형 조각', 'What each layer holds up, as a hexagon slice'], ['포트폴리오', 'Portfolio', '맨 밑의 관', 'The pipe at the bottom']],
+      flow: ['title', 'story', 'menu'], hint: { ko: '▶ 이 페이지를 아래로 내리면 층마다 블록이 열립니다.', en: '▶ Scroll this page down — each layer opens its blocks.' },
+      pros: { ko: ['지금 사이트의 \'땅 위 · 땅 밑\' 구조를 그대로 써서 가장 자연스럽게 붙음', '세로 스크롤이라 휴대폰에서도 그대로', '\'기반이 단단한 기획자\'라는 메시지'], en: ['Reuses the site\'s existing above/below-ground structure — fits most naturally', 'Vertical scroll works as-is on phones', 'Says "a designer on solid foundations"'] },
+      cons: { ko: ['최신 → 과거 순이라 \'쌓여 온\' 성장은 거꾸로 읽힘(맨 밑의 시작이 결론 역할)', '화면 대부분이 어두운 지하'], en: ['Newest → oldest, so growth reads backwards (the beginning becomes the ending)', 'Most of the screen is dark underground'] } },
+    { id: 'c', f: draftC, w: wireC, name: { ko: '오프닝 — 지난 이야기', en: 'Opening — the story so far' }, sub: { ko: '컷신 · 시간 = 장(章)', en: 'Cutscene · time = chapters' },
+      pitch: { ko: '게임기를 누르면 화면이 켜지며 게임의 오프닝처럼 \'지난 이야기\'가 흘러갑니다. 장면마다 소품으로 지은 작은 무대와 대화창(글자가 한 자씩), 장이 끝날 때마다 \'능력치가 올랐다!\' 창과 자라는 육각형. A 로 넘기고 B 로 건너뛰며, 마지막 장에서 포트폴리오로 이어집니다.',
+               en: 'Pressing the console switches on its screen and plays "the story so far" like a game opening. Each scene is a small set built from props with a typed dialog box, and each chapter ends on an "abilities up!" window and a growing hexagon. A advances, B skips; the last chapter leads into the portfolio.' },
+      map: [['시간', 'Time', '장면이 넘어가는 순서', 'The order of scenes'], ['시기', 'Period', '한 장 = 무대 + 대화창', 'One chapter = a set + a dialog box'], ['능력', 'Ability', '\'능력치가 올랐다!\' 창', 'The "abilities up!" window'], ['포트폴리오', 'Portfolio', '마지막 장 \'다음 스테이지\'', 'The last chapter, "next stage"']],
+      flow: ['title', 'story', 'menu'], hint: { ko: '▶ 화면이나 A(손잡이 아래 버튼)를 눌러 넘기고, B 로 건너뛰어 보세요. 아래 줄은 장 고르기.', en: '▶ Press the screen or A (lower grip button) to advance, B to skip. The strip below picks a chapter.' },
+      pros: { ko: ['문장으로 이야기가 가장 잘 전달됨 — 경험의 \'맥락\'까지', '지금의 \'게임기 누르기 → 화면 확대\' 흐름을 그대로 씀', '게임 오프닝이라는 형식 자체가 기획자다움'], en: ['Tells the story best, context included', 'Keeps today\'s press-the-console → zoom flow', 'A game opening is itself a designer\'s format'] },
+      cons: { ko: ['보는 사람이 눌러야 진행 — 바쁜 사람용 건너뛰기가 꼭 필요', '장면 다섯 개를 따로 지어야 함'], en: ['Needs the viewer to press on — the skip is essential', 'Five scenes to build'] } },
+    { id: 'd', f: draftD, w: wireD, name: { ko: '여섯 블록 — 육각형 깨기', en: 'Six blocks — break the hexagon' }, sub: { ko: '능력 먼저 · 직접 쳐서 열기', en: 'Abilities first · hit to open' },
+      pitch: { ko: '타이틀 다음 화면에 물음표 블록 여섯 개가 육각형 꼭짓점에 떠 있습니다. 하나를 치면 동전이 튀고, 육각형의 그 칸이 차고, 오른쪽 창에 그 능력의 근거와 \'얻은 곳\'(이력의 어느 시기에서 몇 칸)이 나옵니다. 여섯 개를 다 열면 육각형이 완성되고 땅에서 관이 솟아 포트폴리오로.',
+               en: 'After the title, six ? blocks float at the corners of a hexagon. Hitting one pops a coin, fills that side of the hexagon, and the window shows the ability\'s evidence and where it was earned (which period, how many points). Open all six and the hexagon is complete — a pipe rises from the ground to the portfolio.' },
+      map: [['능력', 'Ability', '육각형 꼭짓점의 블록 여섯', 'Six blocks at the hexagon\'s corners'], ['이력', 'Career', '블록 속 \'얻은 곳\'', '"Earned at", inside each block'], ['시간', 'Time', '창 아래 다섯 칸 연표가 차례로 켜짐', 'A five-step strip lights up'], ['포트폴리오', 'Portfolio', '다 열면 솟는 관', 'The pipe that rises when all are open']],
+      flow: ['title', 'story', 'menu'], hint: { ko: '▶ 블록을 눌러 보세요. \'한 번에 열기\'는 바쁜 사람용.', en: '▶ Press the blocks. "Open all" is for the busy.' },
+      pros: { ko: ['\'육각형 기획자\'를 가장 먼저 · 가장 크게 보여 주는 안', '능력 → 근거(이력) 순이라 채용 담당자의 질문 순서와 같음', '방문자가 직접 쳐서 여는 재미 — 기획자 포트폴리오다움'], en: ['Shows "hexagon designer" first and biggest', 'Ability → evidence matches how a recruiter asks', 'The visitor plays to open it — fitting for a designer'] },
+      cons: { ko: ['시간 순서가 약함 — 이력이 블록마다 흩어짐(연표 줄로 보완)', '여섯 번 눌러야 함 — \'한 번에 열기\' 필요'], en: ['Weak on chronology — the career is spread across blocks (the strip helps)', 'Six presses — needs "open all"'] } },
+    { id: 'e', f: draftE, w: wireE, name: { ko: '본편 카트리지 — 김지수 시리즈', en: 'Main-series cartridges — the Jisu Kim series' }, sub: { ko: '꽂기 · 시간 = 시리즈 순서', en: 'Plug-in · time = series order' },
+      pitch: { ko: '사이트의 핵심 동작(카트리지 꽂기)을 이력에도 씁니다. 메뉴 아래 진열판 첫 줄은 금색 \'본편\' — 지나온 시기 다섯 장(JISU KIM 1 ~ 5)이고, 하나를 꽂으면 게임기 화면에 그 시기와 \'이번 작에서 설치된 능력\'이 뜨며 게임기 정보의 육각형이 커집니다. 다섯 장을 다 꽂으면 둘째 줄 빨강 \'수록작\'(포트폴리오)이 열립니다.',
+               en: 'Uses the site\'s core move — plugging in a cartridge — for the career too. The first shelf below the menu is the gold main series: five periods as JISU KIM 1–5. Plug one in and the screen shows that period and "installed by this one", growing the console\'s hexagon. Plug in all five and the red second shelf (the portfolio collection) opens.' },
+      map: [['시기', 'Period', '금색 본편 카트리지 한 장', 'One gold main-series cartridge'], ['능력', 'Ability', '꽂으면 게임기에 설치되는 능력', 'Abilities installed on plug-in'], ['시간', 'Time', 'JISU KIM 1 → 5 시리즈 순서', 'Series order, JISU KIM 1 → 5'], ['포트폴리오', 'Portfolio', '빨강 수록작 카트리지', 'The red collection cartridges']],
+      flow: ['title', 'menu', 'story'], hint: { ko: '▶ 금색 카트리지를 눌러 꽂아 보세요. 다섯 장을 다 꽂으면 빨강 줄이 열립니다.', en: '▶ Press the gold cartridges to plug them in. All five unlock the red row.' },
+      pros: { ko: ['이미 있는 꽂기 연출을 그대로 써서 사이트 전체가 하나의 문법', '경력 = 본편, 프로젝트 = 수록작으로 위계가 생김', '메뉴 화면 구조를 거의 바꾸지 않아도 됨'], en: ['Reuses the existing plug-in move — one grammar for the whole site', 'Career = main series, projects = collection: a clear hierarchy', 'Barely changes the menu screen'] },
+      cons: { ko: ['카트리지가 두 종류라 처음엔 헷갈릴 수 있음(금색 / 빨강으로 구분)', '꽂기 연출을 다섯 번 보게 됨 — 다시 볼 땐 바로 열기'], en: ['Two kinds of cartridge may confuse at first (gold vs red)', 'Five plug-in animations — skip them on return visits'] } }
+  ];
+  var FLOW = { title: { ko: '타이틀', en: 'Title' }, story: { ko: '일대기', en: 'Story' }, menu: { ko: '메뉴 · 포트폴리오', en: 'Menu · portfolio' } };
+  var RULES = [
+    { h: { ko: '같은 문법', en: 'One grammar' }, b: { ko: '땅 블록 · 관 · 물음표 블록 · 동전 · 점수판 · 게임기 · 카트리지 — 스테이지 시안의 소품만으로 이야기합니다.', en: 'Ground blocks, pipes, ? blocks, coins, the scoreboard, the console and cartridges — only the Stage\'s own props.' } },
+    { h: { ko: '1P = 고스트', en: '1P = the ghost' }, b: { ko: '캐릭터 · 아이템은 그리지 않습니다. 움직이는 주인공은 사이트 아이콘의 고스트(같은 4px 칸 · 검은 외곽선).', en: 'No characters or items. The one who moves is the site\'s own ghost icon (same 4px cells, black outline).' } },
+    { h: { ko: '같은 결말', en: 'Same ending' }, b: { ko: '다섯 안 모두 \'육각형이 다 찬다 → 포트폴리오\'. 건너뛰기는 언제나 있습니다.', en: 'All five end with "the hexagon fills → portfolio". There is always a skip.' } },
+    { h: { ko: '내용은 이력서 그대로', en: 'Résumé content' }, b: { ko: '시기 · 역할 · 숫자 · 근거는 content.js 에서 읽습니다. 육각형 칸 수만 예시.', en: 'Periods, roles, numbers and evidence are read from content.js. Only the hexagon values are placeholders.' } }
+  ];
+
+  function fit() {
+    Array.prototype.forEach.call(document.querySelectorAll('.mockbox'), function (box) {
+      var m = box.firstElementChild, z = Math.max(.5, Math.min(1, (box.clientWidth) / 1200));
+      m.style.zoom = z < 1 ? z.toFixed(4) : '';
+    });
+  }
+  function renderDrafts() {
+    document.getElementById('toc').innerHTML = DRAFTS.map(function (d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#consoles">' + T('게임기 그림 5안', '5 console drawings') + '</a>';
+    document.getElementById('rules').innerHTML = RULES.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
+    document.getElementById('drafts').innerHTML = DRAFTS.map(function (d) {
+      return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small></div>' +
+        '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
+        '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
+        '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' +
+        '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div><p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
+        '<div class="notes"><div><h5>' + T('좋은 점', 'Strengths') + '</h5><ul>' + d.pros[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
+        '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
+    }).join('');
+    fit();
+    DRAFTS.forEach(function (d) { d.w(document.querySelector('.mockbox[data-draft="' + d.id + '"]')); });
+  }
+
+  /* ── 게임기 그림: 사이트 도트 데이터를 정수 배율로 ──────────────────────── */
+  var CONSOLES = [
+    { art: 'riso', name: { ko: '리소', en: 'Riso' }, hero: true, badge: { ko: '1순위 · 마감까지 다듬은 안', en: 'Top pick · most refined' },
+      desc: { ko: '진홍 몸통 · 금색 화면 테 · 금테 두른 버튼. 부품 모양을 따르는 음영, 홈에 앉은 십자 · 돔 버튼까지 마감한 판.', en: 'A crimson body, gold screen frame and gold-ringed buttons, finished with form shading, a recessed D-pad and domed buttons.' } },
+    { art: 'cutpaper', name: { ko: '컷페이퍼', en: 'Cut paper' }, desc: { ko: '오려 붙인 종이처럼 각진 면 — 빨강 손잡이 · 넓은 금색 화면 테 · 검은 두께 띠.', en: 'Angular cut-paper planes — red grips, a broad gold frame, a black thickness band.' } },
+    { art: 'ink', name: { ko: '잉크', en: 'Ink' }, desc: { ko: '판 이음선으로 나눈 검은 몸통에 빨강 버튼 · 금색 어깨와 고무 버튼.', en: 'A black body split by panel seams, with red buttons and gold shoulders and key.' } },
+    { art: 'gouache', name: { ko: '과슈', en: 'Gouache' }, desc: { ko: '검은 몸통에 금색 붓 자국을 큰 면으로 정리, 빨강 화면 테 · 금색 버튼.', en: 'A black body with gold brush marks turned into broad inlays, a red frame and gold buttons.' } },
+    { art: 'mecha', name: { ko: '메카', en: 'Mecha' }, desc: { ko: '금색 장갑판 · 검은 조작면 · 빨강 옆판을 각진 면으로 나눈 메카풍.', en: 'Faceted gold armour, black control faces and red side panels.' } }
+  ];
+  var PAGES = [{ f: 'index.html', ko: '홈', en: 'Home', main: true }, { f: 'resume.html', ko: '이력서', en: 'Résumé' }, { f: 'projects.html', ko: '프로젝트', en: 'Projects' }];
+  function drawArt(cv, d) {
+    var box = cv.parentNode.getBoundingClientRect().width || 600, dpr = window.devicePixelRatio || 1;
+    var s = Math.max(1, Math.floor(box * dpr / d.w));          /* 칸 하나 = 정수 기기 픽셀 */
+    cv.width = d.w * s; cv.height = d.h * s; cv.style.width = (d.w * s / dpr) + 'px'; cv.style.height = (d.h * s / dpr) + 'px';
+    var g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
+    d.rows.forEach(function (row, y) {
+      var x = 0, re = /([.,A-Za-z])(\d*)/g, m;
+      while ((m = re.exec(row))) {
+        var n = m[2] ? +m[2] : 1, c = m[1];
+        if (c !== '.') { g.fillStyle = c === ',' ? 'rgba(6,16,58,.32)' : d.pal[c <= 'Z' ? c.charCodeAt(0) - 65 : c.charCodeAt(0) - 71]; g.fillRect(x * s, y * s, n * s, s); }
+        x += n;
+      }
+    });
+  }
+  function renderConsoles() {
+    var A = window.__ART || {};
+    document.getElementById('cgrid').innerHTML = CONSOLES.map(function (c, i) {
+      var id = 'pixel-fc-level-' + c.art;
+      var links = PAGES.map(function (p) { return '<a href="' + p.f + '?skin=' + id + '"' + (p.main ? ' class="main"' : '') + '>' + esc(L === 'en' ? p.en : p.ko) + (p.main ? ' →' : '') + '</a>'; }).join('');
+      var d = A[c.art];
+      return '<article class="cart' + (c.hero ? ' cart--hero' : '') + '"><a class="cart__art" href="index.html?skin=' + id + '" aria-label="' + esc(t(c.name)) + '"><canvas data-art="' + c.art + '" role="img" aria-label="' + esc(t(c.name)) + '"></canvas></a>' +
+        '<div class="cart__body"><div class="cart__title"><b>' + (i + 1) + ' · ' + esc(t(c.name)) + '</b><small>' + esc(id) + (d ? ' · ' + d.pal.length + T('색', ' colours') : '') + '</small>' + (c.badge ? '<span class="badge">' + esc(t(c.badge)) + '</span>' : '') + '</div>' +
+        '<p class="cart__desc">' + esc(t(c.desc)) + '</p><div class="links">' + links + '</div></div></article>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('canvas[data-art]'), function (cv) { var d = A[cv.getAttribute('data-art')]; if (d) drawArt(cv, d); });
+  }
+
+  function applyLang() {
+    document.documentElement.setAttribute('lang', L);
+    var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
+    st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
+  }
+  function render() { applyLang(); renderDrafts(); renderConsoles(); }
+  render();
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); renderConsoles(); }, 150); });
+  document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
+  document.querySelector('[data-dark]').addEventListener('click', function () {
+    var d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', d); try { localStorage.setItem('portfolio:theme', d); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
