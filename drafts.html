@@ -164,13 +164,10 @@
   .b-era { left: 32px; top: 32px; width: 470px; box-shadow: none; }
   .b-gain { position: absolute; left: 544px; right: 24px; top: 28px; bottom: 20px; display: grid; grid-template-columns: 1fr 176px; gap: 20px; align-items: start; color: #edf1f8; }
   .b-gain h5 { margin-bottom: 14px !important; font-size: 11px; color: #bcc6da; }
-  .b-gain .m-chip { opacity: 0; transform: translateY(-8px); transition: opacity .3s .2s, transform .3s .2s; }
   .b-gain .pips { display: block; margin-top: 10px; font-size: 11px; color: #bcc6da; line-height: 1.8; }
-  .b-gain .hexwrap { opacity: .25; transition: opacity .5s .3s; }
   .b-q { top: 0; }
   .b-layer.is-hit .b-q { background-image: var(--d-used) !important; animation: bump .28s ease-out; }
-  .b-layer.is-hit .b-gain .m-chip { opacity: 1; transform: none; }
-  .b-layer.is-hit .b-gain .hexwrap { opacity: 1; }
+  .b-layer.is-hit .b-gain .m-chip { animation: bump .28s .12s ease-out; }
   .b-deep { position: relative; height: 520px; background: #000; }
   .b-deep .m-ground { background-image: var(--lv-uground); }
   .b-final { left: 160px; top: 40px; width: 520px; }
