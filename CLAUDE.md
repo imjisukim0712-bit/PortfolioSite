@@ -116,8 +116,9 @@
 - **스테이지 게임기 그림 갈래(18회차)** — `pixel-fc-level-riso` · `-cutpaper` · `-ink` · `-gouache` · `-mecha` 는 스테이지 시안 그대로에 **게임기 그림만** 바꾼 안입니다.
   `themes.js` 시안 항목의 `base: 'fc-level'` 이 그 시안의 CSS · `data-skin` 을 그대로 쓰게 하고(파일 복제 없음), `art: '<이름>'` 이 `<html data-skin-art>` 로 찍혀
   `fc-body.js` 가 `fc-level-art.js`(도트 데이터 → SVG) + `fc-level-art-<이름>.js`(데이터) 로 그립니다. 그림은 **Codex 가 규격만 받고 그린 '도트가 아닌 그림'**
-  (지시서 `docs/design-log/briefs/r18-console-art/BRIEF-2.md` — 색은 검정 · 빨강 · 금색)을 `tools/fc-pixel/pixelize-console.py --look <이름>` 이 도트로 옮긴 것이고
-  (모양 · 색 배치는 그림 그대로, 칠하는 법은 도트 문법 — 칸마다 색만 고르면 "해상도만 낮춘 그림"이 됨: 재료별 단계색 · 가는 테 · 선은 중심선으로 한 칸 · 부품 테두리 빛 · 그늘 · 화풍별 바둑판 디더, 파일 맨 위 주석),
+  (지시서 `docs/design-log/briefs/r18-console-art/BRIEF-2.md` — 색은 검정 · 빨강 · 금색, 4차부터 **도트 팔레트 색만 쓴 평평한 그림**: 면마다 세 단계 · 8px 외곽선 · 질감 없음)을
+  `tools/fc-pixel/pixelize-console.py --look <이름> --flat` 이 도트로 옮긴 것이고(면 색은 칸 가운데에서 그대로, 외곽선은 그림 선의 한가운데를 따서 한 칸 · 디더 없음 —
+  사용자: "더 단순하고 깔끔한 도트". 질감 있는 그림을 칸마다 고르면 "해상도만 낮춘 그림" · 조각난 그림이 되니 그림 쪽을 평평하게 받습니다. 팔레트는 파일의 `RAMPS`),
   화면 속 내용 · 투명 키 · 인쇄 글자 자리는 Codex 가 잰 부품 자리(controls.json)로 `tools/fc-pixel/console-art-css.py` 가 뽑은 `pixel-fc-level-art.css` 가 그림마다 맞춥니다
   (사용자 지시: "기본 그림은 Codex 에게, 너는 그림에 직접 개입하지 말고 규격만"). 그림을 바꾸려면 Codex 에게 다시 그리게 한 뒤 두 도구를 다시 돌리세요.
   900px 미만은 스테이지의 세운 휴대기 CSS 그대로입니다.

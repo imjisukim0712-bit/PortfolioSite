@@ -11,8 +11,11 @@
      (끊기지 않게 · 다섯 칸 미만 토막과 실루엣에 붙은 잉크 선은 버림 · ㄱ자 모서리 칸은 뺌)
   ④ 부품(같은 재료로 이어진 면)마다 테두리 한 칸을 위 · 왼쪽 한 단계 밝게, 아래 · 오른쪽 한 단계 어둡게(17회차 스테이지 규칙)
   ⑤ 실루엣 외곽선 한 칸 검정, 화면 칸은 크림 #fff6dd. 색은 RAMPS(재료마다 다섯 색)뿐 · 바둑판 디더 없음
+  --flat(지금 쓰는 길): 그림이 이미 RAMPS 의 색으로만 평평하게 칠해져 있을 때(Codex 4차, 8px 외곽선) — ①의 단계 읽기 대신 px 마다 가장 가까운 팔레트 색,
+     외곽선 px 는 면에서 걷어 내고(가장 가까운 면 색으로 채움) 선 한가운데를 따서 한 칸으로 다시 그음 · 사이가 검은 두 겹 선은 한 줄로 합침 ·
+     곧은 선의 빗살(한 칸만 옆 줄로 튄 칸) 펴기 · ④ 테두리 빛 · 그늘은 그림의 것을 그대로 씀
   격자 · 화면 자리 · 출력 형식은 앞과 같습니다(한 칸 ≈ 7px, 화면 폭 = 정수 칸, 게임기는 200 × 100칸 판 가운데).
-사용: python3.13 tools/fc-pixel/pixelize-console.py <그림.png> <이름> --screen 334,246,867,455 --look riso [--preview 폴더]
+사용: python3.13 tools/fc-pixel/pixelize-console.py <그림.png> <이름> --screen 334,246,867,455 --look riso --flat [--preview 폴더]
       (Pillow · numpy · scipy · scikit-image 가 있는 파이썬이 필요합니다)
 """
 import argparse
@@ -81,7 +84,7 @@ def main():
     ap.add_argument('--screen', required=True, help='그림 속 화면 사각형 px: 왼,위,폭,높이')
     ap.add_argument('--look', required=True, choices=sorted(LOOKS), help='화풍별 읽는 법(LOOKS)')
     ap.add_argument('--cell', type=float, default=7.0, help='한 칸의 대략 크기(px)')
-    ap.add_argument('--flat', action='store_true', help='그림이 이미 RAMPS 의 색으로만 평평하게 칠해져 있을 때(Codex 4차) — 색을 그대로 읽고 외곽선만 한 칸으로')
+    ap.add_argument('--flat', action='store_true', help='그림이 이미 RAMPS 의 색으로만 평평하게 칠해져 있을 때(Codex 4차) — 면 색은 그대로 찍고, 외곽선은 중심선으로 한 칸')
     ap.add_argument('--preview', default='')
     ap.add_argument('--out', default=os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'js', 'themes'))
     a = ap.parse_args(); L = LOOKS[a.look]
@@ -120,11 +123,21 @@ def main():
         t[Ls < base - d] = 1; t[Ls > base + d] = 3; t[Ls > base + 2.8 * d] = 4
         cls[sel] = m * 5 + t[sel]
     if a.flat:      # 평평한 그림: px 마다 가장 가까운 팔레트 색 = (재료, 단계) 그대로
-        pal = [(m * 5 + t, rgb(RAMPS[MATS[m]][t])) for m in range(3) for t in range(4)] + [(15, rgb('#ffffff'))]
+        pal = [(m * 5 + t, rgb(RAMPS[MATS[m]][t])) for m in range(3) for t in range(4)] + [(15, rgb('#ffffff')), (16, rgb(LCD))]
         dmin = np.full(mpx.shape, 1e9, np.float32)
         for k, c in pal:
             d = ((sm3 - c) ** 2).sum(axis=2).astype(np.float32); up = d < dmin; dmin[up] = d[up]; cls[up] = k
         cls[~obj0] = -1
+        #    외곽선 px: 두꺼운 검정 면(폭 12px 넘음)은 면으로 두고, 가는 선만 면에서 걷어 내(가장 가까운 면 색으로 채움) 아래 ③에서 중심선으로 다시 그음.
+        #    10px 안으로 붙은 선 두 줄(버튼의 두 겹 고리 등 — 사이가 검은 면)은 한 줄로 합침 — 200칸에서는 구슬처럼 끊김
+        k0 = cls == 0
+        disk = lambda r: (np.add.outer(np.arange(-r, r + 1) ** 2, np.arange(-r, r + 1) ** 2) <= r * r)
+        thick = ndi.binary_opening(k0, disk(6))
+        lab, n = ndi.label(thick)                # 선이 만나는 곳의 작은 덩어리는 두꺼운 면이 아님
+        if n: thick &= (ndi.sum(np.ones_like(lab), lab, np.arange(n + 1)) >= 900)[lab]
+        k0px = ndi.binary_closing(k0 & ~thick, disk(5)) & obj0 & ~thick & (k0 | (cls // 5 == 0))   # 사이가 검은 면일 때만(금테 · 빨강 테는 살림)
+        idx = ndi.distance_transform_edt((cls <= 0) & ~thick | k0px | (cls == 16), return_distances=False, return_indices=True)   # 화면 크림은 채움 재료로 쓰지 않음(화면 칸은 아래에서 따로)
+        cls = cls[idx[0], idx[1]]; cls[~obj0] = -1
     else:
         cls[(mpx == 3) & obj0] = 15
     #    단계마다 흐린 표를 모아 가장 많은 쪽으로(재료 경계 · 단계 경계가 매끈해짐)
@@ -185,16 +198,16 @@ def main():
     fine = np.zeros((GH, GW), bool)            # 중심선으로 찍은 칸(아래 정리에서 건드리지 않음)
     objm = mat >= 0
     rim = objm & ~ndi.binary_erosion(objm, np.ones((3, 3)), border_value=0)   # 실루엣 둘레 두 칸 — 외곽선과 겹치는 잉크 선은 찍지 않음
-    rim = ndi.binary_dilation(rim, np.ones((3, 3))) & objm
+    rim = (ndi.binary_dilation(rim, np.ones((3, 3))) & objm) if not a.flat else (ndi.binary_dilation(rim, [[0, 1, 0], [1, 1, 1], [0, 1, 0]]) & objm & ~rim)
     mat0, lev0 = mat.copy(), lev.copy()
     bases = {m: np.bincount(np.clip(lraw[(mpx3 == m) & obj0], 0, 100).astype(int), minlength=101).argmax() for m in range(3) if ((mpx3 == m) & obj0).any()}
-    for m, Mp, kind in (() if a.flat else ((0, inkpx & obj0, 'ink'), (0, litpx & obj0, 'lit'), (1, (mpx3 == 1) & obj0 & ~inkpx, ''), (2, (mpx3 == 2) & obj0 & ~inkpx, ''), (3, (mpx3 == 3) & obj0, ''))):
+    for m, Mp, kind in (((0, k0px & obj0, 'ink'),) if a.flat else ((0, inkpx & obj0, 'ink'), (0, litpx & obj0, 'lit'), (1, (mpx3 == 1) & obj0 & ~inkpx, ''), (2, (mpx3 == 2) & obj0 & ~inkpx, ''), (3, (mpx3 == 3) & obj0, ''))):
         if not Mp.any(): continue
         dd = ndi.distance_transform_edt(Mp)
-        sk = skeletonize(Mp) & (dd <= cell * .62) & (dd >= 1)
+        sk = skeletonize(Mp) & (dd <= cell * (2.6 if a.flat else .62)) & (dd >= (.5 if a.flat else 1))
         lab, n = ndi.label(sk, structure=np.ones((3, 3)))
         if not n: continue
-        sk &= (ndi.sum(np.ones_like(lab), lab, np.arange(n + 1)) >= cell * (3 if m == 0 else 2))[lab]
+        sk &= (ndi.sum(np.ones_like(lab), lab, np.arange(n + 1)) >= cell * (1.5 if a.flat else 3 if m == 0 else 2))[lab]
         yy, xx = np.where(sk)
         cy = np.floor((yy - oy) / cell).astype(int) - GY0; cx = np.floor((xx - ox) / cell).astype(int) - GX0
         ok = (cy >= 0) & (cy < GH) & (cx >= 0) & (cx < GW)
@@ -202,31 +215,38 @@ def main():
         for y_, x_, l_ in zip(cy[ok], cx[ok], lraw[yy[ok], xx[ok]]):
             acc.setdefault((y_, x_), []).append(l_)
         for (y_, x_), ls in acc.items():
-            if mat[y_, x_] < 0 or scr[y_, x_] or len(ls) < 2 or (kind == 'ink' and rim[y_, x_]): continue
+            if mat[y_, x_] < 0 or scr[y_, x_] or len(ls) < (3 if a.flat else 2) or (kind == 'ink' and rim[y_, x_]): continue
             if kind == 'ink' or m == 3: t = 0
             elif kind == 'lit': t = 3
             else:
                 lm = np.median(ls); b = bases.get(m, lm); d = L['delta']
                 t = 1 if lm < b - d else 3 if lm > b + d else 2
             mat[y_, x_] = m; lev[y_, x_] = t; fine[y_, x_] = True
-    if a.flat:      # 평평한 그림의 외곽선(8px ≈ 1.1칸)이 두 칸에 걸치면 덜 찬 칸을 빼서 한 칸으로
-        K0 = (mat == 0) & (lev == 0)
-        for gy in range(1, GH - 2):
-            for gx in range(1, GW - 2):
-                if not K0[gy, gx] or scr[gy, gx]: continue
-                for dy, dx in ((0, 1), (1, 0)):
-                    y2, x2 = gy + dy, gx + dx
-                    if K0[y2, x2] and not K0[gy - dy, gx - dx] and not K0[y2 + dy, x2 + dx]:
-                        lo = (gy, gx) if FL[gy, gx] <= FL[y2, x2] else (y2, x2)
-                        w = major(np.where(K0, -1, np.where(mat >= 0, mat * 5 + lev, -1)), lo[0], lo[1], -1)
-                        if w is not None: mat[lo], lev[lo] = w // 5, w % 5; K0[lo] = False
-        fine = (mat == 0) & (lev == 0)
     #    짧은 선 토막(다섯 칸 미만)은 지움 — 망점 · 붓 자국이 선으로 남지 않게
     for k in sorted(set((mat[fine] * 5 + lev[fine]).tolist())):
         lab, n = ndi.label(fine & (mat * 5 + lev == k), structure=np.ones((3, 3)))
         for i in range(1, n + 1):
             C = lab == i
-            if C.sum() < (2 if k == 15 else 6): mat[C], lev[C] = mat0[C], lev0[C]; fine[C] = False
+            if C.sum() < (2 if k == 15 else 3 if a.flat else 6): mat[C], lev[C] = mat0[C], lev0[C]; fine[C] = False
+    #    곧은 선의 빗살 펴기: 위아래(또는 좌우)는 옆 줄로 이어지는데 한 칸만 튀어나온 칸 → 옆 줄로 옮김
+    for _ in range(2):
+        Kf = fine & (mat == 0) & (lev == 0)
+        for gy in range(1, GH - 1):
+            for gx in range(1, GW - 1):
+                if not Kf[gy, gx]: continue
+                for s in (-1, 1):
+                    for (ay, ax), (by_, bx), (ty, tx) in ((((gy - 1, gx), (gy + 1, gx), (gy, gx + s))), (((gy, gx - 1), (gy, gx + 1), (gy + s, gx)))):
+                        if Kf[ay, ax] or Kf[by_, bx] or Kf[ty, tx] or scr[ty, tx] or mat[ty, tx] < 0: continue
+                        if (ty, tx) == (gy, gx + s): a1, b1 = (gy - 1, gx + s), (gy + 1, gx + s)
+                        else: a1, b1 = (gy + s, gx - 1), (gy + s, gx + 1)
+                        if Kf[a1] and Kf[b1]:
+                            w = major(np.where(fine, -1, np.where(mat >= 0, mat * 5 + lev, -1)), gy, gx, -1)
+                            if w is None: continue
+                            mat[gy, gx], lev[gy, gx] = w // 5, w % 5; fine[gy, gx] = Kf[gy, gx] = False
+                            mat[ty, tx], lev[ty, tx] = 0, 0; fine[ty, tx] = Kf[ty, tx] = True
+                            break
+                    else: continue
+                    break
     #    한 칸 선의 ㄱ자 모서리 칸 빼기(대각선으로 이어지게)
     for gy in range(1, GH - 1):
         for gx in range(1, GW - 1):
