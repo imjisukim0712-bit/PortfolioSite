@@ -480,6 +480,33 @@
     else if (head && !main.querySelector('.detail')) y = head.getBoundingClientRect().bottom - top + 144;   /* 머리 아래 16px 띄우고 128px 지면 소품 띠 */
     main.style.setProperty('--lv-surface', Math.round(y) + 'px');
   }
+  /* 17회차: 게임기 그림(fc-body.js 의 stageArt)은 200칸 폭이라, 판 폭이 '200 × 기기 픽셀 정수'가 아니면 칸마다 크기가 달라져
+     외곽선 · 색 경계가 울퉁불퉁 깨져 보입니다 → 판 폭을 가까운 정수 칸 폭으로 맞춥니다(--lv-rig-w, CSS 가 width 로 씀).
+     메뉴(똑바로 선 큰 게임기)는 늘 맞추고 — 조금(7%까지) 커지는 쪽이 화면에 들어가면 그쪽, 타이틀은 옆 틈 안에서 조금 넓게(40px)
+     잡되 10% 넘게 줄어야 하면 맞추지 않습니다(기울어 있어 어차피 다시 찍히는 화면). 900px 미만은 CSS 가 4px 칸으로 짓습니다. */
+  function snapRig() {
+    var r = document.querySelector('.fcs-rig'); if (!r) return;
+    r.style.removeProperty('--lv-rig-w'); r.style.removeProperty('--lv-rig-dx');
+    if (!active() || window.innerWidth < 900 || !document.querySelector('.fcs-rig > .hero > .fcb-art')) return;
+    var w = r.offsetWidth; if (!w) return;
+    var dpr = window.devicePixelRatio || 1, unit = 200 / dpr, pick;
+    if (document.body.getAttribute('data-lv') === 'menu') {
+      var down = Math.floor(w / unit) * unit, up = down + unit;
+      pick = up <= w * 1.07 && up <= document.documentElement.clientWidth - 16 ? up : down;
+    } else {
+      pick = Math.floor((w + 40) / unit) * unit;
+      if (pick < w * .9) return;
+    }
+    r.style.setProperty('--lv-rig-w', pick + 'px');
+    /* 메뉴는 가운데 놓여 왼쪽 끝이 반 픽셀에 걸릴 수 있음 → 기기 픽셀 경계로 살짝 옮김(타이틀은 기울어 있어 상관없음) */
+    if (document.body.getAttribute('data-lv') === 'menu') {
+      var keep = r.style.transform; r.style.transform = 'none';
+      var lx = r.getBoundingClientRect().left * dpr, dx = (Math.round(lx) - lx) / dpr;
+      r.style.transform = keep;
+      if (Math.abs(dx) > .01) r.style.setProperty('--lv-rig-dx', dx + 'px');
+    }
+  }
+  window.__lvSnapRig = snapRig;
   var queued = false;
   function update() {
     if (queued) return; queued = true;
@@ -487,6 +514,7 @@
       queued = false;
       var main = mainEl(); if (!main) return;
       if (active()) { groupMenu(main); hud(main); }
+      snapRig();
       measure();
     });
   }
@@ -623,6 +651,7 @@
     document.body.classList.add('lv-moving');
     document.body.setAttribute('data-lv', next);
     apply();
+    if (window.__lvSnapRig) window.__lvSnapRig();   /* 나중 상자를 재기 전에 판 폭을 정수 칸에 맞춤 */
     var done = function () {
       busy = false;
       pinned.forEach(function (el) { ['position', 'left', 'top', 'width', 'margin', 'z-index', 'display'].forEach(function (k) { el.style.removeProperty(k); }); });

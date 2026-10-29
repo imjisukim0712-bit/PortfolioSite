@@ -114,7 +114,8 @@
      가운데 = 크림 몸통(밀어 켜는 스위치 둘 · 전원등 · 홈줄) · 짙은 화면 테 · 자주 아랫단(카트리지 구멍 · 스피커).
      격자는 5단위 한 칸(200 × 100 칸 — 예전 10단위의 두 배 촘촘), 외곽선은 실루엣 가장자리로 계산, 색마다 path 하나로 냅니다.
      누를 수 있는 키(◀ ▶ · 메일 · B · A)는 HTML 버튼을 그림 위 같은 자리에 투명하게 얹습니다(pixel-fc-folio.css 16회차 절).
-     좌표: 십자 중심 (65, 175) · 고무 버튼 30–100 × 280–315 · B 중심 (905, 170) · A 중심 (905, 280) · 화면 165–805 × 65–405. */
+     좌표: 십자 중심 (65, 175) · 고무 버튼 30–100 × 280–315 · B 중심 (905, 170) · A 중심 (905, 290) · 화면 165–805 × 65–405.
+     판 폭이 200의 배수(한 칸 = 정수 px)일 때 칸이 고르게 찍힙니다 — 폭은 pixel-fc-level.js 의 snapRig() 가 맞춥니다. */
   function stageArt() {
     var U = 5, W = 200, H = 100, BW = 194, BH = 94, D = 4, PROF = [5, 3, 2, 1, 1];
     var K = '#171c28',
@@ -136,21 +137,20 @@
     function inAll(cx, cy) { for (var k = 0; k <= D; k++) if (inBody(cx - k, cy - k)) return true; return false; }
     function f(x0, y0, w, h, c) { for (var yy = y0; yy < y0 + h; yy++) for (var xx = x0; xx < x0 + w; xx++) if (inBody(xx, yy)) g[yy][xx] = c; }
     function px(xx, yy, c) { if (inBody(xx, yy)) g[yy][xx] = c; }
-    function disc(cx, cy, r, c) { for (var yy = Math.floor(cy - r); yy <= Math.ceil(cy + r); yy++) for (var xx = Math.floor(cx - r); xx <= Math.ceil(cx + r); xx++) if ((xx + .5 - cx) * (xx + .5 - cx) + (yy + .5 - cy) * (yy + .5 - cy) <= r * r) px(xx, yy, c); }
     /* 둥근 모서리 사각형(한 칸 깎기) */
     function rr(x0, y0, w, h, c) { f(x0 + 1, y0, w - 2, h, c); f(x0, y0 + 1, w, h - 2, c); }
-    /* 두께(옆면): 손잡이 밑은 자주, 몸통 밑은 크림 그늘 */
+    /* 한 칸씩 찍은 작은 그림(문자 격자). 둥근 버튼처럼 원 공식으로 겹쳐 칠하면 검은 테가 군데군데 끊겨서 손으로 찍습니다 */
+    function spr(x0, y0, rows, map) {
+      rows.forEach(function (row, yy) { for (var xx = 0; xx < row.length; xx++) { var c = map[row.charAt(xx)]; if (c) px(x0 + xx, y0 + yy, c); } });
+    }
+    /* 두께(옆면): 오른쪽 · 아래로 D칸, 자주 그늘 */
     for (y = 0; y < H; y++) for (x = 0; x < W; x++) if (inAll(x, y) && !inBody(x, y)) g[y][x] = MRd;
 
-    /* ── 몸통(크림) ── */
+    /* ── 몸통(크림) · 손잡이 = 컨트롤러 두 개(자주) ── 빛 · 그늘은 맨 끝에 외곽선을 따라 한 번에 */
     f(0, 0, BW, BH, CR);
-    f(4, 1, 186, 1, CRh);
-    /* ── 손잡이 = 컨트롤러 두 개(자주) ── */
     [[0, 26], [168, 26]].forEach(function (s) {
       var x0 = s[0], w = s[1];
       f(x0, 0, w, BH, MR);
-      f(x0 + 2, 1, w - 4, 1, MRh); f(x0 + 1, 3, 1, BH - 6, MRh);       /* 윗면 · 왼쪽 빛 */
-      f(x0 + w - 2, 3, 1, BH - 6, MRd); f(x0 + 2, BH - 2, w - 4, 1, MRd);  /* 오른쪽 · 아래 그늘 */
       /* 금색 앞판 */
       f(x0 + 3, 14, 20, 66, GD);
       f(x0 + 3, 14, 20, 1, GDh); f(x0 + 3, 14, 1, 66, GDh);
@@ -172,17 +172,17 @@
     /* 고무 버튼(메일) */
     rr(6, 56, 14, 7, K); rr(7, 57, 12, 5, RU); f(8, 57, 10, 1, RUh);
 
-    /* ── 오른쪽 컨트롤러: B · A 둥근 버튼(어두운 홈 위) ── */
-    [[181, 34], [181, 56]].forEach(function (c) {
+    /* ── 오른쪽 컨트롤러: B · A 둥근 버튼(어두운 홈 16칸 위, 지름 12칸 · 한 칸 검은 테 · 아래 오른쪽 그늘 · 위 왼쪽 반사) ── */
+    var BTN = ['....KKKK....', '..KKRRRRKK..', '.KRhhRRRRRK.', '.KRhRRRRRRK.', 'KRRRRRRRRRRK', 'KRRRRRRRRRdK',
+               'KRRRRRRRRRdK', 'KRRRRRRRRddK', '.KRRRRRRRdK.', '.KdRRRRRddK.', '..KKddddKK..', '....KKKK....'];
+    [[181, 34], [181, 58]].forEach(function (c) {
       var cx = c[0], cy = c[1];
       rr(cx - 8, cy - 8, 16, 16, MRd);                          /* 어두운 홈 */
-      disc(cx, cy, 6.4, K); disc(cx + .5, cy + .5, 5.4, RBd);   /* 검은 테 · 아래 오른쪽 그늘 */
-      disc(cx - .3, cy - .3, 5.0, RB);                          /* 빨강 면 */
-      f(cx - 3, cy - 4, 3, 1, RBh); f(cx - 4, cy - 3, 1, 3, RBh);   /* 위 왼쪽 반사 */
+      spr(cx - 6, cy - 6, BTN, { K: K, R: RB, h: RBh, d: RBd });
     });
 
     /* ── 가운데 몸통 ── */
-    /* 윗면: 밀어 켜는 스위치 둘 · 전원등 · 나사 */
+    /* 윗면: 밀어 켜는 스위치 둘 · 전원등 · 홈줄 */
     rr(34, 3, 10, 5, K); f(35, 4, 8, 3, MR); f(35, 4, 4, 1, MRh);
     rr(47, 3, 10, 5, K); f(48, 4, 8, 3, MR); f(52, 4, 4, 1, MRh);
     f(60, 4, 3, 3, K); f(61, 5, 1, 1, '#ff3b30');              /* 전원등 */
@@ -191,20 +191,32 @@
     f(30, 10, 134, 74, K); f(31, 11, 132, 72, CH); f(31, 11, 132, 1, CHh); f(31, 11, 1, 72, CHh);
     f(32, 12, 130, 70, K);
     f(33, 13, 128, 68, LC); f(33, 13, 128, 1, LCs); f(33, 14, 1, 67, LCs);
-    /* 아랫단: 자주 띠 · 카트리지 구멍 · 스피커 */
+    /* 아랫단: 자주 띠 · 카트리지 구멍 · 스피커 · 나사 */
     f(28, 85, 138, 9, MR); f(28, 85, 138, 1, MRh); f(28, 84, 138, 1, CRs);
     rr(78, 87, 38, 4, K); f(80, 88, 34, 1, '#000');        /* 카트리지 구멍 */
     for (y = 87; y < 92; y += 2) f(140, y, 20, 1, K);      /* 스피커 */
-    disc(36, 89, 1.4, MRd); disc(42, 89, 1.4, MRd);         /* 나사 */
+    f(35, 88, 2, 2, MRd); f(41, 88, 2, 2, MRd);            /* 나사 */
 
-    /* 외곽선 */
+    /* 외곽선: 앞면 + 두께를 합친 실루엣의 가장자리, 그리고 앞면이 두께와 맞닿는 이음매 */
     var out = function (cx, cy) { return !inAll(cx, cy); };
-    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
-      if (!inAll(x, y)) continue;
-      var edge = out(x - 1, y) || out(x + 1, y) || out(x, y - 1) || out(x, y + 1);
-      var seam = inBody(x, y) && (!inBody(x + 1, y) || !inBody(x, y + 1) || !inBody(x + 1, y + 1));
-      if (edge || seam) g[y][x] = K;
+    var sil = function (cx, cy) {
+      if (!inAll(cx, cy)) return false;
+      return out(cx - 1, cy) || out(cx + 1, cy) || out(cx, cy - 1) || out(cx, cy + 1) ||
+        (inBody(cx, cy) && (!inBody(cx + 1, cy) || !inBody(cx, cy + 1) || !inBody(cx + 1, cy + 1)));
+    };
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) if (sil(x, y)) g[y][x] = K;
+    /* 빛 · 그늘: 외곽선 바로 안쪽 한 칸 — 위 · 왼쪽은 밝게, 아래 · 오른쪽은 어둡게. 모서리 계단도 그대로 따라감
+       (안쪽 부품의 검은 테 옆은 건드리지 않음 — 실루엣 외곽선만 기준) */
+    var shade = [];
+    for (y = 0; y < BH; y++) for (x = 0; x < BW; x++) {
+      var c0 = g[y][x], hi = null, lo = null;
+      if (c0 === MR) { hi = MRh; lo = MRd; } else if (c0 === CR) { hi = CRh; } else continue;
+      var t = sil(x, y - 1), b = sil(x, y + 1), l = sil(x - 1, y), r = sil(x + 1, y);
+      var v = t ? hi : b ? lo : l ? hi : r ? lo : null;
+      if (c0 === MR && x === 168 && !v) v = MRh;                 /* 오른쪽 손잡이는 홈 쪽 가장자리가 왼쪽 빛 */
+      if (v) shade.push([x, y, v]);
     }
+    shade.forEach(function (q) { g[q[1]][q[0]] = q[2]; });
     /* 같은 색 가로 줄을 모으고, 바로 윗줄과 폭 · 자리가 같으면 세로로 이어 붙여 색마다 path 하나로 */
     var open = {}, done = [], i, k;
     for (y = 0; y < H; y++) {
