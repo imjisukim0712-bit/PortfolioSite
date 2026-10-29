@@ -39,7 +39,7 @@
 
 ## 디자인 테마(스킨) — `assets/js/themes.js` · `assets/css/themes/`
 
-기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 42개.
+기본 디자인(`style.css`) 위에 덧입히는 스킨 체계입니다. 테마 8종 · 시안 47개.
 (`pixel` · `brutal` · `brand` · `concept` · `editorial` · `hud` · `storybook` · `fantasy`)
 `pixel-fc-3d`(제품 사진) · `pixel-fc-8bit`(도트 아트) · `pixel-fc-boxart`(박스아트) 는 패미컴 콘셉트(게임기 화면·카트리지 꽂기·빨강)는 지키고 **디자인 언어를 새로 만든 안**입니다(각자 `pixel-fc-*.css` + `pixel-fc-*.js`, 원본 `famicom.js` 와 별개 · 카트리지 1클릭 꽂기 후 바로 상세).
 `pixel-fc-clay` · `pixel-fc-toon` · `pixel-fc-airbrush` 는 제품 사진 안과 같은 구도(기울어진 게임기 + 그 밑 같은 기울기의 카트리지 진열판 `.ps-rig`)에 그림체만 바꾼 안이고,
@@ -113,6 +113,13 @@
   타이틀은 옆 틈 40px 안에서 넓히되 10% 넘게 줄어야 하면 그대로), 상태가 바뀔 때는 FLIP 이 나중 상자를 재기 전에 부릅니다. 키 · 인쇄 글자 자리는 모두 칸(0.5cqw) 단위로.
   둥근 버튼처럼 원 공식으로 겹쳐 칠하면 테가 끊기니 문자 격자로 손으로 찍고(`stageArt` 의 `BTN` · `spr()`), 몸통 · 손잡이의 빛 · 그늘은 실루엣 외곽선 바로 안쪽 한 칸을
   따라 한 번에 칠합니다(위 · 왼쪽 밝게, 아래 · 오른쪽 어둡게 — 따로 줄을 긋지 않음). 좁은 화면 몸통 두께는 이음매 선 + 자주 2칸 + 바깥 선(9조각 28 · 32 · 32 · 28).
+- **스테이지 게임기 그림 갈래(18회차)** — `pixel-fc-level-riso` · `-cutpaper` · `-ink` · `-gouache` · `-mecha` 는 스테이지 시안 그대로에 **게임기 그림만** 바꾼 안입니다.
+  `themes.js` 시안 항목의 `base: 'fc-level'` 이 그 시안의 CSS · `data-skin` 을 그대로 쓰게 하고(파일 복제 없음), `art: '<이름>'` 이 `<html data-skin-art>` 로 찍혀
+  `fc-body.js` 가 `fc-level-art.js`(도트 데이터 → SVG) + `fc-level-art-<이름>.js`(데이터) 로 그립니다. 그림은 **Codex 가 규격만 받고 그린 '도트가 아닌 그림'**
+  (지시서 `docs/design-log/briefs/r18-console-art/BRIEF-2.md` — 색은 검정 · 빨강 · 금색)을 `tools/fc-pixel/pixelize-console.py` 가 **손대지 않고** 도트로 옮긴 것이고,
+  화면 속 내용 · 투명 키 · 인쇄 글자 자리는 Codex 가 잰 부품 자리(controls.json)로 `tools/fc-pixel/console-art-css.py` 가 뽑은 `pixel-fc-level-art.css` 가 그림마다 맞춥니다
+  (사용자 지시: "기본 그림은 Codex 에게, 너는 그림에 직접 개입하지 말고 규격만"). 그림을 바꾸려면 Codex 에게 다시 그리게 한 뒤 두 도구를 다시 돌리세요.
+  900px 미만은 스테이지의 세운 휴대기 CSS 그대로입니다.
 - **랠리는 기울임꼴을 쓰지 않습니다** — 한글 글꼴에는 기울임 꼴이 없어 브라우저가 억지로 눕힌 가짜 이탤릭이 됩니다. 사선은 `clip-path` 로 상자 모양에만(글자까지 눕히는 `skewX` 금지).
 - `:is()` 안에는 가상 요소(`::before` 등)를 넣을 수 없습니다 — 넣으면 규칙 전체가 무시되니 `…::before, …::after` 로 따로 적으세요.
 

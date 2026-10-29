@@ -32,9 +32,10 @@ def main():
     ap.add_argument('--screen', required=True, help='그림 속 화면 사각형 px: 왼,위,폭,높이')
     ap.add_argument('--cell', type=float, default=7.0, help='한 칸의 대략 크기(px)')
     ap.add_argument('--colors', type=int, default=28)
+    ap.add_argument('--method', default='mediancut', choices=['mediancut', 'octree', 'maxcoverage'], help='색 줄이는 방식 — 작은 면의 진한 색(예: 검은 몸의 빨강 버튼)이 묻히면 octree')
     ap.add_argument('--smooth', type=int, default=0, help='먼저 이 크기(홀수 px)의 중간값 거르개로 망점 · 붓결을 지움')
     ap.add_argument('--sample', default='mode', choices=['mode', 'mean'], help='mode: 칸마다 가장 많은 색 · mean: 칸 평균을 낸 뒤 색 줄이기')
-    ap.add_argument('--ink', type=float, default=0, help='어두운 선 색(밝기 70 미만)이 칸의 이 비율 이상이면 그 색으로 — 굵은 선이 끊기지 않게(예: 0.3)')
+    ap.add_argument('--ink', type=float, default=0, help='어두운 선 색(가장 밝은 채널 80 미만)이 칸의 이 비율 이상이면 그 색으로 — 굵은 선이 끊기지 않게(예: 0.3)')
     ap.add_argument('--preview', default='')
     ap.add_argument('--out', default=os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'js', 'themes'))
     a = ap.parse_args()
@@ -63,10 +64,11 @@ def main():
 
     # ③ 색 줄이기 → 칸마다
     strip = Image.fromarray(rgb[obj].reshape(1, -1, 3).astype(np.uint8))
-    pq = strip.quantize(colors=a.colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    M = {'mediancut': Image.Quantize.MEDIANCUT, 'octree': Image.Quantize.FASTOCTREE, 'maxcoverage': Image.Quantize.MAXCOVERAGE}[a.method]
+    pq = strip.quantize(colors=a.colors, method=M, dither=Image.Dither.NONE)
     qi = np.array(im.quantize(palette=pq, dither=Image.Dither.NONE))
     pal = np.array(pq.getpalette()[:3 * a.colors]).reshape(-1, 3)
-    inks = np.array([i for i in range(len(pal)) if pal[i].mean() < 70], int)
+    inks = np.array([i for i in range(len(pal)) if pal[i].max() < 80], int)      # 정말 어두운 선 색만(짙은 빨강 그늘은 빼고)
     grid = np.full((GH, GW), -1, int)      # -1 투명, -2 그림자, 0.. 팔레트
     means = {}
     for gy in range(GH):

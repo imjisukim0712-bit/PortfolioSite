@@ -65,6 +65,9 @@ def main():
             return max(INKS, key=lambda i: contrast(i, bg)), bg
         out.append('  /* %s */' % name)
         out.append('  %s > .wrap { position: absolute; margin: 0; %s }' % (P, pos(*scr)))
+        k = min(1, scr[2] / 128, (scr[3] - 2) / 68)   # 화면이 예전 게임기(128 × 68칸 — 아래 두 칸 여유)보다 작으면 화면 속 내용을 같은 비율로 줄임(꽂기 개요가 잘리지 않게)
+        if k < .995:
+            out.append('  %s > .wrap > :not(.fc-boot), %s > .wrap > .fc-boot > * { zoom: %.3f; }' % (P, P, k))
         dx, dy, dw, dh = box(c['dpad'])
         out.append('  %s .fc-key[data-fc-step="-1"] { %s }' % (P, pos(dx, dy + dh * .3, dw * .38, dh * .4)))
         out.append('  %s .fc-key[data-fc-step="1"] { %s }' % (P, pos(dx + dw * .62, dy + dh * .3, dw * .38, dh * .4)))
@@ -74,7 +77,7 @@ def main():
         small = False
         for sel, k in (('> .fc-grip--l > .fc-lbl', 'labelDpad'), ('> .fc-grip--l .fc-ab > .fc-lbl', 'labelRubber'), ('[data-fc-lbl="b"]', 'labelUpper'), ('[data-fc-lbl="a"]', 'labelLower')):
             x, y, w, h = box(c[k]); ink, bg = ink_for(c[k]); small = small or h < 4.4
-            out.append('  %s %s { %s display: flex; align-items: center; justify-content: center; color: %s; }   /* 바탕 %s */' % (P, sel, pos(x, y, w, h), ink, bg))
+            out.append('  %s %s { %s line-height: %s; text-align: center; color: %s; }   /* 바탕 %s */' % (P, sel, pos(x, y, w, h), cq(h), ink, bg))
         if small:      # 글자 자리가 낮으면 커진 메뉴 화면에서도 11px 그대로(22px 가 넘침)
             out.append('  @container (min-width: 1000px) { %s .fc-lbl { font-size: 11px; letter-spacing: .04em; } }' % P)
     out.append('}')
