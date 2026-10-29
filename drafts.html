@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>시안 모음 · 김지수 포트폴리오</title>
-<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저) 3차 시안 5개 · 2차 5개 · 1차 6개 · 스테이지 게임기 그림 시안 7개.">
+<meta name="description" content="포트폴리오 사이트 시안 모음 — 홈 흐름(이력 먼저) 4차 시안 5개(스크롤만) · 3차 5개 · 2차 5개 · 1차 6개 · 스테이지 게임기 그림 시안 7개.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -542,6 +542,53 @@
   .p-hint h5 { font-size: 28px; line-height: 1.4; text-shadow: 4px 4px 0 #102346; }
   .p-hint p { margin-top: 6px !important; font-size: 15px; line-height: 1.6; text-shadow: 2px 2px 0 #102346; }
 
+
+  /* ── 4차(Q ~ U) — 스크롤만: 누를 것 없음, 스크롤하는 만큼 화면이 움직이고 글이 써짐 ── */
+  .mockbox--scroll { overflow: clip; background: transparent; border: 0; border-radius: 0; }
+  @media (max-width: 640px) { .top { position: static; } .sstick { top: 8px !important; } }
+  .sstick { position: sticky; top: 76px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #5c94fc; }
+  .s-cue { position: absolute; z-index: 7; left: 50%; bottom: 150px; transform: translateX(-50%); padding: 10px 14px; background: #102346; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; box-shadow: 4px 4px 0 rgb(0 0 0 / .35); animation: bob 1s steps(2) infinite; transition: opacity .25s; pointer-events: none; white-space: nowrap; }
+  .s-cue.off { opacity: 0; }
+  .s-bar { position: absolute; z-index: 7; left: 0; right: 0; bottom: 0; height: 8px; background: rgb(16 35 70 / .5); }
+  .s-bar i { display: block; height: 100%; width: 0; background: #fca044; }
+  .s-type { white-space: pre-wrap; }
+  .s-type .c { opacity: 0; }
+
+  /* Q · 달리는 1-1 */
+  .q-world { position: absolute; left: 0; top: 60px; height: 690px; will-change: transform; }
+  .q-world .m-ground { width: 100%; }
+  .q-blk { width: 64px; height: 64px; background-image: var(--lv-qblock) !important; }
+  .q-blk.used { background-image: var(--d-used) !important; }
+  .q-chip { position: absolute; margin: 0; transform: translate(-50%, 10px); opacity: 0; transition: opacity .2s .15s, transform .2s .15s steps(3); }
+  .q-chip.on { opacity: 1; transform: translate(-50%, 0); }
+  .q-ghost { z-index: 4; left: 312px; bottom: 128px; }
+  .q-ghost.run { animation: bob .18s steps(2) infinite; }
+  .q-ghost.r2-jump { animation: fJump .44s cubic-bezier(.3, .6, .4, 1); }
+  .q-era .m-body { font-size: 15px; }
+  .q-flag { transform: translateY(104px); transition: transform 1s steps(12); }
+  .q-done .q-flag { transform: none; }
+  .q-go { position: absolute; z-index: 3; opacity: 0; transition: opacity .3s; }
+  .q-done .q-go { opacity: 1; }
+
+  /* T · 컷신 */
+  .t-strip { position: absolute; z-index: 3; left: 48px; right: 48px; bottom: 34px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .t-strip span { padding: 8px 10px; background: rgb(255 246 221 / .85); border: 3px solid #102346; font: 11px/1.3 'Galmuri11', monospace; color: #102346; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .t-strip span.on { background: #fca044; }
+  .t-strip span.done { background: #fff6dd; }
+
+  /* U · 카트리지 */
+  .u-shelf { position: absolute; z-index: 2; left: 0; right: 0; top: 520px; bottom: 0; background: #17345f; border-top: 16px solid transparent; border-image: none; }
+  .u-shelf::before { content: ''; position: absolute; left: 0; right: 0; top: -16px; height: 16px; background: var(--lv-bricks) 0 0 / 64px 32px repeat-x; image-rendering: pixelated; }
+  .u-cart { position: absolute; z-index: 3; top: 548px; width: 168px; height: 196px; padding: 22px 12px 0; border: 4px solid #3d290c; background: #d4a23e; box-shadow: 6px 6px 0 #000; will-change: transform, clip-path; }
+  .u-cart::before { content: ''; position: absolute; left: 30px; right: 30px; top: 6px; height: 8px; background: #3d290c; }
+  .u-cart .e-lab { height: 150px; }
+  .u-cart .done { position: absolute; right: -8px; top: -12px; padding: 5px 6px; background: #c8102e; color: #fff; font-size: 8px; border: 2px solid #102346; opacity: 0; }
+  .u-cart.clear .done { opacity: 1; }
+  .u-ghostslot { position: absolute; z-index: 2; top: 548px; width: 168px; height: 196px; border: 3px dashed rgb(255 246 221 / .4); }
+  .u-scr { position: absolute; z-index: 3; left: 290px; top: 100px; width: 620px; height: 325px; display: grid; grid-template-rows: 30px 1fr; overflow: hidden; }
+  .u-boot { display: grid; place-items: center; font-size: 16px; color: #102346; }
+  .mock-rr .k-ghost { cursor: default; }
+
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
   /* 게임기 그림 */
@@ -577,16 +624,19 @@
 
 <main class="wrap">
   <section class="lead">
-    <h2><span class="i18n-ko">이력이 먼저 — 읽어야 풀리게.</span><span class="i18n-en">The career first — read to play.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 둡니다. 3차 다섯 안(L ~ P)은 이력 문장이 곧 게임의 정답 · 단서 · 재료라서, 읽어야만 앞으로 나아갑니다. 각 화면은 이 페이지에서 직접 해 볼 수 있습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio. In the five round-3 drafts (L–P) the career sentences are the game's answers, clues and materials, so you only move forward by reading them. Every screen can be played right on this page.</span></p>
+    <h2><span class="i18n-ko">이력이 먼저 — 스크롤만 하면.</span><span class="i18n-en">The career first — just scroll.</span></h2>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 그래서 포트폴리오 앞에 짧은 일대기를 둡니다. 4차 다섯 안(Q ~ U)은 누를 것 없이 스크롤만 하면 화면이 알아서 움직이고, 그 움직임이 일어나는 자리에 이력이 내리는 속도만큼 써집니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. So a short life story comes before the portfolio. In the five round-4 drafts (Q–U) there is nothing to click: just scroll, and the screen plays by itself while the career writes out right where the motion is, at your scrolling speed.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
   <section class="part" id="story">
-    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 3차 — 읽어야 풀리는 게임</span><span class="i18n-en">Home flow, round 3 — games you solve by reading</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">2차(G ~ K)에 받은 말 — "게임처럼 만든 건 다 좋은데, 막상 글을 읽을 이유는 없잖아." 맞습니다. 블록을 치고 벽을 문지르는 동안 이력은 지나가는 배경이었습니다. 3차 다섯 안은 글이 곧 정답 · 단서 · 재료라서, 읽지 않으면 풀리지 않습니다. 안마다 읽는 이유가 다릅니다.</span><span class="i18n-en">Feedback on round 2 (G–K): "the game-like bits are great, but there's no real reason to read the text." True — while you hit blocks and rub walls, the career was just scenery. In round 3 the text is the answer, the clue or the material, so nothing is solved without reading it — and each draft gives a different reason to read.</span></p>
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 4차 — 스크롤만 하면 되는 이야기</span><span class="i18n-en">Home flow, round 4 — a story you only scroll</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">3차(L ~ P)에 받은 말 — "뭔가를 생각하고 누르는 건 안 돼. 바로 작동을 안 하면 포트폴리오 특성상 바로 꺼 버릴 거야. 스크롤만 해도 알아서 상호작용되면서 눈이 즐거웠으면." 그래서 4차 다섯 안은 누를 것이 하나도 없습니다. 화면이 그 자리에 붙은 채, 스크롤하는 만큼 안에서 움직이고 글이 써집니다.</span><span class="i18n-en">Feedback on round 3 (L–P): "no thinking and clicking — if something doesn't work right away, people will close a portfolio. It should just interact on its own as you scroll, and be a joy to watch." So the five round-4 drafts have nothing to click: the screen stays in place while things move and the text writes itself as far as you scroll.</span></p>
     <ul class="rules" id="rules"></ul>
-    <div id="drafts3"></div>
+    <div id="drafts4"></div>
+    <details class="older" id="older3"><summary><span class="i18n-ko">3차 시안 다섯 개 다시 보기</span><span class="i18n-en">Round 3 — five drafts</span><small>L ~ P</small></summary>
+      <div id="drafts3"></div>
+    </details>
     <details class="older" id="older2"><summary><span class="i18n-ko">2차 시안 다섯 개 다시 보기</span><span class="i18n-en">Round 2 — five drafts</span><small>G ~ K</small></summary>
       <div id="drafts2"></div>
     </details>
@@ -1723,6 +1773,263 @@
     { h: { ko: '막히지 않음', en: 'No dead ends' }, b: { ko: '틀리면 힌트, 두 번째엔 구절 표시. 바쁜 사람용 건너뛰기는 실제 홈에서 그대로.', en: 'Wrong picks get hints, then a marked phrase. The real home keeps a skip for the busy.' } }
   ];
 
+  /* ════ 4차(Q ~ U) — 스크롤만: 화면은 멈춘 채(sticky) 안에서 이야기가 흐르고, 스크롤하는 만큼 움직이고 글이 써짐 ════ */
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function typeTo(el, text, f) {            /* 글자를 스크롤만큼 — 남은 글자는 투명하게 두어 줄이 출렁이지 않게 */
+    var n = Math.round(text.length * clamp01(f));
+    if (el.__n === n && el.__t === text) return; el.__n = n; el.__t = text;
+    el.innerHTML = esc(text.slice(0, n)) + '<span style="opacity:0">' + esc(text.slice(n)) + '</span>';
+  }
+  function cue() { return '<p class="s-cue" data-cue>▼ ' + T('스크롤하세요 — 누를 것 없음', 'Just scroll — nothing to click') + '</p><div class="s-bar"><i data-bar></i></div>'; }
+  function cueSet(root, p) { var c = root.querySelector('[data-cue]'), b = root.querySelector('[data-bar]'); if (c) c.classList.toggle('off', p > .01); if (b) b.style.width = (p * 100).toFixed(1) + '%'; }
+
+  /* ── Q · 달리는 1-1 — 스크롤하면 고스트가 달리고, 블록 밑을 지날 때 저절로 뛰어 침 ── */
+  var Q_X0 = 480, Q_ZW = 768, Q_WC = Q_X0 + Q_ZW * 5 + 1200, Q_GX = 312;
+  function draftQ() {
+    var zones = ERAS.map(function (c, i) {
+      var x = Q_X0 + i * Q_ZW, keys = Object.keys(GAIN[i]), n = keys.length, s = '';
+      keys.forEach(function (k, j) {
+        var left = x + 560 - (n - 1) * 64 + j * 128 - 32, id = i + '-' + k;
+        s += '<i class="s q-blk" data-q-b="' + id + '" data-x="' + (left + 32) + '" style="left:' + left + 'px;top:306px"></i><i class="s s-coin r2-coin" data-q-c="' + id + '" style="left:' + (left + 20) + 'px;top:262px"></i>' +
+          '<span class="m-chip q-chip" data-q-l="' + id + '" style="left:' + (left + 32) + 'px;top:266px">+' + esc(t(ax(k).n)) + ' ' + pips(GAIN[i][k]) + '</span>';
+      });
+      return eraWin(c, '1-' + (i + 1), 'q-era', 'left:' + (x + 40) + 'px;top:112px;width:380px') + s + (i < 4 ? S('pipe', x + 736, 'bottom:128px') : '');
+    }).join('');
+    var E = Q_WC - 1200;
+    var end = '<div class="m-win" style="left:' + (E + 40) + 'px;top:112px;width:440px"><div class="m-win__bar"><span class="tag">GOAL</span>' + T(YRS + '년 코스 끝', 'End of the ' + YRS + '-year course') + '</div><div class="m-win__in" style="display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center">' +
+        '<p class="m-body" style="margin:0!important">' + T('달려 온 길에서 연 블록 열둘이 여섯 칸을 고르게 채웠습니다. 깃대 뒤 성 안에 포트폴리오가 있습니다.', 'The twelve blocks along the way filled all six evenly. The portfolio is in the castle past the flag.') + '</p><div class="hexwrap" data-q-endhex></div></div></div>' +
+      '<span class="m-btn q-go" style="left:' + (E + 40) + 'px;top:420px"><span class="key">A</span>' + T('성 안으로 — 포트폴리오', 'Into the castle — portfolio') + '</span>' +
+      S('hard', E + 730, 498) + S('pole', E + 700, 290) + S('flagt', E + 700, 330, 'q-flag') + S('castle', E + 860, 306);
+    return '<div class="mock mock-r2 mock-q">' + nav() +
+      '<div class="a-hud"><div><span class="px">' + esc(NAME) + ' · ' + esc(t(CLS)) + '</span><b class="ps" data-q="year">YEAR ----</b></div>' +
+        '<div><span class="px">' + T('능력', 'ABILITY') + '</span><b class="ps"><i class="s in s-coin-s"></i>×<span data-q="coin">00</span></b></div>' +
+        '<div><span class="px">WORLD</span><b class="ps" data-q="world">1-1</b></div>' +
+        '<div><span class="px" data-q="date">' + T('출발', 'Start') + '</span><p class="now" data-q="role">' + T('스크롤하면 달립니다', 'Scroll to run') + '</p></div>' +
+        '<div class="a-hud__hex hexwrap" data-q="hex"></div></div>' +
+      '<div class="q-world" data-q-world style="width:' + Q_WC + 'px">' + zones + end + '<i class="m-ground"></i></div>' +
+      S('ghost', Q_GX, 'bottom:128px', 'q-ghost') + cue() + '</div>';
+  }
+  function wireQ(root) {
+    var mock = root.querySelector('.mock-q'), world = root.querySelector('[data-q-world]'), gh = root.querySelector('.q-ghost'), f = {};
+    ['year', 'coin', 'world', 'date', 'role', 'hex'].forEach(function (k) { f[k] = root.querySelector('[data-q="' + k + '"]'); });
+    var blocks = [].slice.call(root.querySelectorAll('[data-q-b]')).map(function (el) { var id = el.getAttribute('data-q-b').split('-'); return { el: el, x: +el.getAttribute('data-x'), i: +id[0], k: id[1], id: el.getAttribute('data-q-b'), hit: false }; });
+    var queue = [], busy = false, rt, shown = '';
+    function vals() { var v = { dev: 0, ship: 0, comm: 0, crit: 0, docs: 0, team: 0 }; blocks.forEach(function (b) { if (b.hit) v[b.k] += GAIN[b.i][b.k]; }); return AX.map(function (a) { return Math.min(MAX, v[a.k]); }); }
+    function pump() {
+      if (busy || !queue.length) return; busy = true; var b = queue.shift();
+      flash(gh, 'r2-jump', 450);
+      setTimeout(function () { b.el.classList.add('used'); flash(b.el, 'r2-bump', 300); flash(root.querySelector('[data-q-c="' + b.id + '"]'), 'pop', 700); root.querySelector('[data-q-l="' + b.id + '"]').classList.add('on'); hud(true); }, RM ? 0 : 180);
+      setTimeout(function () { busy = false; pump(); }, RM ? 0 : (queue.length > 2 ? 160 : 300));
+    }
+    function hud(force) {
+      var gx = camX + Q_GX + 24, i = Math.max(-1, Math.min(4, Math.floor((gx - Q_X0) / Q_ZW))), end = gx >= Q_WC - 1200, n = blocks.filter(function (b) { return b.el.classList.contains('used'); }).length;
+      var key = i + '|' + n + '|' + end; if (key === shown && !force) return; shown = key;
+      var c = i >= 0 ? ERAS[i] : null;
+      f.year.textContent = 'YEAR ' + (c ? year(c) : '----'); f.coin.textContent = (n < 10 ? '0' : '') + n; f.world.textContent = end ? 'GOAL' : '1-' + Math.max(1, i + 1);
+      f.date.textContent = end ? T('코스 끝', 'Goal') : c ? t(c.date) : T('출발', 'Start'); f.role.textContent = end ? T('성 안으로 → 포트폴리오', 'Into the castle → portfolio') : c ? t(c.role) : T('스크롤하면 달립니다', 'Scroll to run');
+      f.hex.innerHTML = hex({ values: vals(), labels: false, grid: 'rgba(252,252,252,.6)' });
+    }
+    var camX = 0;
+    root.querySelector('[data-q-endhex]').innerHTML = hex({ values: sumOf(upTo(4)), labels: false });
+    hud(true);
+    return { prog: function (p) {
+      camX = Math.round(p * (Q_WC - 1200)); world.style.transform = 'translateX(' + (-camX) + 'px)';
+      var gx = camX + Q_GX + 24;
+      blocks.forEach(function (b) { if (!b.hit && gx >= b.x - 4) { b.hit = true; queue.push(b); } });
+      pump(); hud();
+      gh.classList.add('run'); clearTimeout(rt); rt = setTimeout(function () { gh.classList.remove('run'); }, 140);
+      mock.classList.toggle('q-done', p > .985); cueSet(root, p);
+    } };
+  }
+
+  /* ── R · 깃대 — 스크롤하면 깃대를 타고 내려가고, 연도를 지날 때마다 판이 펼쳐짐 ── */
+  function draftR() {
+    var rows = ERAS.map(function (c, i) {
+      var y = kRow(i);
+      return '<div class="k-plq" data-k="' + i + '" style="top:' + y + 'px"><div class="yr"><b class="ps">' + esc(year(c)) + '</b><span class="px">' + esc(t(SHORT[i])) + '</span></div>' +
+        '<div class="tx"><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><div class="c">' + chips(i) + '</div></div></div>' +
+        '<i class="k-rod" style="top:' + (y + 40) + 'px"></i>' +
+        '<div class="k-num" data-k-n="' + i + '" style="top:' + y + 'px"><b class="ps">' + esc(NUMS[i].v) + '</b><span class="px">' + esc(t(NUMS[i].u)) + '</span></div>';
+    }).join('');
+    return '<div class="mock mock-r2 mock-rr">' + nav() +
+      '<p class="k-head" style="left:96px">' + T('스크롤하면 깃대를 타고 내려갑니다 — 연도를 지날 때마다 그 시기가 펼쳐져요', 'Scroll and the ghost slides down — each year it passes unfolds') + '</p>' +
+      '<p class="k-head px" style="left:712px">SCORE — ' + T('이력의 숫자', 'the numbers') + '</p>' +
+      '<i class="s k-pole"></i>' + S('hard', 590, 558) + S('flagt', 560, K_Y0 + 14, 'k-flag') + rows +
+      S('ghost', 628, 'top:' + K_Y0 + 'px', 'k-ghost') +
+      '<span class="m-btn r2-go" style="left:760px;top:566px"><span class="key">A</span>' + T('성으로 — 포트폴리오', 'To the castle — portfolio') + '</span>' +
+      '<i class="m-ground"></i>' + cue() + '</div>';
+  }
+  function wireR(root) {
+    var mock = root.querySelector('.mock-rr'), gh = root.querySelector('.k-ghost'), flag = root.querySelector('.k-flag');
+    var plq = [].slice.call(root.querySelectorAll('.k-plq')), nums = [].slice.call(root.querySelectorAll('.k-num'));
+    return { prog: function (p) {
+      var q = clamp01(p / .94), y = q4(K_Y0 + q * (K_Y1 - K_Y0)); gh.style.top = y + 'px'; flag.style.top = (y + 14) + 'px';
+      plq.forEach(function (el, i) {
+        var on = y + 28 >= kRow(i) + 42, was = el.classList.contains('on');
+        el.classList.toggle('on', on); nums[i].classList.toggle('on', on);
+        if (on && !was && !RM && nums[i].animate) nums[i].animate([{ transform: 'translate(-84px,' + (y - kRow(i)) + 'px)', opacity: 0 }, { transform: 'translate(-84px,' + (y - kRow(i) - 40) + 'px)', opacity: 1, offset: .35 }, { transform: 'translate(0,0)', opacity: 1 }], { duration: 700, easing: 'steps(14, end)' });
+      });
+      mock.classList.toggle('is-done', q >= 1); cueSet(root, p);
+    } };
+  }
+
+  /* ── S · 지어지는 월드 — 스크롤이 곧 시간, 해마다 그 해에 시작한 시기가 지어짐 ── */
+  function draftS() {
+    var slots = ERAS.map(function (c, i) {
+      var x = hSlot(i);
+      return '<div class="h-slot" data-h="' + i + '"><div class="h-plq" style="left:' + x + 'px"><p class="y">' + esc(t(c.date)) + '</p><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><div class="c">' + chips(i) + '</div></div>' + hProps(i, x) + '</div>';
+    }).join('');
+    var track = H_STEPS.map(function (y, k) { return '<i data-h-c="' + k + '"></i>'; }).join('');
+    return '<div class="mock mock-r2 mock-h mock-ss">' + nav() +
+      '<div class="h-hud"><div><span class="px">YEAR</span><b class="ps" data-h-y>2016</b></div><div class="h-track">' + track + '</div>' +
+        '<div class="h-ctl"><span class="m-btn r2-go"><span class="key">A</span>' + T('지금 — 포트폴리오', 'Now — portfolio') + '</span></div></div>' +
+      slots + '<i class="m-ground"></i>' + cue() + '</div>';
+  }
+  function wireS(root) {
+    var mock = root.querySelector('.mock-ss'), yEl = root.querySelector('[data-h-y]'), coins = [].slice.call(root.querySelectorAll('[data-h-c]')), slots = [].slice.call(root.querySelectorAll('.h-slot')), last = -1;
+    return { prog: function (p) {
+      var step = Math.min(H_STEPS.length - 1, Math.floor(clamp01(p / .96) * H_STEPS.length));
+      if (step !== last) {
+        last = step; yEl.textContent = H_STEPS[step];
+        coins.forEach(function (c, j) { c.classList.toggle('on', j <= step); });
+        slots.forEach(function (s, i) { s.classList.toggle('on', step >= H_START[i]); });
+        mock.classList.toggle('is-done', step === H_STEPS.length - 1);
+      }
+      cueSet(root, p);
+    } };
+  }
+
+  /* ── T · 오프닝 — 스크롤하면 게임기 화면의 대화가 한 자씩 써지고, 장이 넘어감 ── */
+  function draftT() {
+    var art = RISO ? '<div class="c-art">' + artSVG(RISO) + '</div>' : '';
+    var strip = ERAS.map(function (c, i) { return '<span data-t-s="' + i + '">' + (i + 1) + ' · ' + esc(year(c)) + ' ' + esc(t(SHORT[i])) + '</span>'; }).join('') + '<span data-t-s="5">' + T('끝 · 다음 스테이지', 'End · next stage') + '</span>';
+    return '<div class="mock mock-r2 mock-t">' + nav() +
+      '<div class="c-stage" style="position:absolute;inset:0;height:auto">' + art +
+        '<div class="c-scr" style="cursor:default"><div class="c-head px"><span class="ps">1P</span>' + T('지난 이야기', 'The story so far') + '<span class="sp"></span><span class="ps" data-t-no>1 / 5</span></div>' +
+          '<div class="c-dio" data-t-dio></div><p class="c-say" data-t-say></p>' +
+          '<div class="m-win c-up" data-t-up><div class="m-win__bar"><span class="tag" style="background:#102346">LEVEL UP!</span>' + T('능력치가 올랐다', 'Abilities up') + '</div><div class="m-win__in"><div><div data-t-chips></div><p data-t-num></p></div><div class="hexwrap" data-t-hex></div></div></div></div>' +
+        '<i class="m-ground"></i><div class="t-strip">' + strip + '</div></div>' + cue() + '</div>';
+  }
+  function wireT(root) {
+    var scr = root.querySelector('.c-scr'), say = root.querySelector('[data-t-say]'), dio = root.querySelector('[data-t-dio]'), up = root.querySelector('[data-t-up]');
+    var no = root.querySelector('[data-t-no]'), chipEl = root.querySelector('[data-t-chips]'), numEl = root.querySelector('[data-t-num]'), hexEl = root.querySelector('[data-t-hex]');
+    var tabs = [].slice.call(root.querySelectorAll('[data-t-s]')), cur = -1;
+    return { prog: function (p) {
+      var x = clamp01(p) * 6, seg = Math.min(5, Math.floor(x)), l = seg === 5 ? 1 : x - seg;
+      if (seg !== cur) {
+        cur = seg; var old = scr.querySelector('.c-end'); if (old) old.remove();
+        tabs.forEach(function (tb, j) { tb.classList.toggle('on', j === seg); tb.classList.toggle('done', j < seg); });
+        if (seg === 5) {
+          no.textContent = 'END'; say.textContent = ''; dio.innerHTML = ''; up.classList.remove('on');
+          var end = document.createElement('div'); end.className = 'c-end';
+          end.innerHTML = '<div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false, ink: '#fff6dd', grid: 'rgba(255,246,221,.35)', fill: '#fc9838' }) + '</div><div><h5 class="px14">' + T('육각형 완성', 'Hexagon complete') + '</h5><p>' + T('혼자 만들고, 돕고, 쓰고, 이끌며 고르게 채운 여섯 칸. 이야기는 포트폴리오로 이어집니다.', 'Six abilities filled evenly — building, helping, writing, leading. The story continues in the portfolio.') + '</p></div>';
+          scr.appendChild(end);
+        } else {
+          no.textContent = (seg + 1) + ' / 5 · ' + year(ERAS[seg]); dio.innerHTML = dioHTML(seg); dio.classList.remove('is-hit');
+          chipEl.innerHTML = chips(seg); numEl.innerHTML = '<b class="ps" style="font-size:8px;color:#c8102e">' + esc(NUMS[seg].v) + '</b> ' + esc(t(NUMS[seg].u));
+          hexEl.innerHTML = hex({ values: sumOf(upTo(seg)), labels: false });
+        }
+      }
+      if (seg < 5) {
+        typeTo(say, t(CH[seg]), l / .62);
+        say.classList.toggle('is-typing', l < .62);
+        var lv = l > .68; up.classList.toggle('on', lv); dio.classList.toggle('is-hit', lv);
+      }
+      cueSet(root, p);
+    } };
+  }
+  function dioHTML(i) { return dio(i); }
+
+  /* ── U · 카트리지 — 스크롤하면 본편 카트리지가 한 장씩 꽂히고, 화면에 그 시기가 써짐 ── */
+  var U_X = function (i) { return 132 + i * 192; };
+  function draftU() {
+    var crop = RISO ? '<div class="e-crop" style="top:60px">' + artSVG(RISO, [30, 6, 140, 81]) + '</div>' : '';
+    var carts = ERAS.map(function (c, i) {
+      return '<i class="u-ghostslot" style="left:' + U_X(i) + 'px"></i><div class="u-cart" data-u="' + i + '" style="left:' + U_X(i) + 'px"><span class="e-lab"><span class="ps">JISU KIM ' + (i + 1) + '</span><span class="yr ps">' + esc(year(c)) + '</span><b>' + esc(t(c.role)) + '</b></span><span class="done ps">CLEAR</span></div>';
+    }).join('');
+    return '<div class="mock mock-r2 mock-u">' + nav() + crop +
+      '<div class="u-scr" style="top:100px"><div class="e-head px"><span class="ps" data-u-h>SYSTEM</span><span data-u-d>' + T('게임기 정보', 'Console info') + '</span><span class="sp"></span><span class="ps" data-u-n>0 / 5</span></div><div class="e-body" data-u-body></div></div>' +
+      '<div class="u-shelf"></div>' + carts + cue() + '</div>';
+  }
+  function wireU(root) {
+    var carts = [].slice.call(root.querySelectorAll('.u-cart')), body = root.querySelector('[data-u-body]'), hd = root.querySelector('[data-u-h]'), dd = root.querySelector('[data-u-d]'), nn = root.querySelector('[data-u-n]');
+    var cur = -2, mode = '', SLOT = 465;
+    function place(el, i, f) {      /* f: 0 = 진열판, 1 = 게임기 안 */
+      var x0 = U_X(i), y0 = 548, x1 = 516, yU = 474, yIn = 264;
+      var x, y;
+      if (f <= .5) { var u = f / .5; x = x0 + (x1 - x0) * u; y = y0 + (yU - y0) * u - 60 * 4 * u * (1 - u); }
+      else { var w = (f - .5) / .5; x = x1; y = yU + (yIn - yU) * w; }
+      el.style.transform = 'translate(' + q4(x - x0) + 'px,' + q4(y - y0) + 'px)';
+      var hid = Math.max(0, SLOT - y); el.style.clipPath = hid > 0 ? 'inset(' + Math.min(196, hid) + 'px 0 0 0)' : '';
+      el.style.zIndex = f > 0 ? 4 : 3;
+    }
+    function sys(n) {
+      return '<div><p class="m-role">' + (n === 5 ? T('본편 완결 — 수록작이 열렸습니다 ▼', 'Series complete — the collection is open ▼') : T('스크롤하면 카트리지가 한 장씩 꽂힙니다', 'Scroll and the cartridges plug in one by one')) + '</p>' +
+        '<p class="note" style="margin-top:8px">' + T('금색 카트리지 한 장 = 지나온 시기 하나. 꽂힐 때마다 그 시기에 익힌 능력이 이 게임기에 설치됩니다.', 'One gold cartridge = one period. Each one installs what that period taught onto this console.') + '</p></div>' +
+        '<div class="hexwrap">' + hex({ values: n ? sumOf(upTo(n - 1)) : [0, 0, 0, 0, 0, 0], labels: false }) + '</div>';
+    }
+    return { prog: function (p) {
+      var x = clamp01(p) * 6, seg = Math.min(5, Math.floor(x)), l = seg === 5 ? 1 : x - seg;
+      carts.forEach(function (el, i) { el.classList.toggle('clear', i < seg); if (i === seg && seg < 5) place(el, i, clamp01(l / .36)); else place(el, i, 0); });
+      var m = seg === 5 ? 'end' : l < .36 ? 'ins' : l < .46 ? 'boot' : 'read';
+      if (seg !== cur || m !== mode) {
+        cur = seg; mode = m; nn.textContent = Math.min(5, seg + (m === 'read' ? 1 : 0)) + ' / 5';
+        if (m === 'end' || m === 'ins') { hd.textContent = 'SYSTEM'; dd.textContent = T('게임기 정보', 'Console info'); body.innerHTML = sys(m === 'end' ? 5 : seg); }
+        else if (m === 'boot') { hd.textContent = 'JISU KIM ' + (seg + 1); dd.textContent = t(ERAS[seg].date); body.innerHTML = '<p class="u-boot ps" style="grid-column:1/-1">LOADING ▮▮▮</p>'; }
+        else {
+          var c = ERAS[seg]; hd.textContent = 'JISU KIM ' + (seg + 1); dd.textContent = t(c.date);
+          body.innerHTML = '<div><p class="m-role">' + esc(t(c.role)) + '</p><p class="m-org">' + esc(t(c.org)) + '</p><p class="m-body s-type" data-u-t></p><h6>' + T('이번 작에서 설치된 능력', 'Installed by this one') + '</h6>' + chips(seg) + '</div><div class="hexwrap">' + hex({ values: sumOf(upTo(seg)), labels: false }) + '</div>';
+        }
+      }
+      if (m === 'read') { var te = root.querySelector('[data-u-t]'); if (te) typeTo(te, t(ERAS[seg].body), (l - .46) / .4); }
+      cueSet(root, p);
+    } };
+  }
+
+  var DRAFTS4 = [
+    { id: 'q', f: draftQ, w: wireQ, scroll: 3600, name: { ko: '달리는 1-1 — 스크롤하면 달림', en: 'Running 1-1 — scroll to run' }, sub: { ko: '스크롤 = 앞으로', en: 'Scroll = forward' },
+      pitch: { ko: '화면은 그대로 멈춰 있고, 스크롤하는 만큼 고스트가 오른쪽으로 달립니다. 물음표 블록 밑을 지나면 저절로 뛰어올라 쳐서 그 시기의 능력이 튀어나오고, 각 시기의 이력 창이 달리는 앞쪽에서 다가와 읽힙니다. 점수판이 연도 · 능력을 세고, 끝에서 깃발이 오르며 성(포트폴리오).',
+               en: 'The screen stays put while scrolling makes the ghost run right. Passing under a ? block, it jumps and hits it on its own, popping that period\'s ability, and each period\'s window comes toward you as you run. The scoreboard counts years and abilities; at the end the flag rises at the castle (portfolio).' },
+      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '블록 치기 · 점수판 · 깃발', 'Block hits, scoreboard, flag'], ['읽게 되는 곳', 'What you read', '다가오는 시기 창', 'Each period\'s window as it arrives']],
+      hint: { ko: '▶ 그냥 아래로 스크롤하세요. 화면은 멈춘 채 안에서 달립니다(위로 올리면 되감기).', en: '▶ Just scroll down — the screen holds still while it runs inside (scroll up to rewind).' },
+      pros: { ko: ['1차에서 \'느낌 좋다\'던 A 를 누를 것 없이 그대로', '블록 · 동전 · 점수판이 저절로 움직여 눈이 즐거움', '글이 달려오는 방향에서 나타나 자연스럽게 읽힘'], en: ['Round 1\'s well-liked A, with nothing to click', 'Blocks, coins and the scoreboard move by themselves', 'Text arrives from where you are running, so it gets read'] },
+      cons: { ko: ['빨리 내리면 글을 건너뜀 → 시기마다 스크롤 길이를 넉넉히', '휴대폰은 세로 코스로 따로'], en: ['Fast scrolling skips text → generous scroll length per period', 'Phones need a vertical version'] } },
+    { id: 'r', f: draftR, w: wireR, scroll: 2400, name: { ko: '깃대 — 스크롤하면 내려감', en: 'Flagpole — scroll to slide down' }, sub: { ko: '스크롤 = 아래로', en: 'Scroll = down' },
+      pitch: { ko: '스크롤 방향과 움직임이 같은 안입니다. 내리는 만큼 고스트가 깃발과 함께 깃대를 미끄러져 내려가고, 연도 표시를 지날 때마다 왼쪽에 그 시기의 판이 펼쳐지며 그 시기의 숫자가 깃대 점수처럼 튀어 올라 오른쪽 점수판에 쌓입니다.',
+               en: 'Scrolling and motion go the same way: as you scroll down, the ghost slides down the pole with the flag; each year mark it passes unfolds that period\'s plate on the left while its number pops like a flagpole score into the scoreboard on the right.' },
+      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '판 펼치기 · 숫자 점수', 'Plates unfold, numbers score'], ['읽게 되는 곳', 'What you read', '방금 펼쳐진 판 · 튀어 오른 숫자', 'The plate just unfolded, the number that popped']],
+      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
+      pros: { ko: ['스크롤 = 내려가기라 설명이 전혀 필요 없음', '왼쪽 연표 + 오른쪽 숫자로 끝 화면이 이력서 한 장', '세로라 휴대폰에도 그대로'], en: ['Scroll = slide down, so nothing needs explaining', 'Timeline left + numbers right — the end screen is a résumé', 'Vertical, so phones work as is'] },
+      cons: { ko: ['움직임이 한 줄기라 다른 안보다 화려함은 덜함'], en: ['One line of motion — less spectacle than the others'] } },
+    { id: 's', f: draftS, w: wireS, scroll: 2600, name: { ko: '지어지는 월드 — 스크롤이 곧 시간', en: 'A world being built — scroll is time' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
+      pitch: { ko: '스크롤하면 해가 넘어가고(2016 → 2026, 위 동전 줄이 하나씩 켜짐), 그 해에 시작한 시기가 월드에 저절로 지어집니다 — 관과 동전 다섯 = 혼자 낸 다섯 작품, 언덕의 고스트 무리 = 6만 커뮤니티, 구름 아래 둘 = 2인 블로그, 단상 = 12인 발표, 깃발 = 다음 팀. 소품이 생길 때 그 위 팻말이 함께 나타나 읽힙니다.',
+               en: 'Scrolling turns the years (2016 → 2026, the coin row lights up) and each period builds itself into the world in the year it began — a pipe and five coins = five solo releases, a crowd of ghosts on a hill = the 60K community, two under clouds = the two-person blog, a podium = the 12-person talks, a flag = the next team. Each sign appears with its props.' },
+      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '해 넘기기 · 월드 짓기', 'Years turn, world builds'], ['읽게 되는 곳', 'What you read', '방금 지어진 소품의 팻말', 'The sign of what was just built']],
+      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
+      pros: { ko: ['가장 눈이 즐거움 — 내리는 만큼 월드가 자람', '소품 = 이력의 은유라 장식이 아님', '끝 화면 = 왼쪽 → 오른쪽 연표 한 장'], en: ['The most fun to watch — the world grows as you scroll', 'Props are career metaphors, not decoration', 'End screen = one left-to-right timeline'] },
+      cons: { ko: ['2026 에 두 시기가 겹쳐 마지막이 몰림', '은유를 팻말이 꼭 받쳐야 함'], en: ['Two periods start in 2026, so the end bunches up', 'The metaphors need their signs'] } },
+    { id: 't', f: draftT, w: wireT, scroll: 3200, name: { ko: '오프닝 — 스크롤하면 써지는 대사', en: 'Opening — dialogue that writes as you scroll' }, sub: { ko: '스크롤 = 글자', en: 'Scroll = letters' },
+      pitch: { ko: '게임기 화면에 \'지난 이야기\'가 흘러가는데, 대화창의 글자가 스크롤하는 만큼 한 자씩 써집니다 — 읽는 속도 = 내리는 속도. 한 장이 다 써지면 무대의 블록이 터지며 \'능력치가 올랐다!\' 창이 뜨고, 더 내리면 다음 장. 아래 띠가 지금 몇 장째인지 보여 줍니다.',
+               en: '"The story so far" plays on the console screen, and the dialogue writes itself letter by letter as you scroll — reading speed = scrolling speed. When a chapter is written, the blocks on the little set pop and an "abilities up!" window appears; scroll on for the next chapter. The strip below shows which chapter you are on.' },
+      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '글자 쓰기 · 레벨 업 · 장 넘기기', 'Typing, level-ups, chapters'], ['읽게 되는 곳', 'What you read', '지금 써지는 한 줄', 'The line being written']],
+      hint: { ko: '▶ 그냥 아래로 스크롤하세요. 글자가 내리는 만큼 써집니다.', en: '▶ Just scroll down — the letters write as far as you scroll.' },
+      pros: { ko: ['글을 읽는 것 자체가 스크롤 피드백 — 가장 확실하게 읽힘', '게임 오프닝이라는 형식이 기획자다움', '문장으로 맥락까지 전달'], en: ['Reading is the scroll feedback — the surest way to be read', 'A game opening is itself a designer\'s format', 'Sentences carry the context too'] },
+      cons: { ko: ['글이 길면 스크롤도 길어짐 → 장마다 두 문장 안쪽', '빨리 내리면 한꺼번에 써짐(그래도 다 보임)'], en: ['Long text means long scrolling → two sentences per chapter', 'Scrolling fast writes it all at once (still all visible)'] } },
+    { id: 'u', f: draftU, w: wireU, scroll: 3200, name: { ko: '카트리지 — 스크롤하면 꽂힘', en: 'Cartridges — scroll to plug in' }, sub: { ko: '스크롤 = 꽂기', en: 'Scroll = plug in' },
+      pitch: { ko: '아래 진열판의 금색 본편 카트리지(JISU KIM 1 ~ 5)가 스크롤하는 만큼 한 장씩 집혀 올라가 게임기에 꽂히고, 화면이 켜지며(LOADING) 그 시기의 이력이 한 자씩 써지고 육각형이 자랍니다. 다음 장이 올라가면 앞 장은 CLEAR 딱지를 붙이고 제자리로. 사이트의 핵심 동작(꽂기)을 스크롤로.',
+               en: 'As you scroll, the gold main-series cartridges (JISU KIM 1–5) on the shelf rise one by one and plug into the console; the screen boots (LOADING), that period\'s career writes itself out and the hexagon grows. When the next one rises, the previous returns with a CLEAR sticker. The site\'s core move — plugging in — driven by scrolling.' },
+      map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '꽂기 · 부팅 · 글자 쓰기', 'Plug-in, boot, typing'], ['읽게 되는 곳', 'What you read', '방금 켜진 게임기 화면', 'The screen that just switched on']],
+      hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
+      pros: { ko: ['사이트 전체의 문법(카트리지 꽂기)과 하나로 이어짐', '꽂히는 연출이 시원하고, 글은 켜진 화면 한 곳에만 나와 시선이 모임', '끝 화면에 CLEAR 다섯 장'], en: ['One grammar with the rest of the site (plugging cartridges)', 'Satisfying plug-ins, and the text appears in one place — the screen', 'Five CLEAR cartridges at the end'] },
+      cons: { ko: ['끝 화면에서 이력 문장은 화면에 하나씩만 → 진열판 라벨로 보완', '게임기 그림이 화면을 많이 차지'], en: ['At the end the screen shows one period at a time → the labels help', 'The console takes up much of the screen'] } }
+  ];
+  var RULES4 = [
+    { h: { ko: '스크롤만', en: 'Scroll only' }, b: { ko: '3차 의견 — "생각하고 누르는 건 안 돼. 바로 작동 안 하면 꺼 버릴 것". 누를 것도, 배울 것도 없습니다.', en: 'Round-3 feedback: "no thinking and clicking — if it doesn\'t work right away, people close the site." Nothing to click, nothing to learn.' } },
+    { h: { ko: '첫 스크롤에 바로', en: 'Moves on the first scroll' }, b: { ko: '화면은 멈춘 채(그 자리에 붙어) 안에서만 움직여, 조금만 내려도 바로 반응합니다. 위로 올리면 되감기.', en: 'The screen holds still while things move inside, so even a small scroll responds. Scroll up to rewind.' } },
+    { h: { ko: '읽는 속도 = 내리는 속도', en: 'Read at scroll speed' }, b: { ko: '글은 움직임이 일어나는 바로 그 자리에, 내리는 만큼 나타납니다. 눈이 움직임을 따라가다 글을 읽게 됩니다.', en: 'Text appears exactly where the motion happens, as far as you scroll — the eye follows the motion into the words.' } },
+    { h: { ko: '끝 화면 = 이력 한 장', en: 'End screen = the career' }, b: { ko: '끝까지 내리면 한 화면에 10년이 남고, 바로 아래가 포트폴리오.', en: 'At the bottom the ten years remain on one screen, with the portfolio right below.' } }
+  ];
+
   var DRAFTS = [
     { id: 'f', f: draftF, w: wireF, badge: { ko: 'A + D 합친 안', en: 'A + D combined' }, name: { ko: '직접 쳐서 여는 1-1 코스', en: 'Course 1-1 you open yourself' }, sub: { ko: '가로 스크롤 · 소품 = 기능 · 장식 없음', en: 'Side-scrolling · every prop does something · no decoration' },
       pitch: { ko: 'A 의 코스에 D 의 \'쳐서 열기\'를 얹은 안입니다. 달리기만으로는 아무것도 열리지 않고, 물음표 블록을 밑에서 쳐야(SPACE · 블록 누르기) 그 시기에 얻은 능력이 열리며 위 창에 근거와 \'같은 능력을 얻은 다른 시기\'가, 오른쪽 육각형에 칸이 쌓입니다. 관을 누르면 다음 시기로 건너가고, 블록 ' + F_N + '개를 다 열면 깃발이 올라가고, 성 안이 포트폴리오. 언덕 · 덤불 · 구름 · 벽돌 같은 장식은 모두 뺐습니다.',
@@ -1777,28 +2084,49 @@
 
   function fit() {
     Array.prototype.forEach.call(document.querySelectorAll('.mockbox'), function (box) {
+      if (box.classList.contains('mockbox--scroll')) {
+        var m2 = box.querySelector('.mock'), z2 = Math.min(1, box.clientWidth / 1200, (window.innerHeight - (window.innerWidth <= 640 ? 24 : 96)) / 750);
+        m2.style.zoom = z2 < 1 ? z2.toFixed(4) : ''; box.style.height = Math.round(750 * z2 + (+box.getAttribute('data-len'))) + 'px'; return;
+      }
       var m = box.firstElementChild, z = Math.max(.5, Math.min(1, (box.clientWidth) / 1200));
       m.style.zoom = z < 1 ? z.toFixed(4) : '';
     });
+    scrollTick();
   }
+  /* 스크롤 시안: 상자가 화면을 지나가는 만큼 = 진행(0 ~ 1) */
+  var SCROLLERS = [], stTick = 0;
+  function scrollTick() {
+    SCROLLERS.forEach(function (sc) {
+      if (!sc.box.offsetParent) return;
+      var r = sc.box.getBoundingClientRect(), h = sc.stick.getBoundingClientRect().height;
+      var st = parseFloat(getComputedStyle(sc.stick).top) || 0, p = Math.max(0, Math.min(1, (st - r.top) / Math.max(1, r.height - h)));
+      if (sc.p === undefined || Math.abs(p - sc.p) > 1e-4) { sc.p = p; sc.prog(p); }
+    });
+  }
+  window.addEventListener('scroll', function () { if (!stTick) stTick = requestAnimationFrame(function () { stTick = 0; scrollTick(); }); }, { passive: true });
   function draftHTML(d) {
     return '<article class="draft" id="story-' + d.id + '"><div class="draft__head"><span class="draft__id">' + d.id.toUpperCase() + '</span><h4>' + esc(t(d.name)) + '</h4><small>' + esc(t(d.sub)) + '</small>' + (d.badge ? '<span class="draft__badge">' + esc(t(d.badge)) + '</span>' : '') + '</div>' +
         '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
         '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
         (d.flow ? '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' : '') +
-        '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div><p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
+        (d.scroll ? '<div class="mockbox mockbox--scroll" data-draft="' + d.id + '" data-len="' + d.scroll + '"><div class="sstick">' + d.f() + '</div></div>' : '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div>') + '<p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
         '<div class="notes"><div><h5>' + T('좋은 점', 'Strengths') + '</h5><ul>' + d.pros[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
   function renderDrafts() {
     function toc(d) { return '<a href="#story-' + d.id + '">' + d.id.toUpperCase() + ' · ' + esc(t(d.name).split(' — ')[0]) + '</a>'; }
-    document.getElementById('toc').innerHTML = DRAFTS3.map(toc).join('') + '<a href="#older2">' + T('2차 시안 G ~ K', 'Round 2: G–K') + '</a><a href="#older">' + T('1차 시안 A ~ F', 'Round 1: A–F') + '</a><a href="#consoles">' + T('게임기 그림 7안', '7 console drawings') + '</a>';
-    document.getElementById('rules').innerHTML = RULES3.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
+    document.getElementById('toc').innerHTML = DRAFTS4.map(toc).join('') + '<a href="#older3">' + T('3차 시안 L ~ P', 'Round 3: L–P') + '</a><a href="#older2">' + T('2차 시안 G ~ K', 'Round 2: G–K') + '</a><a href="#older">' + T('1차 시안 A ~ F', 'Round 1: A–F') + '</a><a href="#consoles">' + T('게임기 그림 7안', '7 console drawings') + '</a>';
+    document.getElementById('rules').innerHTML = RULES4.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
+    document.getElementById('drafts4').innerHTML = DRAFTS4.map(draftHTML).join('');
     document.getElementById('drafts3').innerHTML = DRAFTS3.map(draftHTML).join('');
     document.getElementById('drafts2').innerHTML = DRAFTS2.map(draftHTML).join('');
     document.getElementById('drafts').innerHTML = DRAFTS.map(draftHTML).join('');
+    SCROLLERS = [];
+    DRAFTS4.concat(DRAFTS3, DRAFTS2, DRAFTS).forEach(function (d) {
+      var box = document.querySelector('.mockbox[data-draft="' + d.id + '"]'), r = d.w(box);
+      if (d.scroll && r && r.prog) SCROLLERS.push({ box: box, stick: box.querySelector('.sstick'), prog: r.prog });
+    });
     fit();
-    DRAFTS3.concat(DRAFTS2, DRAFTS).forEach(function (d) { d.w(document.querySelector('.mockbox[data-draft="' + d.id + '"]')); });
   }
 
   /* ── 게임기 그림: 사이트 도트 데이터를 정수 배율로 ──────────────────────── */
@@ -1851,6 +2179,7 @@
   render();
   document.getElementById('older').addEventListener('toggle', fit);
   document.getElementById('older2').addEventListener('toggle', fit);
+  document.getElementById('older3').addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); renderConsoles(); }, 150); });
   document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   document.querySelector('[data-dark]').addEventListener('click', function () {
