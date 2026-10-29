@@ -98,3 +98,37 @@ Deliverables:
 - `out4/controls.json` — same format as `out3/controls.json` (measure dpad, rubber, btnUpper, btnLower, labelDpad, labelRubber, labelUpper, labelLower in px).
 - `out4/NOTES.md` — per image: the screen rect (x, y, w, h) and anything that changed.
 - Do not touch anything outside `out4/`.
+
+---
+
+## 5차 — 그림 1 마감 품질(장식 없이)
+
+사용자: "1이 낫긴 한데 좀 더 자세하게는 화려해야 한다가 아니라 좀 퀄리티업이 필요하다는 거임" → 그림 1만, 디자인 · 배치 · 팔레트는 그대로 두고
+부품 모양을 따르는 음영 · 테두리 빛 · 그늘 · 홈의 깊이 · 버튼 반사광으로 마감을 올림(Codex, `out5/1.svg`). 변환은 `svg-console.py`.
+
+### Brief for Codex — round 5 (English): quality-up of image 1 only (not fancier)
+
+The user picked **out4/1.png** (the red riso-derived console) and says: "it does not need to be fancier — it needs a **quality-up**".
+The pixel version is made by rasterizing your SVG (`out4/source/1.svg`) onto a grid of about **7 px per pixel-art cell** (the console is ~200 cells wide),
+then every part's 8 px stroke becomes a 1-cell outline. So the quality has to come from **better-crafted shapes and shading**, at a scale that survives 7 px cells.
+
+Keep exactly: the silhouette, proportions, part layout, the screen rectangle (334, 246, 867, 455) and its flat #fff6dd fill, control positions/sizes
+(± 4 px, same `controls.json` keys), the plain label spaces, background #5c94fc, no text / logos / characters, and the same SVG structure
+(per part: `<defs><clipPath>` + base fill path + `<g clip-path>` shade paths + an 8 px `#0f0a0c` stroke path; screen rr + rect last).
+
+Improve (craft, not ornament — do not add new decorative elements):
+1. **Form shading**: every rounded part (body, both grips, bezel, buttons, D-pad, key, slot) gets 3–4 clean tone bands that follow its 3D form,
+   light from the top-left. Bands are smooth shapes at least **14 px** wide (2 cells); round parts get concentric / crescent bands.
+2. **Bevels**: a ~7 px light edge along the top / left inside of each raised part and a ~7 px shadow edge along the bottom / right (body, grips, bezel, key).
+3. **Depth**: the D-pad and the two buttons sit in recessed wells (a dark socket ring 8–14 px between the part and the body); the D-pad top surface
+   has a subtle concave centre; buttons are domes with one small specular highlight (~14 px, lightest tone). The screen gets a 7 px inner lip shadow
+   on its top / left inside the bezel (outside the screen rectangle).
+4. Keep everything crisp: straight edges perfectly straight, curves smooth, no feature thinner than 7 px except the 8 px outlines, no texture, no gradients.
+5. Colours: only this palette (tones per hue, dark → light):
+   - black `#0f0a0c` (outline) · `#1e1519` · `#30242a` · `#4b3c42` · `#6e5d63`
+   - red `#3a0610` · `#8c0e22` · `#c8102e` · `#ea3a33` · `#ff8a6a`
+   - gold `#3d290c` · `#9a6a1e` · `#d4a23e` · `#f0cc6a` · `#fff2b8`
+   - white `#ffffff` (specular only), screen `#fff6dd`, background `#5c94fc`.
+
+Deliverables in `out5/`: `1.svg` (the source), `1.png` (1536 × 1024 render of it, palette-exact), `controls.json` (same format; only key "1"),
+`NOTES.md` (what you changed). Do not touch anything outside `out5/`.

@@ -117,7 +117,8 @@
   `themes.js` 시안 항목의 `base: 'fc-level'` 이 그 시안의 CSS · `data-skin` 을 그대로 쓰게 하고(파일 복제 없음), `art: '<이름>'` 이 `<html data-skin-art>` 로 찍혀
   `fc-body.js` 가 `fc-level-art.js`(도트 데이터 → SVG) + `fc-level-art-<이름>.js`(데이터) 로 그립니다. 그림은 **Codex 가 규격만 받고 그린 '도트가 아닌 그림'**
   (지시서 `docs/design-log/briefs/r18-console-art/BRIEF-2.md` — 색은 검정 · 빨강 · 금색, 4차부터 **도트 팔레트 색만 쓴 평평한 그림**: 면마다 세 단계 · 8px 외곽선 · 질감 없음)을
-  `tools/fc-pixel/pixelize-console.py --look <이름> --flat` 이 도트로 옮긴 것이고(면 색은 칸 가운데에서 그대로, 외곽선은 그림 선의 한가운데를 따서 한 칸 · 디더 없음 —
+  Codex 가 함께 남긴 **벡터 원본(SVG)** 을 `tools/fc-pixel/svg-console.py` 가 칸 격자에 직접 찍은 것이고(부품마다 면 · 빛 · 그늘 면 · 한 칸 외곽선, 둥근 버튼은 대칭 원,
+  손잡이 판은 몸 가장자리와 같은 간격 · 그림 1(리소)은 Codex 5차로 마감 품질을 올린 판 — PNG 만 있을 때는 `pixelize-console.py --look <이름> --flat`: 면 색은 칸 가운데에서 그대로, 외곽선은 그림 선의 한가운데를 따서 한 칸 · 디더 없음 —
   사용자: "더 단순하고 깔끔한 도트". 질감 있는 그림을 칸마다 고르면 "해상도만 낮춘 그림" · 조각난 그림이 되니 그림 쪽을 평평하게 받습니다. 팔레트는 파일의 `RAMPS`),
   화면 속 내용 · 투명 키 · 인쇄 글자 자리는 Codex 가 잰 부품 자리(controls.json)로 `tools/fc-pixel/console-art-css.py` 가 뽑은 `pixel-fc-level-art.css` 가 그림마다 맞춥니다
   (사용자 지시: "기본 그림은 Codex 에게, 너는 그림에 직접 개입하지 말고 규격만"). 그림을 바꾸려면 Codex 에게 다시 그리게 한 뒤 두 도구를 다시 돌리세요.
