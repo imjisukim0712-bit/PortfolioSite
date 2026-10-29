@@ -589,6 +589,85 @@
   .u-boot { display: grid; place-items: center; font-size: 16px; color: #102346; }
   .mock-rr .k-ghost { cursor: default; }
 
+
+  /* ── 4차 다듬기(R · S) — 상호작용한 자리에서 큰 이력 카드가 튀어나와 머물다가 제 칸으로 접힘 ── */
+  .bc { position: absolute; z-index: 6; left: 0; top: 0; width: 520px; height: 264px; transform-origin: 0 0; background: #fff6dd; border: 4px solid #102346; box-shadow: 8px 8px 0 rgb(0 0 0 / .45); visibility: hidden; color: #102346; will-change: transform, opacity; }
+  .bc__bar { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 16px; background: #c8102e; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; }
+  .bc__bar .ps { font-size: 8px; }
+  .bc__bar .ps.yr { font-size: 16px; }
+  .bc__in { padding: 14px 20px 14px; }
+  .bc__r { font-size: 26px; font-weight: 800; line-height: 1.25; letter-spacing: -.01em; }
+  .bc__o { margin-top: 4px !important; font-size: 15px; color: #3d4050; }
+  .bc__b { margin-top: 10px !important; min-height: 54px; font-size: 17px; line-height: 1.6; }
+  .bc__f { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+  .bc__n { font-size: 13px; color: #3d4050; white-space: nowrap; }
+  .bc__n b { margin-right: 8px; font-size: 24px; font-weight: 400; color: #c8102e; }
+  .bc__c { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+  .bc__tail { position: absolute; left: 50%; bottom: -20px; margin-left: -12px; border: 12px solid transparent; border-top: 16px solid #102346; border-bottom: 0; }
+  .bst { position: absolute; z-index: 7; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+  .bst i { position: absolute; left: 0; top: 0; width: 12px; height: 12px; background: #fca044; border: 2px solid #102346; }
+  .bst b { position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border: 4px solid #fff6dd; border-radius: 50%; }
+  .dim { position: absolute; z-index: 5; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+  /* R2 · 깃대 */
+  .r2-row { position: absolute; z-index: 2; right: 680px; height: 80px; width: 424px; display: grid; grid-template-columns: minmax(0, 1fr) 124px; background: rgb(255 246 221 / .22); border: 3px dashed rgb(255 246 221 / .75); }
+  .r2-row .tx { padding: 8px 14px; visibility: hidden; }
+  .r2-row .yr { display: grid; place-content: center; gap: 6px; text-align: center; color: #fff6dd; }
+  .r2-row .yr b { font-size: 16px; font-weight: 400; }
+  .r2-row .yr span { font-size: 11px; }
+  .r2-row.on { background: #fff6dd; border: 4px solid #102346; box-shadow: 6px 6px 0 rgb(16 35 70 / .5); }
+  .r2-row.on .tx { visibility: visible; }
+  .r2-row.on .yr { background: #102346; }
+  .r2-row.on .yr b { color: #fca044; }
+  .r2-row .r { font-size: 16px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .r2-row .o { margin-top: 2px !important; font-size: 12.5px; color: #3d4050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .r2-row .n { margin-top: 6px !important; font: 11px/1 'Galmuri11', monospace; color: #c84c0c; }
+  .r2-row .n b { margin-right: 6px; font: 8px/1 'Press Start 2P', monospace; color: #c8102e; }
+  .r2-mark { position: absolute; z-index: 3; left: 604px; width: 36px; height: 16px; background: #fca044; border: 4px solid #171c28; }
+  .r2-mark.hit { background: #c84c0c; }
+  .r2-fin { position: absolute; z-index: 4; left: 690px; top: 150px; width: 460px; opacity: 0; transition: opacity .3s; }
+  .r2-fin.on { opacity: 1; }
+  .r2-fin .m-win__in { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 16px; align-items: center; }
+
+  /* S2 · 지어지는 월드 — 팔레트는 --sp-* (JS 가 팔레트마다 소품 그림을 새로 찍어 넣음) */
+  .mock-s2 { background: var(--sp-sky, #5c94fc); transition: background .5s steps(5); }
+  .mock-s2 .m-ground { background-image: var(--sp-ground, var(--lv-ground)); }
+  .mock-s2 .s-pipe { background-image: var(--sp-pipe, var(--lv-pipe)) !important; }
+  .mock-s2 .s-hill { background-image: var(--sp-hill, var(--lv-hill)) !important; }
+  .mock-s2 .s-bush { background-image: var(--sp-bush, var(--lv-bush)) !important; }
+  .mock-s2 .s-cloud { background-image: var(--sp-cloud, var(--lv-cloud)) !important; }
+  .mock-s2 .s-coin { background-image: var(--sp-coin, var(--lv-coin)) !important; }
+  .mock-s2 .s-hard { background-image: var(--sp-hard, var(--d-hard)) !important; }
+  .mock-s2 .s-ghost { background-image: var(--sp-ghost, var(--d-ghost)) !important; }
+  .mock-s2 .s-pole { background-image: var(--sp-pole, var(--d-pole)) !important; }
+  .mock-s2 .s-flagt { background-image: var(--sp-flagt, var(--d-flagt)) !important; }
+  .mock-s2 .h-track i { background-image: var(--sp-coin, var(--lv-coin)); }
+  .s2-p { opacity: 0; transform: translateY(var(--from, 40px)); transition: opacity .2s, transform .4s steps(6); }
+  .s2-p.on { opacity: 1; transform: none; transition-delay: var(--d, 0s); }
+  .s2-plq { position: absolute; z-index: 2; top: 176px; width: 216px; height: 112px; padding: 10px 12px; border: 3px dashed rgb(255 246 221 / .7); color: #fff6dd; text-shadow: 2px 2px 0 rgb(0 0 0 / .5); }
+  .s2-plq .y { font: 11px/1 'Galmuri11', monospace; }
+  .s2-plq .q { margin-top: 10px !important; font: 16px/1 'Press Start 2P', monospace; }
+  .s2-plq .full { display: none; }
+  .s2-plq.on { background: #fff6dd; border: 4px solid #102346; box-shadow: 6px 6px 0 rgb(0 0 0 / .35); color: #102346; text-shadow: none; }
+  .s2-plq.on .q { display: none; }
+  .s2-plq.on .full { display: block; }
+  .s2-plq.on .y { color: #c8102e; }
+  .s2-plq .r { margin-top: 6px !important; font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .s2-plq .o { margin-top: 2px !important; font-size: 12px; line-height: 1.35; color: #3d4050; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .s2-ghost { z-index: 4; top: 566px; }
+  .s2-ghost.run { animation: bob .18s steps(2) infinite; }
+  .s2-flag { transform: translateY(100px); transition: transform 1s steps(12); }
+  .s2-done .s2-flag { transform: none; }
+  .s2-world { position: absolute; z-index: 3; right: 48px; top: 92px; padding: 6px 8px; background: #102346; color: #fff6dd; font: 11px/1 'Galmuri11', monospace; }
+  .mock-s2 .s2-flag { opacity: 0; }
+  .mock-s2 .s2-flag.on { opacity: 1; }
+  .palbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .palbar button { display: inline-flex; align-items: center; gap: 8px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: inherit; font: 13px/1 inherit; font-family: inherit; cursor: pointer; }
+  .palbar button i { display: inline-flex; gap: 2px; }
+  .palbar button i u { display: block; width: 10px; height: 10px; border-radius: 2px; }
+  .palbar button.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .palbar small { align-self: center; color: var(--muted); font-size: 12.5px; margin-right: 4px; }
+
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
   /* 게임기 그림 */
@@ -1986,6 +2065,200 @@
     } };
   }
 
+  /* ════ 4차 다듬기 — R · S: 고스트가 무언가에 닿는 그 순간, 그 자리에서 큰 이력 카드가 튀어나옴 ════ */
+  var BC_W = 520, BC_H = 264;
+  function bigCard(c, i, cls) {
+    return '<div class="bc' + (cls ? ' ' + cls : '') + '" data-bc="' + i + '"><div class="bc__bar"><span class="ps">' + (i + 1) + ' / 5</span>' + esc(t(c.date)) + '<span class="sp"></span><span class="ps yr">' + esc(year(c)) + '</span></div>' +
+      '<div class="bc__in"><p class="bc__r">' + esc(t(c.role)) + '</p><p class="bc__o">' + esc(t(c.org)) + '</p><p class="bc__b" data-bc-b></p>' +
+      '<div class="bc__f"><p class="bc__n"><b class="ps">' + esc(NUMS[i].v) + '</b>' + esc(t(NUMS[i].u)) + '</p><div class="bc__c">' + chips(i) + '</div></div></div><i class="bc__tail" data-bc-tail></i></div>';
+  }
+  function burstHTML(i) { var s = '<div class="bst" data-bst="' + i + '"><b></b>'; for (var j = 0; j < 8; j++) s += '<i></i>'; return s + '</div>'; }
+  function ease(u) { return 1 - Math.pow(1 - clamp01(u), 3); }
+  /* k: 0 → 1 (카드의 일생). P = 닿은 자리, Cc = 카드 가운데 자리, T = 접혀 들어갈 칸 {x, y, w, h} */
+  function cardAt(card, bst, dim, k, P, Cc, T, body) {
+    var on = k > 0 && k < 1;
+    card.style.visibility = on ? 'visible' : 'hidden';
+    if (bst) {
+      var kb = k / .2, show = k > 0 && kb < 1; bst.style.visibility = show ? 'visible' : 'hidden';
+      if (show) {
+        bst.style.transform = 'translate(' + P.x + 'px,' + P.y + 'px)';
+        var r = 14 + 120 * ease(kb), op = 1 - kb;
+        [].forEach.call(bst.children, function (el, j) {
+          if (j === 0) { el.style.transform = 'scale(' + (0.3 + 1.6 * ease(kb)) + ')'; el.style.opacity = op; return; }
+          var a = (j - 1) * Math.PI / 4; el.style.transform = 'translate(' + q4(Math.cos(a) * r - 6) + 'px,' + q4(Math.sin(a) * r - 6) + 'px)'; el.style.opacity = op;
+        });
+      }
+    }
+    if (dim) dim.style.opacity = !on ? 0 : (k < .14 ? .38 * (k / .14) : k > .84 ? .38 * (1 - (k - .84) / .16) : .38);
+    if (!on) return;
+    var s, cx, cy, op2 = 1, sT = T.w / BC_W;
+    if (k < .14) { var u = ease(k / .14); s = .12 + .88 * u; cx = P.x + (Cc.x - P.x) * u; cy = P.y + (Cc.y - P.y) * u; }
+    else if (k <= .84) { s = 1; cx = Cc.x; cy = Cc.y; }
+    else { var w = ease((k - .84) / .16); s = 1 + (sT - 1) * w; cx = Cc.x + (T.x + T.w / 2 - Cc.x) * w; cy = Cc.y + (T.y + T.h / 2 - Cc.y) * w; op2 = w > .75 ? 1 - (w - .75) / .25 : 1; }
+    card.style.transform = 'translate(' + Math.round(cx - BC_W * s / 2) + 'px,' + Math.round(cy - BC_H * s / 2) + 'px) scale(' + s.toFixed(3) + ')';
+    card.style.opacity = op2;
+    if (body) typeTo(body.el, body.text, (k - .14) / .36);
+  }
+
+  /* ── R · 깃대(다듬기) — 표시에 닿으면 큰 카드가 튀어나와 머물고, 왼쪽 칸으로 접혀 쌓임 ── */
+  var R5_Y0 = 120, R5_TOP = 140, R5_STEP = 88;
+  function r5Row(i) { return R5_TOP + i * R5_STEP; }
+  function r5Mark(i) { return r5Row(i) + 32; }
+  function draftR5() {
+    var rows = ERAS.map(function (c, i) {
+      var y = r5Row(i);
+      return '<div class="r2-row" data-r-row="' + i + '" style="top:' + y + 'px"><div class="tx"><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p><p class="n"><b>' + esc(NUMS[i].v) + '</b>' + esc(t(NUMS[i].u)) + '</p></div>' +
+        '<div class="yr"><b class="ps">' + esc(year(c)) + '</b><span class="px">' + esc(t(SHORT[i])) + '</span></div></div>' +
+        '<i class="k-rod" style="top:' + (y + 38) + 'px"></i><i class="r2-mark" data-r-mark="' + i + '" style="top:' + (r5Mark(i) - 2) + 'px"></i>';
+    }).join('');
+    var cards = ERAS.map(function (c, i) { return bigCard(c, i) + burstHTML(i); }).join('');
+    return '<div class="mock mock-r2 mock-r5">' + nav() +
+      '<p class="k-head" style="left:96px">' + T('스크롤하면 깃대를 타고 내려갑니다 — 표시에 닿을 때마다 그 시기가 튀어나와요', 'Scroll to slide down — each mark you touch pops out that period') + '</p>' +
+      '<i class="s k-pole" style="height:464px"></i>' + S('hard', 590, 558) + S('flagt', 560, R5_Y0 + 14, 'k-flag') + rows +
+      S('ghost', 628, 'top:' + R5_Y0 + 'px', 'k-ghost r5-ghost') +
+      '<div class="m-win r2-fin" data-r-fin><div class="m-win__bar"><span class="tag">GOAL</span>' + T(YRS + '년을 다 내려왔습니다', 'All ' + YRS + ' years, top to bottom') + '</div><div class="m-win__in"><p class="m-body" style="margin:0!important">' + T('왼쪽에 쌓인 다섯 칸이 지난 이력입니다. 성 안에 포트폴리오가 있습니다.', 'The five plates on the left are the career. The portfolio is in the castle.') + '<br><span class="m-btn" style="margin-top:14px"><span class="key">A</span>' + T('성으로 — 포트폴리오', 'To the castle — portfolio') + '</span></p><div class="hexwrap">' + hex({ values: sumOf(upTo(4)), labels: false }) + '</div></div></div>' +
+      '<i class="m-ground"></i><div class="dim" data-dim></div>' + cards + cue() + '</div>';
+  }
+  function wireR5(root) {
+    var gh = root.querySelector('.r5-ghost'), flag = root.querySelector('.k-flag'), dim = root.querySelector('[data-dim]'), fin = root.querySelector('[data-r-fin]');
+    var rows = [].slice.call(root.querySelectorAll('[data-r-row]')), marks = [].slice.call(root.querySelectorAll('[data-r-mark]'));
+    var cards = [].slice.call(root.querySelectorAll('.bc')), bsts = [].slice.call(root.querySelectorAll('.bst'));
+    var Y_END = 502, hitSeg = -1;
+    return { prog: function (p) {
+      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg, y, prevY;
+      for (var i = 0; i < 5; i++) {
+        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .22) / .78);
+        var gy = r5Mark(i) - 28, Cc = { x: 920, y: Math.max(110 + BC_H / 2, Math.min(600 - BC_H / 2, r5Mark(i))) };
+        cardAt(cards[i], bsts[i], i === seg ? dim : null, k, { x: 640, y: r5Mark(i) + 6 }, Cc, { x: 96, y: r5Row(i), w: 424, h: 80 }, { el: cards[i].querySelector('[data-bc-b]'), text: t(ERAS[i].body) });
+        rows[i].classList.toggle('on', seg > i || (seg === i && k >= .97));
+        marks[i].classList.toggle('hit', seg > i || (seg === i && l >= .22));
+        cards[i].querySelector('[data-bc-tail]').style.display = 'none';
+      }
+      if (seg < 5) { prevY = seg === 0 ? R5_Y0 : r5Mark(seg - 1) - 28; y = prevY + (r5Mark(seg) - 28 - prevY) * ease(l / .22); }
+      else { y = r5Mark(4) - 28 + (Y_END - (r5Mark(4) - 28)) * ease(l / .5); }
+      y = q4(y); gh.style.top = y + 'px'; flag.style.top = (y + 14) + 'px';
+      if (seg < 5 && l >= .22 && hitSeg !== seg) { hitSeg = seg; flash(gh, 'r2-bump', 300); } else if (l < .22 && hitSeg === seg) hitSeg = -1;
+      fin.classList.toggle('on', seg === 5 && l > .4);
+      if (seg === 5) dim.style.opacity = 0;
+      cueSet(root, p);
+    } };
+  }
+
+  /* ── S · 지어지는 월드(다듬기) — 고스트가 공사장에 닿으면 큰 카드, 팔레트 여러 벌 ── */
+  var NESP = {
+    day:    { n: { ko: '낮 · 1-1', en: 'Day · 1-1' },          sky: '#5c94fc', l: '#fcbcb0', m: '#c84c0c', g: '#80d010', G: '#00a800', w: '#fcfcfc', c: '#3cbcfc', o: '#fc9838' },
+    under:  { n: { ko: '지하 · 1-2', en: 'Underground · 1-2' }, sky: '#000000', l: '#a4e4fc', m: '#008888', g: '#80d010', G: '#00a800', w: '#3cbcfc', c: '#0078f8', o: '#fc9838' },
+    sunset: { n: { ko: '노을', en: 'Sunset' },                  sky: '#f87858', l: '#fce0a8', m: '#e45c10', g: '#f8b800', G: '#ac7c00', w: '#f8a4c0', c: '#f85898', o: '#fca044' },
+    night:  { n: { ko: '밤 · 3-1', en: 'Night · 3-1' },        sky: '#000000', l: '#fcbcb0', m: '#c84c0c', g: '#80d010', G: '#00a800', w: '#fcfcfc', c: '#3cbcfc', o: '#fc9838' },
+    castle: { n: { ko: '성 · 1-4', en: 'Castle · 1-4' },        sky: '#000000', l: '#bcbcbc', m: '#7c7c7c', g: '#bcbcbc', G: '#7c7c7c', w: '#7c7c7c', c: '#bcbcbc', o: '#f83800' },
+    snow:   { n: { ko: '겨울', en: 'Snow' },                    sky: '#a4e4fc', l: '#fcfcfc', m: '#bcbcbc', g: '#fcfcfc', G: '#3cbcfc', w: '#fcfcfc', c: '#a4e4fc', o: '#fc9838' },
+    riso:   { n: { ko: '검빨금 · 게임기 색', en: 'Black · red · gold' }, sky: '#1e1519', K: '#0f0a0c', l: '#f0cc6a', m: '#9a6a1e', g: '#ea3a33', G: '#8c0e22', w: '#fff6dd', c: '#d4a23e', o: '#d4a23e' }
+  };
+  var PAL_TIME = ['day', 'under', 'sunset', 'night', 'castle'];       /* '시간 따라' — 월드 1-1 → 1-2 → (노을) → 밤 → 1-4 성 */
+  var PAL_MODES = ['time', 'day', 'under', 'sunset', 'night', 'castle', 'snow', 'riso'];
+  /* stage-props.py 와 같은 그림(땅 블록 · 관 · 언덕 · 구름 · 덤불 · 동전)을 이 페이지에서 팔레트만 바꿔 다시 찍음 */
+  var GROUND_R = ['lllllllllKllllll', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKKlmmmK', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKlmmmmK', 'lmmmmmmmmKlmmmmK', 'KKmmmmmmKlmmmmmK', 'llKKKKKKlmmmmmmK', 'lmmmmmmKlmmmmmmK', 'lmmmmmmKlmmmmmmK', 'lmmmmmmKlmmmmmmK', 'lmmmmmmKlmmmmmmK', 'KKKKKKKKKKKKKKKK'];
+  function rep(ch, n) { return new Array(n + 1).join(ch); }
+  var LIP_IN = 'G' + 'gg' + 'G' + rep('g', 14) + 'GG' + 'g' + 'GGG' + 'g' + 'GGG' + 'G' + 'G', BODY_IN = 'G' + 'gg' + 'G' + rep('g', 12) + 'GG' + 'g' + 'GGG' + 'g' + 'GG' + 'G';
+  var PIPE_R = [rep('K', 32)].concat(Array(8).fill('K' + LIP_IN + 'K'), [rep('K', 32)], Array(22).fill('..K' + BODY_IN + 'K..'));
+  function outl(mask, fill, ground) {
+    var h = mask.length, w = mask[0].length;
+    function inn(x, y) { return x >= 0 && x < w && y >= 0 && y < h && mask[y][x] === '#'; }
+    return mask.map(function (row, y) { var s = ''; for (var x = 0; x < w; x++) { if (!inn(x, y)) { s += '.'; continue; } var nb = [[x - 1, y], [x + 1, y], [x, y - 1]]; if (!(ground && y === h - 1)) nb.push([x, y + 1]); s += nb.some(function (q) { return !inn(q[0], q[1]); }) ? 'K' : fill; } return s; });
+  }
+  function paintR(rows, spots, ch) { rows = rows.map(function (r) { return r.split(''); }); spots.forEach(function (q) { var c = rows[q[1]][q[0]]; if (c !== '.' && c !== 'K') rows[q[1]][q[0]] = ch; }); return rows.map(function (r) { return r.join(''); }); }
+  function puffsR(w, h, circles, base) { var m = []; for (var y = 0; y < h; y++) { var s = ''; for (var x = 0; x < w; x++) { var hit = y >= base && x >= 1 && x <= w - 2; circles.forEach(function (c) { if ((x + .5 - c[0]) * (x + .5 - c[0]) + (y + .5 - c[1]) * (y + .5 - c[1]) <= c[2] * c[2]) hit = true; }); s += hit ? '#' : '.'; } m.push(s); } return m; }
+  var HILL_W = [12, 20, 26, 30, 34, 36, 38, 40, 42, 42, 44, 44, 46, 46, 46, 48, 48, 48, 48];
+  var HILL_R = paintR(outl(HILL_W.map(function (wd) { var pad = (48 - wd) / 2; return rep('.', pad) + rep('#', wd) + rep('.', pad); }), 'G', true), [[20, 5], [20, 6], [20, 7], [28, 9], [28, 10], [28, 11], [14, 12], [14, 13], [14, 14], [33, 14], [33, 15], [33, 16]], 'K');
+  var CLOUD_R = (function () { var c = outl(puffsR(28, 12, [[8, 7, 4.6], [14, 5.4, 5.6], [20.5, 7, 4.6]], 7), 'w'); var sp = [[9, 5], [15, 3], [21, 5]]; [9, 10].forEach(function (y) { for (var x = 2; x < 26; x++) sp.push([x, y]); }); return paintR(c, sp, 'c'); })();
+  var BUSH_R = paintR(outl(puffsR(32, 14, [[6.5, 9, 5], [13, 6.5, 6.2], [19.5, 6.5, 6.2], [25.5, 9, 5]], 9), 'g', true), [[8, 7], [9, 6], [14, 4], [15, 3], [20, 4], [21, 3], [26, 7], [27, 6]], 'G');
+  var COIN_R = ['.KKKK.', 'KooooK', 'KomooK', 'KomooK', 'KomooK', 'KomooK', 'KomooK', 'KomooK', 'KooooK', '.KKKK.'];
+  var PAL_CACHE = {};
+  function palVars(key) {
+    if (PAL_CACHE[key]) return PAL_CACHE[key];
+    var P = NESP[key], save = {}, k;
+    for (k in PAL) save[k] = PAL[k];
+    ['K', 'l', 'm', 'g', 'G', 'w', 'c', 'o'].forEach(function (c) { if (P[c]) PAL[c] = P[c]; });
+    var v = { '--sp-sky': P.sky, '--sp-ground': spr(GROUND_R), '--sp-pipe': spr(PIPE_R), '--sp-hill': spr(HILL_R), '--sp-cloud': spr(CLOUD_R), '--sp-bush': spr(BUSH_R), '--sp-coin': spr(COIN_R), '--sp-hard': spr(HARD), '--sp-pole': spr(POLE), '--sp-flagt': spr(FLAGT) };
+    for (k in save) PAL[k] = save[k];
+    return (PAL_CACHE[key] = v);
+  }
+  function applyPal(el, key) { var v = palVars(key); for (var k in v) el.style.setProperty(k, v[k]); }
+  function s5Props(i, x) {        /* hProps 와 같은 소품 — 켜기는 .on(스크롤로 되감기 가능) */
+    function P(k, l, top, d, from) { return '<i class="s s-' + k + ' s2-p" data-s-p="' + i + '" style="left:' + (x + l) + 'px;top:' + top + 'px;--d:' + d + 's;--from:' + (from || '40px') + '"></i>'; }
+    var s = '', j;
+    if (i === 0) { s += P('pipe', 48, 494, 0, '128px'); for (j = 0; j < 5; j++) s += P('coin', 100 + (j - 2) * 38, 420 - (2 - Math.abs(j - 2)) * 20, .12 + j * .07, '-24px'); }
+    if (i === 1) { s += P('hill', 16, 546, 0, '76px'); for (j = 0; j < 4; j++) s += P('ghost', 12 + j * 50, 566, .12 + j * .08, '-40px'); }
+    if (i === 2) { s += P('cloud', 20, 336, 0, '-24px') + P('cloud', 96, 404, .1, '-24px') + P('ghost', 50, 566, .16, '-40px') + P('ghost', 112, 566, .22, '-40px'); }
+    if (i === 3) { s += P('hard', 20, 558, 0, '64px') + P('ghost', 28, 502, .12, '-40px'); for (j = 0; j < 3; j++) s += P('ghost', 96 + j * 40, 566, .2 + j * .06, '-40px'); s += '<span class="m-chip s2-p" data-s-p="3" style="position:absolute;left:' + (x + 160) + 'px;top:520px;--d:.4s;--from:-12px">×12</span>'; }
+    if (i === 4) { s += P('hard', 92, 558, 0, '64px') + P('pole', 62, 350, .08, '208px') + '<i class="s s-flagt s2-flag" style="left:' + (x + 62) + 'px;top:390px"></i>'; }
+    return s;
+  }
+  function s5Top(i) { return [494, 546, 336, 502, 350][i]; }        /* 소품 꼭대기(닿는 자리) */
+  function draftS5() {
+    var slots = ERAS.map(function (c, i) {
+      var x = hSlot(i);
+      return '<div class="s2-plq" data-s-plq="' + i + '" style="left:' + x + 'px"><p class="y">' + esc(t(c.date)) + '</p><p class="q">?</p><div class="full"><p class="r">' + esc(t(c.role)) + '</p><p class="o">' + esc(t(c.org)) + '</p></div></div>' + s5Props(i, x);
+    }).join('');
+    var track = ERAS.map(function (c, k) { return '<i data-s-c="' + k + '"></i>'; }).join('');
+    var cards = ERAS.map(function (c, i) { return bigCard(c, i) + burstHTML(i); }).join('');
+    return '<div class="mock mock-r2 mock-s2">' + nav() +
+      '<div class="h-hud"><div><span class="px">YEAR</span><b class="ps" data-s-y>2016</b></div><div class="h-track" style="gap:20px">' + track + '</div>' +
+        '<div class="h-ctl"><span class="m-btn r2-go"><span class="key">A</span>' + T('지금 — 포트폴리오', 'Now — portfolio') + '</span></div></div>' +
+      '<span class="s2-world" data-s-w>WORLD 1-1</span>' +
+      slots + S('ghost', 40, 'top:566px', 's2-ghost') + '<i class="m-ground"></i><div class="dim" data-dim></div>' + cards + cue() + '</div>';
+  }
+  function wireS5(root) {
+    var mock = root.querySelector('.mock-s2'), gh = root.querySelector('.s2-ghost'), dim = root.querySelector('[data-dim]'), yEl = root.querySelector('[data-s-y]'), wEl = root.querySelector('[data-s-w]');
+    var plq = [].slice.call(root.querySelectorAll('[data-s-plq]')), coins = [].slice.call(root.querySelectorAll('[data-s-c]'));
+    var cards = [].slice.call(root.querySelectorAll('.bc')), bsts = [].slice.call(root.querySelectorAll('.bst'));
+    var props = ERAS.map(function (c, i) { return [].slice.call(root.querySelectorAll('[data-s-p="' + i + '"]')); });
+    var mode = 'time', curPal = '', rt, lastX = 40, hitSeg = -1, flagEl = root.querySelector('.s2-flag');
+    function pal(key) { if (key === curPal) return; curPal = key; applyPal(mock, key); wEl.textContent = 'WORLD · ' + (L === 'en' ? NESP[key].n.en : NESP[key].n.ko); }
+    function slotC(i) { return hSlot(i) + 108; }
+    var api = { prog: function (p) {
+      var x = clamp01(p) * 5.5, seg = Math.min(5, Math.floor(x)), l = x - seg;
+      pal(mode === 'time' ? PAL_TIME[Math.min(4, seg)] : mode);
+      var gx;
+      for (var i = 0; i < 5; i++) {
+        var built = seg > i || (seg === i && l > .08);
+        props[i].forEach(function (el) { el.classList.toggle('on', built); });
+        var k = seg > i ? 1 : seg < i ? 0 : clamp01((l - .34) / .66);
+        var P = { x: slotC(i), y: s5Top(i) }, Cc = { x: Math.max(300, Math.min(900, slotC(i))), y: 300 };
+        cardAt(cards[i], bsts[i], i === seg ? dim : null, k, P, Cc, { x: hSlot(i), y: 176, w: 216, h: 112 }, { el: cards[i].querySelector('[data-bc-b]'), text: t(ERAS[i].body) });
+        var tail = cards[i].querySelector('[data-bc-tail]'); tail.style.left = Math.max(24, Math.min(BC_W - 24, BC_W / 2 + (slotC(i) - Cc.x))) + 'px';
+        plq[i].classList.toggle('on', seg > i || (seg === i && k >= .97));
+        coins[i].classList.toggle('on', seg >= i);
+      }
+      if (seg < 5) { var from = seg === 0 ? 40 : slotC(seg - 1) - 24, to = slotC(seg) - 24; gx = from + (to - from) * ease(l / .3); }
+      else gx = slotC(4) + 40;
+      gx = q4(gx); gh.style.left = gx + 'px';
+      if (seg < 5 && l >= .32 && hitSeg !== seg) { hitSeg = seg; flash(gh, 'r2-jump', 450); } else if (l < .32 && hitSeg === seg) hitSeg = -1;
+      flagEl.classList.toggle('on', seg > 4 || (seg === 4 && l > .08));
+      if (gx !== lastX) { gh.classList.add('run'); clearTimeout(rt); rt = setTimeout(function () { gh.classList.remove('run'); }, 140); lastX = gx; }
+      yEl.textContent = seg < 5 ? (year(ERAS[seg]) + (seg === 4 ? '.06' : '')) : T('지금', 'NOW');
+      mock.classList.toggle('is-done', seg === 5); mock.classList.toggle('s2-done', seg === 5);
+      if (seg === 5) dim.style.opacity = 0;
+      cueSet(root, p);
+    }, setMode: function (m) { mode = m; curPal = ''; this.prog(this.__p || 0); } };
+    var orig = api.prog; api.prog = function (p) { api.__p = p; orig(p); };
+    root.__pal = api;
+    return api;
+  }
+  function palBar(id) {
+    return '<div class="palbar" data-palbar="' + id + '"><small>' + T('팔레트', 'Palette') + '</small>' + PAL_MODES.map(function (m) {
+      var name = m === 'time' ? T('시간 따라 (월드 1-1 → 1-4)', 'By period (world 1-1 → 1-4)') : esc(t(NESP[m].n));
+      var sw = m === 'time' ? PAL_TIME.map(function (k) { return '<u style="background:' + NESP[k].sky + ';outline:1px solid ' + NESP[k].m + '"></u>'; }).join('') : '<u style="background:' + NESP[m].sky + '"></u><u style="background:' + NESP[m].m + '"></u><u style="background:' + NESP[m].g + '"></u>';
+      return '<button type="button" data-pal="' + m + '"' + (m === 'time' ? ' class="on"' : '') + '><i>' + sw + '</i>' + name + '</button>';
+    }).join('') + '</div>';
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-pal]'); if (!b) return;
+    var bar = b.closest('[data-palbar]'), box = document.querySelector('.mockbox[data-draft="' + bar.getAttribute('data-palbar') + '"]');
+    [].forEach.call(bar.querySelectorAll('[data-pal]'), function (x) { x.classList.toggle('on', x === b); });
+    if (box && box.__pal) box.__pal.setMode(b.getAttribute('data-pal'));
+  });
+
   var DRAFTS4 = [
     { id: 'q', f: draftQ, w: wireQ, scroll: 3600, name: { ko: '달리는 1-1 — 스크롤하면 달림', en: 'Running 1-1 — scroll to run' }, sub: { ko: '스크롤 = 앞으로', en: 'Scroll = forward' },
       pitch: { ko: '화면은 그대로 멈춰 있고, 스크롤하는 만큼 고스트가 오른쪽으로 달립니다. 물음표 블록 밑을 지나면 저절로 뛰어올라 쳐서 그 시기의 능력이 튀어나오고, 각 시기의 이력 창이 달리는 앞쪽에서 다가와 읽힙니다. 점수판이 연도 · 능력을 세고, 끝에서 깃발이 오르며 성(포트폴리오).',
@@ -1994,16 +2267,16 @@
       hint: { ko: '▶ 그냥 아래로 스크롤하세요. 화면은 멈춘 채 안에서 달립니다(위로 올리면 되감기).', en: '▶ Just scroll down — the screen holds still while it runs inside (scroll up to rewind).' },
       pros: { ko: ['1차에서 \'느낌 좋다\'던 A 를 누를 것 없이 그대로', '블록 · 동전 · 점수판이 저절로 움직여 눈이 즐거움', '글이 달려오는 방향에서 나타나 자연스럽게 읽힘'], en: ['Round 1\'s well-liked A, with nothing to click', 'Blocks, coins and the scoreboard move by themselves', 'Text arrives from where you are running, so it gets read'] },
       cons: { ko: ['빨리 내리면 글을 건너뜀 → 시기마다 스크롤 길이를 넉넉히', '휴대폰은 세로 코스로 따로'], en: ['Fast scrolling skips text → generous scroll length per period', 'Phones need a vertical version'] } },
-    { id: 'r', f: draftR, w: wireR, scroll: 2400, name: { ko: '깃대 — 스크롤하면 내려감', en: 'Flagpole — scroll to slide down' }, sub: { ko: '스크롤 = 아래로', en: 'Scroll = down' },
-      pitch: { ko: '스크롤 방향과 움직임이 같은 안입니다. 내리는 만큼 고스트가 깃발과 함께 깃대를 미끄러져 내려가고, 연도 표시를 지날 때마다 왼쪽에 그 시기의 판이 펼쳐지며 그 시기의 숫자가 깃대 점수처럼 튀어 올라 오른쪽 점수판에 쌓입니다.',
-               en: 'Scrolling and motion go the same way: as you scroll down, the ghost slides down the pole with the flag; each year mark it passes unfolds that period\'s plate on the left while its number pops like a flagpole score into the scoreboard on the right.' },
+    { id: 'r', f: draftR5, w: wireR5, scroll: 3000, badge: { ko: '다듬은 안', en: 'Refined' }, name: { ko: '깃대 — 닿을 때마다 튀어나오는 이력', en: 'Flagpole — the career pops out at every mark' }, sub: { ko: '스크롤 = 아래로', en: 'Scroll = down' },
+      pitch: { ko: '스크롤하면 고스트가 깃대를 타고 내려가다 연도 표시에 닿습니다. 닿는 순간 그 자리에서 반짝 터지며 큰 이력 카드가 튀어나와 화면 가운데로 커지고(배경은 살짝 어두워짐), 카드가 떠 있는 동안 본문이 스크롤만큼 써집니다. 더 내리면 카드가 왼쪽 빈 칸으로 접혀 들어가 쌓이고, 고스트는 다음 표시로. 끝 화면 = 왼쪽에 채워진 다섯 칸.',
+               en: 'Scrolling slides the ghost down the pole until it touches a year mark. At that moment the spot flashes and a big career card springs out and grows to the middle (the background dims); while it is up, the text writes itself as you scroll. Scroll on and the card folds into its empty slot on the left, and the ghost moves to the next mark. End screen = five filled slots on the left.' },
       map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '판 펼치기 · 숫자 점수', 'Plates unfold, numbers score'], ['읽게 되는 곳', 'What you read', '방금 펼쳐진 판 · 튀어 오른 숫자', 'The plate just unfolded, the number that popped']],
       hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
       pros: { ko: ['스크롤 = 내려가기라 설명이 전혀 필요 없음', '왼쪽 연표 + 오른쪽 숫자로 끝 화면이 이력서 한 장', '세로라 휴대폰에도 그대로'], en: ['Scroll = slide down, so nothing needs explaining', 'Timeline left + numbers right — the end screen is a résumé', 'Vertical, so phones work as is'] },
       cons: { ko: ['움직임이 한 줄기라 다른 안보다 화려함은 덜함'], en: ['One line of motion — less spectacle than the others'] } },
-    { id: 's', f: draftS, w: wireS, scroll: 2600, name: { ko: '지어지는 월드 — 스크롤이 곧 시간', en: 'A world being built — scroll is time' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
-      pitch: { ko: '스크롤하면 해가 넘어가고(2016 → 2026, 위 동전 줄이 하나씩 켜짐), 그 해에 시작한 시기가 월드에 저절로 지어집니다 — 관과 동전 다섯 = 혼자 낸 다섯 작품, 언덕의 고스트 무리 = 6만 커뮤니티, 구름 아래 둘 = 2인 블로그, 단상 = 12인 발표, 깃발 = 다음 팀. 소품이 생길 때 그 위 팻말이 함께 나타나 읽힙니다.',
-               en: 'Scrolling turns the years (2016 → 2026, the coin row lights up) and each period builds itself into the world in the year it began — a pipe and five coins = five solo releases, a crowd of ghosts on a hill = the 60K community, two under clouds = the two-person blog, a podium = the 12-person talks, a flag = the next team. Each sign appears with its props.' },
+    { id: 's', f: draftS5, w: wireS5, scroll: 3200, extra: function () { return palBar('s'); }, badge: { ko: '다듬은 안 · 팔레트 8벌', en: 'Refined · 8 palettes' }, name: { ko: '지어지는 월드 — 완공될 때마다 튀어나오는 이력', en: 'A world being built — the career pops out at each build' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
+      pitch: { ko: '스크롤하면 고스트가 다음 공사장으로 걸어가고, 그 시기의 소품(관과 동전 다섯 · 고스트 무리 · 구름 · 단상 · 깃발)이 솟아 지어집니다. 다 지어지는 순간 그 꼭대기에서 반짝 터지며 큰 이력 카드가 튀어나와 머물고(본문은 스크롤만큼 써짐), 더 내리면 위 빈 팻말로 접혀 들어갑니다. 위 \'팔레트\' 줄에서 월드 색을 바꿔 볼 수 있고, 기본(시간 따라)은 시기마다 월드가 1-1 낮 → 1-2 지하 → 노을 → 밤 → 1-4 성으로 바뀝니다.',
+               en: 'Scrolling walks the ghost to the next site, where that period\'s props (a pipe and five coins, a crowd of ghosts, clouds, a podium, a flag) rise into place. The moment it is built, its top flashes and a big career card springs out and stays (the text writes as you scroll), then folds into the empty sign above. The palette row above recolours the world; the default (by period) moves through world 1-1 day → 1-2 underground → sunset → night → 1-4 castle.' },
       map: [['손동작', 'Gesture', '스크롤만', 'Scroll only'], ['저절로', 'Automatic', '해 넘기기 · 월드 짓기', 'Years turn, world builds'], ['읽게 되는 곳', 'What you read', '방금 지어진 소품의 팻말', 'The sign of what was just built']],
       hint: { ko: '▶ 그냥 아래로 스크롤하세요.', en: '▶ Just scroll down.' },
       pros: { ko: ['가장 눈이 즐거움 — 내리는 만큼 월드가 자람', '소품 = 이력의 은유라 장식이 아님', '끝 화면 = 왼쪽 → 오른쪽 연표 한 장'], en: ['The most fun to watch — the world grows as you scroll', 'Props are career metaphors, not decoration', 'End screen = one left-to-right timeline'] },
@@ -2109,7 +2382,7 @@
         '<p class="draft__pitch">' + esc(t(d.pitch)) + '</p>' +
         '<dl class="map">' + d.map.map(function (m) { return '<div><dt>' + esc(L === 'en' ? m[1] : m[0]) + '</dt><dd>' + esc(L === 'en' ? m[3] : m[2]) + '</dd></div>'; }).join('') + '</dl>' +
         (d.flow ? '<p class="flow">' + d.flow.map(function (f) { return '<b' + (f === 'story' ? ' class="on"' : '') + '>' + esc(t(FLOW[f])) + '</b>'; }).join(' → ') + '</p>' : '') +
-        (d.scroll ? '<div class="mockbox mockbox--scroll" data-draft="' + d.id + '" data-len="' + d.scroll + '"><div class="sstick">' + d.f() + '</div></div>' : '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div>') + '<p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
+        (d.extra ? d.extra() : '') + (d.scroll ? '<div class="mockbox mockbox--scroll" data-draft="' + d.id + '" data-len="' + d.scroll + '"><div class="sstick">' + d.f() + '</div></div>' : '<div class="mockbox" data-draft="' + d.id + '">' + d.f() + '</div>') + '<p class="hint">' + esc(t(d.hint)) + '</p><p class="hint hint--narrow">' + T('← 좁은 화면에서는 반으로 줄인 화면을 옆으로 밀어 보세요 (설계 폭 1200px).', '← On a narrow screen the mock is shown at half size — swipe sideways (designed at 1200px).') + '</p>' +
         '<div class="notes"><div><h5>' + T('좋은 점', 'Strengths') + '</h5><ul>' + d.pros[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' +
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
