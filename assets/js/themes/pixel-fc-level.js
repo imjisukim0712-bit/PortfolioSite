@@ -482,29 +482,57 @@
   }
   /* 17회차: 게임기 그림(fc-body.js 의 stageArt)은 200칸 폭이라, 판 폭이 '200 × 기기 픽셀 정수'가 아니면 칸마다 크기가 달라져
      외곽선 · 색 경계가 울퉁불퉁 깨져 보입니다 → 판 폭을 가까운 정수 칸 폭으로 맞춥니다(--lv-rig-w, CSS 가 width 로 씀).
-     메뉴(똑바로 선 큰 게임기)는 늘 맞추고 — 조금(7%까지) 커지는 쪽이 화면에 들어가면 그쪽, 타이틀은 옆 틈 안에서 조금 넓게(40px)
+     메뉴(똑바로 선 큰 게임기)는 아래 zoomMenu 가 화면 기준으로 정하고, 타이틀은 옆 틈 안에서 조금 넓게(40px)
      잡되 10% 넘게 줄어야 하면 맞추지 않습니다(기울어 있어 어차피 다시 찍히는 화면). 900px 미만은 CSS 가 4px 칸으로 짓습니다. */
   function snapRig() {
     var r = document.querySelector('.fcs-rig'); if (!r) return;
-    r.style.removeProperty('--lv-rig-w'); r.style.removeProperty('--lv-rig-dx');
+    ['--lv-rig-w', '--lv-rig-dx', '--lv-rig-ml', '--lv-rig-mt', '--lv-scr-zoom'].forEach(function (k) { r.style.removeProperty(k); });
     if (!active() || window.innerWidth < 900 || !document.querySelector('.fcs-rig > .hero > .fcb-art')) return;
     var w = r.offsetWidth; if (!w) return;
     var dpr = window.devicePixelRatio || 1, unit = 200 / dpr, pick;
-    if (document.body.getAttribute('data-lv') === 'menu') {
-      var down = Math.floor(w / unit) * unit, up = down + unit;
-      pick = up <= w * 1.07 && up <= document.documentElement.clientWidth - 16 ? up : down;
-    } else {
-      pick = Math.floor((w + 40) / unit) * unit;
-      if (pick < w * .9) return;
-    }
+    if (document.body.getAttribute('data-lv') === 'menu') { zoomMenu(r, dpr); return; }
+    pick = Math.floor((w + 40) / unit) * unit;
+    if (pick < w * .9) return;
     r.style.setProperty('--lv-rig-w', pick + 'px');
-    /* 메뉴는 가운데 놓여 왼쪽 끝이 반 픽셀에 걸릴 수 있음 → 기기 픽셀 경계로 살짝 옮김(타이틀은 기울어 있어 상관없음) */
-    if (document.body.getAttribute('data-lv') === 'menu') {
-      var keep = r.style.transform; r.style.transform = 'none';
-      var lx = r.getBoundingClientRect().left * dpr, dx = (Math.round(lx) - lx) / dpr;
-      r.style.transform = keep;
-      if (Math.abs(dx) > .01) r.style.setProperty('--lv-rig-dx', dx + 'px');
+  }
+  /* 메뉴(확대한 게임기): 게임기 전체가 아니라 '화면'이 창 폭의 9할 이상을 차지하게(사용자 지시) — 화면을 창 가운데에 두고,
+     넘치는 손잡이는 .home-screen 이 잘라 냅니다. 판 폭은 여전히 200 × 기기 픽셀 정수(칸이 고르게), 화면 높이가 창에 들어가는 한에서.
+     화면 속 내용(메뉴 · 꽂기 개요)도 같은 비율로 키우되 0.5배 단위(도트 글꼴이 제 격자 배수에 앉게) — --lv-scr-zoom. */
+  function zoomMenu(r, dpr) {
+    var scr = r.querySelector(':scope > .hero > .wrap'); if (!scr) return;
+    var keep = r.style.transform; r.style.transform = 'none';
+    var rb = r.getBoundingClientRect(), sb = scr.getBoundingClientRect();
+    if (!rb.width || !sb.width) { r.style.transform = keep; return; }
+    var aw = sb.width / rb.width, ah = sb.height / rb.width, al = (sb.left - rb.left) / rb.width, at = (sb.top - rb.top) / rb.width;
+    var nav = document.querySelector('.nav-wrap') || document.querySelector('.nav');
+    var nh = nav ? nav.getBoundingClientRect().height : 64;
+    var vw = document.documentElement.clientWidth, vh = window.innerHeight - nh;
+    var c = Math.floor(Math.min(vw * .92, (vh - 24) * aw / ah) / aw * dpr / 200);
+    if (aw * 200 * (c + 1) / dpr <= vw && ah * 200 * (c + 1) / dpr <= vh - 4 && aw * 200 * c / dpr < vw * .9) c += 1;
+    var W = 200 * Math.max(c, 1) / dpr;
+    r.style.setProperty('--lv-rig-w', W + 'px');
+    r.style.setProperty('--lv-rig-ml', '0px'); r.style.setProperty('--lv-rig-mt', '0px');
+    var b0 = r.getBoundingClientRect();
+    var left = Math.round((vw / 2 - (al + aw / 2) * W) * dpr) / dpr;
+    var top = Math.round((nh + (vh - ah * W) / 2 - at * W) * dpr) / dpr;
+    r.style.setProperty('--lv-rig-ml', (left - b0.left) + 'px');
+    r.style.setProperty('--lv-rig-mt', (top - (b0.top + window.pageYOffset)) + 'px');
+    /* 글자 배율: 사진은 화면 크기를 따라 커지니 글자(메뉴 · 머리띠 · 꽂기 개요)만 화면 폭 비율로 — 0.5배 단위(도트 글꼴이 제 격자 배수에),
+       화면 안쪽에 넘치면 0.5씩 줄임 */
+    var cs = getComputedStyle(scr), bottom = function () {
+      var hi = -Infinity;
+      Array.prototype.forEach.call(scr.children, function (k) {
+        if (k.classList.contains('fc-boot') || getComputedStyle(k).display === 'none') return;
+        var kb = k.getBoundingClientRect(); if (kb.height) hi = Math.max(hi, kb.bottom);
+      });
+      return hi;
+    };
+    var limit = scr.getBoundingClientRect().bottom - parseFloat(cs.paddingBottom) + 1;
+    for (var z = Math.max(1, Math.floor(aw * W / 768 * 2) / 2); z >= 1; z -= .5) {
+      r.style.setProperty('--lv-scr-zoom', String(z));
+      if (z === 1 || bottom() <= limit) break;
     }
+    r.style.transform = keep;
   }
   window.__lvSnapRig = snapRig;
   var queued = false;

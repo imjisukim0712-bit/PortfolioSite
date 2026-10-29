@@ -897,7 +897,7 @@
 /* 꽂은 뒤 개요 화면도 그림 속 액정 크기(cqw)에 맞춰 — 큰 제목이 화면을 다 먹지 않게 */
 @media (min-width: 900px) {
   :root[data-skin="pixel-fc-level"] .fcs-rig .fc-boot { padding: 1.8cqw 2.4cqw; align-items: center; overflow: hidden; }
-  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov { grid-template-columns: 22cqw minmax(0, 1fr); gap: 2.4cqw; align-items: center; width: 100%; }
+  :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov { grid-template-columns: 22cqw minmax(0, 1fr); gap: 2.4cqw; align-items: center; width: 100%; max-width: none; }   /* 880px 상한은 확대한 메뉴에서 글자만 커지고 폭이 모자라게 함 */
   :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__art { width: 100%; max-width: none; }
   :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__meta { font-size: 1.25cqw; gap: .8cqw; }
   :root[data-skin="pixel-fc-level"] .fcs-rig .fc-ov__t { margin: .9cqw 0 .5cqw; font-size: 3cqw; line-height: 1.2; word-break: keep-all; }

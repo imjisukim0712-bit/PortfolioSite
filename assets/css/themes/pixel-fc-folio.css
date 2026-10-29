@@ -857,7 +857,11 @@
    키 · 인쇄 글자 자리도 모두 칸(0.5cqw) 단위라 정수 칸일 때 글자가 픽셀 경계에 앉습니다(번지지 않음). */
 @media (min-width: 900px) {
   :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] .fcs-rig { width: var(--lv-rig-w, 100%); justify-self: end; }
-  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig { position: relative; left: var(--lv-rig-dx, 0px); }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig { position: relative; left: var(--lv-rig-dx, 0px); margin-left: var(--lv-rig-ml, auto); margin-top: var(--lv-rig-mt, 0px); }
+  /* 확대: 화면이 창 폭의 9할 이상(pixel-fc-level.js 의 zoomMenu) — 넘치는 손잡이는 잘라 내고, 화면 속 내용은 같은 비율로(0.5배 단위) */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .home-screen { overflow: clip; }
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig > .hero.fc-console > .wrap > :not(.fc-boot) { zoom: 1; }   /* 그림별 작은 화면 줄임(pixel-fc-level-art.css)은 메뉴 글자에선 풂 — 꽂기 개요(.fc-boot)는 판 크기를 따라 커지니 그대로 */
+  :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .fcs-rig > .hero.fc-console > .wrap :is(.gui-scr, .lv-msel) { zoom: var(--lv-scr-zoom, 1); }
   /* 메뉴에서는 커진 게임기 둥근 모서리의 빈칸 사이로 구름이 비쳐 외곽선과 엉켜 보여 구름을 걷음 */
   :root[data-skin-theme="pixel"][data-skin="pixel-fc-level"] body[data-lv="menu"] .home-screen::before { display: none; }
 }
