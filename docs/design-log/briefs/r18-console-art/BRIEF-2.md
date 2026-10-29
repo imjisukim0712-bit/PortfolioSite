@@ -40,3 +40,19 @@ It must clearly read as a handheld game console (an earlier attempt was laughed 
 - Check each against the specs (screen colour / aspect / flatness, background colour, no text) and regenerate if needed.
 - `out2/NOTES.md`: for each image, the style name in a few words and its main palette (hex).
 - Do not touch anything outside this folder.
+
+---
+
+## 3차 — 색 규격: 검빨금
+
+사용자: "색 자체는 검빨금으로 가는 게 맞음" → 2차 다섯 그림의 화풍 · 모양은 그대로, 색만 검정 · 빨강 · 금색으로(Codex 가 다시 그림, `out3/`).
+
+### Brief for Codex — round 3 (English)
+Keep each of your five round-2 designs and art styles (`out2/1.png` … `out2/5.png`: crimson risograph, cut-paper arcade, precision ink,
+electric gouache, anime mecha cel) — same console shape, same rendering style — but **recolour every one to a black · red · gold palette**:
+- Black: warm near-black for the body or outline (e.g. #141114 … #2a2226), Red: Famicom red family (e.g. #c8102e, #e0242f, deep #7a0e1c),
+  Gold: brass / gold family (e.g. #d4a849, #f0cb6a, dark #8a6420). Use only tones of these three hues (plus white glints if the style needs them).
+- No other hues (no turquoise, pink, orange, lime, purple, yellow-green). The screen stays flat **#fff6dd**, the background stays flat **#5c94fc**.
+- Each image should still look clearly different from the others by its rendering style and by how it distributes black / red / gold.
+- All round-2 specs still apply (1536 × 1024, front view, screen aspect 1.88 : 1 and flat, empty label spaces, no text or logos).
+- Save as `out3/1.png` … `out3/5.png` and add the palette per image to `out3/NOTES.md`.
