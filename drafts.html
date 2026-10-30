@@ -362,6 +362,210 @@
     .wm-pm i { font-size: 11px; }
   }
   @media (prefers-reduced-motion: reduce) { .wm-me { transition: none; } }
+  /* ── 이력 — 섬 지도(슈퍼 마리오 월드): 지도 800 × 448(4px 칸) + 아래 메시지 블록 | 오른쪽 결산 화면(COURSE CLEAR!) ── */
+  .mb-key { width: 48px; height: 48px; flex: none; padding: 0; background: #000; color: #fcfcfc; border: 4px solid #fcfcfc; font: 400 16px/1 'Press Start 2P', monospace; cursor: pointer; }
+  .mb-key:hover { background: #2a2a2a; }
+  .mb-key:focus-visible { outline: 4px solid #fc9838; outline-offset: 2px; }
+  .sw { --wh: #fcfcfc; --or: #fc9838; --mu: #b8c4e0; display: grid; gap: 16px; padding: 16px; background: #102346; color: var(--wh); border-radius: 12px; font: 15px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
+  :where(.sw, .mb, .rp) :where(p, h4, dl, dd, ul) { margin: 0; padding: 0; }
+  :where(.sw, .rp) :where(ul) { list-style: none; }
+  .sw .ps, .mb .ps, .rp .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .sw:focus-visible, .mb:focus-visible { outline: 4px solid #fc9838; outline-offset: 2px; }
+  .sw__body { display: grid; grid-template-columns: 808px minmax(0, 1fr); grid-template-areas: 'map clear' 'msg clear'; gap: 16px; align-items: start; }
+  .sw__mapwrap { grid-area: map; overflow-x: auto; overflow-y: hidden; border: 4px solid #000; background: #3cbcfc; }
+  .sw__map { position: relative; width: 800px; height: 448px; background: var(--sw-map) 0 0 / 800px 448px no-repeat; image-rendering: pixelated; }
+  .sw__name { position: absolute; z-index: 3; left: 0; width: 100%; top: 14px; padding: 0 12px; text-align: center; font: 400 22px/1.3 'Galmuri11', monospace; color: var(--wh); pointer-events: none;
+    text-shadow: 3px 0 #000, -3px 0 #000, 0 3px #000, 0 -3px #000, 3px 3px #000, -3px -3px #000, 3px -3px #000, -3px 3px #000; }
+  .sw__lives { position: absolute; z-index: 3; left: 16px; bottom: 12px; display: flex; align-items: center; gap: 10px; pointer-events: none; }
+  .sw__lives b { font-size: 16px; text-shadow: 4px 4px 0 #000; }
+  .sw-life { display: block; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .sw-n { position: absolute; z-index: 1; padding: 0; background: none; border: 0; cursor: pointer; }
+  .sw-n .sw-s { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+  .sw-n .sw-dotY, .sw-n .sw-dotB, .sw-n .sw-dotR { width: 28px; height: 28px; }
+  .sw-dotY { background-image: var(--sw-dotY); } .sw-dotB { background-image: var(--sw-dotB); } .sw-dotR { background-image: var(--sw-dotR); }
+  .sw-n--castle .sw-s { width: 64px; height: 64px; }
+  .sw-n--flag .sw-s { width: 64px; height: 128px; }
+  .sw-n:focus-visible { outline: 4px solid var(--or); outline-offset: 0; }
+  .sw-me { position: absolute; z-index: 2; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; transition: left .2s steps(4), top .2s steps(4); pointer-events: none; }
+  /* 메시지 블록 — 검은 판 + 흰 테 두 겹 */
+  .sw__msg { grid-area: msg; display: flex; align-items: center; min-height: 92px; padding: 18px 26px; background: #000; border: 4px solid var(--wh); box-shadow: inset 0 0 0 4px #000, inset 0 0 0 8px #7c7c7c; }
+  .sw__msg p { font-size: 17px; font-weight: 700; line-height: 1.6; }
+  /* 결산 화면 */
+  .sw__clear { grid-area: clear; align-self: stretch; display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 20px 22px 22px; background: #000; border: 4px solid var(--wh); }
+  .sw-c__who { font-size: 13px; font-weight: 700; color: var(--mu); }
+  .sw-c__big { font-size: 24px; line-height: 1.35; color: var(--wh); }
+  .sw-c__now { align-self: flex-start; padding: 4px 10px; background: #e0262c; font-size: 14px; font-weight: 800; }
+  .sw-c__t { font: 400 22px/1.4 'Galmuri11', monospace; color: var(--or); }
+  .sw-c__rows { display: grid; gap: 10px; padding: 14px 0; border-top: 4px dotted #3a4256; border-bottom: 4px dotted #3a4256; }
+  .sw-c__rows div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+  .sw-c__rows dt { font-size: 16px; line-height: 1; color: var(--mu); }
+  .sw-c__rows dd { font-size: 15px; font-weight: 700; line-height: 1.55; }
+  .sw-c__rows dd b { font-size: 16px; color: var(--or); margin-right: 4px; }
+  .sw-c__rows--st div { grid-template-columns: minmax(0, 1fr) auto; }
+  .sw-c__rows--st dt { font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .sw-c__rows--st dd { font-size: 16px; color: var(--or); }
+  .sw-c__body { font-size: 15px; line-height: 1.7; }
+  .sw-c__say { font-size: 16px; font-weight: 700; }
+  .sw-c__go { margin-top: auto !important; }
+  .sw-c__mu { color: var(--mu); font-size: 14px; }
+  .sw-c__bar { display: block; height: 20px; border: 4px solid var(--wh); }
+  .sw-c__bar i { display: block; width: var(--p); height: 100%; background: #e0262c; }
+  .sw-c__learn li { position: relative; padding-left: 20px; font-size: 14.5px; line-height: 1.6; }
+  .sw-c__learn li + li { margin-top: 6px; }
+  .sw-c__learn li::before { content: '▲'; position: absolute; left: 0; top: 1px; color: var(--or); font-size: 11px; }
+  .sw-c__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sw-c__tags span { padding: 2px 8px; border: 3px solid #3a4256; font-size: 12.5px; font-weight: 700; }
+  .sw__nav { display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 14px; color: var(--mu); text-align: center; }
+  @media (max-width: 1239px) { .sw__body { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'map' 'msg' 'clear'; } .sw__mapwrap { justify-self: start; max-width: 100%; } }
+  @media (max-width: 640px) { .sw { padding: 10px; gap: 12px; border-radius: 10px; } .sw__msg { padding: 14px 18px; } .sw__msg p { font-size: 16px; } .sw__clear { padding: 16px; } .sw__nav span { font-size: 13px; } }
+
+  /* ── 이력 — 코스 시작 화면(슈퍼 마리오브라더스): 검은 화면 · 점수판 · WORLD · 코스 미리보기 장면(땅 블록 · 소품 1배) ── */
+  .mb { --wh: #fcfcfc; --or: #fc9838; --mu: #a8a8a8; display: grid; background: #000; color: var(--wh); border-radius: 12px; overflow: hidden; font: 16px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
+  .mb__hud { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 16px 24px; padding: 28px 40px 0; }
+  .mb__hud p { display: grid; gap: 10px; align-content: start; }
+  .mb__hud p > * { font-size: 16px; line-height: 1; white-space: nowrap; }
+  .mb__nm { font: 400 14px/1 'Galmuri14', 'Galmuri11', monospace; }
+  .mb-s { position: absolute; display: block; background: 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .mb-s.in { position: relative; display: inline-block; vertical-align: middle; }
+  .mb__hud .s-coin-s { margin: -8px 6px 0 0; }
+  .mb__legend { padding: 14px 40px 0; font-size: 13px; color: var(--mu); }
+  .mb__mid { display: grid; justify-items: center; align-content: center; gap: 14px; min-height: 380px; padding: 32px 40px 36px; text-align: center; }
+  .mb__w { font-size: 32px; line-height: 1.2; }
+  .mb__now { display: inline-block; margin-left: 16px; padding: 6px 10px; background: #e0262c; font: 800 14px/1 'Pretendard Variable', Pretendard, sans-serif; vertical-align: 6px; }
+  .mb__lives { display: flex; align-items: center; gap: 14px; }
+  .mb__lives b { font-size: 16px; }
+  .mb__lives span { font-size: 14px; font-weight: 700; color: var(--mu); }
+  .mb__t { font: 400 28px/1.35 'Galmuri14', 'Galmuri11', monospace; }
+  .mb__t small { margin-left: 12px; font: 800 14px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--or); vertical-align: 4px; }
+  .mb__lead { max-width: 760px; font-size: 19px; font-weight: 700; line-height: 1.55; }
+  .mb__sub { font-size: 15px; font-weight: 600; color: var(--mu); }
+  .mb__big { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 6px 14px; }
+  .mb__big b { font-size: 32px; line-height: 1; color: var(--or); }
+  .mb__big span { font-size: 15px; font-weight: 700; color: var(--mu); }
+  .mb__q { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; padding: 12px 18px; border: 4px solid #3a3a3a; font-size: 16px; font-weight: 700; }
+  .mb__q > b { font-size: 16px; color: var(--or); }
+  .mb__q strong { color: var(--wh); }
+  .mb__q em { padding: 6px 8px; background: #00a800; font-size: 16px; font-style: normal; }
+  .mb__learn { max-width: 760px; font-size: 16px; color: #dcdcdc; }
+  .mb__note { max-width: 760px; font-size: 14px; color: var(--mu); }
+  .mb__scene { position: relative; height: 352px; background: #5c94fc; overflow: hidden; }
+  .mb-gnd { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
+  .mb__scene .s-hill, .mb__scene .s-bush, .mb__scene .s-pipe, .mb-me, .mb-hard, .mb-pole { bottom: 128px; }
+  .mb-me { left: 12%; z-index: 2; }
+  .mb-row { bottom: 224px; }
+  .mb-coin { bottom: 296px; }
+  .mb-hard { width: 64px; background: var(--d-hard) 0 0 / 64px 64px repeat; }
+  .mb-pole { right: 8px; }
+  .mb-flag { right: 36px; bottom: 240px; }
+  .mb__scene.go .mb-me { animation: mb-walk .6s steps(6) both; }
+  .mb__scene.go .mb-row, .mb__scene.go .s-pipe, .mb__scene.go .mb-hard { animation: mb-pop .3s steps(3) .35s both; }
+  .mb__scene.go .mb-coin { animation: mb-coin .5s steps(5) .6s both; }
+  .mb__scene.go .mb-flag { animation: mb-flag .6s steps(6) .5s both; }
+  @keyframes mb-walk { from { transform: translateX(-160px); } }
+  @keyframes mb-pop { from { transform: translateY(24px); opacity: 0; } }
+  @keyframes mb-coin { 0% { transform: translateY(40px); opacity: 0; } 60% { transform: translateY(-16px); opacity: 1; } }
+  @keyframes mb-flag { from { transform: translateY(-80px); } }
+  .mb__nav { display: flex; align-items: center; gap: 12px; padding: 18px 24px 22px; }
+  .mb__chips { flex: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .mb-chip { display: grid; justify-items: center; gap: 8px; min-width: 84px; padding: 10px 8px 8px; background: #000; color: var(--wh); border: 4px solid #3a3a3a; font: 700 12px/1 'Pretendard Variable', Pretendard, sans-serif; cursor: pointer; }
+  .mb-chip b { font-size: 16px; line-height: 1; }
+  .mb-chip span { color: var(--mu); }
+  .mb-chip:hover { border-color: #7c7c7c; }
+  .mb-chip[aria-pressed="true"] { border-color: var(--or); }
+  .mb-chip[aria-pressed="true"] b { color: var(--or); }
+  .mb-chip:focus-visible { outline: 4px solid var(--or); outline-offset: 2px; }
+  @media (max-width: 760px) {
+    .mb__hud { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 20px 20px 0; }
+    .mb__legend { padding: 12px 20px 0; }
+    .mb__mid { min-height: 0; padding: 28px 20px 30px; }
+    .mb__w { font-size: 24px; }
+    .mb__now { display: table; margin: 12px auto 0; vertical-align: 0; }
+    .mb__t { font-size: 22px; font-family: 'Galmuri11', monospace; }
+    .mb__t small { display: block; margin: 8px 0 0; }
+    .mb__lead { font-size: 17px; }
+    .mb__nav { padding: 14px 12px 18px; gap: 8px; }
+    .mb-chip { min-width: 64px; }
+    .mb-chip b { font-size: 8px; }
+    .mb-me { left: 4px; }
+    .mb-hard0 { display: none; }
+  }
+
+  /* ── 이력 — 상태 메뉴(슈퍼 마리오 RPG): 둥근 창(파란 그라데이션 · 흰 테 · 검은 바깥선) 여섯 + ▶ 커서 + 도움말 창 ── */
+  .rp { --wh: #f8f8f8; --mu: #c8d2f4; --or: #f8c838; padding: 20px; border-radius: 12px; color: var(--wh); font: 15px/1.65 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all;
+    background: #0c1838 linear-gradient(45deg, rgb(255 255 255 / .05) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / .05) 75%) 0 0 / 32px 32px; }
+  .rp__grid { display: grid; grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'who stat eq' 'who sp log' 'help help help'; gap: 20px; }
+  .rp-w { position: relative; min-width: 0; padding: 16px 16px 18px; border: 4px solid var(--wh); border-radius: 14px; box-shadow: 0 0 0 4px #000, 6px 8px 0 4px rgb(0 0 0 / .35);
+    background: linear-gradient(180deg, #5070e0 0%, #2c40b0 48%, #1a2472 100%); text-shadow: 2px 2px 0 #000; }
+  .rp-w__h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 8px !important; padding-left: 10px !important; }
+  .rp-w__h b, .rp-w__h.ps { font-size: 16px; color: var(--or); }
+  .rp-w__h span { font-size: 13px; font-weight: 700; color: var(--mu); }
+  .rp-i { position: relative; display: flex; width: 100%; padding: 7px 10px 7px 30px; background: none; border: 0; border-radius: 8px; color: inherit; font: inherit; text-align: left; text-shadow: inherit; cursor: pointer; }
+  .rp-i::before { content: '▶'; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0; }
+  .rp-i.on { background: rgb(255 255 255 / .14); }
+  .rp-i.on::before { opacity: 1; animation: rp-nudge .8s steps(2) infinite; }
+  .rp-i:focus-visible { outline: 3px solid var(--or); outline-offset: 1px; }
+  @keyframes rp-nudge { 50% { transform: translate(3px, -50%); } }
+  .rp-who { grid-area: who; display: flex; flex-direction: column; gap: 14px; }
+  .rp-me { flex-direction: column; align-items: center; gap: 12px; }
+  .rp-ph { display: block; width: 136px; height: 166px; padding: 4px; background: #000; border: 4px solid var(--wh); border-radius: 10px; }
+  .rp-ph img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+  .rp-me__t { display: grid; justify-items: center; gap: 6px; }
+  .rp-me__t b { font: 400 22px/1.3 'Galmuri11', monospace; }
+  .rp-me__t small { font-size: 13px; font-weight: 800; color: var(--or); }
+  .rp-lv { display: grid; gap: 10px; padding: 12px 10px !important; border-top: 3px solid rgb(255 255 255 / .35); border-bottom: 3px solid rgb(255 255 255 / .35); }
+  .rp-lv div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+  .rp-lv dt { font-size: 8px; line-height: 2; color: var(--mu); }
+  .rp-lv dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+  .rp-lv dd b { font-size: 16px; color: var(--wh); }
+  .rp-lv dd span { font-size: 13px; font-weight: 600; color: var(--mu); }
+  .rp-next { flex-direction: column; align-items: stretch; gap: 8px; }
+  .rp-next__h { display: flex; align-items: baseline; justify-content: space-between; }
+  .rp-next__h b { font-size: 8px; color: var(--mu); }
+  .rp-next__h span { font: 400 22px/1 'Galmuri11', monospace; color: var(--or); }
+  .rp-bar { display: block; height: 18px; padding: 2px; background: #000; border: 3px solid var(--wh); border-radius: 6px; }
+  .rp-bar i { display: block; width: var(--p); height: 100%; border-radius: 3px; background: linear-gradient(180deg, #fce070, #f89800); }
+  .rp-next small { font-size: 13px; font-weight: 600; color: var(--mu); }
+  .rp-stat { grid-area: stat; }
+  .rp-st { align-items: center; gap: 12px; }
+  .rp-st__n { display: grid; flex: 1; min-width: 0; }
+  .rp-st__n b { font-size: 15px; font-weight: 800; }
+  .rp-st__n small { font-size: 12.5px; font-weight: 600; line-height: 1.45; color: var(--mu); }
+  .rp-pips { display: flex; flex: none; gap: 4px; }
+  .rp-pips i { width: 22px; height: 14px; background: #101848; border: 3px solid #000; border-radius: 3px; }
+  .rp-pips i.on { background: linear-gradient(180deg, #b0f080, #30a020); }
+  .rp-st > b { font-size: 16px; }
+  .rp-eq { grid-area: eq; }
+  .rp-eq__i { align-items: center; justify-content: space-between; gap: 10px; }
+  .rp-eq__t { display: grid; gap: 4px; font-size: 15px; font-weight: 700; }
+  .rp-eq__t small { font-size: 8px; color: var(--or); }
+  .rp-logos { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+  .rp-logos img { display: block; width: 30px; height: 30px; padding: 4px; background: #fff !important; border-radius: 5px; box-shadow: 0 0 0 2px #000; }
+  .rp-sp { grid-area: sp; }
+  .rp-sp__i { align-items: flex-start; gap: 14px; padding-block: 10px; }
+  .rp-sp__i > b { flex: none; padding-top: 4px; font-size: 16px; color: var(--or); }
+  .rp-sp__t { display: grid; gap: 2px; flex: 1; min-width: 0; }
+  .rp-sp__t > span { font-size: 17px; font-weight: 800; }
+  .rp-sp__t > span small { margin-left: 10px; font-size: 8px; color: var(--mu); vertical-align: 2px; }
+  .rp-sp__t > small { font-size: 13.5px; font-weight: 500; line-height: 1.55; color: var(--mu); }
+  .rp-log { grid-area: log; }
+  .rp-log__i { flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+  .rp-log__t { display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+  .rp-log__t b { font-size: 16px; font-weight: 800; }
+  .rp-log__t small { font-size: 13px; font-weight: 600; color: var(--mu); }
+  .rp-log__q { flex: 1; font-size: 14px; }
+  .rp-log__q strong { color: var(--or); }
+  .rp-log__i em { padding: 5px 6px; background: #20a020; border: 2px solid #000; border-radius: 4px; font-size: 8px; font-style: normal; }
+  .rp-help { grid-area: help; display: grid; align-content: start; gap: 4px; min-height: 104px; padding: 18px 24px 20px; }
+  .rp-help__t { font-size: 17px; font-weight: 800; color: var(--or); }
+  .rp-help__b { font-size: 16px; line-height: 1.7; }
+  @media (max-width: 1179px) { .rp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'who stat' 'eq eq' 'sp log' 'help help'; } }
+  @media (max-width: 760px) {
+    .rp { padding: 14px 12px; border-radius: 10px; }
+    .rp__grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'who' 'stat' 'eq' 'sp' 'log' 'help'; gap: 18px; }
+    .rp-help { position: sticky; z-index: 2; bottom: 12px; min-height: 0; padding: 14px 18px 16px; }
+    .rp-help__b { font-size: 15px; line-height: 1.6; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sw-me { transition: none; } .mb__scene.go * { animation: none !important; } .rp-i.on::before { animation: none; } }
 
   @media (prefers-reduced-motion: reduce) { .mock *, .mock *::before, .mock *::after { animation: none !important; transition: none !important; } }
 
@@ -399,13 +603,13 @@
 <main class="wrap">
   <section class="lead">
     <h2><span class="i18n-ko">이력이 먼저 — 간단하고 확실하게.</span><span class="i18n-en">The career first — simple and clear.</span></h2>
-    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 마리오 시리즈의 지도 화면 위에 — 길 = 시간, 칸 = 경력, 성 = 출시한 프로젝트로 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career sits on a Mario-series map screen: the road is time, spaces are periods, castles are shipped projects. The console is the <b>brick handheld</b>.</span></p>
+    <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 마리오 시리즈의 게임 화면 위에 — 지도 · 코스 시작 · 상태 메뉴 가운데 하나로 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career sits on a Mario-series game screen — a map, a course start screen or a status menu. The console is the <b>brick handheld</b>.</span></p>
     <nav class="toc" id="toc"></nav>
   </section>
 
   <section class="part" id="story">
-    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력 · 마리오 시리즈 월드 지도</span><span class="i18n-en">Home flow — the career as a Mario-series world map</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">"다 별론디" 뒤 기준부터 정했습니다 — 걸리는 것: 보기 · 내용 · 어색한 게임 테마 / 레퍼런스 먼저 / 게임 화면처럼 강하게 → 닌텐도 레트로 게임 레퍼런스 → "일단 마리오 시리즈 위주로". 그래서 이력을 <b>슈퍼 마리오브라더스 3 의 지도 화면</b>에 그대로 올렸습니다(이름 띠는 슈퍼 마리오 월드). 지도 · 칸 · 성 · 상태 막대는 원작을 베끼지 않고 같은 문법으로 4px 칸마다 새로 찍었습니다. 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">After "none of it works" we set the criteria first — issues: looks, content, an awkward game theme / references first / a strong game-screen feel → Nintendo retro references → "start with the Mario series". So the career now sits on <b>a Super Mario Bros. 3 map screen</b> (with Super Mario World's name strip). Map, panels, castles and status bar are not copied; they are redrawn cell by cell in the same grammar on the 4px grid. The earlier pick S is folded below.</span></p>
+    <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력 · 마리오 시리즈 화면 넷</span><span class="i18n-en">Home flow — the career on four Mario-series screens</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">"다 별론디" 뒤 기준부터 정했습니다 — 걸리는 것: 보기 · 내용 · 어색한 게임 테마 / 레퍼런스 먼저 / 게임 화면처럼 강하게 → 닌텐도 레트로 게임 레퍼런스 → "일단 마리오 시리즈 위주로". 그래서 같은 이력을 마리오 시리즈의 서로 다른 화면 넷에 올렸습니다 — <b>가</b> 슈퍼 마리오브라더스 3 월드 지도 · <b>나</b> 슈퍼 마리오 월드 섬 지도 · <b>다</b> 슈퍼 마리오브라더스 코스 시작 화면 · <b>라</b> 슈퍼 마리오 RPG 상태 메뉴. 그림은 원작을 베끼지 않고 같은 문법으로 새로 찍었고, 글 · 숫자는 모두 이력서 · 프로젝트 값 그대로입니다. 마음에 드는 화면(섞어도 됨)을 알려 주세요. 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">After "none of it works" we set the criteria first — issues: looks, content, an awkward game theme / references first / a strong game-screen feel → Nintendo retro references → "start with the Mario series". So the same career now sits on four different Mario-series screens — <b>가</b> the Super Mario Bros. 3 world map, <b>나</b> the Super Mario World island map, <b>다</b> the Super Mario Bros. course start screen and <b>라</b> the Super Mario RPG status menu. The art is not copied but redrawn in the same grammar, and every word and number comes straight from the résumé and projects. Tell me which screen you like (mixing is fine). The earlier pick S is folded below.</span></p>
     <ul class="rules" id="rules"></ul>
     <div id="drafts4"></div>
     <details class="older" id="older"><summary><span class="i18n-ko">지난 안 — S 지어지는 월드</span><span class="i18n-en">Earlier — S, a world being built</span><small><span class="i18n-ko">스크롤 연출 · 보류</span><span class="i18n-en">scroll staging · on hold</span></small></summary>
@@ -919,6 +1123,272 @@
     return { sel: sel };
   }
 
+  /* ── 마리오 시리즈 공용: 경력 칸 일곱(시간 순) · 시기마다 늘어난 숫자 · 한 칸씩 넘기기 ── */
+  var WSEQ = WN.slice(1, -1);
+  var WGAIN = { solo: { dl: 200000, ti: 5 }, lod: { dl: 100000, ti: 1 }, com: { ti: 1 } };
+  var WTEAM = { solo: ['1', { ko: '명', en: 'person' }], comm: ['60K', { ko: '회원', en: 'members' }], lod: ['3', { ko: '명', en: 'people' }], blog: ['2', { ko: '명', en: 'people' }], study: ['12', { ko: '명', en: 'people' }], com: ['5', { ko: '명', en: 'people' }] };
+  function wPeriod(n) { var c = n.c && n.c(), p = n.p && n.p(); return p && p.period ? t(p.period) : c && c.date ? t(c.date) : ''; }
+  function wTitle(n) { var c = n.c && n.c(), p = n.p && n.p(); return p && p.title ? t(p.title) : c && c.role ? t(c.role) : t(n.short); }
+  function wYear(n) { var m = /\d{4}/.exec(wPeriod(n)); return m ? m[0] : ''; }
+  function wTotals(upto) {      /* upto 번째 칸까지 쌓인 점수(누적 다운로드) · 동전(출시작) */
+    var dl = 0, ti = 0;
+    for (var i = 0; i <= upto && i < WSEQ.length; i++) { var g = WGAIN[WSEQ[i].id] || {}; dl += g.dl || 0; ti += g.ti || 0; }
+    return { dl: dl, ti: ti };
+  }
+  function wCourse() {          /* 기획자 과정 — 몇 달째인지(다음 목표까지 남은 길) */
+    var c = car(/과정/), m = /(\d{4})\.(\d{2})\s*[–-]\s*(\d{4})\.(\d{2})/.exec((c.date && c.date.ko) || ''), d = new Date();
+    if (!m) return null;
+    var a = +m[1] * 12 + +m[2], b = +m[3] * 12 + +m[4], z = d.getFullYear() * 12 + d.getMonth() + 1, tot = b - a + 1;
+    return { el: Math.max(0, Math.min(tot, z - a + 1)), tot: tot, c: c };
+  }
+  function wirePager(root, count, show, start) {
+    var cur = start || 0;
+    function go(i) {
+      cur = (i + count) % count; show(cur);
+      [].forEach.call(root.querySelectorAll('[data-go]'), function (b) { b.setAttribute('aria-pressed', String(+b.getAttribute('data-go') === cur)); });
+    }
+    root.addEventListener('click', function (e) {
+      var s = e.target.closest('[data-step]'); if (s) go(cur + +s.getAttribute('data-step'));
+      var g = e.target.closest('[data-go]'); if (g) go(+g.getAttribute('data-go'));
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { go(cur + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { go(cur - 1); e.preventDefault(); }
+    });
+    go(cur);
+    return { go: go };
+  }
+
+  /* ════ 이력 — 슈퍼 마리오브라더스(패미컴) 코스 시작 화면 ════
+     검은 화면 맨 위 점수판(1P · 점수 · 동전 · WORLD · TIME) + 가운데 'WORLD 3-4' 와 그 코스 + 아래 코스를 미리 보여 주는 장면 한 줄(하늘 · 땅 블록 · 소품).
+     시기 하나 = 월드 하나(1 ~ 7, 출시한 프로젝트는 성이 있는 x-4), 다음 목표 = 마지막 월드 8.
+     넘길수록 점수(누적 다운로드) · 동전(출시작)이 그 시기까지 쌓인 만큼 올라감 — 10년이 점수판에 쌓이는 모양.
+     장면 소품 = 그 칸의 종류: 경력 = 벽돌 · 물음표 블록 + 동전, 출시 프로젝트 = 계단 블록 + 깃대, 배운 곳 = 관, 다음 목표 = 계단 + 빈 깃대 */
+  var MBW = [{ k: 'start', w: 'START' }].concat(WSEQ.map(function (n, i) { return { n: n, k: n.k, w: (i + 1) + (n.k === 'castle' ? '-4' : '-1') }; })).concat([{ k: 'goal', w: '8-1' }]);
+  function mbScene(e) {
+    var k = e.k, s = '<i class="mb-gnd"></i><i class="mb-s s-cloud" style="left:6%;top:24px"></i><i class="mb-s s-cloud" style="left:36%;top:16px"></i><i class="mb-s s-hill" style="left:-24px"></i><i class="mb-s s-bush" style="left:38%"></i>';
+    s += '<i class="mb-s s-ghost mb-me"></i>';
+    if (k === 'panel') s += '<i class="mb-s s-brick mb-row" style="left:calc(66% - 64px)"></i><i class="mb-s s-qb mb-row" style="left:66%"></i><i class="mb-s s-brick mb-row" style="left:calc(66% + 64px)"></i><i class="mb-s s-coin mb-coin" style="left:calc(66% + 20px)"></i>';
+    if (k === 'castle' || k === 'goal') {
+      for (var j = 0; j < 3; j++) s += '<i class="mb-s mb-hard' + (j ? '' : ' mb-hard0') + '" style="right:' + (232 - j * 64) + 'px;height:' + (j + 1) * 64 + 'px"></i>';
+      s += '<i class="mb-s s-pole mb-pole"></i>' + (k === 'castle' ? '<i class="mb-s s-flagt mb-flag"></i>' : '');
+    }
+    if (k === 'house') s += '<i class="mb-s s-pipe" style="left:66%"></i>';
+    if (k === 'start') s += '<i class="mb-s s-qb mb-row" style="left:66%"></i>';
+    return s;
+  }
+  function mbShow(root, i) {
+    var e = MBW[i], n = e.n, tot = n ? wTotals(WSEQ.indexOf(n)) : i === MBW.length - 1 ? wTotals(WSEQ.length - 1) : { dl: 0, ti: 0 };
+    root.querySelector('[data-mb-score]').textContent = ('000000' + tot.dl).slice(-6);
+    root.querySelector('[data-mb-coin]').textContent = '×' + ('0' + tot.ti).slice(-2);
+    root.querySelector('[data-mb-world]').textContent = n ? e.w : i === 0 ? '1-1' : '8-1';
+    root.querySelector('[data-mb-time]').textContent = n ? wYear(n) : i === 0 ? '2016' : '2027';
+    var mid = '';
+    if (!n && i === 0) {
+      mid = '<p class="ps mb__w">WORLD 1-1</p><p class="mb__lives"><i class="mb-s s-ghost in"></i><b class="ps">× ' + esc(YRS) + '</b><span>' + T('년째 게임을 만드는 중', 'years of making games') + '</span></p>' +
+        '<h4 class="mb__t">' + esc(NAME) + '<small>' + T('게임 기획자', 'Game designer') + '</small></h4><p class="mb__lead">' + esc(plain(t(C.hero && C.hero.titleHtml))) + '</p>' +
+        '<p class="mb__note">' + T('▶ 를 누르면 2016년부터 한 월드씩 — 위 점수(누적 다운로드) · 동전(출시작)이 그 해까지 쌓입니다.', 'Press ▶ to play from 2016 — the score (downloads) and coins (titles) above add up year by year.') + '</p>';
+    } else if (!n) {
+      var cs = wCourse();
+      mid = '<p class="ps mb__w">WORLD 8-1</p><p class="mb__lives"><i class="mb-s s-ghost in"></i><b class="ps">NEXT</b><span>' + T('다음 목표', 'next goal') + '</span></p><h4 class="mb__t">PD</h4><p class="mb__lead">' + esc(t(WGOAL)) + '</p>' +
+        (cs ? '<p class="mb__note">' + T('가는 길: ', 'On the way: ') + esc(t(cs.c.role)) + ' · ' + (L === 'en' ? 'month ' + cs.el + ' of ' + cs.tot : cs.tot + '개월 중 ' + cs.el + '개월째') + '</p>' : '');
+    } else {
+      var c = n.c && n.c(), p = n.p && n.p(), now = wNow(n), team = WTEAM[n.id];
+      var meta = [wPeriod(n)].concat(p && p.myRole ? [t(p.myRole)] : []).concat(p && p.status ? [t(p.status)] : c && c.org ? [t(c.org)] : []);
+      mid = '<p class="ps mb__w">WORLD ' + esc(e.w) + (now ? '<span class="mb__now">▶ ' + T('진행 중', 'NOW') + '</span>' : '') + '</p>' +
+        (team ? '<p class="mb__lives"><i class="mb-s s-ghost in"></i><b class="ps">× ' + esc(team[0]) + '</b><span>' + esc(t(team[1])) + '</span></p>' : '') +
+        '<h4 class="mb__t">' + esc(wTitle(n)) + '</h4><p class="mb__sub">' + meta.map(esc).join(' · ') + '</p>' +
+        (n.big ? '<p class="mb__big"><b class="ps">' + esc(n.big[0]) + '</b><span>' + esc(t(n.big[1])) + '</span></p>' : '') +
+        (p && p.quest && p.quest.goal ? '<p class="mb__q"><b class="ps">QUEST</b><span>' + esc(t(p.quest.goal)) + ' → <strong>' + esc(t(p.quest.result)) + '</strong></span>' + (p.quest.cleared ? '<em class="ps">CLEAR</em>' : '') + '</p>' : '') +
+        (p && p.learned && p.learned[0] ? '<p class="mb__learn">' + esc(t(p.learned[0])) + '</p>' : c && c.body ? '<p class="mb__learn">' + esc(t(c.body)) + '</p>' : '');
+    }
+    root.querySelector('[data-mb-mid]').innerHTML = mid;
+    var sc = root.querySelector('[data-mb-scene]'); sc.innerHTML = mbScene(e);
+    sc.classList.remove('go'); void sc.offsetWidth; sc.classList.add('go');
+  }
+  function draftE2() {
+    var chips = MBW.map(function (e, i) { var n = e.n; return '<button type="button" class="mb-chip" data-go="' + i + '"><b class="ps">' + esc(e.w) + '</b><span>' + esc(n ? wYear(n) : i === 0 ? T('나', 'Me') : 'PD') + '</span></button>'; }).join('');
+    return '<section class="mb" data-mb tabindex="0" aria-label="' + T('코스 시작 화면 — 10년 이력', 'Course start screens — ten years') + '">' +
+      '<div class="mb__hud"><p><span><b class="ps">1P</b> <span class="mb__nm">' + esc(NAME) + '</span></span><b class="ps" data-mb-score>000000</b></p><p><span>&nbsp;</span><b class="ps"><i class="mb-s s-coin-s in"></i><span data-mb-coin>×00</span></b></p><p><span class="ps">WORLD</span><b class="ps" data-mb-world>1-1</b></p><p><span class="ps">TIME</span><b class="ps" data-mb-time>2016</b></p></div>' +
+      '<p class="mb__legend">' + T('점수 = 누적 다운로드 · 동전 = 출시작 · TIME = 그 해 · 고스트 수 = 함께한 사람', 'Score = downloads · coins = titles shipped · TIME = the year · ghosts = people involved') + '</p>' +
+      '<div class="mb__mid" data-mb-mid aria-live="polite"></div>' +
+      '<div class="mb__scene" data-mb-scene aria-hidden="true"></div>' +
+      '<div class="mb__nav"><button type="button" class="mb-key ps" data-step="-1" aria-label="' + T('이전 월드', 'Previous world') + '">◀</button><div class="mb__chips">' + chips + '</div><button type="button" class="mb-key ps" data-step="1" aria-label="' + T('다음 월드', 'Next world') + '">▶</button></div></section>';
+  }
+  function wireE2() { var r = document.querySelector('[data-mb]'); if (r) wirePager(r, MBW.length, function (i) { mbShow(r, i); }); }
+
+  /* ════ 이력 — 슈퍼 마리오 월드(슈퍼 패미컴) 섬 지도 + 메시지 블록 + COURSE CLEAR! ════
+     바다 위 섬 하나(위 = 풀밭, 아래 = 갈색 벼랑 — 같은 4px 칸으로 코드가 칸마다 칠함) · 모래 길 · 노란 점(경력) · 돌 성(출시 프로젝트) · 파란 점(배운 곳) · 깃발(다음 목표).
+     지도 맨 위에 고른 코스 이름(흰 글자 + 검은 외곽), 지도 아래쪽에 검은 메시지 블록(그 칸의 한 줄), 오른쪽은 코스를 깬 뒤의 결산 화면(COURSE CLEAR! · 기간 · 숫자 · 보너스) */
+  var SWC = 4, SWW = 200, SWH = 112;                  /* 칸 4px · 지도 800 × 448 */
+  var SWN = { start: [16, 82], solo: [34, 82], comm: [44, 54], lod: [66, 34], blog: [92, 50], study: [112, 74], course: [134, 54], com: [156, 34], goal: [180, 60] };
+  function swMap() {
+    var g = [], x, y;
+    for (y = 0; y < SWH; y++) { g.push([]); for (x = 0; x < SWW; x++) g[y].push(((x * 7 + y * 13) % 41 === 0 && y % 6 === 2) ? 'w' : 'c'); }
+    var blobs = [[30, 70, 26, 26], [62, 44, 30, 26], [96, 56, 30, 28], [128, 60, 26, 24], [158, 44, 30, 26], [182, 62, 16, 16]];
+    function land(x, y) { return blobs.some(function (b) { var dx = (x - b[0]) / b[2], dy = (y - b[1]) / b[3]; return dx * dx + dy * dy <= 1; }) && y < SWH - 8; }
+    for (y = 0; y < SWH; y++) for (x = 0; x < SWW; x++) {
+      if (land(x, y)) g[y][x] = 'g';
+      else for (var k = 1; k <= 5; k++) if (y - k >= 0 && land(x, y - k)) { g[y][x] = k === 5 ? 'K' : 'm'; break; }
+    }
+    /* 벼랑 줄무늬 · 풀밭 가장자리 외곽선 · 안쪽 그늘 */
+    for (y = 1; y < SWH - 1; y++) for (x = 1; x < SWW - 1; x++) {
+      var v = g[y][x];
+      if (v === 'm' && x % 6 === 0) g[y][x] = 'd';
+      if (v === 'g') {
+        var edge = ['c', 'w'].indexOf(g[y][x - 1]) >= 0 || ['c', 'w'].indexOf(g[y][x + 1]) >= 0 || ['c', 'w'].indexOf(g[y - 1][x]) >= 0;
+        if (edge) g[y][x] = 'K'; else if (g[y + 1][x] === 'm') g[y][x] = 'K'; else if ((x * 5 + y * 11) % 37 === 0 || (x * 5 + y * 11) % 37 === 5) g[y][x] = 'G';
+      }
+      if (v === 'm' && (g[y][x - 1] === 'c' || g[y][x + 1] === 'c')) g[y][x] = 'K';
+    }
+    /* 언덕 몇 개(둥근 초록 둔덕) */
+    [[24, 60], [78, 30], [104, 40], [146, 70], [170, 28]].forEach(function (h) {
+      for (var yy = -5; yy <= 0; yy++) for (var xx = -7; xx <= 7; xx++) {
+        var inside = (xx * xx) / 49 + (yy * yy) / 25 <= 1, X = h[0] + xx, Y = h[1] + yy;
+        if (!inside || g[Y][X] === 'c') continue;
+        var bord = (((xx - 1) * (xx - 1)) / 49 + (yy * yy) / 25 > 1) || (((xx + 1) * (xx + 1)) / 49 + (yy * yy) / 25 > 1) || ((xx * xx) / 49 + ((yy - 1) * (yy - 1)) / 25 > 1);
+        g[Y][X] = bord ? 'K' : (xx > 2 ? 'G' : 'g');
+      }
+    });
+    /* 모래 길 — 칸 순서대로 이은 선, 굵기 3칸 + 검은 가장자리 */
+    var order = ['start', 'solo', 'comm', 'lod', 'blog', 'study', 'course', 'com', 'goal'];
+    function seg(a, b, ch, r) {
+      var n = Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]));
+      for (var i = 0; i <= n; i++) { var px = Math.round(a[0] + (b[0] - a[0]) * i / n), py = Math.round(a[1] + (b[1] - a[1]) * i / n);
+        for (var yy = -r; yy <= r; yy++) for (var xx = -r; xx <= r; xx++) if (g[py + yy] && g[py + yy][px + xx] !== undefined) g[py + yy][px + xx] = ch; }
+    }
+    for (var i = 0; i < order.length - 1; i++) { var A = SWN[order[i]], B = SWN[order[i + 1]], last = i === order.length - 2; seg([A[0], A[1]], [A[0], B[1]], 'K', 2); seg([A[0], B[1]], [B[0], B[1]], 'K', 2); if (last) continue; }
+    for (i = 0; i < order.length - 1; i++) { A = SWN[order[i]]; B = SWN[order[i + 1]]; seg([A[0], A[1]], [A[0], B[1]], i === order.length - 2 ? 'w' : 'y', 1); seg([A[0], B[1]], [B[0], B[1]], i === order.length - 2 ? 'w' : 'y', 1); }
+    return g.map(function (r) { return r.join(''); });
+  }
+  var SWDOT = { Y: grid(7, 7, function (x, y) { var d = (x - 3) * (x - 3) + (y - 3) * (y - 3); return d > 10 ? '.' : d > 5 ? 'K' : (x + y < 5 ? 'w' : 'Y'); }) };
+  SWDOT.B = SWDOT.Y.map(function (r) { return r.replace(/Y/g, 'b'); });
+  SWDOT.R = SWDOT.Y.map(function (r) { return r.replace(/Y/g, 'r'); });
+  function draftE3() {
+    PAL.y = '#fce0a8'; PAL.Y = '#f8b800'; PAL.b = '#0058f8'; PAL.d = '#883000';
+    document.documentElement.style.setProperty('--sw-map', spr(swMap()));
+    ['Y', 'B', 'R'].forEach(function (k) { document.documentElement.style.setProperty('--sw-dot' + k, spr(SWDOT[k])); });
+    var nodes = WN.map(function (n, i) {
+      var p = SWN[n.id], cx = p[0] * SWC + 2, cy = p[1] * SWC + 2, w = n.k === 'castle' ? 64 : n.k === 'flag' ? 64 : n.k === 'start' ? 40 : 40, h = n.k === 'flag' ? 128 : w;
+      var top = n.k === 'flag' ? cy - 120 : cy - h / 2 - (n.k === 'castle' ? 12 : 0), inner = n.k === 'castle' ? '<i class="sw-s wm-castle"></i>' : n.k === 'flag' ? '<i class="sw-s wm-flag"></i>' : '<i class="sw-s sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y') + '"></i>';
+      return '<button type="button" class="sw-n sw-n--' + n.k + '" data-go="' + i + '" style="left:' + (cx - w / 2) + 'px;top:' + top + 'px;width:' + w + 'px;height:' + h + 'px" aria-label="' + esc(n.code + ' · ' + t(n.short)) + '">' + inner + '</button>';
+    }).join('');
+    return '<section class="sw" data-sw tabindex="0" aria-label="' + T('섬 지도 — 10년 이력', 'Island map — ten years') + '"><div class="sw__body">' +
+      '<div class="sw__mapwrap"><div class="sw__map"><p class="sw__lives"><i class="sw-life"></i><b class="ps">× ' + esc(YRS) + '</b></p><p class="sw__name" data-sw-name></p>' + nodes +
+      '<i class="sw-me" aria-hidden="true"></i></div></div><div class="sw__msg" data-sw-msg aria-live="polite"></div>' +
+      '<div class="sw__clear" data-sw-clear></div></div>' +
+      '<div class="sw__nav"><button type="button" class="mb-key ps" data-step="-1" aria-label="' + T('이전 코스', 'Previous') + '">◀</button><span>' + T('점을 누르거나 ◀ ▶ · ← → 로 길을 따라갑니다', 'Tap a dot, or follow the road with ◀ ▶ / ← →') + '</span><button type="button" class="mb-key ps" data-step="1" aria-label="' + T('다음 코스', 'Next') + '">▶</button></div></section>';
+  }
+  function swShow(root, i) {
+    var n = WN[i], p0 = SWN[n.id], me = root.querySelector('.sw-me'), c = n.c && n.c(), p = n.p && n.p();
+    me.style.left = (p0[0] * SWC + 2 - 24) + 'px'; me.style.top = (p0[1] * SWC + 2 - (n.k === 'castle' ? 92 : n.k === 'flag' ? 176 : 70)) + 'px';
+    root.querySelector('[data-sw-name]').textContent = n.k === 'start' ? NAME + ' · ' + T('게임 기획자', 'Game designer') : (n.code.indexOf('-') > 0 ? n.code + ' ' : '') + t(n.short);
+    var msg = n.k === 'start' ? plain(t(C.hero && C.hero.titleHtml)) : n.k === 'flag' ? t(WGOAL) : c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : '';
+    root.querySelector('[data-sw-msg]').innerHTML = '<p>' + esc(msg) + '</p>';
+    var h = '<p class="sw-c__who">' + esc(NAME) + '</p>';
+    if (n.k === 'start') {
+      var quip = C.home && C.home.quips && C.home.quips[0];
+      h += '<p class="ps sw-c__big">READY!</p><p class="sw-c__t">' + T('게임 기획자', 'Game designer') + '</p><dl class="sw-c__rows sw-c__rows--st">' + stats.map(function (s) { return '<div><dt>' + esc(t(s.label)) + '</dt><dd class="ps">' + esc(s.num) + esc(t(s.unit)) + '</dd></div>'; }).join('') + '</dl>' +
+        (quip ? '<p class="sw-c__say">“' + esc(t(quip)) + '”</p>' : '') + '<p class="sw-c__body sw-c__mu sw-c__go">' + T('▶ 를 누르면 2016년부터 길을 따라갑니다.', 'Press ▶ to follow the road from 2016.') + '</p>';
+    } else if (n.k === 'flag') {
+      var cs = wCourse();
+      h += '<p class="ps sw-c__big">NEXT</p><p class="sw-c__t">PD</p><p class="sw-c__body">' + esc(t(WGOAL)) + '</p>' +
+        (cs ? '<p class="sw-c__body">' + T('가는 길: ', 'On the way: ') + esc(t(cs.c.role)) + ' · ' + (L === 'en' ? 'month ' + cs.el + ' of ' + cs.tot : cs.tot + '개월 중 ' + cs.el + '개월째') + '</p><span class="sw-c__bar"><i style="--p:' + (cs.el / cs.tot * 100).toFixed(1) + '%"></i></span>' : '') +
+        '<p class="sw-c__body sw-c__mu">' + T('흰 길은 아직 안 간 길입니다.', 'The white road is the part not travelled yet.') + '</p>';
+    } else {
+      var now = wNow(n);
+      h += (now ? '<p class="sw-c__now">▶ ' + T('지금 진행 중인 코스', 'Course in progress') + '</p>' : '<p class="ps sw-c__big">COURSE CLEAR!</p>') + '<p class="sw-c__t">' + esc(wTitle(n)) + '</p><dl class="sw-c__rows">' +
+        '<div><dt class="ps">TIME</dt><dd>' + esc(wPeriod(n)) + '</dd></div>' +
+        (p && p.headcount ? '<div><dt class="ps">TEAM</dt><dd>' + esc(t(p.headcount)) + (p.myRole ? ' · ' + esc(t(p.myRole)) : '') + '</dd></div>' : c && c.org ? '<div><dt class="ps">WITH</dt><dd>' + esc(t(c.org)) + '</dd></div>' : '') +
+        (n.big ? '<div><dt class="ps">SCORE</dt><dd><b class="ps">' + esc(n.big[0]) + '</b> ' + esc(t(n.big[1])) + '</dd></div>' : '') +
+        (p && p.quest && p.quest.goal ? '<div><dt class="ps">BONUS</dt><dd>' + esc(t(p.quest.goal)) + ' → <b>' + esc(t(p.quest.result)) + '</b></dd></div>' : '') + '</dl>' +
+        (p && p.learned && p.learned.length ? '<ul class="sw-c__learn">' + p.learned.slice(0, 2).map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul>' : c && c.tags ? '<p class="sw-c__tags">' + c.tags.map(function (x) { return '<span>' + esc(t(x)) + '</span>'; }).join('') + '</p>' : '');
+    }
+    root.querySelector('[data-sw-clear]').innerHTML = h;
+    var wrap = root.querySelector('.sw__mapwrap'); if (wrap.scrollWidth > wrap.clientWidth) wrap.scrollLeft = Math.max(0, p0[0] * SWC - wrap.clientWidth / 2);
+    swName(root);
+  }
+  function swName(root) {         /* 좁은 화면 — 코스 이름은 지도에서 지금 보이는 폭의 가운데에 */
+    var wrap = root.querySelector('.sw__mapwrap'), nm = root.querySelector('[data-sw-name]');
+    nm.style.left = wrap.scrollLeft + 'px'; nm.style.width = Math.min(800, wrap.clientWidth) + 'px';
+  }
+  function wireE3() {
+    var r = document.querySelector('[data-sw]'); if (!r) return;
+    r.querySelector('.sw__mapwrap').addEventListener('scroll', function () { swName(r); }, { passive: true });
+    window.addEventListener('resize', function () { swName(r); });
+    wirePager(r, WN.length, function (i) { swShow(r, i); });
+  }
+
+  /* ════ 이력 — 슈퍼 마리오 RPG(슈퍼 패미컴) 상태 메뉴 ════
+     둥근 창 여러 장(파란 그라데이션 면 · 흰 테 · 검은 바깥선)에 한 사람의 상태를 다 펼침:
+     왼쪽 = 나(사진 · 직업 · LV = 해 · EXP = 누적 다운로드 · 다음 레벨까지 = 기획자 과정 몇 달째),
+     가운데 위 = 능력치 여섯(모두 4 — 고르게 자란 '육각형'), 오른쪽 위 = 장비(핵심역량 다섯 칸 · 실제 도구 로고),
+     가운데 아래 = 기술(자기소개서 강점 셋), 오른쪽 아래 = 기록(출시한 프로젝트 셋 · 퀘스트 → 결과 CLEAR), 맨 아래 = 도움말 창(▶ 커서가 선 항목의 설명).
+     누르지 않아도 전부 읽히고, 마우스 · 초점 · ← → 로 커서를 옮기면 도움말이 바뀜 */
+  function IMG(p) { return (window.__IMG && window.__IMG[p]) || p; }          /* 아티팩트에서는 그림을 안에 넣어 둠 */
+  var TOOLS = { office: ['MS Office'], figma: ['Figma'], obsidian: ['Obsidian'], agent: ['Agent', 'claude'], hermes: ['Hermes'], flow: ['Flow', 'flow', 'png'], github: ['GitHub'], notion: ['Notion'], jira: ['Jira'], sheets: ['Google Sheets'], unity: ['Unity'], godot: ['Godot'], gamemaker: ['GameMaker'], firebase: ['Firebase'], cloudflare: ['Cloudflare'] };
+  function toolSrc(k) { var it = TOOLS[k] || [k]; return 'assets/img/tools/' + (it[1] || k) + '.' + (it[2] || 'svg'); }
+  var RP_HELP = [];               /* 커서 칸마다 [제목, 설명] */
+  function rpItem(cls, inner, help) {
+    RP_HELP.push(help);
+    return '<button type="button" class="rp-i ' + cls + '" data-rp-i="' + (RP_HELP.length - 1) + '">' + inner + '</button>';
+  }
+  function draftE4() {
+    RP_HELP = [];
+    var photo = (C.home && C.home.player && C.home.player.photo) || 'assets/img/profile.jpg', dl = stats[0] ? String(stats[0].num).replace(/K$/i, ',000') : '0', cs = wCourse();
+    var who = '<div class="rp-w rp-who"><p class="rp-w__h ps">STATUS</p>' +
+      rpItem('rp-me', '<span class="rp-ph"><img src="' + esc(IMG(photo)) + '" alt="" width="120" height="150"></span><span class="rp-me__t"><b>' + esc(NAME) + '</b><small>' + esc(t(CLS)) + '</small></span>',
+        [NAME + ' · ' + t(CLS), plain(t(C.hero && C.hero.titleHtml))]) +
+      '<dl class="rp-lv"><div><dt class="ps">LV</dt><dd><b class="ps">' + esc(YRS) + '</b><span>' + T('년째 · 2016 → 2026', 'yrs · 2016 → 2026') + '</span></dd></div>' +
+      '<div><dt class="ps">EXP</dt><dd><b class="ps">' + esc(dl) + '</b><span>' + T('누적 다운로드', 'downloads') + '</span></dd></div>' +
+      '<div><dt class="ps">OUT</dt><dd><b class="ps">' + esc((stats[1] && stats[1].num) || '7') + '</b><span>' + T('종 · 스토어 · 스팀', 'titles · stores · Steam') + '</span></dd></div>' +
+      '<div><dt class="ps">CREW</dt><dd><b class="ps">' + esc((stats[2] && stats[2].num) || '60K') + '</b><span>' + T('커뮤니티 회원', 'community members') + '</span></dd></div></dl>' +
+      rpItem('rp-next', '<span class="rp-next__h"><b class="ps">NEXT LV</b><span>PD</span></span>' + (cs ? '<span class="rp-bar"><i style="--p:' + (cs.el / cs.tot * 100).toFixed(1) + '%"></i></span><small>' + esc(t(cs.c.role)) + ' · ' + (L === 'en' ? 'month ' + cs.el + ' of ' + cs.tot : cs.tot + '개월 중 ' + cs.el + '개월째') + '</small>' : ''),
+        [T('다음 레벨 · PD', 'Next level · PD'), t(WGOAL) + (cs ? ' — ' + t(cs.c.role) + ' ' + t(cs.c.date) : '')]) + '</div>';
+    var stat = '<div class="rp-w rp-stat"><p class="rp-w__h"><b class="ps">STATS</b><span>' + T('능력치 · 고르게 4', 'Even at 4') + '</span></p>' + AX.map(function (a, i) {
+      var v = sumOf(upTo(GAIN.length - 1))[i], bar = '';
+      for (var k = 0; k < MAX; k++) bar += '<i' + (k < v ? ' class="on"' : '') + '></i>';
+      return rpItem('rp-st', '<span class="rp-st__n"><b>' + esc(t(a.n)) + '</b><small>' + esc(t(a.ev)) + '</small></span><span class="rp-pips" aria-label="' + v + ' / ' + MAX + '">' + bar + '</span><b class="ps">' + v + '</b>', [t(a.n) + ' ' + v + ' / ' + MAX, t(a.ev)]);
+    }).join('') + '</div>';
+    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [];
+    var slot = ['WEAPON', 'ARMOR', 'ITEM', 'ITEM', 'ITEM'];
+    var eq = '<div class="rp-w rp-eq"><p class="rp-w__h"><b class="ps">EQUIP</b><span>' + T('장비 · 실제로 쓰는 도구', 'Gear · tools I use') + '</span></p>' + cards.map(function (c, i) {
+      return rpItem('rp-eq__i', '<span class="rp-eq__t"><small class="ps">' + slot[i % slot.length] + '</small>' + esc(t(c.title)) + '</span><span class="rp-logos">' + (c.tools || []).map(function (k) { return '<img src="' + esc(IMG(toolSrc(k))) + '" alt="' + esc((TOOLS[k] || [k])[0]) + '" width="24" height="24">'; }).join('') + '</span>', [t(c.title), t(c.body)]);
+    }).join('') + '</div>';
+    var sum = (C.coverLetter && C.coverLetter.summary) || { items: [] };
+    var sp = '<div class="rp-w rp-sp"><p class="rp-w__h"><b class="ps">SPECIAL</b><span>' + T('기술 · 일하는 방식', 'Moves · how I work') + '</span></p>' + sum.items.map(function (s) {
+      var tag = String(s.tag || '').split('/'), num = (tag[0] || '').trim(), word = (tag[1] || '').trim();
+      return rpItem('rp-sp__i', '<b class="ps">' + esc(num) + '</b><span class="rp-sp__t"><span>' + esc(t(s.title)) + '<small class="ps">' + esc(word) + '</small></span><small>' + esc(t(s.body)) + '</small></span>', [t(s.title), t(s.body)]);
+    }).join('') + '</div>';
+    var log = '<div class="rp-w rp-log"><p class="rp-w__h"><b class="ps">QUESTS</b><span>' + T('기록 · 출시한 프로젝트', 'Log · shipped projects') + '</span></p>' + ['indie-games', 'league-of-defense', 'comstock'].map(function (id) {
+      var p = proj(id), q = p.quest || {};
+      return rpItem('rp-log__i', '<span class="rp-log__t"><b>' + esc(t(p.title)) + '</b><small>' + esc(t(p.period)) + ' · ' + esc(t(p.headcount)) + '</small></span><span class="rp-log__q">' + esc(t(q.goal)) + ' → <strong>' + esc(t(q.result)) + '</strong></span>' + (q.cleared ? '<em class="ps">CLEAR</em>' : ''),
+        [t(p.title) + ' · ' + t(p.myRole), (p.learned || []).slice(0, 2).map(t).join(' ')]);
+    }).join('') + '</div>';
+    return '<section class="rp" data-rp aria-label="' + T('상태 메뉴 — 10년 이력', 'Status menu — ten years') + '"><div class="rp__grid">' + who + stat + eq + sp + log +
+      '<div class="rp-w rp-help" aria-live="polite"><p class="rp-help__t" data-rp-ht></p><p class="rp-help__b" data-rp-hb></p></div></div></section>';
+  }
+  function wireE4() {
+    var root = document.querySelector('[data-rp]'); if (!root) return;
+    var items = [].slice.call(root.querySelectorAll('[data-rp-i]')), cur = 0;
+    function sel(i) {
+      cur = (i + items.length) % items.length;
+      items.forEach(function (b, j) { b.classList.toggle('on', j === cur); b.setAttribute('aria-pressed', String(j === cur)); });
+      var h = RP_HELP[+items[cur].getAttribute('data-rp-i')];
+      root.querySelector('[data-rp-ht]').textContent = h[0]; root.querySelector('[data-rp-hb]').textContent = h[1];
+    }
+    items.forEach(function (b, j) {
+      b.addEventListener('mouseenter', function () { sel(j); });
+      b.addEventListener('focus', function () { sel(j); });
+      b.addEventListener('click', function () { sel(j); });
+    });
+    root.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+      if (!d) return; e.preventDefault(); sel(cur + d); items[cur].focus();
+    });
+    sel(0);
+  }
+
   var DRAFTS4 = [
     { id: 'e1', label: '가', plain: true, f: draftE1, wire: wireE1, badge: { ko: '새 안 · 마리오 시리즈 · 월드 지도', en: 'New · Mario series · world map' }, name: { ko: '월드 지도 — 10년을 지도 한 장으로', en: 'World map — ten years on one map' }, sub: { ko: '슈퍼 마리오브라더스 3 지도 + 슈퍼 마리오 월드 이름 띠', en: 'SMB3 map + Super Mario World name strip' },
       pitch: { ko: '슈퍼 마리오브라더스 3 의 지도 화면처럼 10년을 지도 한 장에 놓았습니다. 길 = 시간 순서, START = 나(프로필), 번호 칸 = 경력 · 활동(주황 = 깬 곳, 검정 = 진행 중), 성 = 출시한 프로젝트(리그 오브 디펜스 · 컴스톡), 집 = 배운 곳(기획자 과정), 강을 건너는 다리 = 혼자에서 팀으로 넘어간 순간, 점선 끝 깃발 = 다음 목표 PD. 칸을 누르거나 ◀ ▶ 로 고르면 고스트(1P)가 그 칸에 서고, 위 띠에 코스 이름(슈퍼 마리오 월드), 오른쪽 카드에 기간 · 인원 · 역할 · 대표 숫자 · 퀘스트 목표 → 결과 · 배운 것이 뜹니다. 아래 상태 막대는 슈퍼 마리오브라더스 3 처럼 월드 · 10년 P 막대 · 점수(누적 다운로드) · 출시작 · 커뮤니티와 카드 세 칸(대표 결과).',
@@ -926,7 +1396,28 @@
       map: [['구조', 'Structure', '지도 한 장 = 10년 · 길 = 시간', 'One map = ten years · road = time'], ['고르면', 'Select', '고스트가 서고 이름 띠 · 코스 카드가 바뀜', 'Ghost moves; name strip and card update'], ['처음 화면', 'At rest', 'START(나)가 골라진 채 — 누르지 않아도 읽힘', 'START (me) selected — readable without tapping']],
       hint: { ko: '▶ 칸을 누르거나 지도를 누른 뒤 ← → 키, 또는 위 ◀ ▶. 휴대폰에서는 지도를 옆으로 밀어 봅니다.', en: '▶ Tap a space, focus the map and use ← →, or the ◀ ▶ buttons. On a phone, swipe the map sideways.' },
       pros: { ko: ['게임 화면 그대로 — 지도 · 이름 띠 · 상태 막대 · 카드가 모두 마리오 시리즈의 문법', '한 장으로 10년의 순서 · 종류(경력 · 성 · 집)가 한눈에, 고르면 자세히', '숫자는 상태 막대(점수 · 카드)에 늘 떠 있음'], en: ['A real game screen — map, name strip, status bar and cards all follow the Mario series', 'One picture shows the order and kind of every period; select for detail', 'The numbers always sit in the status bar (score, cards)'] },
-      cons: { ko: ['지도 폭 800px — 휴대폰에서는 옆으로 밀어야 함', '코스 카드는 하나씩만 보임(고르는 동작 필요)', '그림은 아직 초안 — 마음에 들면 칸 · 성 · 덤불을 더 다듬음'], en: ['The map is 800px wide — swipe sideways on a phone', 'One course card at a time (needs a selection)', 'The art is a first pass — refine panels, castles and bushes once the direction is right'] } }
+      cons: { ko: ['지도 폭 800px — 휴대폰에서는 옆으로 밀어야 함', '코스 카드는 하나씩만 보임(고르는 동작 필요)', '그림은 아직 초안 — 마음에 들면 칸 · 성 · 덤불을 더 다듬음'], en: ['The map is 800px wide — swipe sideways on a phone', 'One course card at a time (needs a selection)', 'The art is a first pass — refine panels, castles and bushes once the direction is right'] } },
+    { id: 'e3', label: '나', plain: true, f: draftE3, wire: wireE3, badge: { ko: '새 안 · 마리오 시리즈 · 섬 지도', en: 'New · Mario series · island map' }, name: { ko: '섬 지도 — 길을 따라 깨 온 코스들', en: 'Island map — courses cleared along the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 + COURSE CLEAR!', en: 'Super Mario World map + message block + COURSE CLEAR!' },
+      pitch: { ko: '슈퍼 마리오 월드의 섬 지도처럼 10년을 바다 위 섬 하나에 놓았습니다. 모래 길 = 시간, 빨간 점 = 나(START), 노란 점 = 경력 · 활동, 돌 성 = 출시한 프로젝트, 파란 점 = 배운 곳, 끝의 흰 길과 깃발 = 다음 목표(PD). 점을 고르면 지도 맨 위에 코스 이름이 뜨고, 아래 검은 메시지 블록에 그 시기의 한 줄, 오른쪽에 코스를 깬 뒤의 결산 화면(COURSE CLEAR! · 기간 · 숫자 · 보너스 = 퀘스트 결과)이 나옵니다.',
+               en: 'Ten years on one island in the sea, like the Super Mario World map. The sand road is time; the red dot is me (START); yellow dots are career and activities; stone castles are shipped projects; the blue dot is where I am learning; the white road and flag at the end are the next goal (PD). Pick a dot and its course name appears at the top of the map, the black message block below sums up that period in one line, and the right panel shows the post-course tally (COURSE CLEAR!, time, score, bonus = the quest result).' },
+      map: [['구조', 'Structure', '섬 한 장 = 10년 · 모래 길 = 시간', 'One island = ten years · sand road = time'], ['고르면', 'Select', '코스 이름 · 메시지 블록 · 결산 화면이 바뀜', 'Course name, message block and tally update'], ['처음 화면', 'At rest', 'START(나) — 숫자 넷이 결산 화면에', 'START (me) — the four numbers on the tally']],
+      hint: { ko: '▶ 점을 누르거나 지도를 누른 뒤 ← → 키, 또는 아래 ◀ ▶. 휴대폰에서는 지도를 옆으로 밀어 봅니다.', en: '▶ Tap a dot, focus the map and use ← →, or the ◀ ▶ buttons below. On a phone, swipe the map sideways.' },
+      pros: { ko: ['가 보다 넓고 부드러운 16비트 느낌 — 섬 · 벼랑 · 바다를 4px 칸마다 코드로 칠함', '메시지 블록 = 한 줄 요약, 결산 화면 = 숫자 — 읽는 순서가 분명', '깬 코스는 COURSE CLEAR!, 진행 중인 코스는 빨간 띠로 바로 구분'], en: ['Wider and softer than 가, with a 16-bit feel — island, cliffs and sea painted cell by cell in code', 'Message block = the one-line summary, tally = the numbers — a clear reading order', 'Cleared courses say COURSE CLEAR!; ongoing ones get a red tag'] },
+      cons: { ko: ['섬 모양이 아직 단순함(둥근 덩어리 여섯)', '지도 폭 800px — 휴대폰에서는 옆으로 밀어야 함', '결산 화면은 한 번에 한 코스'], en: ['The island shape is still simple (six round blobs)', 'The map is 800px wide — swipe sideways on a phone', 'One course on the tally at a time'] } },
+    { id: 'e2', label: '다', plain: true, f: draftE2, wire: wireE2, badge: { ko: '새 안 · 마리오 시리즈 · 코스 시작 화면', en: 'New · Mario series · course start' }, name: { ko: '코스 시작 화면 — 점수판에 쌓이는 10년', en: 'Course start — ten years on the scoreboard' }, sub: { ko: '슈퍼 마리오브라더스 점수판 + WORLD 화면 + 코스 미리보기', en: 'Super Mario Bros. HUD + WORLD card + course preview' },
+      pitch: { ko: '슈퍼 마리오브라더스에서 코스가 시작될 때 나오는 검은 화면을 썼습니다. 시기 하나 = 월드 하나(출시한 프로젝트는 성이 있는 x-4), 마지막 월드 8 = 다음 목표 PD. 맨 위 점수판의 점수(누적 다운로드) · 동전(출시작)은 넘길수록 그 해까지 쌓인 만큼 올라가 끝에는 300000 · ×07 이 되고, 고스트 수는 그때 함께한 사람 수입니다. 아래 장면은 그 코스의 미리보기 — 경력은 벽돌 · 물음표 블록, 프로젝트는 계단과 깃대, 배운 곳은 관.',
+               en: 'The black screen Super Mario Bros. shows before each course. One period = one world (shipped projects are castle levels, x-4), and the last, World 8, is the next goal: PD. The score (downloads) and coins (titles) in the HUD climb to whatever had piled up by that year, ending at 300000 and ×07; the ghost count is how many people were involved. Below is a preview of that course — bricks and a ? block for career, stairs and a flagpole for projects, a pipe for learning.' },
+      map: [['구조', 'Structure', '월드 하나 = 시기 하나 · 9장', 'One world = one period · 9 screens'], ['넘기면', 'Next', '점수 · 동전이 그 해까지 쌓임', 'Score and coins add up to that year'], ['처음 화면', 'At rest', 'WORLD 1-1 · 나 — 숫자 0 에서 출발', 'WORLD 1-1 · me — the numbers start at 0']],
+      hint: { ko: '▶ 아래 ◀ ▶ 나 월드 번호를 누르거나, 화면을 누른 뒤 ← → 키.', en: '▶ Press ◀ ▶ or a world number below, or focus the screen and use ← →.' },
+      pros: { ko: ['가장 단순하고 글씨가 큼 — 한 화면에 한 시기', '점수판이 쌓이는 모습 = 10년의 성장이 숫자로 보임', '마리오 1편을 아는 사람은 바로 알아봄(WORLD · TIME · 동전)'], en: ['The simplest, with the biggest type — one period per screen', 'The scoreboard climbing shows ten years of growth in numbers', 'Anyone who knows the first Mario recognises it (WORLD, TIME, coins)'] },
+      cons: { ko: ['한 번에 한 시기만 — 전체 흐름은 아래 월드 번호 줄로만 보임', '처음 화면은 숫자가 0 — 끝까지 넘겨야 300000', '장면은 장식에 가까움(종류만 구분)'], en: ['One period at a time — the whole flow only shows in the world-number row', 'The first screen starts at 0 — you reach 300000 only at the end', 'The scene is close to decoration (it only shows the kind)'] } },
+    { id: 'e4', label: '라', plain: true, f: draftE4, wire: wireE4, badge: { ko: '새 안 · 마리오 시리즈 · 상태 메뉴', en: 'New · Mario series · status menu' }, name: { ko: '상태 메뉴 — 한 화면에 펼친 한 사람', en: 'Status menu — one person on one screen' }, sub: { ko: '슈퍼 마리오 RPG 의 상태 · 장비 · 기술 창', en: 'Super Mario RPG status, equip and specials windows' },
+      pitch: { ko: '슈퍼 마리오 RPG 의 메뉴처럼 둥근 파란 창 여섯 장에 한 사람의 상태를 다 펼쳤습니다. 왼쪽 = 나(사진 · 육각형 기획자 · LV 10 = 10년 · EXP = 누적 다운로드 · 다음 레벨 PD 까지 = 기획자 과정 몇 달째), 능력치 여섯은 모두 4(고르게 자람), 장비 = 핵심역량 다섯 칸과 실제 도구 로고, 기술 = 자기소개서 강점 셋, 기록 = 출시한 프로젝트 셋의 퀘스트 결과. ▶ 커서를 옮기면 아래 도움말 창에 근거가 나옵니다.',
+               en: 'Like the Super Mario RPG menu, six rounded blue windows lay out one person\'s whole status. Left: me (photo, hexagon game designer, LV 10 = ten years, EXP = downloads, next level PD = how far into the design course). Six stats all at 4 (grown evenly); EQUIP = five core-skill slots with the real tool logos; SPECIAL = the three strengths from the cover letter; QUESTS = the quest results of three shipped projects. Move the ▶ cursor and the help window below gives the evidence.' },
+      map: [['구조', 'Structure', '창 여섯 = 상태 · 능력치 · 장비 · 기술 · 기록 · 도움말', 'Six windows = status, stats, gear, moves, log, help'], ['커서', 'Cursor', '올리거나 ← → — 도움말 창이 바뀜', 'Hover or ← → — the help window changes'], ['처음 화면', 'At rest', '다 펼쳐져 있어 누르지 않아도 읽힘', 'Everything is open — readable without input']],
+      hint: { ko: '▶ 항목에 마우스를 올리거나 누르면, 또는 ← → 키로 커서를 옮기면 아래 도움말 창이 바뀝니다.', en: '▶ Hover or tap an entry, or move the cursor with ← →, and the help window below changes.' },
+      pros: { ko: ['한 화면에 이력 전체 — 고르지 않아도 다 보임', '장비 = 실제 도구 로고라 RPG 문법이 억지스럽지 않음', '슈퍼 패미컴 창(그라데이션 · 둥근 테)이라 도트 화면 셋과 결이 다름'], en: ['The whole career on one screen — nothing to select first', 'EQUIP holds real tool logos, so the RPG grammar does not feel forced', 'Super Famicom windows (gradient, rounded frame) — a different texture from the three pixel screens'] },
+      cons: { ko: ['시간 순서는 약함 — 기록 창의 프로젝트 셋만 시간 순', '능력치 숫자는 아직 예시(모두 4)', '창이 여섯이라 휴대폰에서는 길게 내려감'], en: ['Weak on chronology — only the three projects in the log are in order', 'The stat values are still placeholders (all 4)', 'Six windows make a long scroll on a phone'] } }
   ];
   var DRAFTS_OLD = [
     { id: 's', f: draftS6, w: wireS6, scroll: 3200, extra: function () { return palBar('s'); }, badge: { ko: '고른 안 · 팔레트 8벌', en: 'Chosen · 8 palettes' }, name: { ko: '지어지는 월드 — 완공될 때마다 튀어나오는 이력', en: 'A world being built — the career pops out at each build' }, sub: { ko: '스크롤 = 시간', en: 'Scroll = time' },
@@ -938,10 +1429,10 @@
       cons: { ko: ['2026 에 두 시기가 겹쳐 마지막이 몰림', '은유를 팻말이 꼭 받쳐야 함'], en: ['Two periods start in 2026, so the end bunches up', 'The metaphors need their signs'] } }
   ];
   var RULES4 = [
-    { h: { ko: '게임 화면처럼 강하게', en: 'A strong game screen' }, b: { ko: '창 이름만 게임 말로 바꾸는 게 아니라 화면 자체가 마리오 시리즈의 지도 화면 — 지도 · 이름 띠 · 상태 막대 · 카드 세 칸.', en: 'Not just game words on windows: the screen itself is a Mario-series map — map, name strip, status bar, three cards.' } },
+    { h: { ko: '게임 화면처럼 강하게', en: 'A strong game screen' }, b: { ko: '창 이름만 게임 말로 바꾸는 게 아니라 화면 자체가 마리오 시리즈의 한 화면 — 월드 지도 · 섬 지도 · 코스 시작 화면 · 상태 메뉴.', en: 'Not just game words on windows: each screen is a Mario-series screen — world map, island map, course start, status menu.' } },
     { h: { ko: '이력이 주인공', en: 'The career leads' }, b: { ko: '칸 하나 = 경력 · 프로젝트 하나. 숫자 · 기간 · 퀘스트 결과는 content.js(이력서 · 프로젝트 · 자기소개서) 값 그대로.', en: 'One space = one period or project. Numbers, dates and quest results come straight from content.js.' } },
     { h: { ko: '베끼지 않고 같은 문법으로', en: 'Same grammar, not copied' }, b: { ko: '4px 칸 · 검은 외곽선 · NES 팔레트로 새로 찍음. 캐릭터 · 아이템(버섯 · 별) · 로고는 그리지 않고 1P 는 사이트 고스트.', en: 'Redrawn on the 4px grid with black outlines and the NES palette. No characters, items or logos; 1P is the site ghost.' } },
-    { h: { ko: '누르지 않아도 읽힘', en: 'Readable at rest' }, b: { ko: '처음엔 START(나)가 골라져 있고, 칸마다 이름표가 붙어 지도만 봐도 10년의 순서가 보입니다.', en: 'START (me) is selected at first, and every space is labelled, so the map alone shows the ten years in order.' } }
+    { h: { ko: '누르지 않아도 읽힘', en: 'Readable at rest' }, b: { ko: '어느 안이든 처음 화면에 나(START)와 숫자가 떠 있고, 지도는 칸마다 이름이 붙어 있어 보기만 해도 10년의 순서가 읽힙니다.', en: 'Every draft opens on me (START) with the numbers showing, and map spaces are labelled, so the ten years read in order at a glance.' } }
   ];
 
   var FIT = { w: 0, h: 0 }, CAM_W = 680;
