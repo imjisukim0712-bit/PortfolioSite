@@ -445,6 +445,23 @@
   .sw-c__body { font-size: 15px; line-height: 1.7; }
   .sw-c__say { font-size: 16px; font-weight: 700; }
   .sw-c__go { margin-top: auto !important; }
+  /* 코스 진행 칸 — 지나온 칸은 밝게, 지금 칸은 흰 테 */
+  .sw-c__prog { display: grid; gap: 10px; margin-top: auto !important; padding-top: 14px; border-top: 4px dotted #3a4256; }
+  .sw-c__go + .sw-c__prog { margin-top: 0 !important; }
+  .sw-c__prog p { display: flex; align-items: baseline; justify-content: space-between; }
+  .sw-c__prog b { font-size: 8px; color: var(--mu); }
+  .sw-c__prog span { font-size: 16px; color: var(--wh); }
+  .sw-c__pips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sw-pip { display: block; width: 28px; height: 28px; background: var(--sw-dotY) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; opacity: .3; }
+  .sw-pip--start { background-image: var(--sw-dotR); } .sw-pip--house { background-image: var(--sw-dotB); } .sw-pip--castle { background-image: var(--sw-cast); } .sw-pip--flag { background-image: var(--sw-flag); }
+  .sw-pip.done { opacity: 1; }
+  .sw-pip.cur { opacity: 1; outline: 4px solid var(--wh); outline-offset: 2px; }
+  /* 점에 닿는 순간 — 네 방향 반짝임(4px 칸, 한 번) */
+  .sw-n.is-hit::after { content: ''; position: absolute; left: calc(50% - 4px); top: calc(50% - 4px); width: 8px; height: 8px; pointer-events: none; animation: sw-burst .48s steps(4) both; }
+  @keyframes sw-burst {
+    0% { box-shadow: 0 -16px #fcfcfc, 16px 0 #f8b800, 0 16px #fcfcfc, -16px 0 #f8b800, 12px -12px #f8b800, 12px 12px #fcfcfc, -12px 12px #f8b800, -12px -12px #fcfcfc; }
+    100% { box-shadow: 0 -44px transparent, 44px 0 transparent, 0 44px transparent, -44px 0 transparent, 32px -32px transparent, 32px 32px transparent, -32px 32px transparent, -32px -32px transparent; }
+  }
   .sw-c__mu { color: var(--mu); font-size: 14px; }
   .sw-c__bar { display: block; height: 20px; border: 4px solid var(--wh); }
   .sw-c__bar i { display: block; width: var(--p); height: 100%; background: #e0262c; }
@@ -458,6 +475,7 @@
   @media (max-width: 760px) { .sw__body { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'map' 'msg' 'clear'; } }
   .sw.is-tight .sw__nav { display: none; }
   .sw.is-tight .sw__msg { min-height: 0; }
+  .sw.is-tight .sw-c__who, .sw.is-tight .sw-c__learn li + li { display: none; }        /* 결산 화면 아래 진행 칸 자리 */
   @media (max-width: 760px) {
     .sw.is-tight .sw__view { height: 264px; }
     .sw.is-tight .sw__top { height: 44px; padding: 0 10px; }
@@ -468,6 +486,7 @@
     .sw.is-tight .sw__clear { gap: 10px; }
     .sw.is-tight .sw-c__who, .sw.is-tight .sw-c__learn, .sw.is-tight .sw-c__tags, .sw.is-tight .sw-c__say, .sw.is-tight .sw-c__go, .sw.is-tight .sw-c__mu, .sw.is-tight .sw-c__rows div:nth-child(2) { display: none; }
     .sw.is-tight .sw-c__big { font-size: 16px; }
+    .sw.is-tight .sw-c__prog { display: none; }
     .sw.is-tight .sw-c__rows { padding: 10px 0; }
   }
   @media (max-width: 640px) { .sw { padding: 10px; gap: 12px; border-radius: 10px; } .sw__msg { padding: 14px 18px; } .sw__msg p { font-size: 16px; } .sw__clear { padding: 16px; } .sw__nav span { font-size: 13px; } }
@@ -505,6 +524,7 @@
   .mb-gnd { position: absolute; left: 0; right: 0; bottom: 0; height: var(--g); background: var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
   .mb__scene .s-hill, .mb__scene .s-bush, .mb__scene .s-pipe, .mb-me, .mb-hard, .mb-pole { bottom: var(--g); }
   .mb-pipe { z-index: 3; }
+  .mb__scene.is-cut::after { content: ''; position: absolute; inset: 0; z-index: 9; background: #000; }
   .mb .mb-qb.is-used { background-image: var(--mb-used) !important; }
   .mb-coin { visibility: hidden; z-index: 1; }
   .mb-pts { position: absolute; z-index: 4; transform: translateX(-50%); font-size: 16px; line-height: 1; color: var(--wh); text-shadow: 4px 4px 0 #000; white-space: nowrap; visibility: hidden; pointer-events: none; }
@@ -1373,10 +1393,10 @@
     if (!me) return;
     var g = parseFloat(getComputedStyle(root).getPropertyValue('--g')) || 128, sky = sc.clientHeight - g, act = 1, at, px = 0, py = 0;
     function q(v) { return Math.round(v / 4) * 4; }
-    if (k === 'start') at = mbPath([[-48, 0, 0], [W * .22, 0, .45]], t);
+    if (k === 'start') at = mbPath([[-48, 0, 0], [W * .22, 0, .45], [W * .22, 0, .88], [W + 48, 0, 1]], t);
     else if (k === 'panel') {
       var qb = sc.querySelector('.mb-qb'), bx = qb.offsetLeft, hit = t >= .53;
-      at = mbPath([[16, 0, 0], [bx + 8, 0, .45]], t);
+      at = mbPath([[-48, 0, 0], [bx + 8, 0, .45], [bx + 8, 0, .88], [W + 48, 0, 1]], t);
       at[1] = Math.sin(Math.PI * clamp01((t - .45) / .16)) * 40;
       qb.classList.toggle('is-used', hit);
       act = clamp01((t - .53) / .25);
@@ -1385,11 +1405,11 @@
       px = bx + 168; py = 112 + act * 40;                 /* 숫자는 벽돌 줄 오른쪽에서 떠오름 */
     } else if (k === 'castle' || k === 'goal') {
       var hs = [].filter.call(sc.querySelectorAll('.mb-hard'), function (h) { return h.offsetParent; }).sort(function (a, b) { return a.offsetLeft - b.offsetLeft; });
-      var pole = sc.querySelector('.mb-pole'), flag = sc.querySelector('.mb-flag'), pc = pole.offsetLeft + 64, path = [[16, 0, 0], [hs[0].offsetLeft - 52, 0, .35]];
+      var pole = sc.querySelector('.mb-pole'), flag = sc.querySelector('.mb-flag'), pc = pole.offsetLeft + 64, path = [[-48, 0, 0], [hs[0].offsetLeft - 52, 0, .35]];
       hs.forEach(function (h, j) { path.push([h.offsetLeft + 8, h.offsetHeight, .35 + (j + 1) * .05]); });
       var top = hs[hs.length - 1].offsetHeight, tt = .35 + hs.length * .05;
       if (k === 'castle') {
-        path.push([pc - 50, top, tt + .06]); path.push([pc - 50, 0, .84]);
+        path.push([pc - 50, top, tt + .06]); path.push([pc - 50, 0, .84]); path.push([pc - 50, 0, .9]); path.push([W + 48, 0, 1]);
         act = clamp01((t - tt - .06) / (.84 - tt - .06));
         flag.style.bottom = (g + q(128 - act * 120)) + 'px';
       } else {
@@ -1399,9 +1419,10 @@
       at = mbPath(path, t); px = pc - 112; py = 120 + act * 24;
     } else if (k === 'house') {
       var pipe = sc.querySelector('.mb-pipe'), pl = pipe.offsetLeft;
-      at = mbPath([[16, 0, 0], [pl - 52, 0, .4], [pl + 40, 128, .52], [pl + 40, 128, .56], [pl + 40, 68, .8]], t);
+      at = mbPath([[-48, 0, 0], [pl - 52, 0, .4], [pl + 40, 128, .52], [pl + 40, 128, .56], [pl + 40, 68, .8]], t);
       act = clamp01((t - .56) / .24);
     }
+    sc.classList.toggle('is-cut', i > 0 && t < .05);        /* 월드 사이 — 슈퍼 마리오브라더스처럼 검은 화면이 한 번 */
     var bob = at[2] && Math.floor(at[0] / 12) % 2 ? 4 : 0;
     me.style.left = q(at[0]) + 'px'; me.style.bottom = q(g + at[1] + bob) + 'px';
     pt.style.visibility = pt.textContent && act > 0 && act < 1 ? 'visible' : 'hidden';
@@ -1465,7 +1486,7 @@
       if (v === 'm') g[y][x] = (at(x - 1, y) === 'c' || at(x + 1, y) === 'c') ? 'K' : x % 6 === 0 ? 'd' : at(x, y - 1) === 'g' ? 'o' : 'm';
       if (v === 'g') {
         if (at(x - 1, y) === 'c' || at(x + 1, y) === 'c' || at(x, y - 1) === 'c' || at(x, y + 1) === 'm') g[y][x] = 'K';
-        else if (swHash(x, y) % 61 === 0 && at(x + 2, y) === 'g' && at(x + 1, y + 1) === 'g') { g[y][x] = 'G'; g[y][x + 2] = 'G'; g[y + 1][x + 1] = 'G'; }
+        else if (swHash(x, y) % 89 === 0 && at(x + 2, y) === 'g' && at(x + 1, y + 1) === 'g') { g[y][x] = 'G'; g[y][x + 2] = 'G'; g[y + 1][x + 1] = 'G'; }
       }
     }
     /* 물거품 — 섬에 닿는 물 칸 한 줄(흰색 · 하늘색 번갈아) */
@@ -1488,6 +1509,8 @@
   var SWDOT = { Y: grid(7, 7, function (x, y) { var d = (x - 3) * (x - 3) + (y - 3) * (y - 3); return d > 10 ? '.' : d > 5 ? 'K' : (x + y < 5 ? 'w' : 'Y'); }) };
   SWDOT.B = SWDOT.Y.map(function (r) { return r.replace(/Y/g, 'b'); });
   SWDOT.R = SWDOT.Y.map(function (r) { return r.replace(/Y/g, 'r'); });
+  var SWCAST = ['K.KKK.K', 'KsKsKsK', 'KsssssK', 'KsSsSsK', 'KsSKSsK', 'KssKssK', 'KKKKKKK'];     /* 진행 칸의 작은 성 · 깃발 */
+  var SWFLAG = ['Kw.....', 'Kwww...', 'Kwwwww.', 'Kwww...', 'Kw.....', 'K......', 'KK.....'];
   var MINIG = ['..KKK..', '.KrrrK.', 'KrrrrrK', 'KrKrKrK', 'KrKrKrK', 'KrrrrrK', 'KrrrrrK', 'KK.K.KK'];
   function swSeg(i) { var a = swPx(SWORD[i]), b = swPx(SWORD[i + 1]); return 'M' + a[0] + ' ' + a[1] + 'V' + b[1] + 'H' + b[0]; }
   function swAlong(i, w) {            /* i 번째 길(세로 먼저 · 가로 나중) 위 w(0 ~ 1) 지점 */
@@ -1499,6 +1522,7 @@
     var map = swMap(), de = document.documentElement.style;
     de.setProperty('--sw-map', spr(map)); de.setProperty('--sw-wave-a', spr(swWaves(map, 0))); de.setProperty('--sw-wave-b', spr(swWaves(map, 1))); de.setProperty('--sw-life', spr(MINIG));
     ['Y', 'B', 'R'].forEach(function (k) { de.setProperty('--sw-dot' + k, spr(SWDOT[k])); });
+    de.setProperty('--sw-cast', spr(SWCAST)); de.setProperty('--sw-flag', spr(SWFLAG));
     var road = '';
     for (var i = 0; i < SWORD.length - 1; i++) road += '<path class="h" d="' + swSeg(i) + '"/>';
     for (i = 0; i < SWORD.length - 1; i++) road += '<g data-sw-seg="' + i + '"><path class="b" pathLength="1" d="' + swSeg(i) + '"/><path class="f' + (i === SWORD.length - 2 ? ' last' : '') + '" pathLength="1" d="' + swSeg(i) + '"/></g>';
@@ -1541,7 +1565,12 @@
         (p && p.quest && p.quest.goal ? '<div><dt class="ps">BONUS</dt><dd>' + esc(t(p.quest.goal)) + ' → <b>' + esc(t(p.quest.result)) + '</b></dd></div>' : '') + '</dl>' +
         (p && p.learned && p.learned.length ? '<ul class="sw-c__learn">' + p.learned.slice(0, 2).map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul>' : c && c.tags ? '<p class="sw-c__tags">' + c.tags.map(function (x) { return '<span>' + esc(t(x)) + '</span>'; }).join('') + '</p>' : '');
     }
+    h += '<div class="sw-c__prog"><p><b class="ps">COURSE</b><span class="ps">' + (i + 1) + ' / ' + WN.length + '</span></p><div class="sw-c__pips">' + WN.map(function (m, j) {
+      return '<i class="sw-pip sw-pip--' + m.k + (j < i ? ' done' : j === i ? ' cur' : '') + '" title="' + esc(t(m.short)) + '"></i>';
+    }).join('') + '</div></div>';
     root.querySelector('[data-sw-clear]').innerHTML = h;
+    var hitN = root.querySelector('.sw-n[data-go="' + i + '"]');
+    if (hitN && !quiet && !RM) { hitN.classList.remove('is-hit'); void hitN.offsetWidth; hitN.classList.add('is-hit'); }
     pop(root.querySelector('[data-sw-msg]'), quiet); pop(root.querySelector('[data-sw-clear]'), quiet);
     swTick(root, i, quiet ? 1 : 0);
   }
