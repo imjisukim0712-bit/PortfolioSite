@@ -588,7 +588,7 @@
   }
 
   /* ── 목록판(아래로 쭉 · 짧게) — 시기 하나 = 짧은 덩어리 하나(이름 · 기간 / 한 줄 / 사실 몇 개). 게임 결산 글은 없음 ──
-     다: 붙어 있는 점수판 + 월드마다 글 | 장면(나란히 — 월드 한 칸 = 장면 높이) · 나: 섬 지도 + 왼쪽 모래 길을 따라 메시지 블록 아홉 */
+     다: 붙어 있는 점수판 + 월드마다 글 | 장면(나란히 — 월드 한 칸 = 장면 높이) · 나: 왼쪽 모래 길을 따라 메시지 블록 아홉(섬 지도 없음) */
   .l-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--mu); }
   .l-facts > span { display: inline-block; }
   .l-facts b { color: var(--wh); }
@@ -617,11 +617,7 @@
     .mbl__hud p > small, .mbl__hud .mb__nm { display: none; }
     .mbl__hud .s-coin-s { margin: -4px 4px 0 0 !important; }
   }
-  @media (max-width: 640px) { .swl .sw__yr { display: none; } }
-  .swl { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .swl__map { grid-area: auto; justify-self: center; width: 100%; max-width: 808px; }
-  .swl .sw__view { overflow-x: auto; overflow-y: hidden; }
-  .swl .sw-road .b, .swl .sw-road .f { stroke-dasharray: none; }
+  .swl { grid-template-columns: minmax(0, 1fr); }
   .swl__list { position: relative; display: grid; gap: 12px; margin: 0; padding: 8px 0; list-style: none; }
   .swl__rail { position: absolute; left: 20px; top: 0; bottom: 0; width: 48px; pointer-events: none; }
   .swl__rail::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 4px; background: repeating-linear-gradient(180deg, #fce0a8 0 4px, transparent 4px 12px); }
@@ -1683,7 +1679,7 @@
      한 칸씩 넘기지 않고 아홉 칸을 위에서 아래로 다 펼침(읽기는 보통 페이지처럼). 테마는 그대로 두고 스크롤이 놀이를 맡음.
      시기 하나 = 짧은 덩어리 하나(lItem — 이름 · 기간 / 한 줄 / 사실 몇 개). 게임 결산 글(COURSE CLEAR! 등)은 넘기는 판에만 남김.
      다: 붙어 있는 점수판 + 월드마다 글 | 그 코스 장면(나란히), 장면이 화면에 들어온 만큼 고스트가 해내고(mbAct) 점수판이 지금 읽는 월드까지 오름.
-     나: 위에 섬 지도 한 장, 아래 코스 아홉(메시지 블록 한 장씩)이 왼쪽 모래 길을 따라 이어지고, 고스트가 스크롤만큼 길을 내려가며 길을 그리고 지나간 점을 켬 */
+     나: 코스 아홉(메시지 블록 한 장씩)이 왼쪽 모래 길을 따라 이어지고, 고스트가 스크롤만큼 길을 내려가며 길을 그리고 지나간 점을 켬("맨 위 맵은 없어도 될 듯" — 섬 지도는 뺌) */
   var LTICKS = [];
   /* 목록판 한 칸의 글 — 넘기는 판(mbMid · swClear)의 게임 결산(COURSE CLEAR! · READY! · NEXT · 잠긴 '? ? ?' · QUEST/CLEAR 칩)은 빼고
      시기 하나 = 짧은 덩어리 하나: 이름 · 기간 / 한 줄 / 사실 몇 개(인원 · 큰 숫자 · 퀘스트 결과). 나 · 다 목록판이 함께 씀 — 글을 고칠 때는 여기 한 곳 */
@@ -1751,33 +1747,19 @@
   }
 
   function draftL3() {
-    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 섬 그림 · 점 그림(--sw-*)은 나′ 와 같은 것 */
-    var road = '', last = SWORD.length - 2;
-    for (var i = 0; i <= last; i++) road += i < last ? '<path class="b" d="' + swSeg(i) + '"/><path class="f" d="' + swSeg(i) + '"/>' : '<path class="h" d="' + swSeg(i) + '"/>';
-    var nodes = WN.map(function (n, i) {
-      var p = swPx(n.id), w = n.k === 'castle' || n.k === 'flag' ? 64 : 40, h = n.k === 'flag' ? 128 : w;
-      var top = n.k === 'flag' ? p[1] - 120 : p[1] - h / 2 - (n.k === 'castle' ? 12 : 0), inner = n.k === 'castle' ? '<i class="sw-s wm-castle"></i>' : n.k === 'flag' ? '<i class="sw-s wm-flag"></i>' : '<i class="sw-s sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y') + '"></i>';
-      return '<button type="button" class="sw-n sw-n--' + n.k + '" data-swl-go="' + i + '" style="left:' + (p[0] - w / 2) + 'px;top:' + top + 'px;width:' + w + 'px;height:' + h + 'px" aria-label="' + esc(t(n.short)) + '">' + inner + '</button>';
-    }).join('');
-    var map = '<div class="sw__mapwrap swl__map"><div class="sw__top"><p class="sw__lives"><i class="sw-life"></i><b class="ps">× ' + esc(YRS) + '</b></p><p class="sw__name">' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '</p><p class="sw__yr ps">2016 → 2026</p></div>' +
-      '<div class="sw__view swl__view"><div class="sw__map"><i class="sw-wave a"></i><i class="sw-wave b"></i><svg class="sw-road" width="800" height="448" viewBox="0 0 800 448" aria-hidden="true">' + road + '</svg>' + nodes + '</div></div></div>';
+    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 점 · 성 · 깃발 그림(--sw-*)은 나′ 것을 그대로 */
     var list = WN.map(function (n, i) {
       var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y'), it = lItem(i);
       return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__box">' +
         '<p class="swl-c__head"><span class="swl-c__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</span><em>' + it.when + '</em></p>' +
         '<p class="swl-c__line">' + it.line + '</p>' + lFacts(it) + '</div></li>';
     }).join('');
-    return '<section class="sw swl" data-swl aria-label="' + T('섬 지도와 코스 목록 — 10년 이력', 'Island map and course list — ten years') + '">' + map +
+    return '<section class="sw swl" data-swl aria-label="' + T('모래 길을 따라 코스 목록 — 10년 이력', 'Courses along the sand road — ten years') + '">' +
       '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li>' + list + '</ol></section>';
   }
   function wireL3() {
     var root = document.querySelector('[data-swl]'); if (!root) return;
     var list = root.querySelector('.swl__list'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), items = [].slice.call(root.querySelectorAll('[data-swl-i]')), hit = {};
-    root.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-swl-go]'); if (!b) return;
-      var el = root.querySelector('[data-swl-i="' + b.getAttribute('data-swl-go') + '"]');
-      if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
-    });
     function tick() {
       if (!root.offsetParent) return;
       var vh = innerHeight, lr = list.getBoundingClientRect(), gy = Math.max(0, Math.min(lr.height - 56, vh * .45 - lr.top)), line = vh * .45 + 28;
@@ -1868,13 +1850,13 @@
   }
 
   var DRAFTS4 = [
-    { id: 'l3', label: '나', plain: true, f: draftL3, wire: wireL3, badge: { ko: '목록판 · 짧게', en: 'List · short' }, name: { ko: '섬 지도 — 길을 따라 내려가며 읽는 코스 아홉', en: 'Island map — nine courses read down the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 코스마다 메시지 블록 한 장', en: 'Super Mario World map + one message block per course' },
-      pitch: { ko: '한 칸씩 넘기지 않고 다 펼쳤습니다. 맨 위에 섬 지도 한 장(지나온 길 · 성 · 집 · 깃발)을 두고, 그 아래로 아홉 코스를 시간 순서대로 이었습니다. 코스 하나 = 검은 메시지 블록 한 장 — 이름 · 기간 / 한 줄 / 사실 몇 개(인원 · 큰 숫자 · 퀘스트 결과)만 담고, 게임 결산 글(COURSE CLEAR! · READY! · NEXT)은 뺐습니다. 왼쪽 모래 길을 따라 고스트가 스크롤만큼 내려가며 길을 그리고, 지나간 점이 켜지며 그 코스의 숫자가 올라갑니다.',
-               en: 'Nothing to step through — it is all laid out. The island map (roads travelled, castles, the house, the flag) sits on top, and the nine courses run below it in time order. One course = one black message block holding only the name and period, one line and a few facts (team, the big number, the quest result); the game tally text (COURSE CLEAR!, READY!, NEXT) is gone. The ghost walks down the sand road on the left as far as you scroll, drawing the road behind it; each dot it passes lights up and that course\'s numbers count up.' },
-      map: [['구조', 'Structure', '위 섬 지도 한 장 + 아래 메시지 블록 아홉 · 왼쪽 모래 길', 'Island map on top + nine message blocks below · sand road on the left'], ['내리면', 'Scroll', '고스트가 길을 내려가며 길을 그리고 지나간 점이 켜짐', 'The ghost walks down, drawing the road; dots it passes light up'], ['한 칸', 'One course', '이름 · 기간 / 한 줄 / 사실 몇 개', 'Name and period / one line / a few facts']],
-      hint: { ko: '▼ 그냥 내리며 읽으세요. 지도 위 점을 누르면 그 코스로 갑니다.', en: '▼ Just scroll and read. Tap a dot on the map to jump to that course.' },
-      pros: { ko: ['짧음 — 코스 하나가 블록 한 장(전 판의 절반 이하)', '지도 한 장 + 길을 따라가는 목록 — 테마는 살리고 읽기는 쉬움', '휴대폰에서도 그대로 위에서 아래로'], en: ['Short — one block per course (under half the previous length)', 'One map + a list along the road — the theme stays, reading gets easy', 'Works the same top-to-bottom on a phone'] },
-      cons: { ko: ['배운 것 · 태그는 빠짐(한 줄만)', '연출은 길 그리기 · 점 켜기 · 숫자 올리기뿐', '지도는 휴대폰에서 옆으로 밀어야 다 보임'], en: ['What I learned and the tags are left out (one line only)', 'The only staging is drawing the road, lighting dots and counting up', 'On a phone the map needs a sideways swipe to see all of it'] } },
+    { id: 'l3', label: '나', plain: true, f: draftL3, wire: wireL3, badge: { ko: '목록판 · 짧게', en: 'List · short' }, name: { ko: '모래 길 — 길을 따라 내려가며 읽는 코스 아홉', en: 'Sand road — nine courses read down the road' }, sub: { ko: '슈퍼 마리오 월드 지도의 모래 길 · 점 + 코스마다 메시지 블록 한 장', en: 'The Super Mario World map road and dots + one message block per course' },
+      pitch: { ko: '지도 그림은 빼고 슈퍼 마리오 월드 지도의 모래 길과 점만 가져와 왼쪽에 세로로 놓고, 아홉 코스를 시간 순서대로 이었습니다. 빨간 점 = 나(START), 노란 점 = 경력 · 활동, 돌 성 = 출시한 프로젝트, 파란 점 = 배운 곳, 깃발 = 다음 목표(PD). 코스 하나 = 검은 메시지 블록 한 장 — 이름 · 기간 / 한 줄 / 사실 몇 개(인원 · 큰 숫자 · 퀘스트 결과). 내리는 만큼 고스트가 길을 내려가며 길을 그리고, 지나간 점이 켜지며 그 코스의 숫자가 올라갑니다.',
+               en: 'No map picture — just the sand road and dots from the Super Mario World map, set vertically on the left, with the nine courses running down it in time order. Red dot = me (START), yellow dots = career and activities, stone castles = shipped projects, blue dot = learning, flag = the next goal (PD). One course = one black message block: name and period, one line, a few facts (team, the big number, the quest result). The ghost walks down the road as far as you scroll, drawing the road behind it; each dot it passes lights up and that course\'s numbers count up.' },
+      map: [['구조', 'Structure', '왼쪽 모래 길 + 메시지 블록 아홉', 'Sand road on the left + nine message blocks'], ['내리면', 'Scroll', '고스트가 길을 내려가며 길을 그리고 지나간 점이 켜짐', 'The ghost walks down, drawing the road; dots it passes light up'], ['한 칸', 'One course', '이름 · 기간 / 한 줄 / 사실 몇 개', 'Name and period / one line / a few facts']],
+      hint: { ko: '▼ 그냥 내리며 읽으세요 — 고스트가 길을 따라 내려옵니다.', en: '▼ Just scroll and read — the ghost follows the road down.' },
+      pros: { ko: ['가장 짧음 — 지도 없이 블록 아홉만', '모래 길 · 점 · 메시지 블록으로 테마는 남기고 읽기는 보통 페이지처럼', '휴대폰에서도 옆으로 밀 것 없이 위에서 아래로'], en: ['The shortest — no map, just nine blocks', 'The road, dots and message blocks keep the theme while it reads like a normal page', 'Straight top to bottom on a phone too, with no sideways swipe'] },
+      cons: { ko: ['10년 전체를 한 장에 보는 그림은 없어짐', '배운 것 · 태그는 빠짐(한 줄만)', '연출은 길 그리기 · 점 켜기 · 숫자 올리기뿐'], en: ['No single picture of the whole ten years any more', 'What I learned and the tags are left out (one line only)', 'The only staging is drawing the road, lighting dots and counting up'] } },
     { id: 'l2', label: '다', plain: true, f: draftL2, wire: wireL2, badge: { ko: '목록판 · 짧게', en: 'List · short' }, name: { ko: '코스 시작 화면 — 월드 아홉을 위에서 아래로', en: 'Course start — nine worlds, top to bottom' }, sub: { ko: '슈퍼 마리오브라더스 점수판(따라 붙음) + 월드마다 글 | 그 코스', en: 'Super Mario Bros. HUD (pinned) + each world\'s text beside its course' },
       pitch: { ko: '월드 아홉을 위에서 아래로 이었습니다. 맨 위 점수판은 따라 붙어 지금 읽는 월드까지 쌓인 점수(누적 다운로드) · 동전(출시작)을 보여 주고, 월드마다 왼쪽에 글(WORLD 3-4 · 이름 · 기간 / 한 줄 / 사실 몇 개), 오른쪽에 그 코스 장면을 나란히 두어 월드 한 칸 = 장면 높이입니다. 장면이 화면에 들어온 만큼 고스트가 블록을 치거나 깃대를 탑니다. 잠긴 물음표 · QUEST / CLEAR 칩 같은 게임 결산은 뺐습니다.',
                en: 'The nine worlds run top to bottom. The HUD stays pinned and shows the score (downloads) and coins (titles) piled up to the world you are reading. Each world puts its text on the left (WORLD 3-4, name and period, one line, a few facts) and its course on the right, so a world is only as tall as its scene. As a scene comes into view the ghost hits the block or rides the flagpole. The game tally bits — question-mark locks, QUEST and CLEAR chips — are gone.' },
