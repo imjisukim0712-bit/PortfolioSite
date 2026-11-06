@@ -587,14 +587,30 @@
     .mb-chip b { font-size: 8px; }
   }
 
-  /* ── 목록판(아래로 쭉) — 다: 붙어 있는 점수판 + 월드 아홉(검은 화면 + 장면) · 나: 섬 지도 + 왼쪽 모래 길을 따라 코스 아홉 ── */
+  /* ── 목록판(아래로 쭉 · 짧게) — 시기 하나 = 짧은 덩어리 하나(이름 · 기간 / 한 줄 / 사실 몇 개). 게임 결산 글은 없음 ──
+     다: 붙어 있는 점수판 + 월드마다 글 | 장면(나란히 — 월드 한 칸 = 장면 높이) · 나: 섬 지도 + 왼쪽 모래 길을 따라 메시지 블록 아홉 */
+  .l-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--mu); }
+  .l-facts > span { display: inline-block; }
+  .l-facts b { color: var(--wh); }
+  .l-facts b.ps { margin-right: 6px; font-size: 16px; line-height: 1; color: var(--or); }
+  .l-facts small { margin: 0 6px 0 -4px; font-size: 14px; font-weight: 800; color: var(--or); }
+  .l-bar { display: inline-block; width: 64px; height: 12px; margin-left: 10px; border: 4px solid var(--wh); box-sizing: content-box; vertical-align: -2px; }
+  .l-bar i { display: block; height: 100%; background: #e0262c; }
   .mb.mbl { --g: 64px; overflow: visible; }
   .mbl .mb-hard2 { display: none; }
-  .mbl__hud { position: sticky; z-index: 6; top: var(--mbl-top, 0px); padding-bottom: 16px !important; background: #000; border-radius: 12px 12px 0 0; border-bottom: 4px solid #2a2a2a; }
-  .mbl-w__mid { min-height: 0 !important; padding: 44px 40px 32px !important; }
-  .mbl-w:last-child .mbl-w__scene { border-radius: 0 0 12px 12px; }
+  .mbl__hud { position: sticky; z-index: 6; top: var(--mbl-top, 0px); padding-bottom: 20px !important; background: #000; border-radius: 12px 12px 0 0; border-bottom: 4px solid #2a2a2a; }
+  .mbl__list { display: grid; gap: 4px; overflow: hidden; border-radius: 0 0 12px 12px; }
+  .mbl-w { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .mbl-w__text { display: grid; align-content: center; gap: 10px; padding: 24px 32px 24px 40px; }
+  .mbl-w__w { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+  .mbl-w__w b { font-size: 16px; line-height: 1.2; }
+  .mbl-w__w em { font-size: 14px; font-weight: 700; font-style: normal; color: var(--mu); }
+  .mbl-w__line { font-size: 16px; line-height: 1.6; color: #dcdcdc; }
+  .mbl-w__scene { height: auto; min-height: calc(var(--g) + 224px); }
   @media (max-width: 760px) {
-    .mbl-w__mid { padding: 30px 18px 24px !important; }
+    .mbl-w { grid-template-columns: minmax(0, 1fr); }
+    .mbl-w__text { padding: 22px 18px 20px; }
+    .mbl-w__scene { min-height: 0; height: calc(var(--g) + 224px); }
     .mbl__hud { grid-template-columns: repeat(4, auto) !important; justify-content: space-between; gap: 6px 12px !important; padding: 10px 14px 10px !important; }   /* 휴대폰 — 붙는 점수판은 한 줄 */
     .mbl__hud p { gap: 6px !important; }
     .mbl__hud p > * { font-size: 8px !important; }
@@ -606,25 +622,29 @@
   .swl__map { grid-area: auto; justify-self: center; width: 100%; max-width: 808px; }
   .swl .sw__view { overflow-x: auto; overflow-y: hidden; }
   .swl .sw-road .b, .swl .sw-road .f { stroke-dasharray: none; }
-  .swl__list { position: relative; display: grid; gap: 24px; margin: 0; padding: 8px 0; list-style: none; }
+  .swl__list { position: relative; display: grid; gap: 12px; margin: 0; padding: 8px 0; list-style: none; }
   .swl__rail { position: absolute; left: 20px; top: 0; bottom: 0; width: 48px; pointer-events: none; }
   .swl__rail::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 4px; background: repeating-linear-gradient(180deg, #fce0a8 0 4px, transparent 4px 12px); }
   .swl__road { position: absolute; left: 14px; top: 0; width: 20px; height: 0; background: #fce0a8; box-shadow: inset 4px 0 #171c28, inset -4px 0 #171c28; }
   .swl-me { position: sticky; z-index: 3; top: 45vh; display: block; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
   .swl-c { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); }
-  .swl-c__node { position: absolute; z-index: 2; left: 44px; top: 40px; transform: translate(-50%, -50%); opacity: .45; }
+  .swl-c__node { position: absolute; z-index: 2; left: 44px; top: 36px; transform: translate(-50%, -50%); opacity: .45; }
   .swl-c__node.done { opacity: 1; }
   .swl-c__node .sw-s { display: block; width: 28px; height: 28px; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
   .swl-c__node .wm-castle { width: 64px; height: 64px; }
-  .swl-c__panel { grid-column: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'head head' 'msg clear'; gap: 12px 16px; }
-  .swl-c__head { grid-area: head; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-top: 22px !important; }
-  .swl-c__head b { font-size: 16px; color: var(--or); }
-  .swl-c__head span { font: 400 22px/1.3 'Galmuri11', monospace; color: var(--wh); }
-  .swl-c__head em { margin-left: auto; font-size: 16px; font-style: normal; color: var(--mu); }
-  .swl-c__msg { align-self: start; min-height: 0; }
-  .swl .sw-c__who { display: none; }
-  @media (max-width: 900px) { .swl-c__panel { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'head' 'msg' 'clear'; } }
-  @media (max-width: 640px) { .swl-c { grid-template-columns: 60px minmax(0, 1fr); } .swl__rail { left: 6px; } .swl-c__node { left: 30px; } }
+  /* 메시지 블록 한 장 = 코스 하나 — 검은 판 + 흰 테 두 겹(넘기는 판의 메시지 블록과 같은 재료) */
+  .swl-c__box { grid-column: 2; display: grid; gap: 8px; min-width: 0; padding: 16px 24px 18px; background: #000; border: 4px solid var(--wh); box-shadow: inset 0 0 0 4px #000, inset 0 0 0 8px #7c7c7c; }
+  .swl-c__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; }
+  .swl-c__t { flex: 1 1 auto; min-width: 0; font: 400 22px/1.3 'Galmuri11', monospace; color: var(--wh); }
+  .swl-c__t small { margin-left: 12px; font: 800 14px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--or); vertical-align: 3px; }
+  .swl-c__head em { flex: none; font-size: 14px; font-weight: 700; font-style: normal; color: var(--or); }
+  .swl-c__line { font-size: 16px; font-weight: 700; line-height: 1.6; }
+  .swl-c--start .swl-c__box, .swl-c--flag .swl-c__box { box-shadow: inset 0 0 0 4px #000, inset 0 0 0 8px var(--or); }
+  @media (max-width: 640px) {
+    .swl-c { grid-template-columns: 60px minmax(0, 1fr); } .swl__rail { left: 6px; } .swl-c__node { left: 30px; }
+    .swl-c__box { padding: 14px 18px 16px; }
+    .swl-c__head em { flex-basis: 100%; }
+  }
   @media (prefers-reduced-motion: reduce) { .swl-me { transform: none !important; } }
   /* ── 이력 — 상태 메뉴(슈퍼 마리오 RPG): 둥근 창(파란 그라데이션 · 흰 테 · 검은 바깥선) 여섯 + ▶ 커서 + 도움말 창 ── */
   .rp { --wh: #f8f8f8; --mu: #c8d2f4; --or: #f8c838; padding: 20px; border-radius: 12px; color: var(--wh); font: 15px/1.65 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all;
@@ -1659,11 +1679,41 @@
     scrubWire('e3', { root: r, n: WN.length, go: pg.go, tick: function (i, t) { swTick(r, i, t); }, levels: ['is-tight'], step: .6 });
   }
 
-  /* ════ 목록판 — "테마는 어느 정도 유지하되 그냥 아래로 쭉 나열" ════
-     한 칸씩 넘기지 않고 아홉 칸을 위에서 아래로 다 펼침(읽기는 보통 페이지처럼). 테마는 그대로 두고 스크롤이 놀이를 맡음 —
-     다: 월드마다 검은 화면(글) + 그 코스 장면, 장면이 화면에 들어온 만큼 고스트가 해내고(mbAct) 맨 위 점수판은 붙어서 지금 읽는 월드까지 오름.
-     나: 위에 섬 지도 한 장, 아래 코스 아홉이 왼쪽 모래 길을 따라 이어지고, 고스트가 스크롤만큼 길을 내려가며 길을 그리고 지나간 점을 켬 */
+  /* ════ 목록판 — "테마는 어느 정도 유지하되 그냥 아래로 쭉 나열" → "코스 클리어 이런 건 없애고 좀 더 짧게" ════
+     한 칸씩 넘기지 않고 아홉 칸을 위에서 아래로 다 펼침(읽기는 보통 페이지처럼). 테마는 그대로 두고 스크롤이 놀이를 맡음.
+     시기 하나 = 짧은 덩어리 하나(lItem — 이름 · 기간 / 한 줄 / 사실 몇 개). 게임 결산 글(COURSE CLEAR! 등)은 넘기는 판에만 남김.
+     다: 붙어 있는 점수판 + 월드마다 글 | 그 코스 장면(나란히), 장면이 화면에 들어온 만큼 고스트가 해내고(mbAct) 점수판이 지금 읽는 월드까지 오름.
+     나: 위에 섬 지도 한 장, 아래 코스 아홉(메시지 블록 한 장씩)이 왼쪽 모래 길을 따라 이어지고, 고스트가 스크롤만큼 길을 내려가며 길을 그리고 지나간 점을 켬 */
   var LTICKS = [];
+  /* 목록판 한 칸의 글 — 넘기는 판(mbMid · swClear)의 게임 결산(COURSE CLEAR! · READY! · NEXT · 잠긴 '? ? ?' · QUEST/CLEAR 칩)은 빼고
+     시기 하나 = 짧은 덩어리 하나: 이름 · 기간 / 한 줄 / 사실 몇 개(인원 · 큰 숫자 · 퀘스트 결과). 나 · 다 목록판이 함께 씀 — 글을 고칠 때는 여기 한 곳 */
+  var LQUEST = { lod: 1 };            /* 퀘스트 결과는 큰 숫자와 겹치지 않는 것만(리그 오브 디펜스 — 3일 차 이탈) */
+  function lNum(v, unit, lab) {
+    return '<span><b class="ps" data-l-count="' + esc(v) + '">' + esc(v) + '</b>' + (unit ? '<small>' + esc(unit) + '</small>' : '') + ' ' + esc(lab) + '</span>';
+  }
+  function lCourse(cs, short) {        /* 기획자 과정 몇 달째 + 막대 — 집(배운 곳)에서는 짧게, 깃발(다음 목표)에서는 '가는 길' 로 */
+    return '<span>' + (short ? '' : T('가는 길: ', 'On the way: ') + esc(t(cs.c.role)) + ' · ') + (L === 'en' ? 'month ' + cs.el + ' of ' + cs.tot : cs.tot + '개월 중 ' + cs.el + '개월째') +
+      '<i class="l-bar" aria-hidden="true"><i style="width:' + (cs.el / cs.tot * 100).toFixed(1) + '%"></i></i></span>';
+  }
+  function lItem(i) {
+    var n = WN[i], c = n.c && n.c(), p = n.p && n.p(), cs = wCourse(), f = [];
+    if (n.k === 'start') return { title: esc(NAME), sub: T('게임 기획자', 'Game designer'), when: '2016 – ' + new Date().getFullYear(), line: esc(plain(t(C.hero && C.hero.titleHtml))),
+      facts: stats.map(function (s) { var u = t(s.unit), lb = t(s.label); return lNum(s.num, lb.toLowerCase().indexOf(u.toLowerCase()) < 0 ? (/^[a-z]/i.test(u) ? ' ' : '') + u : '', lb); }) };
+    if (n.k === 'flag') return { title: 'PD', sub: T('다음 목표', 'Next goal'), when: '', line: esc(t(WGOAL)), facts: cs ? [lCourse(cs)] : [] };
+    var team = p && p.headcount ? t(p.headcount) + (p.myRole ? ' · ' + t(p.myRole) : '') : c && c.org ? t(c.org) : '';
+    if (team) f.push('<span>' + esc(team) + '</span>');
+    if (n.big) f.push(lNum(n.big[0], '', t(n.big[1])));
+    if (p && p.quest && p.quest.goal && LQUEST[n.id]) f.push('<span>' + esc(t(p.quest.goal)) + ' <b>' + esc(t(p.quest.result)) + '</b></span>');
+    if (n.k === 'house' && cs) f.push(lCourse(cs, 1));
+    return { title: esc(wTitle(n)), sub: '', when: esc(wPeriod(n)) + (wNow(n) && !/현재/.test((c && c.date && c.date.ko) || '') ? ' · ' + T('진행 중', 'ongoing') : ''),
+      line: esc(c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : ''), facts: f };
+  }
+  function lCount(el, vh) {           /* 숫자는 그 칸이 화면 아래 4분의 1 을 지나는 동안 0 → 값(읽을 자리에서는 다 올라가 있음) */
+    var cu = clamp01((vh - el.getBoundingClientRect().top) / (vh * .25));
+    [].forEach.call(el.querySelectorAll('[data-l-count]'), function (x) { x.textContent = countUp(x.getAttribute('data-l-count'), cu); });
+  }
+  function lFacts(it) { return it.facts.length ? '<p class="l-facts">' + it.facts.join('') + '</p>' : ''; }
+
   function draftL2() {
     function col(label, val, cap) { return '<p class="mb__col"><span>' + label + '</span>' + val + '<small>' + cap + '</small></p>'; }
     var hud = '<div class="mb__hud mbl__hud">' + col('<b class="ps">1P</b> <span class="mb__nm">' + esc(NAME) + '</span>', '<b class="ps" data-mbl-score>000000</b>', T('누적 다운로드', 'downloads')) +
@@ -1671,23 +1721,24 @@
       col('<span class="ps">WORLD</span>', '<b class="ps" data-mbl-world>START</b>', T('시기 하나 = 월드 하나', 'one period = one world')) +
       col('<span class="ps">TIME</span>', '<b class="ps" data-mbl-time>2016</b>', T('그 해', 'the year')) + '</div>';
     var list = MBW.map(function (e, i) {
-      return '<article class="mbl-w" data-mbl-i="' + i + '"><div class="mb__mid mbl-w__mid">' + mbMid(i) + '</div><div class="mb__scene mbl-w__scene" aria-hidden="true">' + mbScene(e) + '</div></article>';
+      var it = lItem(i);
+      return '<article class="mbl-w" data-mbl-i="' + i + '"><div class="mbl-w__text"><p class="mbl-w__w"><b class="ps">' + (i ? 'WORLD ' + esc(e.w) : 'START') + '</b><em>' + it.when + '</em></p>' +
+        '<h4 class="mb__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</h4><p class="mbl-w__line">' + it.line + '</p>' + lFacts(it) + '</div>' +
+        '<div class="mb__scene mbl-w__scene" aria-hidden="true">' + mbScene(e) + '</div></article>';
     }).join('');
     return '<section class="mb mbl" data-mbl aria-label="' + T('코스 시작 화면 목록 — 10년 이력', 'Course start screens, listed — ten years') + '">' + hud + '<div class="mbl__list">' + list + '</div></section>';
   }
   function wireL2() {
     var root = document.querySelector('[data-mbl]'); if (!root) return;
-    var items = [].slice.call(root.querySelectorAll('[data-mbl-i]')), done = {}, vw = 0;
+    var items = [].slice.call(root.querySelectorAll('[data-mbl-i]')), vw = 0;
     items.forEach(function (el, i) { var n = MBW[i].n; el.querySelector('.mb-pts').textContent = n && n.big ? n.big[0] : !n && i ? 'PD' : ''; });
     function tick() {
       if (!root.offsetParent) return;
       if (innerWidth !== vw) { vw = innerWidth; var tb = document.querySelector('.top'); root.style.setProperty('--mbl-top', (tb && getComputedStyle(tb).position === 'sticky' ? tb.offsetHeight : 0) + 'px'); }
       var vh = innerHeight, cur = 0, curAct = 1;
       items.forEach(function (el, i) {
-        var sc = el.querySelector('.mb__scene'), r = sc.getBoundingClientRect(), t = clamp01((vh - r.top) / (vh * .75));
-        var act = mbAct(root, sc, MBW[i], t), fin = MBW[i].k === 'start' || act >= 1;
-        [].forEach.call(el.querySelectorAll('.mb-later'), function (x) { x.classList.toggle('is-wait', !fin); });
-        if (fin && !done[i]) { done[i] = 1; [].forEach.call(el.querySelectorAll('.mb-later'), function (x) { pop(x); }); } else if (!fin) done[i] = 0;
+        var sc = el.querySelector('.mb__scene'), t = clamp01((vh - sc.getBoundingClientRect().top) / (vh * .75)), act = mbAct(root, sc, MBW[i], t);
+        lCount(el, vh);
         if (el.getBoundingClientRect().top < vh * .5) { cur = i; curAct = act; }
       });
       var e = MBW[cur], n = e.n, tot = mbTot(cur), f = n ? curAct : 1;
@@ -1700,23 +1751,21 @@
   }
 
   function draftL3() {
-    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 섬 그림 · 점 그림(--sw-*)은 나 와 같은 것 */
+    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 섬 그림 · 점 그림(--sw-*)은 나′ 와 같은 것 */
     var road = '', last = SWORD.length - 2;
     for (var i = 0; i <= last; i++) road += i < last ? '<path class="b" d="' + swSeg(i) + '"/><path class="f" d="' + swSeg(i) + '"/>' : '<path class="h" d="' + swSeg(i) + '"/>';
     var nodes = WN.map(function (n, i) {
       var p = swPx(n.id), w = n.k === 'castle' || n.k === 'flag' ? 64 : 40, h = n.k === 'flag' ? 128 : w;
       var top = n.k === 'flag' ? p[1] - 120 : p[1] - h / 2 - (n.k === 'castle' ? 12 : 0), inner = n.k === 'castle' ? '<i class="sw-s wm-castle"></i>' : n.k === 'flag' ? '<i class="sw-s wm-flag"></i>' : '<i class="sw-s sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y') + '"></i>';
-      return '<button type="button" class="sw-n sw-n--' + n.k + '" data-swl-go="' + i + '" style="left:' + (p[0] - w / 2) + 'px;top:' + top + 'px;width:' + w + 'px;height:' + h + 'px" aria-label="' + esc(n.code + ' · ' + t(n.short)) + '">' + inner + '</button>';
+      return '<button type="button" class="sw-n sw-n--' + n.k + '" data-swl-go="' + i + '" style="left:' + (p[0] - w / 2) + 'px;top:' + top + 'px;width:' + w + 'px;height:' + h + 'px" aria-label="' + esc(t(n.short)) + '">' + inner + '</button>';
     }).join('');
     var map = '<div class="sw__mapwrap swl__map"><div class="sw__top"><p class="sw__lives"><i class="sw-life"></i><b class="ps">× ' + esc(YRS) + '</b></p><p class="sw__name">' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '</p><p class="sw__yr ps">2016 → 2026</p></div>' +
       '<div class="sw__view swl__view"><div class="sw__map"><i class="sw-wave a"></i><i class="sw-wave b"></i><svg class="sw-road" width="800" height="448" viewBox="0 0 800 448" aria-hidden="true">' + road + '</svg>' + nodes + '</div></div></div>';
     var list = WN.map(function (n, i) {
-      var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y');
-      var code = n.code.indexOf('-') > 0 ? n.code : n.k === 'start' ? 'START' : n.k === 'flag' ? 'GOAL' : n.k === 'castle' ? 'CASTLE' : 'HOUSE';
-      var yr = n.k === 'start' ? '2016' : n.k === 'flag' ? 'NEXT' : wYear(n);
-      return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__panel">' +
-        '<p class="swl-c__head"><b class="ps">' + esc(code) + '</b><span>' + (n.k === 'start' ? esc(NAME) : esc(t(n.short))) + '</span><em class="ps">' + esc(yr) + '</em></p>' +
-        '<div class="sw__msg swl-c__msg"><p>' + esc(swMsg(i)) + '</p></div><div class="sw__clear swl-c__clear">' + swClear(i) + '</div></div></li>';
+      var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y'), it = lItem(i);
+      return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__box">' +
+        '<p class="swl-c__head"><span class="swl-c__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</span><em>' + it.when + '</em></p>' +
+        '<p class="swl-c__line">' + it.line + '</p>' + lFacts(it) + '</div></li>';
     }).join('');
     return '<section class="sw swl" data-swl aria-label="' + T('섬 지도와 코스 목록 — 10년 이력', 'Island map and course list — ten years') + '">' + map +
       '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li>' + list + '</ol></section>';
@@ -1735,11 +1784,10 @@
       road.style.height = Math.round((gy + 28) / 4) * 4 + 'px';
       me.style.transform = Math.floor(gy / 12) % 2 && gy > 0 && gy < lr.height - 56 ? 'translateY(-4px)' : '';
       items.forEach(function (el, i) {
-        var r = el.getBoundingClientRect(), node = el.querySelector('.swl-c__node'), reached = r.top + 40 < line;
+        var node = el.querySelector('.swl-c__node'), reached = el.getBoundingClientRect().top + 34 < line;
         node.classList.toggle('done', reached);
         if (reached && !hit[i]) { hit[i] = 1; if (!RM) { node.classList.remove('is-hit'); void node.offsetWidth; node.classList.add('is-hit'); } } else if (!reached) hit[i] = 0;
-        var cu = clamp01((vh * .92 - r.top) / (vh * .45));
-        [].forEach.call(el.querySelectorAll('[data-sw-count]'), function (x) { x.textContent = countUp(x.getAttribute('data-sw-count'), cu); });
+        lCount(el, vh);
       });
     }
     LTICKS.push(tick);
@@ -1820,20 +1868,20 @@
   }
 
   var DRAFTS4 = [
-    { id: 'l3', label: '나', plain: true, f: draftL3, wire: wireL3, badge: { ko: '목록판 · 아래로 쭉', en: 'List · all the way down' }, name: { ko: '섬 지도 — 길을 따라 내려가며 읽는 코스 아홉', en: 'Island map — nine courses read down the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 · COURSE CLEAR! 를 한 장에 다 펼침', en: 'Super Mario World map + message blocks and COURSE CLEAR! tallies, all laid out' },
-      pitch: { ko: '한 칸씩 넘기지 않고 다 펼쳤습니다. 맨 위에 섬 지도 한 장(지나온 길 · 성 · 집 · 깃발)을 두고, 그 아래로 아홉 코스를 시간 순서대로 쭉 이었습니다. 왼쪽 모래 길을 따라 고스트가 스크롤만큼 내려가며 길을 그리고, 지나간 점이 켜지며 반짝이고 그 코스의 숫자가 올라갑니다. 코스마다 메시지 블록(한 줄)과 결산 화면(COURSE CLEAR! · 기간 · 인원 · 점수 · 보너스 = 퀘스트 결과 · 배운 것)이 나란히 있습니다.',
-               en: 'Nothing to step through — it is all laid out. The island map (roads travelled, castles, the house, the flag) sits on top, and the nine courses run below it in time order. The ghost walks down the sand road on the left as far as you scroll, drawing the road behind it; each dot it passes lights up and sparkles, and that course\'s numbers count up. Every course pairs a message block (one line) with its tally (COURSE CLEAR!, time, team, score, bonus = the quest result, what I learned).' },
-      map: [['구조', 'Structure', '위 섬 지도 한 장 + 아래 코스 아홉 · 왼쪽 모래 길', 'Island map on top + nine courses below · sand road on the left'], ['내리면', 'Scroll', '고스트가 길을 내려가며 길을 그리고 지나간 점이 켜짐', 'The ghost walks down, drawing the road; dots it passes light up'], ['한눈에', 'At a glance', '넘기지 않아도 다 보임 · 지도 점을 누르면 그 코스로', 'All visible without stepping · tap a map dot to jump there']],
+    { id: 'l3', label: '나', plain: true, f: draftL3, wire: wireL3, badge: { ko: '목록판 · 짧게', en: 'List · short' }, name: { ko: '섬 지도 — 길을 따라 내려가며 읽는 코스 아홉', en: 'Island map — nine courses read down the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 코스마다 메시지 블록 한 장', en: 'Super Mario World map + one message block per course' },
+      pitch: { ko: '한 칸씩 넘기지 않고 다 펼쳤습니다. 맨 위에 섬 지도 한 장(지나온 길 · 성 · 집 · 깃발)을 두고, 그 아래로 아홉 코스를 시간 순서대로 이었습니다. 코스 하나 = 검은 메시지 블록 한 장 — 이름 · 기간 / 한 줄 / 사실 몇 개(인원 · 큰 숫자 · 퀘스트 결과)만 담고, 게임 결산 글(COURSE CLEAR! · READY! · NEXT)은 뺐습니다. 왼쪽 모래 길을 따라 고스트가 스크롤만큼 내려가며 길을 그리고, 지나간 점이 켜지며 그 코스의 숫자가 올라갑니다.',
+               en: 'Nothing to step through — it is all laid out. The island map (roads travelled, castles, the house, the flag) sits on top, and the nine courses run below it in time order. One course = one black message block holding only the name and period, one line and a few facts (team, the big number, the quest result); the game tally text (COURSE CLEAR!, READY!, NEXT) is gone. The ghost walks down the sand road on the left as far as you scroll, drawing the road behind it; each dot it passes lights up and that course\'s numbers count up.' },
+      map: [['구조', 'Structure', '위 섬 지도 한 장 + 아래 메시지 블록 아홉 · 왼쪽 모래 길', 'Island map on top + nine message blocks below · sand road on the left'], ['내리면', 'Scroll', '고스트가 길을 내려가며 길을 그리고 지나간 점이 켜짐', 'The ghost walks down, drawing the road; dots it passes light up'], ['한 칸', 'One course', '이름 · 기간 / 한 줄 / 사실 몇 개', 'Name and period / one line / a few facts']],
       hint: { ko: '▼ 그냥 내리며 읽으세요. 지도 위 점을 누르면 그 코스로 갑니다.', en: '▼ Just scroll and read. Tap a dot on the map to jump to that course.' },
-      pros: { ko: ['다 펼쳐져 있어 원하는 시기를 바로 읽음', '지도 한 장 + 길을 따라가는 목록 — 테마는 살리고 읽기는 쉬움', '휴대폰에서도 그대로 위에서 아래로'], en: ['Everything is laid out, so any period can be read straight away', 'One map + a list along the road — the theme stays, reading gets easy', 'Works the same top-to-bottom on a phone'] },
-      cons: { ko: ['길어짐(코스 아홉)', '한 칸씩 넘길 때의 연출은 줄어듦 — 길 그리기 · 점 켜기 · 숫자 올리기만', '지도는 휴대폰에서 옆으로 밀어야 다 보임'], en: ['Long (nine courses)', 'Less staging than stepping one at a time — drawing the road, lighting dots and counting up only', 'On a phone the map needs a sideways swipe to see all of it'] } },
-    { id: 'l2', label: '다', plain: true, f: draftL2, wire: wireL2, badge: { ko: '목록판 · 아래로 쭉', en: 'List · all the way down' }, name: { ko: '코스 시작 화면 — 월드 아홉을 위에서 아래로', en: 'Course start — nine worlds, top to bottom' }, sub: { ko: '슈퍼 마리오브라더스 점수판(따라 붙음) + 월드마다 검은 화면과 그 코스', en: 'Super Mario Bros. HUD (pinned) + a black card and its course for every world' },
-      pitch: { ko: '코스 시작 화면을 한 장씩 넘기지 않고 월드 아홉을 위에서 아래로 쭉 이었습니다. 맨 위 점수판은 따라 붙어 지금 읽는 월드까지 쌓인 점수(누적 다운로드) · 동전(출시작)을 보여 주고, 월드마다 검은 화면(WORLD 3-4 · 그 시기의 글) 아래 그 코스 장면이 있어 화면에 들어온 만큼 고스트가 블록을 치거나 깃대를 타며 물음표로 잠긴 결과를 엽니다.',
-               en: 'Instead of stepping through course start screens one at a time, the nine worlds run top to bottom. The HUD stays pinned at the top and shows the score (downloads) and coins (titles) piled up to the world you are reading; under each black card (WORLD 3-4 and that period\'s text) is that course, and as it comes into view the ghost hits the block or rides the flagpole and opens the results locked behind question marks.' },
-      map: [['구조', 'Structure', '붙어 있는 점수판 + 월드 아홉(검은 화면 + 장면)', 'Pinned HUD + nine worlds (black card + scene)'], ['내리면', 'Scroll', '장면이 보이는 만큼 고스트가 그 코스를 깸 · 점수판이 오름', 'As each scene comes into view the ghost clears it; the HUD climbs'], ['한눈에', 'At a glance', '넘기지 않아도 다 보임', 'All visible without stepping']],
+      pros: { ko: ['짧음 — 코스 하나가 블록 한 장(전 판의 절반 이하)', '지도 한 장 + 길을 따라가는 목록 — 테마는 살리고 읽기는 쉬움', '휴대폰에서도 그대로 위에서 아래로'], en: ['Short — one block per course (under half the previous length)', 'One map + a list along the road — the theme stays, reading gets easy', 'Works the same top-to-bottom on a phone'] },
+      cons: { ko: ['배운 것 · 태그는 빠짐(한 줄만)', '연출은 길 그리기 · 점 켜기 · 숫자 올리기뿐', '지도는 휴대폰에서 옆으로 밀어야 다 보임'], en: ['What I learned and the tags are left out (one line only)', 'The only staging is drawing the road, lighting dots and counting up', 'On a phone the map needs a sideways swipe to see all of it'] } },
+    { id: 'l2', label: '다', plain: true, f: draftL2, wire: wireL2, badge: { ko: '목록판 · 짧게', en: 'List · short' }, name: { ko: '코스 시작 화면 — 월드 아홉을 위에서 아래로', en: 'Course start — nine worlds, top to bottom' }, sub: { ko: '슈퍼 마리오브라더스 점수판(따라 붙음) + 월드마다 글 | 그 코스', en: 'Super Mario Bros. HUD (pinned) + each world\'s text beside its course' },
+      pitch: { ko: '월드 아홉을 위에서 아래로 이었습니다. 맨 위 점수판은 따라 붙어 지금 읽는 월드까지 쌓인 점수(누적 다운로드) · 동전(출시작)을 보여 주고, 월드마다 왼쪽에 글(WORLD 3-4 · 이름 · 기간 / 한 줄 / 사실 몇 개), 오른쪽에 그 코스 장면을 나란히 두어 월드 한 칸 = 장면 높이입니다. 장면이 화면에 들어온 만큼 고스트가 블록을 치거나 깃대를 탑니다. 잠긴 물음표 · QUEST / CLEAR 칩 같은 게임 결산은 뺐습니다.',
+               en: 'The nine worlds run top to bottom. The HUD stays pinned and shows the score (downloads) and coins (titles) piled up to the world you are reading. Each world puts its text on the left (WORLD 3-4, name and period, one line, a few facts) and its course on the right, so a world is only as tall as its scene. As a scene comes into view the ghost hits the block or rides the flagpole. The game tally bits — question-mark locks, QUEST and CLEAR chips — are gone.' },
+      map: [['구조', 'Structure', '붙어 있는 점수판 + 월드 아홉(글 | 장면)', 'Pinned HUD + nine worlds (text | scene)'], ['내리면', 'Scroll', '장면이 보이는 만큼 고스트가 그 코스를 깸 · 점수판이 오름', 'As each scene comes into view the ghost clears it; the HUD climbs'], ['한 칸', 'One world', '이름 · 기간 / 한 줄 / 사실 몇 개', 'Name and period / one line / a few facts']],
       hint: { ko: '▼ 그냥 내리며 읽으세요 — 장면이 화면에 들어오면 고스트가 움직입니다.', en: '▼ Just scroll and read — the ghost moves as each scene comes into view.' },
-      pros: { ko: ['읽는 순서 그대로 — 위에서 아래로 10년', '점수판이 따라와 지금까지 쌓인 숫자가 늘 보임', '장면이 결과를 여는 연출은 그대로'], en: ['Reads in order — ten years, top to bottom', 'The pinned HUD always shows what has piled up so far', 'The scene still opens each result'] },
-      cons: { ko: ['길어짐(월드 아홉)', '월드마다 장면이 있어 화면을 많이 씀', '잠긴 결과는 장면을 지나야 열림'], en: ['Long (nine worlds)', 'A scene per world takes a lot of screen', 'Locked results open only once the scene has played'] } }
+      pros: { ko: ['짧음 — 글과 장면이 나란히라 월드 한 칸이 장면 높이(전 판의 절반 이하)', '점수판이 따라와 지금까지 쌓인 숫자가 늘 보임', '고스트가 그 코스를 해내는 장면은 그대로'], en: ['Short — the text sits beside the scene, so a world is only as tall as its scene (under half the previous length)', 'The pinned HUD always shows what has piled up so far', 'The ghost still plays out each course'] },
+      cons: { ko: ['휴대폰에서는 장면이 글 아래로 가서 덜 짧아짐', '배운 것 · 태그는 빠짐(한 줄만)', '장면은 종류만 구분(경력 · 프로젝트 · 배운 곳)'], en: ['On a phone the scene drops below the text, so it shortens less', 'What I learned and the tags are left out (one line only)', 'The scene only tells the kinds apart (career, project, learning)'] } }
   ];
   var DRAFTS_OLD = [
     { id: 'e3', scrub: true, label: '나′', plain: true, f: draftE3, wire: wireE3, badge: { ko: '지난 판 · 한 칸씩 넘기기', en: 'Earlier · one step at a time' }, name: { ko: '섬 지도 — 길을 따라 깨 온 코스들', en: 'Island map — courses cleared along the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 + COURSE CLEAR!', en: 'Super Mario World map + message block + COURSE CLEAR!' },
