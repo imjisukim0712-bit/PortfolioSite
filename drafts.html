@@ -457,7 +457,7 @@
   .sw-pip.done { opacity: 1; }
   .sw-pip.cur { opacity: 1; outline: 4px solid var(--wh); outline-offset: 2px; }
   /* 점에 닿는 순간 — 네 방향 반짝임(4px 칸, 한 번) */
-  .sw-n.is-hit::after { content: ''; position: absolute; left: calc(50% - 4px); top: calc(50% - 4px); width: 8px; height: 8px; pointer-events: none; animation: sw-burst .48s steps(4) both; }
+  .sw-n.is-hit::after, .swl-c__node.is-hit::after { content: ''; position: absolute; left: calc(50% - 4px); top: calc(50% - 4px); width: 8px; height: 8px; pointer-events: none; animation: sw-burst .48s steps(4) both; }
   @keyframes sw-burst {
     0% { box-shadow: 0 -16px #fcfcfc, 16px 0 #f8b800, 0 16px #fcfcfc, -16px 0 #f8b800, 12px -12px #f8b800, 12px 12px #fcfcfc, -12px 12px #f8b800, -12px -12px #fcfcfc; }
     100% { box-shadow: 0 -44px transparent, 44px 0 transparent, 0 44px transparent, -44px 0 transparent, 32px -32px transparent, 32px 32px transparent, -32px 32px transparent, -32px -32px transparent; }
@@ -587,6 +587,45 @@
     .mb-chip b { font-size: 8px; }
   }
 
+  /* ── 목록판(아래로 쭉) — 다: 붙어 있는 점수판 + 월드 아홉(검은 화면 + 장면) · 나: 섬 지도 + 왼쪽 모래 길을 따라 코스 아홉 ── */
+  .mb.mbl { --g: 64px; overflow: visible; }
+  .mbl .mb-hard2 { display: none; }
+  .mbl__hud { position: sticky; z-index: 6; top: var(--mbl-top, 0px); padding-bottom: 16px !important; background: #000; border-radius: 12px 12px 0 0; border-bottom: 4px solid #2a2a2a; }
+  .mbl-w__mid { min-height: 0 !important; padding: 44px 40px 32px !important; }
+  .mbl-w:last-child .mbl-w__scene { border-radius: 0 0 12px 12px; }
+  @media (max-width: 760px) {
+    .mbl-w__mid { padding: 30px 18px 24px !important; }
+    .mbl__hud { grid-template-columns: repeat(4, auto) !important; justify-content: space-between; gap: 6px 12px !important; padding: 10px 14px 10px !important; }   /* 휴대폰 — 붙는 점수판은 한 줄 */
+    .mbl__hud p { gap: 6px !important; }
+    .mbl__hud p > * { font-size: 8px !important; }
+    .mbl__hud p > small, .mbl__hud .mb__nm { display: none; }
+    .mbl__hud .s-coin-s { margin: -4px 4px 0 0 !important; }
+  }
+  @media (max-width: 640px) { .swl .sw__yr { display: none; } }
+  .swl { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .swl__map { grid-area: auto; justify-self: center; width: 100%; max-width: 808px; }
+  .swl .sw__view { overflow-x: auto; overflow-y: hidden; }
+  .swl .sw-road .b, .swl .sw-road .f { stroke-dasharray: none; }
+  .swl__list { position: relative; display: grid; gap: 24px; margin: 0; padding: 8px 0; list-style: none; }
+  .swl__rail { position: absolute; left: 20px; top: 0; bottom: 0; width: 48px; pointer-events: none; }
+  .swl__rail::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 4px; background: repeating-linear-gradient(180deg, #fce0a8 0 4px, transparent 4px 12px); }
+  .swl__road { position: absolute; left: 14px; top: 0; width: 20px; height: 0; background: #fce0a8; box-shadow: inset 4px 0 #171c28, inset -4px 0 #171c28; }
+  .swl-me { position: sticky; z-index: 3; top: 45vh; display: block; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .swl-c { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); }
+  .swl-c__node { position: absolute; z-index: 2; left: 44px; top: 40px; transform: translate(-50%, -50%); opacity: .45; }
+  .swl-c__node.done { opacity: 1; }
+  .swl-c__node .sw-s { display: block; width: 28px; height: 28px; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+  .swl-c__node .wm-castle { width: 64px; height: 64px; }
+  .swl-c__panel { grid-column: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'head head' 'msg clear'; gap: 12px 16px; }
+  .swl-c__head { grid-area: head; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-top: 22px !important; }
+  .swl-c__head b { font-size: 16px; color: var(--or); }
+  .swl-c__head span { font: 400 22px/1.3 'Galmuri11', monospace; color: var(--wh); }
+  .swl-c__head em { margin-left: auto; font-size: 16px; font-style: normal; color: var(--mu); }
+  .swl-c__msg { align-self: start; min-height: 0; }
+  .swl .sw-c__who { display: none; }
+  @media (max-width: 900px) { .swl-c__panel { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'head' 'msg' 'clear'; } }
+  @media (max-width: 640px) { .swl-c { grid-template-columns: 60px minmax(0, 1fr); } .swl__rail { left: 6px; } .swl-c__node { left: 30px; } }
+  @media (prefers-reduced-motion: reduce) { .swl-me { transform: none !important; } }
   /* ── 이력 — 상태 메뉴(슈퍼 마리오 RPG): 둥근 창(파란 그라데이션 · 흰 테 · 검은 바깥선) 여섯 + ▶ 커서 + 도움말 창 ── */
   .rp { --wh: #f8f8f8; --mu: #c8d2f4; --or: #f8c838; padding: 20px; border-radius: 12px; color: var(--wh); font: 15px/1.65 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all;
     background: #0c1838 linear-gradient(45deg, rgb(255 255 255 / .05) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / .05) 75%) 0 0 / 32px 32px; }
@@ -726,10 +765,10 @@
 
   <section class="part" id="story">
     <div class="part__head"><span class="part__num">PART 01</span><h3><span class="i18n-ko">홈 흐름 — 이력 · 섬 지도와 코스 시작 화면</span><span class="i18n-en">Home flow — the career as an island map and a course start</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">"다 별론디" 뒤 기준부터 정했습니다 — 걸리는 것: 보기 · 내용 · 어색한 게임 테마 / 레퍼런스 먼저 / 게임 화면처럼 강하게 → 닌텐도 레트로 게임 레퍼런스 → "일단 마리오 시리즈 위주로". 그래서 같은 이력을 마리오 시리즈의 서로 다른 화면 넷에 올렸습니다 — <b>가</b> 슈퍼 마리오브라더스 3 월드 지도 · <b>나</b> 슈퍼 마리오 월드 섬 지도 · <b>다</b> 슈퍼 마리오브라더스 코스 시작 화면 · <b>라</b> 슈퍼 마리오 RPG 상태 메뉴. 그림은 원작을 베끼지 않고 같은 문법으로 새로 찍었고, 글 · 숫자는 모두 이력서 · 프로젝트 값 그대로입니다. 넷 다 <b>스크롤만으로</b> 넘어갑니다. "나, 다가 화풍이 좋네" — 그래서 <b>나 · 다</b> 둘을 위에 두고 더 깎았습니다: 스크롤이 걷기 · 코스 깨기가 되어, 고스트가 해내는 순간 이력이 열립니다. 가 · 라 는 아래 '지난 안'에 접어 두었습니다. 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">After "none of it works" we set the criteria first — issues: looks, content, an awkward game theme / references first / a strong game-screen feel → Nintendo retro references → "start with the Mario series". So the same career now sits on four different Mario-series screens — <b>가</b> the Super Mario Bros. 3 world map, <b>나</b> the Super Mario World island map, <b>다</b> the Super Mario Bros. course start screen and <b>라</b> the Super Mario RPG status menu. The art is not copied but redrawn in the same grammar, and every word and number comes straight from the résumé and projects. All four advance <b>by scrolling alone</b>. "나 and 다 have the right look" — so those two stay on top and get refined: scrolling now walks the road and plays the course, and the career opens the moment the ghost gets there. 가 and 라 are folded into 'Earlier' below. The earlier pick S is folded below.</span></p>
+    <p class="part__desc"><span class="i18n-ko">"다 별론디" 뒤 기준부터 정했습니다 — 걸리는 것: 보기 · 내용 · 어색한 게임 테마 / 레퍼런스 먼저 / 게임 화면처럼 강하게 → 닌텐도 레트로 게임 레퍼런스 → "일단 마리오 시리즈 위주로". 그래서 같은 이력을 마리오 시리즈의 서로 다른 화면 넷에 올렸습니다 — <b>가</b> 슈퍼 마리오브라더스 3 월드 지도 · <b>나</b> 슈퍼 마리오 월드 섬 지도 · <b>다</b> 슈퍼 마리오브라더스 코스 시작 화면 · <b>라</b> 슈퍼 마리오 RPG 상태 메뉴. 그림은 원작을 베끼지 않고 같은 문법으로 새로 찍었고, 글 · 숫자는 모두 이력서 · 프로젝트 값 그대로입니다. 넷 다 <b>스크롤만으로</b> 넘어갑니다. "나, 다가 화풍이 좋네" — 그래서 <b>나 · 다</b> 둘을 위에 두고 더 깎았습니다: 스크롤이 걷기 · 코스 깨기가 되어, 고스트가 해내는 순간 이력이 열립니다. 가 · 라 는 아래 '지난 안'에 접어 두었습니다. 그 뒤 "테마는 어느 정도 유지하되 그냥 아래로 쭉 나열" — 나 · 다 를 한 칸씩 넘기지 않고 다 펼친 <b>목록판</b>으로 바꿨습니다(한 칸씩 넘기던 판은 '지난 안'의 나′ · 다′). 앞서 고른 S 는 아래에 접어 두었습니다.</span><span class="i18n-en">After "none of it works" we set the criteria first — issues: looks, content, an awkward game theme / references first / a strong game-screen feel → Nintendo retro references → "start with the Mario series". So the same career now sits on four different Mario-series screens — <b>가</b> the Super Mario Bros. 3 world map, <b>나</b> the Super Mario World island map, <b>다</b> the Super Mario Bros. course start screen and <b>라</b> the Super Mario RPG status menu. The art is not copied but redrawn in the same grammar, and every word and number comes straight from the résumé and projects. All four advance <b>by scrolling alone</b>. "나 and 다 have the right look" — so those two stay on top and get refined: scrolling now walks the road and plays the course, and the career opens the moment the ghost gets there. 가 and 라 are folded into 'Earlier' below. Then "keep the theme to a degree but just list it all the way down" — 나 and 다 are now <b>list versions</b> laid out in full instead of stepping (the stepping versions are 나′ and 다′ under 'Earlier'). The earlier pick S is folded below.</span></p>
     <ul class="rules" id="rules"></ul>
     <div id="drafts4"></div>
-    <details class="older" id="older"><summary><span class="i18n-ko">지난 안 — 가 월드 지도 · 라 상태 메뉴 · S 지어지는 월드</span><span class="i18n-en">Earlier — 가 world map · 라 status menu · S a world being built</span><small><span class="i18n-ko">스크롤 연출 · 보류</span><span class="i18n-en">scroll staging · on hold</span></small></summary>
+    <details class="older" id="older"><summary><span class="i18n-ko">지난 안 — 나′ · 다′ 한 칸씩 넘기기 · 가 월드 지도 · 라 상태 메뉴 · S 지어지는 월드</span><span class="i18n-en">Earlier — 나′ · 다′ stepping · 가 world map · 라 status menu · S a world being built</span><small><span class="i18n-ko">스크롤 연출 · 보류</span><span class="i18n-en">scroll staging · on hold</span></small></summary>
       <div id="drafts-old"></div>
     </details>
   </section>
@@ -1350,13 +1389,11 @@
     var after = j < 0 ? { dl: 0, ti: 0 } : wTotals(j), before = j < 1 ? (e.n ? { dl: 0, ti: 0 } : after) : wTotals(j - 1);
     return { before: e.n ? before : after, after: after };
   }
-  function mbShow(root, i, quiet) {
+  function mbMid(i) {                /* 그 월드의 글(검은 화면) — 한 칸씩 넘기는 판 · 목록판 공용 */
     var e = MBW[i], n = e.n;
-    root.querySelector('[data-mb-world]').textContent = n ? e.w : i === 0 ? '1-1' : '8-1';
-    root.querySelector('[data-mb-time]').textContent = n ? wYear(n) : i === 0 ? '2016' : '2027';
     var mid = '';
     if (!n && i === 0) {
-      mid = '<p class="ps mb__w">WORLD 1-1</p><p class="mb__lives"><i class="mb-s s-ghost in"></i><b class="ps">× ' + esc(YRS) + '</b><span>' + T('년째 게임을 만드는 중', 'years of making games') + '</span></p>' +
+      mid = '<p class="ps mb__w">START</p><p class="mb__lives"><i class="mb-s s-ghost in"></i><b class="ps">× ' + esc(YRS) + '</b><span>' + T('년째 게임을 만드는 중', 'years of making games') + '</span></p>' +
         '<h4 class="mb__t">' + esc(NAME) + '<small>' + T('게임 기획자', 'Game designer') + '</small></h4><p class="mb__lead">' + esc(plain(t(C.hero && C.hero.titleHtml))) + '</p>' +
         '<p class="mb__note">' + T('▼ 내리면 2016년부터 한 월드씩 — 고스트가 그 시기의 일을 해낼 때마다 위 점수판이 올라갑니다.', 'Scroll to play from 2016 — the scoreboard above climbs each time the ghost gets that period\'s job done.') + '</p>';
     } else if (!n) {
@@ -1373,6 +1410,13 @@
         (p && p.quest && p.quest.goal ? '<p class="mb__q mb-later"><b class="ps">QUEST</b><span>' + esc(t(p.quest.goal)) + ' → <strong>' + esc(t(p.quest.result)) + '</strong></span>' + (p.quest.cleared ? '<em class="ps">CLEAR</em>' : '') + '</p>' : '') +
         (p && p.learned && p.learned[0] ? '<p class="mb__learn mb-later">' + esc(t(p.learned[0])) + '</p>' : c && c.body ? '<p class="mb__learn mb-later">' + esc(t(c.body)) + '</p>' : '');
     }
+    return mid;
+  }
+  function mbShow(root, i, quiet) {
+    var e = MBW[i], n = e.n;
+    root.querySelector('[data-mb-world]').textContent = n ? e.w : i === 0 ? 'START' : '8-1';
+    root.querySelector('[data-mb-time]').textContent = n ? wYear(n) : i === 0 ? '2016' : '2027';
+    var mid = mbMid(i);
     var md = root.querySelector('[data-mb-mid]'); md.innerHTML = mid; pop(md, quiet);
     var sc = root.querySelector('[data-mb-scene]'); sc.innerHTML = mbScene(e);
     sc.querySelector('.mb-pts').textContent = n && n.big ? n.big[0] : !n && i ? 'PD' : '';
@@ -1388,9 +1432,9 @@
     }
     var z = pts[pts.length - 1]; return [z[0], z[1], false];
   }
-  function mbTick(root, i, t) {
-    var e = MBW[i], k = e.k, sc = root.querySelector('[data-mb-scene]'), W = sc.clientWidth, me = sc.querySelector('.mb-me'), pt = sc.querySelector('.mb-pts');
-    if (!me) return;
+  function mbAct(root, sc, e, t) {     /* 장면 한 줄 — 고스트가 그 코스를 해냄(t 0 ~ 1). 해낸 정도(act)를 돌려줌 */
+    var k = e.k, W = sc.clientWidth, me = sc.querySelector('.mb-me'), pt = sc.querySelector('.mb-pts');
+    if (!me) return 1;
     var g = parseFloat(getComputedStyle(root).getPropertyValue('--g')) || 128, sky = sc.clientHeight - g, act = 1, at, px = 0, py = 0;
     function q(v) { return Math.round(v / 4) * 4; }
     if (k === 'start') at = mbPath([[-48, 0, 0], [W * .22, 0, .45], [W * .22, 0, .88], [W + 48, 0, 1]], t);
@@ -1422,15 +1466,21 @@
       at = mbPath([[-48, 0, 0], [pl - 52, 0, .4], [pl + 40, 128, .52], [pl + 40, 128, .56], [pl + 40, 68, .8]], t);
       act = clamp01((t - .56) / .24);
     }
-    sc.classList.toggle('is-cut', i > 0 && t < .05);        /* 월드 사이 — 슈퍼 마리오브라더스처럼 검은 화면이 한 번 */
     var bob = at[2] && Math.floor(at[0] / 12) % 2 ? 4 : 0;
     me.style.left = q(at[0]) + 'px'; me.style.bottom = q(g + at[1] + bob) + 'px';
     pt.style.visibility = pt.textContent && act > 0 && act < 1 ? 'visible' : 'hidden';
     pt.style.left = q(px) + 'px'; pt.style.bottom = q(g + py) + 'px';
+    return act;
+  }
+  function mbTick(root, i, t) {
+    var e = MBW[i], sc = root.querySelector('[data-mb-scene]');
+    if (!sc.querySelector('.mb-me')) return;
+    var act = mbAct(root, sc, e, t);
+    sc.classList.toggle('is-cut', i > 0 && t < .05);        /* 월드 사이 — 슈퍼 마리오브라더스처럼 검은 화면이 한 번 */
     var tot = mbTot(i), f = e.n ? act : 1;
     root.querySelector('[data-mb-score]').textContent = ('000000' + Math.round(tot.before.dl + (tot.after.dl - tot.before.dl) * f)).slice(-6);
     root.querySelector('[data-mb-coin]').textContent = '×' + ('0' + (f >= .5 ? tot.after.ti : tot.before.ti)).slice(-2);
-    var done = k === 'start' || act >= 1;
+    var done = e.k === 'start' || act >= 1;
     [].forEach.call(root.querySelectorAll('.mb-later'), function (el) { el.classList.toggle('is-wait', !done); });
     if (done && root.__mbDone !== i) { root.__mbDone = i; [].forEach.call(root.querySelectorAll('.mb-later'), function (el) { pop(el, t >= 1); }); }
     if (!done) root.__mbDone = -1;
@@ -1540,12 +1590,11 @@
   }
   function swCount(s) { return '<b class="ps" data-sw-count="' + esc(s) + '">' + esc(s) + '</b>'; }
   function swTw(s) { return '<p class="sw-tw"><span class="sw-tw__g">' + esc(s) + '</span><span class="sw-tw__t" data-sw-tw="' + esc(s) + '"></span></p>'; }
-  function swShow(root, i, quiet) {
+  function swMsg(i) { var n = WN[i], c = n.c && n.c(), p = n.p && n.p();
+  var msg = n.k === 'start' ? plain(t(C.hero && C.hero.titleHtml)) : n.k === 'flag' ? t(WGOAL) : c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : '';
+    return msg; }
+  function swClear(i) {               /* 결산 화면(COURSE CLEAR! · READY! · NEXT) — 한 칸씩 넘기는 판 · 목록판 공용 */
     var n = WN[i], c = n.c && n.c(), p = n.p && n.p();
-    root.querySelector('[data-sw-name]').textContent = n.k === 'start' ? NAME + ' · ' + T('게임 기획자', 'Game designer') : (n.code.indexOf('-') > 0 ? n.code + ' ' : '') + t(n.short);
-    root.querySelector('[data-sw-yr]').textContent = n.k === 'start' ? '2016' : n.k === 'flag' ? 'NEXT' : wYear(n);
-    var msg = n.k === 'start' ? plain(t(C.hero && C.hero.titleHtml)) : n.k === 'flag' ? t(WGOAL) : c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : '';
-    root.querySelector('[data-sw-msg]').innerHTML = swTw(msg);
     var h = '<p class="sw-c__who">' + esc(NAME) + '</p>';
     if (n.k === 'start') {
       var quip = C.home && C.home.quips && C.home.quips[0];
@@ -1565,6 +1614,15 @@
         (p && p.quest && p.quest.goal ? '<div><dt class="ps">BONUS</dt><dd>' + esc(t(p.quest.goal)) + ' → <b>' + esc(t(p.quest.result)) + '</b></dd></div>' : '') + '</dl>' +
         (p && p.learned && p.learned.length ? '<ul class="sw-c__learn">' + p.learned.slice(0, 2).map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul>' : c && c.tags ? '<p class="sw-c__tags">' + c.tags.map(function (x) { return '<span>' + esc(t(x)) + '</span>'; }).join('') + '</p>' : '');
     }
+    return h;
+  }
+  function swShow(root, i, quiet) {
+    var n = WN[i], c = n.c && n.c(), p = n.p && n.p();
+    root.querySelector('[data-sw-name]').textContent = n.k === 'start' ? NAME + ' · ' + T('게임 기획자', 'Game designer') : (n.code.indexOf('-') > 0 ? n.code + ' ' : '') + t(n.short);
+    root.querySelector('[data-sw-yr]').textContent = n.k === 'start' ? '2016' : n.k === 'flag' ? 'NEXT' : wYear(n);
+    var msg = swMsg(i);
+    root.querySelector('[data-sw-msg]').innerHTML = swTw(msg);
+    var h = swClear(i);
     h += '<div class="sw-c__prog"><p><b class="ps">COURSE</b><span class="ps">' + (i + 1) + ' / ' + WN.length + '</span></p><div class="sw-c__pips">' + WN.map(function (m, j) {
       return '<i class="sw-pip sw-pip--' + m.k + (j < i ? ' done' : j === i ? ' cur' : '') + '" title="' + esc(t(m.short)) + '"></i>';
     }).join('') + '</div></div>';
@@ -1599,6 +1657,92 @@
     var r = document.querySelector('[data-sw]'); if (!r) return;
     var pg = wirePager(r, WN.length, function (i, q) { swShow(r, i, q); });
     scrubWire('e3', { root: r, n: WN.length, go: pg.go, tick: function (i, t) { swTick(r, i, t); }, levels: ['is-tight'], step: .6 });
+  }
+
+  /* ════ 목록판 — "테마는 어느 정도 유지하되 그냥 아래로 쭉 나열" ════
+     한 칸씩 넘기지 않고 아홉 칸을 위에서 아래로 다 펼침(읽기는 보통 페이지처럼). 테마는 그대로 두고 스크롤이 놀이를 맡음 —
+     다: 월드마다 검은 화면(글) + 그 코스 장면, 장면이 화면에 들어온 만큼 고스트가 해내고(mbAct) 맨 위 점수판은 붙어서 지금 읽는 월드까지 오름.
+     나: 위에 섬 지도 한 장, 아래 코스 아홉이 왼쪽 모래 길을 따라 이어지고, 고스트가 스크롤만큼 길을 내려가며 길을 그리고 지나간 점을 켬 */
+  var LTICKS = [];
+  function draftL2() {
+    function col(label, val, cap) { return '<p class="mb__col"><span>' + label + '</span>' + val + '<small>' + cap + '</small></p>'; }
+    var hud = '<div class="mb__hud mbl__hud">' + col('<b class="ps">1P</b> <span class="mb__nm">' + esc(NAME) + '</span>', '<b class="ps" data-mbl-score>000000</b>', T('누적 다운로드', 'downloads')) +
+      col('&nbsp;', '<b class="ps"><i class="mb-s s-coin-s in"></i><span data-mbl-coin>×00</span></b>', T('출시작', 'titles shipped')) +
+      col('<span class="ps">WORLD</span>', '<b class="ps" data-mbl-world>START</b>', T('시기 하나 = 월드 하나', 'one period = one world')) +
+      col('<span class="ps">TIME</span>', '<b class="ps" data-mbl-time>2016</b>', T('그 해', 'the year')) + '</div>';
+    var list = MBW.map(function (e, i) {
+      return '<article class="mbl-w" data-mbl-i="' + i + '"><div class="mb__mid mbl-w__mid">' + mbMid(i) + '</div><div class="mb__scene mbl-w__scene" aria-hidden="true">' + mbScene(e) + '</div></article>';
+    }).join('');
+    return '<section class="mb mbl" data-mbl aria-label="' + T('코스 시작 화면 목록 — 10년 이력', 'Course start screens, listed — ten years') + '">' + hud + '<div class="mbl__list">' + list + '</div></section>';
+  }
+  function wireL2() {
+    var root = document.querySelector('[data-mbl]'); if (!root) return;
+    var items = [].slice.call(root.querySelectorAll('[data-mbl-i]')), done = {}, vw = 0;
+    items.forEach(function (el, i) { var n = MBW[i].n; el.querySelector('.mb-pts').textContent = n && n.big ? n.big[0] : !n && i ? 'PD' : ''; });
+    function tick() {
+      if (!root.offsetParent) return;
+      if (innerWidth !== vw) { vw = innerWidth; var tb = document.querySelector('.top'); root.style.setProperty('--mbl-top', (tb && getComputedStyle(tb).position === 'sticky' ? tb.offsetHeight : 0) + 'px'); }
+      var vh = innerHeight, cur = 0, curAct = 1;
+      items.forEach(function (el, i) {
+        var sc = el.querySelector('.mb__scene'), r = sc.getBoundingClientRect(), t = clamp01((vh - r.top) / (vh * .75));
+        var act = mbAct(root, sc, MBW[i], t), fin = MBW[i].k === 'start' || act >= 1;
+        [].forEach.call(el.querySelectorAll('.mb-later'), function (x) { x.classList.toggle('is-wait', !fin); });
+        if (fin && !done[i]) { done[i] = 1; [].forEach.call(el.querySelectorAll('.mb-later'), function (x) { pop(x); }); } else if (!fin) done[i] = 0;
+        if (el.getBoundingClientRect().top < vh * .5) { cur = i; curAct = act; }
+      });
+      var e = MBW[cur], n = e.n, tot = mbTot(cur), f = n ? curAct : 1;
+      root.querySelector('[data-mbl-score]').textContent = ('000000' + Math.round(tot.before.dl + (tot.after.dl - tot.before.dl) * f)).slice(-6);
+      root.querySelector('[data-mbl-coin]').textContent = '×' + ('0' + (f >= .5 ? tot.after.ti : tot.before.ti)).slice(-2);
+      root.querySelector('[data-mbl-world]').textContent = n ? e.w : cur === 0 ? 'START' : '8-1';
+      root.querySelector('[data-mbl-time]').textContent = n ? wYear(n) : cur === 0 ? '2016' : '2027';
+    }
+    LTICKS.push(tick);
+  }
+
+  function draftL3() {
+    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 섬 그림 · 점 그림(--sw-*)은 나 와 같은 것 */
+    var road = '', last = SWORD.length - 2;
+    for (var i = 0; i <= last; i++) road += i < last ? '<path class="b" d="' + swSeg(i) + '"/><path class="f" d="' + swSeg(i) + '"/>' : '<path class="h" d="' + swSeg(i) + '"/>';
+    var nodes = WN.map(function (n, i) {
+      var p = swPx(n.id), w = n.k === 'castle' || n.k === 'flag' ? 64 : 40, h = n.k === 'flag' ? 128 : w;
+      var top = n.k === 'flag' ? p[1] - 120 : p[1] - h / 2 - (n.k === 'castle' ? 12 : 0), inner = n.k === 'castle' ? '<i class="sw-s wm-castle"></i>' : n.k === 'flag' ? '<i class="sw-s wm-flag"></i>' : '<i class="sw-s sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y') + '"></i>';
+      return '<button type="button" class="sw-n sw-n--' + n.k + '" data-swl-go="' + i + '" style="left:' + (p[0] - w / 2) + 'px;top:' + top + 'px;width:' + w + 'px;height:' + h + 'px" aria-label="' + esc(n.code + ' · ' + t(n.short)) + '">' + inner + '</button>';
+    }).join('');
+    var map = '<div class="sw__mapwrap swl__map"><div class="sw__top"><p class="sw__lives"><i class="sw-life"></i><b class="ps">× ' + esc(YRS) + '</b></p><p class="sw__name">' + esc(NAME) + ' · ' + T('게임 기획자', 'Game designer') + '</p><p class="sw__yr ps">2016 → 2026</p></div>' +
+      '<div class="sw__view swl__view"><div class="sw__map"><i class="sw-wave a"></i><i class="sw-wave b"></i><svg class="sw-road" width="800" height="448" viewBox="0 0 800 448" aria-hidden="true">' + road + '</svg>' + nodes + '</div></div></div>';
+    var list = WN.map(function (n, i) {
+      var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y');
+      var code = n.code.indexOf('-') > 0 ? n.code : n.k === 'start' ? 'START' : n.k === 'flag' ? 'GOAL' : n.k === 'castle' ? 'CASTLE' : 'HOUSE';
+      var yr = n.k === 'start' ? '2016' : n.k === 'flag' ? 'NEXT' : wYear(n);
+      return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__panel">' +
+        '<p class="swl-c__head"><b class="ps">' + esc(code) + '</b><span>' + (n.k === 'start' ? esc(NAME) : esc(t(n.short))) + '</span><em class="ps">' + esc(yr) + '</em></p>' +
+        '<div class="sw__msg swl-c__msg"><p>' + esc(swMsg(i)) + '</p></div><div class="sw__clear swl-c__clear">' + swClear(i) + '</div></div></li>';
+    }).join('');
+    return '<section class="sw swl" data-swl aria-label="' + T('섬 지도와 코스 목록 — 10년 이력', 'Island map and course list — ten years') + '">' + map +
+      '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li>' + list + '</ol></section>';
+  }
+  function wireL3() {
+    var root = document.querySelector('[data-swl]'); if (!root) return;
+    var list = root.querySelector('.swl__list'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), items = [].slice.call(root.querySelectorAll('[data-swl-i]')), hit = {};
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-swl-go]'); if (!b) return;
+      var el = root.querySelector('[data-swl-i="' + b.getAttribute('data-swl-go') + '"]');
+      if (el) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
+    });
+    function tick() {
+      if (!root.offsetParent) return;
+      var vh = innerHeight, lr = list.getBoundingClientRect(), gy = Math.max(0, Math.min(lr.height - 56, vh * .45 - lr.top)), line = vh * .45 + 28;
+      road.style.height = Math.round((gy + 28) / 4) * 4 + 'px';
+      me.style.transform = Math.floor(gy / 12) % 2 && gy > 0 && gy < lr.height - 56 ? 'translateY(-4px)' : '';
+      items.forEach(function (el, i) {
+        var r = el.getBoundingClientRect(), node = el.querySelector('.swl-c__node'), reached = r.top + 40 < line;
+        node.classList.toggle('done', reached);
+        if (reached && !hit[i]) { hit[i] = 1; if (!RM) { node.classList.remove('is-hit'); void node.offsetWidth; node.classList.add('is-hit'); } } else if (!reached) hit[i] = 0;
+        var cu = clamp01((vh * .92 - r.top) / (vh * .45));
+        [].forEach.call(el.querySelectorAll('[data-sw-count]'), function (x) { x.textContent = countUp(x.getAttribute('data-sw-count'), cu); });
+      });
+    }
+    LTICKS.push(tick);
   }
 
   /* ════ 이력 — 슈퍼 마리오 RPG(슈퍼 패미컴) 상태 메뉴 ════
@@ -1676,22 +1820,36 @@
   }
 
   var DRAFTS4 = [
-    { id: 'e3', scrub: true, label: '나', plain: true, f: draftE3, wire: wireE3, badge: { ko: '고른 화풍 · 다듬는 중', en: 'Chosen style · refining' }, name: { ko: '섬 지도 — 길을 따라 깨 온 코스들', en: 'Island map — courses cleared along the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 + COURSE CLEAR!', en: 'Super Mario World map + message block + COURSE CLEAR!' },
+    { id: 'l3', label: '나', plain: true, f: draftL3, wire: wireL3, badge: { ko: '목록판 · 아래로 쭉', en: 'List · all the way down' }, name: { ko: '섬 지도 — 길을 따라 내려가며 읽는 코스 아홉', en: 'Island map — nine courses read down the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 · COURSE CLEAR! 를 한 장에 다 펼침', en: 'Super Mario World map + message blocks and COURSE CLEAR! tallies, all laid out' },
+      pitch: { ko: '한 칸씩 넘기지 않고 다 펼쳤습니다. 맨 위에 섬 지도 한 장(지나온 길 · 성 · 집 · 깃발)을 두고, 그 아래로 아홉 코스를 시간 순서대로 쭉 이었습니다. 왼쪽 모래 길을 따라 고스트가 스크롤만큼 내려가며 길을 그리고, 지나간 점이 켜지며 반짝이고 그 코스의 숫자가 올라갑니다. 코스마다 메시지 블록(한 줄)과 결산 화면(COURSE CLEAR! · 기간 · 인원 · 점수 · 보너스 = 퀘스트 결과 · 배운 것)이 나란히 있습니다.',
+               en: 'Nothing to step through — it is all laid out. The island map (roads travelled, castles, the house, the flag) sits on top, and the nine courses run below it in time order. The ghost walks down the sand road on the left as far as you scroll, drawing the road behind it; each dot it passes lights up and sparkles, and that course\'s numbers count up. Every course pairs a message block (one line) with its tally (COURSE CLEAR!, time, team, score, bonus = the quest result, what I learned).' },
+      map: [['구조', 'Structure', '위 섬 지도 한 장 + 아래 코스 아홉 · 왼쪽 모래 길', 'Island map on top + nine courses below · sand road on the left'], ['내리면', 'Scroll', '고스트가 길을 내려가며 길을 그리고 지나간 점이 켜짐', 'The ghost walks down, drawing the road; dots it passes light up'], ['한눈에', 'At a glance', '넘기지 않아도 다 보임 · 지도 점을 누르면 그 코스로', 'All visible without stepping · tap a map dot to jump there']],
+      hint: { ko: '▼ 그냥 내리며 읽으세요. 지도 위 점을 누르면 그 코스로 갑니다.', en: '▼ Just scroll and read. Tap a dot on the map to jump to that course.' },
+      pros: { ko: ['다 펼쳐져 있어 원하는 시기를 바로 읽음', '지도 한 장 + 길을 따라가는 목록 — 테마는 살리고 읽기는 쉬움', '휴대폰에서도 그대로 위에서 아래로'], en: ['Everything is laid out, so any period can be read straight away', 'One map + a list along the road — the theme stays, reading gets easy', 'Works the same top-to-bottom on a phone'] },
+      cons: { ko: ['길어짐(코스 아홉)', '한 칸씩 넘길 때의 연출은 줄어듦 — 길 그리기 · 점 켜기 · 숫자 올리기만', '지도는 휴대폰에서 옆으로 밀어야 다 보임'], en: ['Long (nine courses)', 'Less staging than stepping one at a time — drawing the road, lighting dots and counting up only', 'On a phone the map needs a sideways swipe to see all of it'] } },
+    { id: 'l2', label: '다', plain: true, f: draftL2, wire: wireL2, badge: { ko: '목록판 · 아래로 쭉', en: 'List · all the way down' }, name: { ko: '코스 시작 화면 — 월드 아홉을 위에서 아래로', en: 'Course start — nine worlds, top to bottom' }, sub: { ko: '슈퍼 마리오브라더스 점수판(따라 붙음) + 월드마다 검은 화면과 그 코스', en: 'Super Mario Bros. HUD (pinned) + a black card and its course for every world' },
+      pitch: { ko: '코스 시작 화면을 한 장씩 넘기지 않고 월드 아홉을 위에서 아래로 쭉 이었습니다. 맨 위 점수판은 따라 붙어 지금 읽는 월드까지 쌓인 점수(누적 다운로드) · 동전(출시작)을 보여 주고, 월드마다 검은 화면(WORLD 3-4 · 그 시기의 글) 아래 그 코스 장면이 있어 화면에 들어온 만큼 고스트가 블록을 치거나 깃대를 타며 물음표로 잠긴 결과를 엽니다.',
+               en: 'Instead of stepping through course start screens one at a time, the nine worlds run top to bottom. The HUD stays pinned at the top and shows the score (downloads) and coins (titles) piled up to the world you are reading; under each black card (WORLD 3-4 and that period\'s text) is that course, and as it comes into view the ghost hits the block or rides the flagpole and opens the results locked behind question marks.' },
+      map: [['구조', 'Structure', '붙어 있는 점수판 + 월드 아홉(검은 화면 + 장면)', 'Pinned HUD + nine worlds (black card + scene)'], ['내리면', 'Scroll', '장면이 보이는 만큼 고스트가 그 코스를 깸 · 점수판이 오름', 'As each scene comes into view the ghost clears it; the HUD climbs'], ['한눈에', 'At a glance', '넘기지 않아도 다 보임', 'All visible without stepping']],
+      hint: { ko: '▼ 그냥 내리며 읽으세요 — 장면이 화면에 들어오면 고스트가 움직입니다.', en: '▼ Just scroll and read — the ghost moves as each scene comes into view.' },
+      pros: { ko: ['읽는 순서 그대로 — 위에서 아래로 10년', '점수판이 따라와 지금까지 쌓인 숫자가 늘 보임', '장면이 결과를 여는 연출은 그대로'], en: ['Reads in order — ten years, top to bottom', 'The pinned HUD always shows what has piled up so far', 'The scene still opens each result'] },
+      cons: { ko: ['길어짐(월드 아홉)', '월드마다 장면이 있어 화면을 많이 씀', '잠긴 결과는 장면을 지나야 열림'], en: ['Long (nine worlds)', 'A scene per world takes a lot of screen', 'Locked results open only once the scene has played'] } }
+  ];
+  var DRAFTS_OLD = [
+    { id: 'e3', scrub: true, label: '나′', plain: true, f: draftE3, wire: wireE3, badge: { ko: '지난 판 · 한 칸씩 넘기기', en: 'Earlier · one step at a time' }, name: { ko: '섬 지도 — 길을 따라 깨 온 코스들', en: 'Island map — courses cleared along the road' }, sub: { ko: '슈퍼 마리오 월드 지도 + 메시지 블록 + COURSE CLEAR!', en: 'Super Mario World map + message block + COURSE CLEAR!' },
       pitch: { ko: '슈퍼 마리오 월드의 섬 지도처럼 10년을 바다 위 섬 하나에 놓았습니다. 빨간 점 = 나(START), 노란 점 = 경력 · 활동, 돌 성 = 출시한 프로젝트, 파란 점 = 배운 곳, 깃발 = 다음 목표(PD). 내리면 고스트가 다음 점으로 걸어가고 그 뒤로 모래 길이 그려지며(아직 안 간 길은 점선), 닿는 순간 위 띠에 코스 이름이 바뀌고 아래 검은 메시지 블록에 그 시기의 한 줄이 한 자씩 써지며, 오른쪽 결산 화면(COURSE CLEAR! · 기간 · 숫자 · 보너스 = 퀘스트 결과)의 숫자가 올라갑니다.',
                en: 'Ten years on one island in the sea, like the Super Mario World map. The red dot is me (START); yellow dots are career and activities; stone castles are shipped projects; the blue dot is where I am learning; the flag is the next goal (PD). Scroll and the ghost walks to the next dot while the sand road draws in behind it (roads not yet taken are dotted); the moment it arrives, the course name in the top bar changes, the black message block types out that period in one line, and the numbers on the right-hand tally (COURSE CLEAR!, time, score, bonus = the quest result) count up.' },
       map: [['구조', 'Structure', '섬 한 장 = 10년 · 모래 길 = 시간', 'One island = ten years · sand road = time'], ['내리면', 'Scroll', '걸어가며 길이 그려짐 → 닿으면 이름 · 메시지(한 자씩) · 결산(숫자가 올라감)', 'Walk and the road draws → on arrival: name, message (typed), tally (counting up)'], ['처음 화면', 'At rest', 'START(나) — 숫자 넷이 결산 화면에', 'START (me) — the four numbers on the tally']],
       hint: { ko: '▼ 그냥 내리세요 — 한 칸의 앞쪽에서는 그 코스의 글과 숫자가 채워지고, 뒤쪽에서는 고스트가 다음 점으로 걸어갑니다. 휴대폰에서는 지도가 고스트를 따라 움직입니다.', en: '▼ Just scroll — in the first part of each step the course text and numbers fill in; in the last part the ghost walks to the next dot. On a phone the map pans with the ghost.' },
       pros: { ko: ['지나온 길만 그려져 10년이 쌓이는 게 눈에 보임 — 스크롤 = 걷기', '닿는 순간 이름 · 한 줄 · 숫자가 차례로 뜸 — 무엇이 언제 바뀌는지 분명', '물가 물거품 · 반짝이는 물결 · 풀 포기로 16비트 섬 느낌'], en: ['Only the road travelled is drawn, so the ten years visibly pile up — scrolling is walking', 'On arrival the name, the line and the numbers appear in turn — it is clear what changes when', 'Foam at the shore, twinkling waves and grass tufts give a 16-bit island feel'] },
       cons: { ko: ['섬 모양이 아직 단순함(둥근 덩어리 여섯)', '휴대폰에서는 지도 일부만 보임(카메라가 고스트를 따라감)', '결산 화면은 한 번에 한 코스'], en: ['The island shape is still simple (six round blobs)', 'A phone shows only part of the map (the camera follows the ghost)', 'One course on the tally at a time'] } },
-    { id: 'e2', scrub: true, label: '다', plain: true, f: draftE2, wire: wireE2, badge: { ko: '고른 화풍 · 다듬는 중', en: 'Chosen style · refining' }, name: { ko: '코스 시작 화면 — 점수판에 쌓이는 10년', en: 'Course start — ten years on the scoreboard' }, sub: { ko: '슈퍼 마리오브라더스 점수판 + WORLD 화면 + 코스 미리보기', en: 'Super Mario Bros. HUD + WORLD card + course preview' },
+    { id: 'e2', scrub: true, label: '다′', plain: true, f: draftE2, wire: wireE2, badge: { ko: '지난 판 · 한 칸씩 넘기기', en: 'Earlier · one step at a time' }, name: { ko: '코스 시작 화면 — 점수판에 쌓이는 10년', en: 'Course start — ten years on the scoreboard' }, sub: { ko: '슈퍼 마리오브라더스 점수판 + WORLD 화면 + 코스 미리보기', en: 'Super Mario Bros. HUD + WORLD card + course preview' },
       pitch: { ko: '슈퍼 마리오브라더스에서 코스가 시작될 때 나오는 검은 화면과 그 코스를 썼습니다. 시기 하나 = 월드 하나(출시한 프로젝트는 성이 있는 x-4), 마지막 월드 8 = 다음 목표 PD. 내리면 고스트가 그 코스를 직접 깹니다 — 경력은 물음표 블록을 쳐서 동전과 함께 그 시기의 숫자(200K · 60K …)가 튀어나오고, 출시 프로젝트는 계단을 올라 깃대를 타고 내려오면 깃발이 내려오고, 배운 곳은 관 속으로, 다음 목표는 빈 깃대에 깃발이 오릅니다. 그 순간 점수판(점수 = 누적 다운로드 · 동전 = 출시작)이 올라가고, 물음표로 잠겨 있던 결과(큰 숫자 · 퀘스트 CLEAR)가 열립니다.',
                en: 'The black screen Super Mario Bros. shows before each course, plus the course itself. One period = one world (shipped projects are castle levels, x-4), and the last, World 8, is the next goal: PD. Scroll and the ghost plays the course — for career it bumps the ? block and the period\'s number (200K, 60K …) pops out with a coin; for a shipped project it climbs the stairs and slides down the flagpole as the flag drops; for learning it goes down the pipe; for the next goal a flag rises on the empty pole. At that moment the scoreboard (score = downloads, coins = titles) climbs and the results locked behind question marks (the big number, the quest CLEAR) open up.' },
       map: [['구조', 'Structure', '월드 하나 = 시기 하나 · 9장', 'One world = one period · 9 screens'], ['내리면', 'Scroll', '고스트가 그 코스를 깸 → 점수판이 오르고 잠긴 결과(???)가 열림', 'The ghost clears the course → the scoreboard climbs and locked results (???) open'], ['처음 화면', 'At rest', 'WORLD 1-1 · 나 — 숫자 0 에서 출발', 'WORLD 1-1 · me — the numbers start at 0']],
       hint: { ko: '▼ 그냥 내리세요 — 한 칸 안에서 고스트가 달려가 블록 · 깃대 · 관을 해내고, 그 순간 점수판과 결과가 바뀝니다.', en: '▼ Just scroll — within each step the ghost runs up and hits the block, the flagpole or the pipe, and the scoreboard and results change at that moment.' },
       pros: { ko: ['이력의 결과가 게임 동작의 결과로 뜸 — 블록을 쳐야 200K 가 튀어나옴', '점수판이 쌓이는 모습 = 10년의 성장이 숫자로 보임(값 밑에 뜻을 적어 둠)', '마리오 1편을 아는 사람은 바로 알아봄(WORLD · TIME · 동전 · 깃대)'], en: ['Career results appear as the results of game actions — 200K pops out only when the block is hit', 'The climbing scoreboard shows ten years of growth in numbers (each value is labelled underneath)', 'Anyone who knows the first Mario recognises it (WORLD, TIME, coins, flagpole)'] },
-      cons: { ko: ['한 번에 한 시기만 — 전체 흐름은 아래 진행 막대로만 보임', '처음 화면은 숫자가 0 — 끝까지 내려야 300000', '낮은 화면에서는 땅 한 단 · 계단 두 단으로 줄어듦'], en: ['One period at a time — the whole flow only shows in the progress bar', 'The first screen starts at 0 — you reach 300000 only at the end', 'On short screens the ground drops to one row and the stairs to two'] } }
-  ];
-  var DRAFTS_OLD = [
+      cons: { ko: ['한 번에 한 시기만 — 전체 흐름은 아래 진행 막대로만 보임', '처음 화면은 숫자가 0 — 끝까지 내려야 300000', '낮은 화면에서는 땅 한 단 · 계단 두 단으로 줄어듦'], en: ['One period at a time — the whole flow only shows in the progress bar', 'The first screen starts at 0 — you reach 300000 only at the end', 'On short screens the ground drops to one row and the stairs to two'] } },
     { id: 'e1', scrub: true, label: '가', plain: true, f: draftE1, wire: wireE1, badge: { ko: '새 안 · 마리오 시리즈 · 월드 지도', en: 'New · Mario series · world map' }, name: { ko: '월드 지도 — 10년을 지도 한 장으로', en: 'World map — ten years on one map' }, sub: { ko: '슈퍼 마리오브라더스 3 지도 + 슈퍼 마리오 월드 이름 띠', en: 'SMB3 map + Super Mario World name strip' },
       pitch: { ko: '슈퍼 마리오브라더스 3 의 지도 화면처럼 10년을 지도 한 장에 놓았습니다. 길 = 시간 순서, START = 나(프로필), 번호 칸 = 경력 · 활동(주황 = 깬 곳, 검정 = 진행 중), 성 = 출시한 프로젝트(리그 오브 디펜스 · 컴스톡), 집 = 배운 곳(기획자 과정), 강을 건너는 다리 = 혼자에서 팀으로 넘어간 순간, 점선 끝 깃발 = 다음 목표 PD. 칸을 누르거나 ◀ ▶ 로 고르면 고스트(1P)가 그 칸에 서고, 위 띠에 코스 이름(슈퍼 마리오 월드), 오른쪽 카드에 기간 · 인원 · 역할 · 대표 숫자 · 퀘스트 목표 → 결과 · 배운 것이 뜹니다. 아래 상태 막대는 슈퍼 마리오브라더스 3 처럼 월드 · 10년 P 막대 · 점수(누적 다운로드) · 출시작 · 커뮤니티와 카드 세 칸(대표 결과).',
                en: 'Ten years laid out like the Super Mario Bros. 3 map screen. The road is time; START is me (profile); numbered panels are career and activities (orange = cleared, black = ongoing); castles are shipped projects (League of Defense, Comstock); the house is where I am learning (design course); the bridge over the river is the move from solo to team; the flag past the dotted road is the next goal, PD. Tap a space or use ◀ ▶: the ghost (1P) stands on it, the strip on top names the course (Super Mario World), and the card shows dates, team, role, the key number, quest goal → result and what I learned. The status bar below works like SMB3: world, a ten-year P meter, score (downloads), titles, community and three cards for the top results.' },
@@ -1718,7 +1876,7 @@
     { h: { ko: '게임 화면처럼 강하게', en: 'A strong game screen' }, b: { ko: '창 이름만 게임 말로 바꾸는 게 아니라 화면 자체가 마리오 시리즈의 한 화면 — 섬 지도(슈퍼 마리오 월드) · 코스 시작 화면(슈퍼 마리오브라더스).', en: 'Not just game words on windows: each screen is a Mario-series screen — the island map (Super Mario World) and the course start (Super Mario Bros.).' } },
     { h: { ko: '이력이 주인공', en: 'The career leads' }, b: { ko: '칸 하나 = 경력 · 프로젝트 하나. 숫자 · 기간 · 퀘스트 결과는 content.js(이력서 · 프로젝트 · 자기소개서) 값 그대로.', en: 'One space = one period or project. Numbers, dates and quest results come straight from content.js.' } },
     { h: { ko: '베끼지 않고 같은 문법으로', en: 'Same grammar, not copied' }, b: { ko: '4px 칸 · 검은 외곽선 · NES 팔레트로 새로 찍음. 캐릭터 · 아이템(버섯 · 별) · 로고는 그리지 않고 1P 는 사이트 고스트.', en: 'Redrawn on the 4px grid with black outlines and the NES palette. No characters, items or logos; 1P is the site ghost.' } },
-    { h: { ko: '스크롤만으로 끝까지', en: 'Scroll is the only input' }, b: { ko: '넷 다 화면이 붙은 채 내리는 만큼 다음 칸으로 — 아무것도 누르지 않아도 처음(나)부터 끝(PD)까지 다 봅니다. 누르기 · ← → 는 그 자리까지 스크롤해 줄 뿐입니다.', en: 'All four stay pinned and move one step per scroll — you see everything from me to PD without pressing anything. Taps and ← → only scroll you there.' } }
+    { h: { ko: '스크롤만으로 끝까지', en: 'Scroll is the only input' }, b: { ko: '아래로 쭉 펼쳐 놓고 내리며 읽습니다 — 누를 것이 없고, 내리는 만큼 고스트가 걷고 장면이 움직입니다.', en: 'Everything is laid out to scroll and read — nothing to press; the ghost walks and the scenes move as you scroll.' } }
   ];
 
   var FIT = { w: 0, h: 0 }, CAM_W = 680;
@@ -1755,6 +1913,7 @@
       var st = parseFloat(getComputedStyle(sc.stick).top) || 0, p = Math.max(0, Math.min(1, (st - r.top) / Math.max(1, r.height - h)));
       if (sc.p === undefined || Math.abs(p - sc.p) > 1e-4) { sc.p = p; sc.prog(p); }
     });
+    LTICKS.forEach(function (f) { f(); });          /* 목록판 — 보이는 자리만큼 장면 · 길 */
   }
   window.addEventListener('scroll', function () { if (!stTick) stTick = requestAnimationFrame(function () { stTick = 0; scrollTick(); }); }, { passive: true });
   function draftHTML(d) {
@@ -1767,11 +1926,11 @@
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
   function renderDrafts() {
-    document.getElementById('toc').innerHTML = DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 가 · 라 · S', 'Earlier · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
+    document.getElementById('toc').innerHTML = DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 나′ · 다′ · 가 · 라 · S', 'Earlier · 나′ · 다′ · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
     document.getElementById('rules').innerHTML = RULES4.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
     document.getElementById('drafts4').innerHTML = DRAFTS4.map(draftHTML).join('');
     document.getElementById('drafts-old').innerHTML = DRAFTS_OLD.map(draftHTML).join('');
-    SCROLLERS = []; SCRUBS = [];
+    SCROLLERS = []; SCRUBS = []; LTICKS = [];
     DRAFTS4.concat(DRAFTS_OLD).forEach(function (d) {
       if (d.plain) { if (d.wire) d.wire(); return; }
       var box = document.querySelector('.mockbox[data-draft="' + d.id + '"]'), r = d.w(box);
