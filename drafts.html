@@ -1017,28 +1017,27 @@
   .pf-paper { position: relative; padding: 36px 48px 40px; background: var(--cream); border: 4px solid #171c28; box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 8px #e6d4ae; color: var(--navy); }
   .pf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px !important; }
   .pf-chips li { padding: 2px 10px; border: 2px solid #3a4256; font-size: 14px; font-weight: 800; color: var(--mu); }
-  /* 인벤토리 — 칸마다 물음표 블록: 그 줄이 화면에 들어오면 블록이 튀어 오르며 다 쓴 블록이 되고 도구가 하나씩 올라옴 */
-  .pf-inv__i { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 28px; padding: 24px 0; border-top: 4px dashed #232838; }
+  /* 인벤토리 — 게임의 아이템 창처럼 빈 칸 격자: 분류(주머니)마다 이름 + 칸 줄, 칸이 화면에 들어오면 도구가 하나씩 떨어져 채워짐(사용자: "왼쪽 주황 박스는 왜 혼자 따로 있는지" — 블록 장식은 뺌) */
+  .pf-bag__g { display: flex; flex-wrap: wrap; gap: 32px 44px; padding-top: 24px; }
+  .pf-pouch h3 { margin-bottom: 14px !important; font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-its { display: flex; flex-wrap: wrap; gap: 12px; }
+  .pf-it { display: grid; justify-items: center; align-content: start; gap: 8px; width: 88px; }
+  .pf-it__box { display: grid; place-items: center; width: 88px; height: 88px; background: #141014; box-shadow: inset 0 0 0 4px #2a2026; }
+  .pf-it__box i { display: grid; place-items: center; width: 56px; height: 56px; background: #fff !important; }   /* 로고 판은 늘 흰색 */
+  .pf-it__box img { display: block; width: 36px; height: 36px; object-fit: contain; }
+  .pf-it__n { font-size: 13px; font-weight: 800; line-height: 1.3; color: var(--mu); text-align: center; }
+  .pf.rv-on :is(.pf-pouch, .pf-inv__i):not(.is-in) .pf-it__box i { opacity: 0; transform: translateY(-16px); }
+  .pf.rv-on :is(.pf-pouch, .pf-inv__i).is-in .pf-it__box i { animation: pf-drop .3s steps(3) both; animation-delay: calc(var(--k, 0) * 90ms + 80ms); }
+  @keyframes pf-drop { from { opacity: 0; transform: translateY(-16px); } 60% { opacity: 1; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  /* 이력서의 핵심역량 — 한 분류 = 한 줄(이름 · 설명 칸 | 칸 줄 — 칸 줄은 모두 같은 왼쪽 선, 표처럼) */
+  .pf-inv__i { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 16px 40px; align-items: center; padding: 24px 0; border-top: 4px dashed #232838; }
   .pf-win__h + .pf-inv__i { border-top: 0; }
   .pf-inv__i:last-child { padding-bottom: 4px; }
-  .pf-inv__b { position: relative; display: block; width: 64px; height: 64px; background: var(--lv-qblock) 0 0 / 64px 64px no-repeat; image-rendering: pixelated; }
-  .pf-inv__i.is-in .pf-inv__b { background-image: var(--mb-used); }
-  .pf.rv-on .pf-inv__i.is-in .pf-inv__b { animation: pf-bump .3s steps(3); }
-  @keyframes pf-bump { 50% { transform: translateY(-16px); } }
-  .pf-inv__h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
-  .pf-inv__h b { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
-  .pf-inv__h em { font-size: 16px; font-style: normal; color: var(--or); }
+  .pf-inv__h { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
   .pf-inv__p { margin-top: 6px !important; font-size: 16px; line-height: 1.75; color: var(--mu); }
-  .pf-tools { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 14px !important; }
-  .pf-tool { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: #fcfcfc; }
-  .pf-tool i { display: grid; place-items: center; width: 40px; height: 40px; background: #fff !important; border: 2px solid #7c7c7c; }   /* 로고 판은 늘 흰색 */
-  .pf-tool img { display: block; width: 26px; height: 26px; object-fit: contain; }
-  .pf.rv-on .pf-inv__i:not(.is-in) .pf-tool { opacity: 0; transform: translateY(16px); }
-  .pf.rv-on .pf-inv__i.is-in .pf-tool { animation: pf-up .3s steps(3) both; animation-delay: calc(var(--k, 0) * 80ms + 160ms); }
-  @keyframes pf-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
   /* 화면에 들어오면 한 번 올라오는 것들(창 · 카트리지 · 줄) */
-  .pf.rv-on [data-pf-rv]:not(.pf-inv__i):not(.is-in) { opacity: 0; transform: translateY(24px); }
-  .pf.rv-on [data-pf-rv]:not(.pf-inv__i).is-in { transition: opacity .32s steps(4), transform .32s steps(4); }
+  .pf.rv-on [data-pf-rv]:not(.pf-inv__i):not(.pf-pouch):not(.is-in) { opacity: 0; transform: translateY(24px); }
+  .pf.rv-on [data-pf-rv]:not(.pf-inv__i):not(.pf-pouch).is-in { transition: opacity .32s steps(4), transform .32s steps(4); }
   /* 페이지 머리(하늘) — 홈의 제목 판과 같은 재료, 높이만 낮게 */
   .pf-ph { position: relative; padding: 40px 0 232px; overflow: hidden; background: #5c94fc; }
   .pf-ph .s-hill, .pf-ph .s-bush { bottom: 128px; }
@@ -1187,6 +1186,7 @@
   }
   @media (max-width: 900px) {
     .pf-ach { grid-template-columns: minmax(0, 1fr); }
+    .pf-inv__i { grid-template-columns: minmax(0, 1fr); }
     .pf-shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pf-steam__b { grid-template-columns: minmax(0, 1fr); }
     .pf-ph__t { font-size: 28px; }
@@ -1205,8 +1205,13 @@
     .pf-ph__lead { font-size: 16px; }
     .pf-sub { padding-top: 168px; }
     .pf-sec .pf-wc { padding: 56px 0 24px; }
-    .pf-inv__i { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; }
-    .pf-tools { gap: 10px 16px; }
+    .pf-bag__g { gap: 24px 28px; padding-top: 20px; }
+    .pf-its { gap: 8px; }
+    .pf-it { width: 64px; }
+    .pf-it__box { width: 64px; height: 64px; }
+    .pf-it__box i { width: 44px; height: 44px; }
+    .pf-it__box img { width: 28px; height: 28px; }
+    .pf-it__n { font-size: 13px; }
     .pf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pf-stats b { font-size: 24px; }
     .pf-tl__i { grid-template-columns: minmax(0, 1fr); gap: 10px; }
@@ -2415,19 +2420,26 @@
       '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
-  function pfSkills() {
+  function pfIts(tl) {                          /* 칸 줄 — 칸(어두운 틀) 안의 흰 판에 실제 로고, 칸 아래 도구 이름 */
+    return '<ul class="pf-its">' + tl.map(function (k, j) {
+      return '<li class="pf-it" style="--k:' + j + '"><span class="pf-it__box"><i><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="36" height="36"></i></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  function pfSkills(full) {                     /* full = 이력서(분류마다 설명 줄) · 아니면 홈(이름 + 칸만 — 설명은 이력서 핵심역량에서) */
     var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0;
     cards.forEach(function (c) { n += (c.tools || []).length; });
-    return '<div class="pf-win pf-inv"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + cards.length + ' · 도구 ' + n + '개', cards.length + ' kinds · ' + n + ' tools') + '</span></p>' + cards.map(function (c) {
-      var tl = c.tools || [];
-      return '<div class="pf-inv__i" data-pf-rv><i class="pf-inv__b" aria-hidden="true"></i><div><p class="pf-inv__h"><b>' + esc(t(c.title)) + '</b><em class="ps">x' + tl.length + '</em></p><p class="pf-inv__p">' + esc(t(c.body)) + '</p>' +
-        '<ul class="pf-tools">' + tl.map(function (k, j) { return '<li class="pf-tool" style="--k:' + j + '"><i><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="26" height="26"></i>' + esc((TOOLS[k] || [k])[0]) + '</li>'; }).join('') + '</ul></div></div>';
+    var head = '<p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + cards.length + ' · 도구 ' + n + '개', cards.length + ' kinds · ' + n + ' tools') + '</span></p>';
+    if (full) return '<div class="pf-win pf-inv">' + head + cards.map(function (c) {
+      return '<div class="pf-inv__i" data-pf-rv><div><h3 class="pf-inv__h">' + esc(t(c.title)) + '</h3><p class="pf-inv__p">' + esc(t(c.body)) + '</p></div>' + pfIts(c.tools || []) + '</div>';
     }).join('') + '</div>';
+    return '<div class="pf-win pf-bag">' + head + '<div class="pf-bag__g">' + cards.map(function (c) {
+      return '<section class="pf-pouch" data-pf-rv><h3>' + esc(t(c.title)) + '</h3>' + pfIts(c.tools || []) + '</section>';
+    }).join('') + '</div></div>';
   }
   function pfSkillSec() {
     var sk = (C.resume && C.resume.skills) || {};
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
-      '<div class="pf-col">' + pfSkills() + pfMore('#/resume', T('이력서의 핵심역량으로', 'Core skills in the résumé')) + '</div></div></section>';
+      '<div class="pf-col">' + pfSkills() + pfMore('#/resume', T('도구마다 어디에 썼는지 — 이력서 핵심역량', 'What each was used for — core skills in the résumé')) + '</div></div></section>';
   }
   function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음 */
     return '<span class="pf-slot">' + '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" aria-label="' + esc(t(p.title)) + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
@@ -2578,7 +2590,7 @@
   }
   function pfRvTick() {                         /* 화면에 들어온 창 · 줄 · 카트리지는 한 번 올라옴(인벤토리 줄은 블록이 튀고 도구가 나옴) · 숫자는 0 → 값 */
     var vh = innerHeight;
-    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-inv__i') ? .8 : .92)) el.classList.add('is-in'); });
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.getBoundingClientRect().top < vh * (el.matches('.pf-inv__i, .pf-pouch') ? .85 : .92)) el.classList.add('is-in'); });
     [].forEach.call(document.querySelectorAll('.pf [data-pf-count]'), function (el) { lCount(el, vh); });
   }
   /* ════ 하위 페이지 — 같은 테마 ════
@@ -2630,7 +2642,7 @@
       return '<div class="pf-tl__i' + (c.now ? ' is-now' : '') + '" data-pf-rv><p class="pf-tl__d"><span>' + esc(t(c.date)) + '</span>' + (c.now ? '<span class="pf-tl__now">' + T('진행 중', 'Ongoing') + '</span>' : '') + '</p>' +
         '<div><h3 class="pf-tl__t">' + esc(t(c.role)) + '</h3><p class="pf-tl__o">' + esc(t(c.org)) + '</p><p class="pf-tl__b">' + esc(t(c.body)) + '</p>' + pfChips(c.tags) + '</div></div>';
     }).join('');
-    return head + pfUnder(st + pfSec('2-2', esc(t(sk.title)), esc(t(sk.title)), esc(t(sk.lead)), pfSkills()) +
+    return head + pfUnder(st + pfSec('2-2', esc(t(sk.title)), esc(t(sk.title)), esc(t(sk.lead)), pfSkills(1)) +
       (tl ? pfSec('2-3', esc(t(ca.title)), esc(t(ca.title)), esc(t(ca.lead)), '<div class="pf-win pf-tl">' + tl + '</div>') : '') + pfWorldNav('resume'));
   }
 
@@ -2744,7 +2756,6 @@
     document.body.classList.add('is-play');
     if (typeof MINIG !== 'undefined') document.documentElement.style.setProperty('--mb-mini', spr(MINIG));
     document.documentElement.style.setProperty('--pf-lip', spr(PF_LIP)); document.documentElement.style.setProperty('--pf-body', spr(PF_BODY));
-    document.documentElement.style.setProperty('--mb-used', spr(MB_USED));
     var r = pfRoute(); PF_R = r;
     var body = r.pg === 'resume' ? pfResume() : r.pg === 'cover' ? pfCover() : r.pg === 'projects' ? pfProjects() : r.pg === 'play' ? pfPlayPg() : r.pg === 'detail' ? pfDetailPg(r.i) : pfHero() + pfCareer() + pfSkillSec() + pfProj();
     var root = document.getElementById('play');
