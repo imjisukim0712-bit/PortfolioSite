@@ -758,11 +758,224 @@
   .links a:hover { border-color: var(--accent); color: var(--accent); }
   .links a.main { background: var(--fg); color: var(--bg); border-color: var(--fg); }
   .links a.main:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .playlink { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding: 22px 26px; border: 4px solid #102346; border-radius: 14px; background: #5c94fc; color: #fff; box-shadow: 6px 6px 0 #102346; }
+  .playlink b { padding: 8px 14px; background: #c8102e; border: 3px solid #102346; font-size: 18px; }
+  .playlink span { font-weight: 700; text-shadow: 2px 2px 0 #102346; }
+  .playlink:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 #102346; }
+
+  /* ════ 전체 흐름 — 플레이어블(drafts.html?play): 1-1 하늘(사진 · 인적사항) → 땅 블록 → 1-2 지하(나 이력) → 1-3 벽돌 휴대기 + 카트리지 → 지하 바닥 ════ */
+  #play { display: none; }
+  body.is-play { background: #000; }
+  body.is-play > .top, body.is-play > main, body.is-play > .foot { display: none; }
+  body.is-play #play { display: block; }
+  .pf { --navy: #102346; --cream: #fff6dd; --red: #c8102e; --gold: #d4a23e; --or: #fca044; --mu: #b8c4e0; color: #fcfcfc; font: 16px/1.7 'Pretendard Variable', Pretendard, sans-serif; word-break: keep-all; }
+  .pf :where(h1, h2, h3, p, dl, dd, ol, ul, figure) { margin: 0; padding: 0; }
+  .pf :where(ol, ul) { list-style: none; }
+  .pf a { color: inherit; }
+  .pf .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; letter-spacing: 0; }
+  .pf-in { position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  .pf-s { position: absolute; z-index: 1; display: block; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; pointer-events: none; }
+  /* 머리 띠 — 사이트 스테이지 시안의 남색 띠 */
+  .pf-top { position: sticky; top: 0; z-index: 30; background: #17345f; border-bottom: 4px solid #000; }
+  .pf-top__in { display: flex; align-items: center; gap: 12px 28px; max-width: 1240px; height: 60px; margin: 0 auto; padding: 0 32px; }
+  .pf-logo { display: flex; flex: none; align-items: baseline; gap: 10px; color: var(--cream); text-decoration: none; }
+  .pf-logo i { align-self: center; width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-logo b { font-size: 16px; font-weight: 800; }
+  .pf-logo small { font-size: 13px; font-weight: 700; color: var(--mu); }
+  .pf-nav { display: flex; gap: 20px; }
+  .pf-nav a { font-size: 15px; font-weight: 700; color: var(--cream); text-decoration: none; }
+  .pf-nav a:hover { color: var(--or); }
+  .pf-sp { flex: 1; }
+  .pf-world { display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+  .pf-world b { font-size: 8px; color: var(--or); }
+  .pf-world span { font-size: 13px; font-weight: 700; color: var(--cream); }
+  .pf-tbtn { flex: none; padding: 6px 12px; background: transparent; border: 2px solid var(--cream); color: var(--cream); font: 700 13px/1.2 'Pretendard Variable', Pretendard, sans-serif; text-decoration: none; cursor: pointer; }
+  .pf-tbtn:hover { background: var(--cream); color: var(--navy); }
+  .pf :focus-visible { outline: 4px solid var(--or); outline-offset: 2px; }
+  /* 1-1 하늘 — 숫자 넷(점수판) · 사진 · 간단한 인적사항 · 땅 블록 */
+  .pf-hero { position: relative; display: flex; min-height: calc(100vh - 64px); padding: 88px 0 168px; overflow: hidden; background: #5c94fc; }
+  .pf-hero > .pf-in { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+  .pf-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; }
+  .pf-hud p { display: grid; gap: 12px; align-content: start; }
+  .pf-hud span { font-size: 14px; font-weight: 800; line-height: 1.3; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
+  .pf-hud b { font-size: 24px; line-height: 1; color: #fff; text-shadow: 4px 4px 0 var(--navy); white-space: nowrap; }
+  .pf-hud small { margin-left: 6px; font: 800 16px/1 'Pretendard Variable', Pretendard, sans-serif; text-shadow: 2px 2px 0 var(--navy); }
+  .pf-me { flex: 1; display: grid; grid-template-columns: 256px minmax(0, 1fr); gap: 56px; align-items: center; }
+  .pf-photo { padding: 8px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 8px 8px 0 rgb(16 35 70 / .55); }
+  .pf-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .pf-me__txt { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+  .pf-eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px; background: var(--cream); border: 4px solid var(--navy); color: var(--red); font-size: 14px; font-weight: 800; }
+  .pf-eyebrow i { width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-title { margin: 16px 0 24px !important; font: 400 56px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fff; text-shadow: 4px 4px 0 var(--navy); }
+  .pf-title em { font-style: normal; color: #fcd8a8; }
+  .pf-info { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); gap: 8px 36px; padding: 16px 22px 18px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 8px 8px 0 rgb(16 35 70 / .55); color: var(--navy); }
+  .pf-info div { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+  .pf-info dt { flex: none; width: 4.6em; font-size: 14px; font-weight: 800; color: var(--red); }
+  .pf-info dd { min-width: 0; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+  .pf-info a { text-decoration: underline; text-underline-offset: 3px; }
+  .pf-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 24px !important; }
+  .pf .pf-btn { display: inline-block; padding: 10px 18px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 4px 4px 0 var(--navy); color: var(--navy); font-size: 15px; font-weight: 800; text-decoration: none; }
+  .pf .pf-btn--a { background: var(--red); color: #fff; }
+  .pf .pf-btn:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--navy); }
+  .pf-cue { display: flex; align-items: center; gap: 10px; margin-left: 8px; font-size: 15px; font-weight: 800; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
+  .pf-cue span { color: var(--or); animation: pf-bob 1s steps(2) infinite; }
+  @keyframes pf-bob { 50% { transform: translateY(4px); } }
+  .pf-hero .s-hill, .pf-hero .s-bush, .pf-hero .s-pipe { bottom: 128px; }
+  .pf-ground { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x, var(--lv-ground) 0 64px / 64px 64px repeat-x; image-rendering: pixelated; }
+  /* 1-2 · 1-3 지하 — 검정 위 절 머리(남색 이름표) */
+  .pf-ug { position: relative; background: #000; padding-top: 112px; }
+  .pf-sec { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: 36px; }
+  .pf-sec b { padding: 8px 10px; background: var(--navy); border: 4px solid #fcfcfc; font-size: 8px; color: var(--or); }
+  .pf-sec h2 { font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-sec p { flex-basis: 100%; font-size: 15px; font-weight: 600; color: var(--mu); }
+  .pf .swl { padding: 0; background: transparent; border-radius: 0; }
+  /* 1-3 벽돌 휴대기 + 카트리지 — 판(.pf-stick)이 화면에 붙고, 내리는 만큼 카트리지가 하나씩 꽂힘 */
+  .pf-proj { padding-top: 128px; }
+  .pf-run { position: relative; }
+  .pf-stick { position: sticky; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 16px 24px; }
+  .pf-dev { position: relative; z-index: 3; flex: none; }
+  .pf-art-cv { display: block; image-rendering: pixelated; }
+  .pf-gap { display: block; flex: none; height: var(--pf-gapH, 96px); }
+  .pf-scr { position: absolute; overflow: hidden; background: #141014; color: var(--cream); }
+  .pf-key { position: absolute; z-index: 2; padding: 0; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
+  .pf-key:hover { background: rgb(255 246 221 / .14); }
+  .pf-key--l, .pf-key--r { border-radius: 0; }
+  .pf-key--m { border-radius: 8px; }
+  .pf-lbl { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: center; font: 400 11px/1 'Galmuri11', monospace; color: var(--gold); white-space: nowrap; pointer-events: none; }
+  .pf.is-nolbl .pf-lbl { display: none; }
+  .pf-tray { position: relative; z-index: 1; display: flex; flex: none; justify-content: center; gap: 16px; }
+  .pf-cart { position: relative; display: block; flex: none; width: var(--pf-cw, 132px); height: var(--pf-ch, 176px); padding: 12px 8px 8px; background: var(--red); border: 4px solid #000; box-shadow: inset 4px 4px 0 #ea3a33, inset -4px -4px 0 #8c0e22; color: var(--navy); font: inherit; text-align: left; cursor: pointer; transition: transform .24s steps(4); }
+  .pf-cart::before { content: ''; position: absolute; left: 16px; right: 16px; top: 2px; height: 4px; background: repeating-linear-gradient(90deg, #8c0e22 0 4px, transparent 4px 8px); }
+  .pf-cart:hover:not(.is-live) { transform: translateY(-8px); }
+  .pf-cart.is-live { z-index: 2; transition: none; }
+  .pf.pf-measure .pf-cart { transition: none !important; }
+  .pf-cart__lab { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 8px; background: var(--cream); border: 4px solid #000; }
+  .pf-cart__lab > b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 13px; font-weight: 800; line-height: 1.3; }
+  .pf-cart__meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+  .pf-cart__meta i { padding: 0 4px; border: 2px solid var(--red); color: var(--red); font-size: 11px; font-style: normal; font-weight: 800; line-height: 1.4; }
+  .pf-cart__meta em, .pf-ov__meta em { padding: 4px 4px 3px; background: #7c7c7c; color: #fff; font-size: 8px; font-style: normal; line-height: 1; }
+  .pf-cart[data-grade="SSR"] .pf-cart__meta em, .pf-ov[data-grade="SSR"] .pf-ov__meta em { background: var(--red); }
+  .pf-cart[data-grade="SR"] .pf-cart__meta em, .pf-ov[data-grade="SR"] .pf-ov__meta em { background: #c84c0c; }
+  .pf-art { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; border: 2px solid var(--navy); }
+  .pf-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .pf-art--0 { background: #dce8fc; color: #2038ec; } .pf-art--1 { background: #fce0d0; color: #c8102e; } .pf-art--2 { background: #e4ecd4; color: #00802c; }
+  .pf-art__gh { position: absolute; left: 50%; bottom: 0; width: 28px; height: 32px; margin-left: -14px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-art__gh.is-big { width: 48px; height: 56px; margin-left: -24px; background-image: var(--d-ghost); }
+  /* 게임기 화면 — 고르기 목록 · 읽는 중 · 개요(사이트의 꽂은 뒤 개요와 같은 차림: 검은 화면 · 크림 글자 · 주황 이름표) */
+  .pf-sel { display: flex; flex-direction: column; gap: 12px; height: 100%; padding: 20px 28px; }
+  .pf-sel__h { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 800; }
+  .pf-sel__h b { padding: 4px 6px; background: var(--red); font-size: 8px; }
+  .pf-sel ol { flex: 1; display: grid; align-content: center; gap: 2px; }
+  .pf-sel li { display: flex; align-items: baseline; gap: 12px; }
+  .pf-sel button { position: relative; padding: 4px 0 4px 32px; background: none; border: 0; color: var(--cream); font: 400 22px/1.4 'Galmuri11', monospace; text-align: left; cursor: pointer; }
+  .pf-sel button:hover { color: var(--or); }
+  .pf-sel li.on button::before { content: '▶'; position: absolute; left: 4px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--or); animation: pf-nudge .8s steps(2) infinite; }
+  @keyframes pf-nudge { 50% { left: 8px; } }
+  .pf-sel li em { font-size: 13px; font-style: normal; font-weight: 800; color: var(--or); animation: pf-blink .5s steps(1) infinite; }
+  @keyframes pf-blink { 50% { opacity: 0; } }
+  .pf-sel__f { font-size: 13px; font-weight: 700; color: #b0a890; }
+  .pf-boot { display: grid; place-items: center; height: 100%; font: 400 22px/1 'Galmuri11', monospace; }
+  .pf-dots::after { content: '…'; animation: pf-blink .4s steps(1) infinite; }
+  .pf-ov { display: grid; grid-template-columns: 34% minmax(0, 1fr); gap: 24px; align-items: center; height: 100%; padding: 20px 26px; }
+  .pf-ov > .pf-art { flex: none; aspect-ratio: 4 / 3; border: 4px solid var(--cream); }
+  .pf-ov__txt { min-width: 0; }
+  .pf-ov__meta { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: #d8cdb0; }
+  .pf-ov__meta i { padding: 0 6px; border: 2px solid var(--cream); font-style: normal; color: var(--cream); }
+  .pf-ov h3 { margin: 6px 0 2px !important; font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: var(--cream); }
+  .pf-ov__sub { font-size: 14px; color: #d8cdb0; }
+  .pf-ov dl { display: grid; gap: 2px; margin-top: 10px !important; font-size: 14px; }
+  .pf-ov dl div { display: flex; gap: 14px; }
+  .pf-ov dt { flex: none; width: 3.4em; font-weight: 800; color: var(--or); }
+  .pf-ov dd { font-weight: 700; }
+  .pf-ov__q { margin-top: 10px !important; padding: 6px 10px; background: #2a2026; border-left: 4px solid var(--or); font-size: 14px; }
+  .pf-ov__q b { margin-right: 10px; color: var(--or); }
+  .pf-ov__learn { display: grid; gap: 6px; margin-top: 10px !important; font-size: 14px; }
+  .pf-ov__learn li { position: relative; padding-left: 18px; }
+  .pf-ov__learn li::before { content: '▲'; position: absolute; left: 0; top: 2px; font-size: 10px; color: var(--or); }
+  .pf-ov__go { display: flex; align-items: center; gap: 10px; margin-top: 12px !important; font-size: 14px; font-weight: 800; cursor: pointer; }
+  .pf-ov__go .ps { display: inline-grid; place-items: center; width: 24px; height: 24px; background: var(--red); border-radius: 50%; font-size: 8px; color: #fff; }
+  .pf-ov__go a { text-decoration: underline; text-underline-offset: 3px; }
+  /* 화면이 작은 판(칸 3px) — 그림은 빼고 글만 */
+  .pf.is-s3 .pf-ov { grid-template-columns: minmax(0, 1fr); padding: 14px 20px; }
+  .pf.is-s3 .pf-ov > .pf-art { display: none; }
+  .pf.is-s3 .pf-ov h3 { font: 400 22px/1.3 'Galmuri11', monospace; }
+  .pf.is-s3 .pf-ov dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+  .pf.is-s3 .pf-sel { padding: 14px 20px; gap: 6px; }
+  .pf.is-s3 .pf-sel button { font-size: 11px; padding: 2px 0 2px 24px; }
+  .pf.is-s3 .pf-sel li.on button::before { font-size: 11px; }
+  .pf-dock { display: none; }
+  /* 지하 바닥 */
+  .pf-foot { position: relative; padding: 128px 0 224px; background: #000; }
+  .pf-foot .pf-in { display: grid; justify-items: center; gap: 8px; text-align: center; color: var(--mu); font-size: 15px; font-weight: 600; }
+  .pf-foot__me b { color: #fcfcfc; }
+  .pf-foot a { text-decoration: underline; text-underline-offset: 3px; }
+  .pf-foot__pages { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-top: 8px !important; }
+  .pf-uground { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-uground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
+  @media (max-width: 1100px) { .pf-nav { display: none; } }
+  @media (max-width: 900px) {
+    .pf-me { grid-template-columns: 200px minmax(0, 1fr); gap: 32px; }
+    .pf-title { font-size: 42px; }
+    .pf-info { grid-template-columns: minmax(0, 1fr); }
+  }
+  /* 휴대폰 — 게임기가 작아 화면엔 이름만, 개요는 아래 창(.pf-dock)에 */
+  @media (max-width: 760px) {
+    .pf-in, .pf-top__in { padding: 0 16px; }
+    .pf-top__in { gap: 10px; height: 52px; }
+    .pf-logo small, .pf-world span { display: none; }
+    .pf-hero { min-height: 0; padding: 96px 0 168px; }
+    .pf-cue { flex-basis: 100%; margin: 8px 0 0; }
+    .pf-hero > .pf-in { gap: 28px; }
+    .pf-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .pf-hud b { font-size: 16px; }
+    .pf-hud span { font-size: 13px; }
+    .pf-me { grid-template-columns: 136px minmax(0, 1fr); gap: 0 20px; align-items: end; }
+    .pf-me__txt { display: contents; }
+    .pf-eyebrow { align-self: end; justify-self: start; flex-direction: column; align-items: flex-start; gap: 6px; padding: 8px 10px; }
+    .pf-title, .pf-info, .pf-btns { grid-column: 1 / -1; }
+    .pf-title { margin: 24px 0 20px !important; font-size: 28px; }
+    .pf-info { padding: 12px 16px 14px; }
+    .pf-info dd { font-size: 15px; }
+    .pf-hide-s { display: none; }
+    .pf-sec h2 { font-size: 22px; font-family: 'Galmuri11', monospace; }
+    .pf-tray { gap: 8px; }
+    .pf-cart { padding: 8px 4px 4px; }
+    .pf-cart__lab { padding: 4px; gap: 4px; }
+    .pf-cart__lab > b { font-size: 11px; }
+    .pf-cart__meta { display: none; }
+    .pf-cart::before { left: 8px; right: 8px; }
+    .pf-proj { padding-top: 96px; }
+    .pf-stick { padding: 8px 8px 16px; }
+    .pf-gap { height: var(--pf-gapH, 48px); }
+    .pf.is-mob .pf-dock { display: block; width: 100%; max-width: 440px; margin-bottom: 12px; overflow: hidden; padding: 12px 14px; background: #141014; border: 4px solid var(--cream); color: var(--cream); }
+    .pf.is-mob .pf-scr .pf-ov { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 0; padding: 8px 12px; text-align: center; }
+    .pf.is-mob .pf-scr .pf-ov > .pf-art, .pf.is-mob .pf-scr .pf-ov__sub, .pf.is-mob .pf-scr .pf-ov dl, .pf.is-mob .pf-scr .pf-ov__q, .pf.is-mob .pf-scr .pf-ov__go, .pf.is-mob .pf-scr .pf-ov__learn { display: none; }
+    .pf.is-mob .pf-scr .pf-ov__meta { justify-content: center; font-size: 11px; }
+    .pf.is-mob .pf-scr .pf-ov h3 { font: 400 11px/1.4 'Galmuri11', monospace; }
+    .pf.is-mob .pf-scr .pf-sel { padding: 6px 10px; gap: 2px; }
+    .pf.is-mob .pf-scr .pf-sel__h, .pf.is-mob .pf-scr .pf-sel__f { font-size: 11px; }
+    .pf.is-mob .pf-scr .pf-sel button { padding: 0 0 0 16px; font-size: 11px; line-height: 1.5; }
+    .pf.is-mob .pf-scr .pf-sel li.on button::before { left: 0; font-size: 9px; }
+    .pf.is-mob .pf-scr .pf-sel li em { display: none; }
+    .pf.is-mob .pf-scr .pf-boot { font-size: 11px; }
+    .pf.is-mob .pf-dock .pf-ov { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; padding: 0; }
+    .pf.is-mob .pf-dock .pf-ov > .pf-art { display: none; }
+    .pf.is-mob .pf-dock .pf-ov h3 { font: 400 22px/1.3 'Galmuri11', monospace; }
+    .pf.is-mob .pf-dock .pf-ov dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; margin-top: 6px !important; font-size: 13px; }
+    .pf.is-mob .pf-dock .pf-ov dl div { gap: 8px; }
+    .pf.is-mob .pf-dock .pf-ov dt { width: auto; }
+    .pf.is-mob .pf-dock .pf-ov__sub, .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go, .pf.is-mob .pf-dock .pf-ov__learn { font-size: 13px; }
+    .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go { margin-top: 8px !important; }
+    .pf.is-mob .pf-dock .pf-boot { font-size: 11px; }
+    .pf-dock__hint { display: grid; place-items: center; height: 100%; font-size: 14px; font-weight: 700; color: #b0a890; text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pf-cue span, .pf-sel li.on button::before, .pf-sel li em, .pf-dots::after { animation: none; } .pf-cart { transition: none; } }
 </style>
 <script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
 <body>
 
+<div id="play"></div>
 <header class="top"><div class="wrap">
   <h1><span class="i18n-ko">시안 모음</span><span class="i18n-en">Drafts</span></h1>
   <span class="sp"></span>
@@ -777,6 +990,12 @@
     <h2><span class="i18n-ko">이력이 먼저 — 간단하고 확실하게.</span><span class="i18n-en">The career first — simple and clear.</span></h2>
     <p><span class="i18n-ko">가장 큰 강점은 지금까지 쌓아 온 경험 — 혼자 만들어 출시하고, 커뮤니티를 운영하고, 글을 쓰고, 팀 앞에서 발표해 온 <b>육각형 기획자</b>라는 점입니다. 게임 테마는 눈길을 끄는 첫 화면의 몫이고, 이력은 마리오 시리즈의 게임 화면 위에 — 지도 · 코스 시작 · 상태 메뉴 가운데 하나로 보여 줍니다. 게임기는 <b>벽돌 휴대기</b>로 정했습니다.</span><span class="i18n-en">The biggest strength is the experience itself — shipping games solo, running a community, writing criticism and presenting to a team: an <b>all-round (hexagon) game designer</b>. The game theme is the first screen's job — the hook; the career sits on a Mario-series game screen — a map, a course start screen or a status menu. The console is the <b>brick handheld</b>.</span></p>
     <nav class="toc" id="toc"></nav>
+  </section>
+
+  <section class="part" id="play-part">
+    <div class="part__head"><span class="part__num">PART 00</span><h3><span class="i18n-ko">전체 흐름 — 플레이어블</span><span class="i18n-en">The whole flow — playable</span></h3></div>
+    <p class="part__desc"><span class="i18n-ko">"홈에서 사진 및 간단한 인적사항 - 나 이력 확정 - 그리고 아랫부분에 게임기와 프로젝트 카드로 이어지는 흐름" — 그 셋을 한 페이지로 이어 붙여, 내리기만 해도 끝까지 놀 수 있게 만든 시안입니다. 1-1 하늘에 사진 · 간단한 인적사항 · 숫자 넷, 1-2 지하에 나 이력(모래 길), 1-3 에 벽돌 휴대기가 화면에 붙고 프로젝트 카트리지가 내리는 만큼 하나씩 꽂혀 화면에 개요가 켜집니다.</span><span class="i18n-en">"Photo and basic details on the home, then the confirmed career (나), then the console and project cards below" — joined into one page you can play to the end just by scrolling. 1-1 sky: photo, basic details and the four numbers; 1-2 underground: the career (the sand road); 1-3: the brick handheld pins to the screen and each project cartridge goes in as you scroll, lighting up its overview.</span></p>
+    <a class="playlink" href="drafts.html?play" data-playlink><b>▶ <span class="i18n-ko">플레이</span><span class="i18n-en">Play</span></b><span class="i18n-ko">새 화면으로 열기 — WORLD 1-1 나 · 1-2 이력 · 1-3 프로젝트</span><span class="i18n-en">Open it full-page — WORLD 1-1 me · 1-2 career · 1-3 projects</span></a>
   </section>
 
   <section class="part" id="story">
@@ -1746,9 +1965,10 @@
     LTICKS.push(tick);
   }
 
-  function draftL3() {
+  function draftL3(opt) {                /* opt.skipStart — 전체 흐름(플레이어블)에서는 첫 화면이 '나'를 맡아 START 칸을 뺌 */
     if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 점 · 성 · 깃발 그림(--sw-*)은 나′ 것을 그대로 */
     var list = WN.map(function (n, i) {
+      if (opt && opt.skipStart && n.k === 'start') return '';
       var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y'), it = lItem(i);
       return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__box">' +
         '<p class="swl-c__head"><span class="swl-c__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</span><em>' + it.when + '</em></p>' +
@@ -1847,6 +2067,241 @@
     });
     sel(0, true);
     scrubWire('e4', { root: root, n: items.length, go: sel, levels: ['is-tight', 'is-tight is-tab'], step: .2 });
+  }
+
+  /* ════ 전체 흐름 — 플레이어블 ════
+     사용자: "홈에서 사진 및 간단한 인적사항 - 나 이력 확정 - 그리고 아랫부분에 게임기와 프로젝트 카드로 이어지는 흐름으로 하자" → "전체 플레이어블 시안 뽑아봐".
+     drafts.html?play (아티팩트는 window.__PLAY) 로 열면 시안 모음 대신 홈 한 장을 그대로 그림 — 스크롤만으로 끝까지 놀 수 있음:
+     WORLD 1-1 하늘 = 사진 · 간단한 인적사항 · 숫자 넷 → 땅 블록 → 1-2 지하 = 나 이력(모래 길 목록 l3 — START 는 첫 화면이 맡아 뺌) →
+     1-3 = 벽돌 휴대기 + 프로젝트 카트리지: 게임기가 화면에 붙은 채 내리는 만큼 카트리지가 하나씩 진열판에서 올라와 게임기 아래로 꽂히고 화면에 개요가 켜짐.
+     카트리지 · 화면 속 목록 · 십자 버튼(◀ ▶) · B(꺼내기)는 그 자리까지 스크롤만, A 는 자세히 보기(사이트에서), 고무 버튼은 메일.
+     게임기 그림은 사이트의 도트 데이터(fc-level-art-brick.js)를 칸 하나 = 정수 기기 픽셀로, 누르는 자리는 console-controls.json 의 b 를 칸 좌표로 옮긴 PF_KEYS. */
+  var PLAY = !!window.__PLAY || /[?&]play(=|&|$)/.test(location.search);
+  var SITE = !window.__IMG;                 /* 저장소에서 연 화면 — 사이트 페이지 링크가 살아 있음(아티팩트에서는 뺌) */
+  var PF_SKIN = 'skin=pixel-fc-level-brick';
+  var PF_LEAD = .35;                        /* 첫 카트리지 전에 잠깐 비어 있는 화면(고르기 목록) */
+  /* 벽돌 휴대기의 누르는 자리 — tools/fc-pixel/console-controls.json 의 b(그림 좌표)를 칸으로: (v − map) / 6.993 */
+  var PF_KEYS = { dpad: [5.26, 27.02, 16, 16], rubber: [5.84, 61.33, 14.9, 7.4], b: [177.71, 27.02, 16, 16], a: [177.71, 52.77, 16, 16],
+    lDpad: [6.41, 46.47, 13.7, 3.4], lRubber: [6.41, 71.07, 13.7, 3.4], lB: [179.43, 45.33, 12.6, 3.4], lA: [179.43, 71.07, 12.6, 3.4] };
+  var PROJ = (C.projects && C.projects.items) || [], TABS = (C.projects && C.projects.tabs) || {};
+  function pfSeed(s) { var h = 5381; s = String(s || ''); for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return Math.abs(h); }
+  function pfGen(h) {                        /* render.js 의 genArt 와 같은 그림(사진 없는 프로젝트 = id 로 늘 같은 무늬) */
+    var kind = h % 4, g = '', i, x, y;
+    if (kind === 0) for (i = 0; i < 5; i++) g += '<circle cx="50" cy="50" r="' + (13 + i * 13) + '" fill="none" stroke="currentColor" stroke-width="1.1" opacity="' + (0.32 - i * 0.05).toFixed(2) + '"/>';
+    else if (kind === 1) { for (i = 0; i < 10; i++) g += '<rect x="' + (-46 + i * 17) + '" y="-40" width="6" height="190" fill="currentColor" opacity="' + (i % 2 ? 0.09 : 0.17) + '"/>'; g = '<g transform="rotate(' + (18 + (h >> 3) % 30) + ' 50 50)">' + g + '</g>'; }
+    else if (kind === 2) { for (y = 0; y < 7; y++) for (x = 0; x < 7; x++) g += '<circle cx="' + (8 + x * 14) + '" cy="' + (8 + y * 14) + '" r="' + (1.5 + ((x + y + h) % 3) * 0.8).toFixed(1) + '" fill="currentColor" opacity="0.17"/>'; }
+    else for (i = 0; i < 4; i++) g += '<path d="M50 ' + (5 + i * 11) + 'L' + (95 - i * 11) + ' 50L50 ' + (95 - i * 11) + 'L' + (5 + i * 11) + ' 50Z" fill="none" stroke="currentColor" stroke-width="1.1" opacity="' + (0.30 - i * 0.055).toFixed(2) + '"/>';
+    return g;
+  }
+  function pfArt(p, big) {
+    var h = pfSeed(p.id);
+    return '<span class="pf-art pf-art--' + (h % 3) + '" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg><i class="pf-art__gh' + (big ? ' is-big' : '') + '"></i></span>';
+  }
+  function pfGrade(p) { var g = String(p.grade || 'A').toUpperCase(); return /^(SSR|SR|R|A)$/.test(g) ? g : 'A'; }
+  function pfCat(p) { var c = TABS[p.category]; return c ? t(c) : ''; }
+  function pfTitleHtml() {                   /* hero.titleHtml 의 강조(span.accent) · 줄바꿈만 살리고 나머지는 글자로 */
+    var s = t(C.hero && C.hero.titleHtml).replace(/<span class="accent">([\s\S]*?)<\/span>/g, '\u0001$1\u0002').replace(/\s*<br\s*\/?>\s*/g, '\u0003').replace(/<[^>]+>/g, '');
+    return esc(s).replace(/\u0001/g, '<em>').replace(/\u0002/g, '</em>').replace(/\u0003/g, '<br>');
+  }
+  function pfDetail(p) { return 'projects/detail.html?p=' + encodeURIComponent(p.id) + '&' + PF_SKIN; }
+
+  function pfTop() {
+    var nav = SITE ? [['resume.html', 'resume'], ['cover-letter.html', 'cover'], ['projects.html', 'projects'], ['play.html', 'play']].map(function (n) {
+      return '<a href="' + n[0] + '?' + PF_SKIN + '">' + esc(t(C.nav && C.nav[n[1]])) + '</a>'; }).join('') : '';
+    return '<header class="pf-top"><div class="pf-top__in"><a class="pf-logo" href="#pf-hero"><i aria-hidden="true"></i><b>' + esc(NAME) + '</b><small>' + esc(t(C.meta && C.meta.role)) + '</small></a>' +
+      '<nav class="pf-nav">' + nav + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world>WORLD 1-1</b><span data-pf-wname>' + T('나', 'Me') + '</span></p>' +
+      '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' + (SITE ? '<a class="pf-tbtn" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
+  }
+  function pfHero() {
+    var m = C.meta || {}, ph = C.home && C.home.player;
+    var info = [[T('이름', 'Name'), esc(NAME)], [T('직무', 'Role'), esc(t(m.role))], [T('경력', 'Career'), L === 'en' ? 'Since 2016 · ' + esc(YRS) + ' years' : '2016년부터 · ' + esc(YRS) + '년째']];
+    if (m.email) info.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
+    if (m.github) info.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
+    var hud = stats.map(function (s) { return '<p><span>' + esc(t(s.label)) + '</span><b class="ps">' + esc(s.num) + '<small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('');
+    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1"><i class="pf-s s-cloud" style="left:6%;top:28px"></i><i class="pf-s s-cloud pf-hide-s" style="left:44%;top:20px"></i><i class="pf-s s-cloud" style="right:8%;top:36px"></i>' +
+      '<div class="pf-in"><div class="pf-hud">' + hud + '</div><div class="pf-me">' +
+      (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
+      '<div class="pf-me__txt"><p class="pf-eyebrow"><i aria-hidden="true"></i>' + esc(t(m.role)) + ' · Portfolio</p><h1 class="pf-title">' + pfTitleHtml() + '</h1>' +
+      '<dl class="pf-info">' + info.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>'; }).join('') + '</dl>' +
+      '<p class="pf-btns">' + (SITE && m.resumeUrl ? '<a class="pf-btn pf-btn--a" href="' + esc(m.resumeUrl) + '" target="_blank" rel="noopener">' + T('이력서 PDF', 'Résumé PDF') + '</a>' : '') +
+      (m.email ? '<a class="pf-btn" href="mailto:' + esc(m.email) + '">' + T('메일 보내기', 'Send an email') + '</a>' : '') +
+      '<span class="pf-cue"><span aria-hidden="true">▼</span>' + T('내리면 2016년부터 이력이 이어집니다', 'Scroll — the career runs on from 2016') + '</span></p></div></div></div>' +
+      '<i class="pf-s s-hill" style="left:2%"></i><i class="pf-s s-bush" style="left:26%"></i><i class="pf-s s-bush pf-hide-s" style="left:64%"></i><i class="pf-s s-pipe" style="right:6%"></i><i class="pf-ground"></i></section>';
+  }
+  function pfSecHead(code, h, p) { return '<header class="pf-sec"><b class="ps">WORLD ' + code + '</b><h2>' + h + '</h2><p>' + p + '</p></header>'; }
+  function pfCareer() {
+    return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2"><div class="pf-in">' +
+      pfSecHead('1-2', T('이력', 'Career'), T('2016 → 지금 · 내리면 고스트가 모래 길을 따라 내려갑니다', '2016 → now · scroll and the ghost follows the sand road down')) + draftL3({ skipStart: true }) + '</div></section>';
+  }
+  function pfCart(p, i) {
+    return '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" aria-label="' + esc(t(p.title)) + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
+      '<span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p) + '</span></button>';
+  }
+  function pfKey(cls, attr, label, k) { return '<' + (attr.indexOf('href') === 0 ? 'a ' + attr : 'button type="button" ' + attr) + ' class="pf-key ' + cls + '" data-pf-k="' + k + '" aria-label="' + label + '"></' + (attr.indexOf('href') === 0 ? 'a' : 'button') + '>'; }
+  function pfProj() {
+    var m = C.meta || {};
+    var keys = pfKey('pf-key--l', 'data-pf-step="-1"', T('이전 카트리지', 'Previous cartridge'), 'dpadL') + pfKey('pf-key--r', 'data-pf-step="1"', T('다음 카트리지', 'Next cartridge'), 'dpadR') +
+      pfKey('pf-key--b', 'data-pf-b', T('B 꺼내기', 'B eject'), 'b') + pfKey('pf-key--a', 'data-pf-a', SITE ? T('A 자세히 보기', 'A read more') : T('A 배운 것', 'A what I learned'), 'a') +
+      (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
+    var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', SITE ? T('A 자세히', 'A OPEN') : T('A 배운 것', 'A NOTES')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
+    return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-3"><div class="pf-in">' +
+      pfSecHead('1-3', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 내리면 하나씩 꽂혀 화면이 켜집니다', PROJ.length + ' cartridges · scroll and they go in one by one')) + '</div>' +
+      '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
+      '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><i class="pf-gap" aria-hidden="true"></i>' +
+      '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div></section>';
+  }
+  function pfFoot() {
+    var m = C.meta || {};
+    var pages = SITE ? '<p class="pf-foot__pages">' + [['resume.html', 'resume'], ['cover-letter.html', 'cover'], ['projects.html', 'projects'], ['play.html', 'play']].map(function (n) { return '<a href="' + n[0] + '?' + PF_SKIN + '">' + esc(t(C.nav && C.nav[n[1]])) + ' →</a>'; }).join('') + '</p>' : '';
+    return '<footer class="pf-foot"><div class="pf-in"><p class="pf-foot__me"><b>' + esc(NAME) + '</b> · ' + esc(t(m.role)) + '</p><p>' + (m.email ? '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>' : '') +
+      (m.github ? ' · <a href="' + esc(m.github) + '" target="_blank" rel="noopener">GitHub</a>' : '') + '</p>' + pages + '</div><i class="pf-uground" aria-hidden="true"></i></footer>';
+  }
+
+  /* 게임기 화면 — 고르기 목록(아무것도 안 꽂힘 · 꽂는 중) / 읽는 중 / 개요 */
+  function pfSel(cur, busy) {
+    return '<div class="pf-sel"><p class="pf-sel__h"><b class="ps">1P</b>' + T('카트리지 고르기', 'Select a cartridge') + '</p><ol>' + PROJ.map(function (p, j) {
+      return '<li' + (j === cur ? ' class="on"' : '') + '><button type="button" data-pf-go="' + j + '">' + esc(t(p.title)) + '</button>' + (j === cur && busy ? '<em>' + T('꽂는 중', 'inserting') + '</em>' : '') + '</li>';
+    }).join('') + '</ol><p class="pf-sel__f">' + T('▼ 내리면 하나씩 꽂힙니다', '▼ Scroll and they go in one by one') + '</p></div>';
+  }
+  function pfBoot() { return '<div class="pf-boot"><p>' + T('읽는 중', 'Loading') + '<span class="pf-dots"></span></p></div>'; }
+  function pfOv(i, notes) {
+    var p = PROJ[i], q = p.quest;
+    var rows = [[T('기간', 'Period'), p.period], [T('인원', 'Team'), p.headcount], [T('역할', 'Role'), p.myRole], [T('상태', 'Status'), p.status]].filter(function (r) { return r[1] && t(r[1]); });
+    var tail = notes && p.learned && p.learned.length ? '<ul class="pf-ov__learn">' + p.learned.slice(0, 3).map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul>' :
+      '<dl>' + rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + esc(t(r[1])) + '</dd></div>'; }).join('') + '</dl>' +
+      (q && q.goal ? '<p class="pf-ov__q"><b>' + T('퀘스트', 'Quest') + '</b>' + esc(t(q.goal)) + ' → <strong>' + esc(t(q.result)) + '</strong></p>' : '');
+    return '<div class="pf-ov" data-grade="' + pfGrade(p) + '">' + pfArt(p, 1) + '<div class="pf-ov__txt"><p class="pf-ov__meta"><i>' + esc(pfCat(p)) + '</i><span>' + esc(t(p.tag)) + '</span><em class="ps">' + pfGrade(p) + '</em></p>' +
+      '<h3>' + esc(t(p.title)) + '</h3><p class="pf-ov__sub">' + esc(t(p.sub)) + '</p>' + tail +
+      '<p class="pf-ov__go"><span class="ps">A</span>' + (SITE ? '<a href="' + esc(pfDetail(p)) + '">' + T('자세히 보기', 'Read more') + ' →</a>' : notes ? T('개요로', 'Back to the overview') : T('배운 것', 'What I learned')) + '</p></div></div>';
+  }
+
+  var PF = null;                              /* 지금 그린 화면의 상태(재는 값 · 고른 칸) */
+  function pfDraw(cv, d, sd) {
+    cv.width = d.w * sd; cv.height = d.h * sd;
+    var g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
+    d.rows.forEach(function (row, y) {
+      var x = 0, re = /([.,A-Za-z])(\d*)/g, m;
+      while ((m = re.exec(row))) {
+        var n = m[2] ? +m[2] : 1, c = m[1];
+        if (c !== '.') { g.fillStyle = c === ',' ? 'rgba(0,0,0,.45)' : d.pal[c <= 'Z' ? c.charCodeAt(0) - 65 : c.charCodeAt(0) - 71]; g.fillRect(x * sd, y * sd, n * sd, sd); }
+        x += n;
+      }
+    });
+  }
+  function pfLayout() {
+    var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d) return;
+    var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
+    var H = innerHeight - top, W = st.clientWidth, mob = W < 760, dpr = window.devicePixelRatio || 1;
+    var ch = mob ? 84 : Math.round(Math.max(128, Math.min(176, H * .21)) / 4) * 4, cw = Math.round(ch * (mob ? .8 : .76) / 4) * 4, gap = Math.round(ch * .42 / 4) * 4 + (mob ? 12 : 24);
+    var dockH = mob ? 220 : 0, availW = Math.min(W - (mob ? 16 : 64), 1120), availH = H - ch - gap - dockH - (mob ? 32 : 56);
+    var sd = Math.max(1, Math.floor(Math.min(availW / d.w, availH / d.h) * dpr)), cell = sd / dpr;
+    pfDraw(cv, d, sd); cv.style.width = d.w * cell + 'px'; cv.style.height = d.h * cell + 'px';
+    dev.style.width = d.w * cell + 'px'; dev.style.height = d.h * cell + 'px';
+    function at(el, c) { el.style.left = (c[0] - d.x) * cell + 'px'; el.style.top = (c[1] - d.y) * cell + 'px'; el.style.width = c[2] * cell + 'px'; el.style.height = c[3] * cell + 'px'; }
+    at(root.querySelector('.pf-scr'), d.screen);
+    [].forEach.call(root.querySelectorAll('[data-pf-k]'), function (el) {
+      var k = el.getAttribute('data-pf-k'), c = PF_KEYS[k === 'dpadL' || k === 'dpadR' ? 'dpad' : k];
+      if (k === 'dpadL') c = [c[0], c[1], c[2] / 2, c[3]]; else if (k === 'dpadR') c = [c[0] + c[2] / 2, c[1], c[2] / 2, c[3]];
+      if (c) at(el, c);
+    });
+    st.style.top = top + 'px'; st.style.height = H + 'px';
+    if (mob) root.querySelector('[data-pf-dock]').style.height = Math.round(Math.max(220, Math.min(296, H - ch - gap - d.h * cell - 48)) / 4) * 4 + 'px';
+    root.style.setProperty('--pf-cw', cw + 'px'); root.style.setProperty('--pf-ch', ch + 'px'); root.style.setProperty('--pf-gapH', gap + 'px'); root.style.setProperty('--pf-top', top + 'px');
+    root.classList.toggle('is-mob', mob); root.classList.toggle('is-s3', !mob && cell < 4); root.classList.toggle('is-nolbl', cell < 4);          /* 인쇄 글자는 게임기가 칸 4px 이상일 때만(작으면 화면 테로 넘침) */
+    var run = root.querySelector('[data-pf-run]'); run.style.height = Math.round(H * (1 + (PROJ.length + PF_LEAD) * .75)) + 'px';
+    /* 카트리지 자리(진열판에 놓인 자리) · 꽂는 자리(게임기 몸 아래 가운데) — 판(.pf-stick) 기준 좌표 */
+    var cards = [].slice.call(root.querySelectorAll('.pf-cart'));
+    root.classList.add('pf-measure'); cards.forEach(function (c) { c.style.transform = ''; }); void root.offsetWidth;   /* 되돌아가는 중인 카트리지도 제자리에서 잼 */
+    var sr = st.getBoundingClientRect(), dr = dev.getBoundingClientRect(), bodyB = dr.top - sr.top + (100 - d.y) * cell;
+    PF = { root: root, st: st, cards: cards, base: cards.map(function (c) { var r = c.getBoundingClientRect(); return [r.left - sr.left, r.top - sr.top]; }),
+      slotX: dr.left - sr.left + (100 - d.x) * cell - cw / 2, preY: bodyB + 4, insY: bodyB - Math.round(ch * .6 / 4) * 4, key: '', i: -2, notes: false, mob: mob };
+    root.classList.remove('pf-measure');
+    pfTick(true);
+  }
+  function pfProg() {                          /* 카트리지 칸 번호 i(-1 = 아직) · 칸 안 진행 t */
+    var run = PF.root.querySelector('[data-pf-run]'), r = run.getBoundingClientRect(), sh = PF.st.offsetHeight, top = parseFloat(PF.st.style.top) || 0;
+    var n = PROJ.length, u = (top - r.top) / Math.max(1, r.height - sh) * (n + PF_LEAD) - PF_LEAD;
+    if (u < 0) return [-1, 0];
+    var i = Math.min(n - 1, Math.floor(u)); return [i, Math.min(1, u - i)];
+  }
+  function pfGo(i, tt) {                        /* 누르기는 그 자리까지 스크롤만 — 칸은 늘 스크롤이 바꿈 */
+    var run = PF.root.querySelector('[data-pf-run]'), sh = PF.st.offsetHeight, top = parseFloat(PF.st.style.top) || 0, n = PROJ.length;
+    i = Math.max(0, Math.min(n - 1, i));
+    var y = run.getBoundingClientRect().top + scrollY - top + (i + tt + PF_LEAD) / (n + PF_LEAD) * (run.offsetHeight - sh);
+    window.scrollTo({ top: Math.round(y), behavior: RM ? 'auto' : 'smooth' });
+  }
+  function pfScreen(key, html, dock) {
+    if (PF.key === key) return;
+    var first = PF.key === '';
+    PF.key = key;
+    var scr = PF.root.querySelector('[data-pf-scr]'); scr.innerHTML = html; if (!first) pop(scr);
+    var dk = PF.root.querySelector('[data-pf-dock]'); dk.innerHTML = dock; if (!first && dock) pop(dk);
+  }
+  function pfTick(force) {
+    if (!PF || !PF.root.offsetParent) return;
+    var pr = pfProg(), i = pr[0], tt = pr[1], q = function (v) { return Math.round(v / 4) * 4; };
+    if (i !== PF.i) { PF.notes = false; PF.i = i; }
+    PF.cards.forEach(function (c, j) {
+      var live = j === i && tt > 0;
+      c.classList.toggle('is-live', live); c.classList.toggle('is-in', live && tt >= .6);
+      c.setAttribute('aria-pressed', String(j === i && tt >= .6));
+      if (!live) { c.style.transform = ''; return; }
+      var b = PF.base[j], x, y;
+      if (tt < .12) { x = b[0]; y = b[1] - 12 * tt / .12; }
+      else if (tt < .45) { var f = (tt - .12) / .33, e = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; x = b[0] + (PF.slotX - b[0]) * e; y = b[1] - 12 + (PF.preY - b[1] + 12) * e - Math.sin(Math.PI * f) * 24; }
+      else if (tt < .6) { x = PF.slotX; y = PF.preY + (PF.insY - PF.preY) * (tt - .45) / .15; }
+      else { x = PF.slotX; y = PF.insY; }
+      c.style.transform = 'translate(' + q(x - b[0]) + 'px,' + q(y - b[1]) + 'px)';
+    });
+    var hint = '<p class="pf-dock__hint">' + T('▼ 내리면 카트리지가 하나씩 꽂힙니다', '▼ Scroll and the cartridges go in one by one') + '</p>';
+    if (i < 0) pfScreen('sel:0', pfSel(0, false), hint);
+    else if (tt < .6) pfScreen('sel:' + i + ':' + (tt >= .12), pfSel(i, tt >= .12), hint);
+    else if (tt < .68) pfScreen('boot:' + i, pfBoot(), PF.mob ? pfBoot() : '');
+    else pfScreen('ov:' + i + ':' + PF.notes, pfOv(i, PF.notes), PF.mob ? pfOv(i, PF.notes) : '');
+    /* 위 띠의 WORLD — 지금 머리 아래에 걸린 칸 */
+    var top = parseFloat(PF.st.style.top) || 0, w = '1-1';
+    [].forEach.call(PF.root.querySelectorAll('[data-pf-sec]'), function (s) { if (s.getBoundingClientRect().top <= top + 8) w = s.getAttribute('data-pf-sec'); });
+    if (PF.w !== w) {
+      PF.w = w; PF.root.querySelector('[data-pf-world]').textContent = 'WORLD ' + w;
+      PF.root.querySelector('[data-pf-wname]').textContent = w === '1-1' ? (L === 'en' ? 'Me' : '나') : w === '1-2' ? (L === 'en' ? 'Career' : '이력') : (L === 'en' ? 'Projects' : '프로젝트');
+    }
+  }
+  function renderPlay() {
+    document.body.classList.add('is-play');
+    if (typeof MINIG !== 'undefined') document.documentElement.style.setProperty('--mb-mini', spr(MINIG));
+    var root = document.getElementById('play');
+    root.innerHTML = '<div class="pf" data-pf>' + pfTop() + pfHero() + pfCareer() + pfProj() + pfFoot() + '</div>';
+    document.title = NAME + ' · ' + t(C.meta && C.meta.role) + ' — ' + T('홈 흐름 시안', 'Home flow draft');
+    SCROLLERS = []; SCRUBS = []; LTICKS = [];
+    wireL3();
+    LTICKS.push(function () { pfTick(); });
+    var pf = root.querySelector('[data-pf]');
+    pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
+    pf.addEventListener('click', function (e) {
+      var g = e.target.closest('[data-pf-go]'); if (g) { pfGo(+g.getAttribute('data-pf-go'), .8); return; }
+      var s = e.target.closest('[data-pf-step]'); if (s) { var c = pfProg(); pfGo(c[0] < 0 ? 0 : c[0] + +s.getAttribute('data-pf-step'), .8); return; }
+      if (e.target.closest('[data-pf-b]')) { var c2 = pfProg(); if (c2[0] >= 0) pfGo(c2[0], .04); return; }
+      if (e.target.closest('[data-pf-a]')) {
+        var c3 = pfProg(); if (c3[0] < 0 || c3[1] < .68) { pfGo(Math.max(0, c3[0]), .8); return; }
+        if (SITE) location.href = pfDetail(PROJ[c3[0]]); else { PF.notes = !PF.notes; pfTick(); }
+        return;
+      }
+      if (!SITE && e.target.closest('.pf-ov__go')) { PF.notes = !PF.notes; pfTick(); }
+    });
+    if (!window.__pfKeys) {
+      window.__pfKeys = 1;
+      document.addEventListener('keydown', function (e) {
+        if (!PF || e.altKey || e.ctrlKey || e.metaKey || /input|textarea/i.test((e.target.tagName || ''))) return;
+        var r = PF.root.querySelector('[data-pf-run]').getBoundingClientRect(); if (r.top > innerHeight * .5 || r.bottom < innerHeight * .5) return;
+        var c = pfProg();
+        if (e.key === 'ArrowRight') { e.preventDefault(); pfGo(c[0] < 0 ? 0 : c[0] + 1, .8); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); pfGo(c[0] - 1, .8); }
+      });
+    }
+    window.PFDBG = function () { return PF && PF.key; };     /* 확인용(지금 화면 상태) */
+    pfLayout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { pfLayout(); scrollTick(); });
+    scrollTick();
   }
 
   var DRAFTS4 = [
@@ -1956,7 +2411,7 @@
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
   function renderDrafts() {
-    document.getElementById('toc').innerHTML = DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 나′ · 다′ · 가 · 라 · S', 'Earlier · 나′ · 다′ · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
+    document.getElementById('toc').innerHTML = '<a href="#play-part">' + T('전체 흐름 · 플레이', 'Whole flow · play') + '</a>' + DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 나′ · 다′ · 가 · 라 · S', 'Earlier · 나′ · 다′ · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
     document.getElementById('rules').innerHTML = RULES4.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
     document.getElementById('drafts4').innerHTML = DRAFTS4.map(draftHTML).join('');
     document.getElementById('drafts-old').innerHTML = DRAFTS_OLD.map(draftHTML).join('');
@@ -2007,10 +2462,10 @@
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { applyLang(); renderDrafts(); renderConsoles(); }
+  function render() { applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); } }
   render();
   document.getElementById('older').addEventListener('toggle', fit);
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { fit(); renderConsoles(); }, 150); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); } }, 150); });
   document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   document.querySelector('[data-dark]').addEventListener('click', function () {
     var d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

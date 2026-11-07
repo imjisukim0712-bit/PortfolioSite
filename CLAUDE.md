@@ -171,6 +171,12 @@
   나 목록 = 코스마다 메시지 블록 한 장("맨 위 맵은 없어도 될 듯" — 섬 지도는 빼고 점 · 성 · 깃발 그림 `--sw-*` 만 나′ 에서 가져옴)(`.swl-c__box` — 검은 판 + 흰 테 두 겹, START · 깃발은 안쪽 테가 주황) +
   왼쪽 모래 길(`.swl__rail` — 점선 위로 고스트 `.swl-me` 가 sticky(45vh)로 내려가며 `.swl__road` 를 그리고, 지나간 점 `.swl-c__node` 가 켜지며 반짝). 숫자는 그 칸이 화면 아래 4분의 1 을 지나는 동안 `lCount()` 로 0 → 값.
   목록판의 글을 고칠 때는 `lItem` 한 곳, 넘기는 판(나′ · 다′)의 글은 `mbMid` · `swMsg` · `swClear` 입니다.
+  **홈 흐름 = "사진 및 간단한 인적사항 - 나 이력 확정 - 아랫부분에 게임기와 프로젝트 카드"** → 전체 플레이어블 시안이 **PART 00**(`drafts.html?play` — 아티팩트는 `window.__PLAY`)입니다. `PLAY` 이면 `render()` 가 시안 모음 대신 `renderPlay()` 로 홈 한 장(`#play > .pf`)만 그립니다:
+  WORLD 1-1 하늘(`pfHero` — `resume.stats` 넷 · `home.player.photo` · 이름 · 직무 · 경력 · `meta.email` · `meta.github`, 가려 둔 인적사항 값은 넣지 않음 · 소품은 글자 밖에만) → 땅 블록 →
+  1-2 지하(`pfCareer` = `draftL3({ skipStart: true })` — 나 이력 그대로, START 는 첫 화면이 맡음) → 1-3(`pfProj`): 벽돌 휴대기 그림(`__ART.brick` 을 `pfDraw` 가 칸 하나 = 정수 기기 픽셀로, 칸 크기는 `pfLayout()` 이 화면에 맞춰 고름)이
+  화면에 붙고(`.pf-stick`), 내리는 만큼(`pfProg()` — 카트리지 번호 · 칸 안 진행) 카트리지(`projects.items` · 그림은 render.js 의 `genArt` 와 같은 `pfGen`)가 진열판에서 올라와 게임기 몸 아래로 꽂힘(게임기 뒤로 들어가 가려짐) →
+  화면이 고르기 목록(`pfSel`) → 읽는 중 → 개요(`pfOv`)로 바뀜. 누르는 자리는 `console-controls.json` 의 b 를 칸 좌표로 옮긴 `PF_KEYS`(그림 좌표 → 칸: (v − map) / 6.993). 카트리지 · 목록 · 십자 버튼 · B · ← → 는 `pfGo()` 로 그 자리까지 **스크롤만**,
+  A 는 `projects/detail.html?p=<id>` (아티팩트에서는 링크가 없어 '배운 것' 보기), 고무 버튼은 메일. 760px 이하는 게임기 화면엔 이름만, 개요는 아래 창(`.pf-dock`). 위 띠의 WORLD 1-1 · 1-2 · 1-3 은 머리 아래 걸린 절(`data-pf-sec`).
   목록 한 장(`draftBrief`) · 세 구조(`draftB1 ~ B3`) · 한 문단 · 계단(`draftC1` · `C2`) · 플레이어 정보 화면(`draftD1`) · 5차 넷(V ~ Y)은 폐기(git 기록에만).
   S 는 '지난 안 · 보류'로 접어 둠(`DRAFTS_OLD`, 펼치면 `fit()`). 아래는 S 의 규칙:
   S — **스크롤만**: 틀이 화면에 붙은 채(sticky) 진행(0 ~ 1)이 화면 속 움직임 · 글자 쓰기를 정하고 누를 것이 없습니다
