@@ -2425,10 +2425,10 @@
   }
   function pfSkills() {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
                                                    (사용자: "저걸 어떻게 써봤는지는 나와야 해" · "레이아웃이 개판" — 표 대신 같은 높이 칸막이, 위 줄 셋 · 남는 칸은 넓게) */
-    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, N = cards.length, rem = N % 3;
+    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, N = cards.length, cols = N % 3 && N % 2 === 0 ? 2 : 3, rem = cols === 3 ? N % 3 : 0;   /* 넷 · 둘이면 두 칸씩, 아니면 세 칸씩(남는 칸은 넓게) */
     cards.forEach(function (c) { n += (c.tools || []).length; });
     return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p><div class="pf-sk">' + cards.map(function (c, i) {
-      var w = rem && i >= N - rem ? (rem === 2 ? ' is-w3' : ' is-w6') : '';
+      var w = cols === 2 ? ' is-w3' : rem && i >= N - rem ? (rem === 2 ? ' is-w3' : ' is-w6') : '';
       return '<section class="pf-sk__c' + w + '" data-pf-rv><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
     }).join('') + '</div></div>';
   }
