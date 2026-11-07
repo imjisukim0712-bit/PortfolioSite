@@ -996,6 +996,239 @@
     .pf-dock__hint { display: grid; place-items: center; height: 100%; font-size: 14px; font-weight: 700; color: #b0a890; text-align: center; }
   }
   @media (prefers-reduced-motion: reduce) { .pf-sel li.on button::before, .pf-sel li em, .pf-dots::after { animation: none; } .pf-cart { transition: none; } }
+  /* ── 1-3 보유 기술 · 하위 페이지(같은 테마: 하늘 머리 → 땅 블록 → 지하 창) ───────────────────────── */
+  .pf-col { width: min(100%, 1000px); margin: 0 auto; }
+  .pf .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .pf-wc--l { justify-items: start; max-width: 1000px; margin: 0 auto; text-align: left; }
+  .pf-sec__l { font-size: 16px; line-height: 1; color: var(--or); }
+  .pf-more { display: flex; justify-content: flex-end; margin-top: 24px !important; }
+  .pf-more a { font-size: 16px; font-weight: 800; color: var(--cream); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .pf-more a:hover { color: var(--or); }
+  /* 머리 띠 — 페이지 목록(좁으면 MENU 단추 → 아래로 펼침) */
+  .pf-top__in { position: relative; }
+  .pf-nav a[aria-current="page"] { color: var(--or); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .pf-mbtn { display: none; }
+  .pf-nav__drafts { display: none; }
+  /* 창 = 검은 메시지 블록(흰 테 두 겹 — 이력 목록과 같은 재료) · 종이 = 크림 판(긴 글은 밝은 판 위 어두운 글자) */
+  .pf-win { position: relative; padding: 28px 32px; background: #000; border: 4px solid #fcfcfc; box-shadow: inset 0 0 0 4px #000, inset 0 0 0 8px #7c7c7c; }
+  .pf-win__h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding-bottom: 16px; border-bottom: 4px solid #232838; }
+  .pf-win__h b { font-size: 16px; line-height: 1; color: var(--or); }
+  .pf-win__h span { font-size: 15px; font-weight: 800; color: var(--mu); }
+  .pf-paper { position: relative; padding: 36px 48px 40px; background: var(--cream); border: 4px solid #171c28; box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 8px #e6d4ae; color: var(--navy); }
+  .pf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px !important; }
+  .pf-chips li { padding: 2px 10px; border: 2px solid #3a4256; font-size: 14px; font-weight: 800; color: var(--mu); }
+  /* 인벤토리 — 칸마다 물음표 블록: 그 줄이 화면에 들어오면 블록이 튀어 오르며 다 쓴 블록이 되고 도구가 하나씩 올라옴 */
+  .pf-inv__i { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 28px; padding: 24px 0; border-top: 4px dashed #232838; }
+  .pf-win__h + .pf-inv__i { border-top: 0; }
+  .pf-inv__i:last-child { padding-bottom: 4px; }
+  .pf-inv__b { position: relative; display: block; width: 64px; height: 64px; background: var(--lv-qblock) 0 0 / 64px 64px no-repeat; image-rendering: pixelated; }
+  .pf-inv__i.is-in .pf-inv__b { background-image: var(--mb-used); }
+  .pf.rv-on .pf-inv__i.is-in .pf-inv__b { animation: pf-bump .3s steps(3); }
+  @keyframes pf-bump { 50% { transform: translateY(-16px); } }
+  .pf-inv__h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .pf-inv__h b { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-inv__h em { font-size: 16px; font-style: normal; color: var(--or); }
+  .pf-inv__p { margin-top: 6px !important; font-size: 16px; line-height: 1.75; color: var(--mu); }
+  .pf-tools { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 14px !important; }
+  .pf-tool { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; color: #fcfcfc; }
+  .pf-tool i { display: grid; place-items: center; width: 40px; height: 40px; background: #fff !important; border: 2px solid #7c7c7c; }   /* 로고 판은 늘 흰색 */
+  .pf-tool img { display: block; width: 26px; height: 26px; object-fit: contain; }
+  .pf.rv-on .pf-inv__i:not(.is-in) .pf-tool { opacity: 0; transform: translateY(16px); }
+  .pf.rv-on .pf-inv__i.is-in .pf-tool { animation: pf-up .3s steps(3) both; animation-delay: calc(var(--k, 0) * 80ms + 160ms); }
+  @keyframes pf-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  /* 화면에 들어오면 한 번 올라오는 것들(창 · 카트리지 · 줄) */
+  .pf.rv-on [data-pf-rv]:not(.pf-inv__i):not(.is-in) { opacity: 0; transform: translateY(24px); }
+  .pf.rv-on [data-pf-rv]:not(.pf-inv__i).is-in { transition: opacity .32s steps(4), transform .32s steps(4); }
+  /* 페이지 머리(하늘) — 홈의 제목 판과 같은 재료, 높이만 낮게 */
+  .pf-ph { position: relative; padding: 40px 0 232px; overflow: hidden; background: #5c94fc; }
+  .pf-ph .s-hill, .pf-ph .s-bush { bottom: 128px; }
+  .pf-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 15px; font-weight: 800; color: var(--navy); text-decoration: none; }
+  .pf-back:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .pf-ts > .pf-back { align-self: flex-start; }
+  .pf-plaque__in--solo { grid-template-columns: minmax(0, 1fr); }
+  .pf-ph .pf-plaque__in { gap: 36px; padding: 24px 32px 28px 24px; }
+  .pf-ph .pf-plaque__in--solo { padding: 28px 36px 32px; }
+  .pf-ph__txt { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .pf-ph__t { margin: 16px 0 10px !important; font: 400 42px/1.25 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
+  .pf-ph__lead { font-size: 17px; font-weight: 600; line-height: 1.75; color: #2c3a5a; }
+  .pf-ph .pf-line { margin-top: 2px !important; }
+  .pf-ph .pf-photo { width: 224px; }
+  .pf-ph .pf-contact { margin-top: 20px !important; padding: 16px 0 0; border-top: 4px solid #e6d4ae; }
+  .pf-ph__art { position: relative; align-self: center; width: 280px; aspect-ratio: 4 / 3; border: 4px solid #171c28; }
+  .pf-ph__art .pf-art { position: absolute; inset: 0; border: 0; }
+  .pf-ph__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 16px !important; font-size: 15px; font-weight: 800; color: #c84c0c; }
+  .pf-grade { padding: 5px 6px 4px; background: #7c7c7c; color: #fff; font-size: 8px; line-height: 1; font-style: normal; }
+  .pf-grade[data-grade="SSR"] { background: var(--red); } .pf-grade[data-grade="SR"] { background: #c84c0c; }
+  /* 지하 — 땅 블록이 어두워지는 띠(192px) 아래에서 창이 시작 */
+  .pf-sub { padding: 128px 0 32px; }
+  .pf-sec { padding-bottom: 40px; }
+  .pf-sec .pf-wc { padding: 72px 0 32px; }
+  .pf-sec--next { padding-top: 40px; }
+  /* 숫자 넷(이력서) */
+  .pf-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px 32px; }
+  .pf-stats p { display: grid; gap: 14px; align-content: start; }
+  .pf-stats__l { font-size: 15px; font-weight: 800; line-height: 1.4; color: var(--mu); }
+  .pf-stats b { font-size: 32px; line-height: 1; color: #fcfcfc; white-space: nowrap; }
+  .pf-stats small { margin-left: 8px; font: 800 18px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--or); }
+  /* 경력 · 활동 — 날짜 칸 | 내용, 진행 중인 줄은 깜빡이는 칸 + 빨간 이름표 */
+  .pf-tl__i { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 32px; padding: 26px 0; border-top: 4px dashed #232838; }
+  .pf-tl__i:first-child { padding-top: 4px; border-top: 0; }
+  .pf-tl__i:last-child { padding-bottom: 4px; }
+  .pf-tl__d { position: relative; display: grid; align-content: start; justify-items: start; gap: 10px; padding-left: 32px; font-size: 15px; font-weight: 800; line-height: 1.5; color: var(--or); }
+  .pf-tl__d::before { content: ''; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; background: #fcfcfc; }
+  .pf-tl__i.is-now .pf-tl__d::before { background: var(--or); animation: pf-blink 1s steps(1) infinite; }
+  .pf-tl__now { padding: 3px 8px; background: var(--red); color: #fff; font-size: 13px; }
+  .pf-tl__t { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-tl__o { margin-top: 2px !important; font-size: 15px; font-weight: 700; color: var(--mu); }
+  .pf-tl__b { margin-top: 10px !important; font-size: 16px; line-height: 1.75; }
+  /* 자기소개서 — 강점 세 칸(업적) · 글 네 편(크림 종이) */
+  .pf-ach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .pf-ach .pf-win { padding: 26px 26px 30px; }
+  .pf-ach__n { display: flex; align-items: baseline; gap: 12px; }
+  .pf-ach__n b { font-size: 32px; line-height: 1; color: var(--or); }
+  .pf-ach__n span { font-size: 8px; line-height: 1; color: var(--mu); }
+  .pf-ach h3 { margin-top: 20px !important; font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-ach p { margin-top: 8px !important; font-size: 16px; line-height: 1.75; color: var(--mu); }
+  .pf-letter { display: grid; gap: 32px; }
+  .pf-letter__n { font-size: 8px; line-height: 1; color: #c84c0c; }
+  .pf-letter h3 { margin: 16px 0 20px !important; font: 400 28px/1.45 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
+  .pf-letter p:not(.pf-letter__n) { max-width: 720px; font-size: 17px; line-height: 1.9; color: #1f2c48; }
+  .pf-letter p + p { margin-top: 1em !important; }
+  /* 프로젝트 — 진열판 위 카트리지(누르면 자세히) */
+  .pf-shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 24px; padding: 32px; background: #0c0a0c; box-shadow: inset 0 0 0 4px #2a2026; }
+  .pf-cart2 { position: relative; display: flex; padding: 18px 12px 12px; background: var(--red); border: 4px solid #000; box-shadow: inset 4px 4px 0 #ea3a33, inset -4px -4px 0 #8c0e22; color: var(--navy); text-decoration: none; }
+  .pf .pf-cart2 { color: var(--navy); }
+  .pf-cart2::before { content: ''; position: absolute; left: 24px; right: 24px; top: 4px; height: 4px; background: repeating-linear-gradient(90deg, #8c0e22 0 4px, transparent 4px 8px); }
+  .pf-cart2.is-in { transition: transform .24s steps(4), opacity .32s steps(4); }
+  .pf-cart2:hover { transform: translateY(-8px); }
+  .pf-cart2__lab { display: flex; flex: 1; flex-direction: column; gap: 10px; min-width: 0; padding: 12px; background: var(--cream); border: 4px solid #000; }
+  .pf-cart2 .pf-cart__meta i { font-size: 13px; }
+  .pf-cart2[data-grade="SSR"] .pf-cart__meta em { background: var(--red); }
+  .pf-cart2[data-grade="SR"] .pf-cart__meta em { background: #c84c0c; }
+  .pf-cart2 .pf-art { flex: none; aspect-ratio: 3 / 2; }
+  .pf-cart2__t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 400 22px/1.4 'Galmuri11', monospace; }
+  .pf-cart2__s { font-size: 15px; font-weight: 600; line-height: 1.6; color: #2c3a5a; }
+  .pf-cart2__p { margin-top: auto !important; font-size: 13px; font-weight: 800; color: #c84c0c; }
+  .pf-cart2__tag { overflow: hidden; font-size: 13px; font-weight: 800; color: #2c3a5a; text-overflow: ellipsis; white-space: nowrap; }
+  /* 프로젝트 자세히 — 한눈에(목표 → 결과 · 표) · 플레이 화면 · 배운 것 · 앞뒤 카트리지 */
+  .pf-q { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 20px; align-items: baseline; padding: 20px 24px; background: #141014; border-left: 8px solid var(--or); }
+  .pf-q dt { font-size: 15px; font-weight: 800; color: var(--or); }
+  .pf-q dd { font: 400 22px/1.45 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-q dd strong { font-weight: 400; color: var(--or); }
+  .pf-kv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; margin-top: 24px !important; }
+  .pf-kv dt { font-size: 14px; font-weight: 800; color: var(--mu); }
+  .pf-kv dd { margin-top: 4px !important; font-size: 17px; font-weight: 700; }
+  .pf-stores { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px !important; }
+  .pf-stores a { padding: 8px 14px; border: 4px solid var(--cream); font-size: 15px; font-weight: 800; color: var(--cream); text-decoration: none; }
+  .pf-stores a:hover { background: var(--cream); color: var(--navy); }
+  .pf-screen { position: relative; display: grid; place-items: center; align-content: center; gap: 18px; aspect-ratio: 16 / 9; padding: 24px; background: #141014; border: 4px solid #fcfcfc; box-shadow: inset 0 0 0 8px #000, inset 0 0 0 12px #2a2026; text-align: center; }
+  .pf-screen b { font-size: 16px; line-height: 1; color: var(--cream); }
+  .pf-screen p { font-size: 16px; font-weight: 600; color: var(--mu); }
+  .pf-screen--empty { aspect-ratio: 12 / 5; }
+  .pf-screen iframe { position: absolute; inset: 12px; width: calc(100% - 24px); height: calc(100% - 24px); border: 0; }
+  .pf-notes { display: grid; gap: 14px; }
+  .pf-notes li { position: relative; padding-left: 32px; font-size: 17px; font-weight: 600; line-height: 1.75; color: #1f2c48; }
+  .pf-notes li::before { content: '▶'; position: absolute; left: 0; top: 2px; font-size: 14px; color: var(--red); }
+  .pf-blk { display: grid; gap: 24px; }
+  .pf-blk h3 { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px !important; font: 400 22px/1.4 'Galmuri11', monospace; color: var(--navy); }
+  .pf-blk h3 small { font: 400 8px/1 'Press Start 2P', monospace; color: #c84c0c; }
+  .pf-blk p { max-width: 720px; font-size: 17px; line-height: 1.85; color: #1f2c48; }
+  .pf-blk p + p { margin-top: .8em !important; }
+  .pf-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .pf-pager a { display: grid; gap: 12px; padding: 24px 28px; text-decoration: none; }
+  .pf-pager a:hover .pf-pager__t { color: var(--or); }
+  .pf-pager > :nth-child(2) { text-align: right; }
+  .pf-pager__d { font-size: 8px; line-height: 1; color: var(--or); }
+  .pf-pager__t { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  /* 게임플레이 — 장르별 시간(계열 하나: 강조색 하나 · 범례 없음 · 값은 라벨과 표) · 저장 슬롯 */
+  .pf-steam__h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .pf-steam__h h3 { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-steam__sample { padding: 3px 8px; background: var(--red); color: #fff; font-size: 13px; font-weight: 800; }
+  .pf-steam__note { width: 100%; font-size: 15px; font-weight: 600; color: var(--mu); }
+  .pf-steam__b { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: center; margin-top: 20px !important; }
+  .pf-sr { display: block; width: 100%; height: auto; overflow: visible; }
+  .pf-sr .g { fill: none; stroke: #2a3040; stroke-width: 2; }
+  .pf-sr .s { stroke: #2a3040; stroke-width: 2; }
+  .pf-sr .a { fill: rgb(252 160 68 / .32); stroke: var(--or); stroke-width: 4; stroke-linejoin: miter; }
+  .pf-sr .d { fill: var(--or); stroke: #000; stroke-width: 2; }
+  .pf-sr .hit { fill: transparent; }
+  .pf-sr .n { fill: #fcfcfc; font: 800 14px 'Pretendard Variable', Pretendard, sans-serif; }
+  .pf-sr .v { fill: var(--mu); font: 700 13px 'Pretendard Variable', Pretendard, sans-serif; }
+  .pf-sr__area { transform-box: view-box; }
+  .pf-steam__stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+  .pf-steam__stats div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .pf-steam__stats dt { font-size: 14px; font-weight: 800; color: var(--mu); }
+  .pf-steam__stats dd { margin-top: 6px !important; font: 800 22px/1.2 'Pretendard Variable', Pretendard, sans-serif; color: #fcfcfc; }
+  .pf-steam__stats dd.pf-steam__recent { font: 700 16px/1.5 'Pretendard Variable', Pretendard, sans-serif; }
+  .pf-steam table { width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 15px; }
+  .pf-steam th, .pf-steam td { padding: 8px 0; border-bottom: 2px solid #232838; text-align: left; }
+  .pf-steam thead th { font-size: 13px; font-weight: 800; color: var(--mu); }
+  .pf-steam td { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .pf-steam tbody th { font-weight: 700; }
+  .pf-steam tr.rest th, .pf-steam tr.rest td { color: var(--mu); }
+  .pf-slots { display: grid; gap: 24px; counter-reset: pfsave; }
+  .pf-save { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 28px; align-items: start; counter-increment: pfsave; }
+  .pf-save__ic { display: grid; place-items: center; width: 96px; height: 96px; overflow: hidden; background: #141014; box-shadow: inset 0 0 0 4px #2a2026; }
+  .pf-save__ic img { width: 100%; height: 100%; object-fit: cover; }
+  .pf-save__ic i { width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-save__top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+  .pf-save__top::before { content: 'FILE ' counter(pfsave); padding: 5px 6px 4px; background: var(--or); color: #000; font: 400 8px/1 'Press Start 2P', monospace; }
+  .pf-save__top b { font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
+  .pf-save__top em { margin-left: auto; font: 800 16px/1.2 'Pretendard Variable', Pretendard, sans-serif; font-style: normal; color: var(--or); }
+  .pf-save__g { margin-top: 4px !important; font-size: 15px; font-weight: 700; color: var(--mu); }
+  .pf-save__n { margin-top: 10px !important; font-size: 16px; line-height: 1.75; }
+  @media (max-width: 1240px) { .pf-hide-m { display: none; } }   /* 왼쪽 구름은 기둥 바깥 여백이 넓을 때만('◀ 뒤로' 링크를 가리지 않게) */
+  @media (max-width: 1100px) {
+    .pf-mbtn { display: block; }
+    .pf-top.is-open .pf-nav { position: absolute; top: 100%; left: 0; right: 0; display: grid; gap: 0; padding: 8px 32px 16px; background: #17345f; border-bottom: 4px solid #000; }
+    .pf-top.is-open .pf-nav a { padding: 10px 0; font-size: 17px; }
+    .pf-ph .pf-photo { width: 200px; }
+    .pf-ph__art { width: 240px; }
+  }
+  @media (max-width: 900px) {
+    .pf-ach { grid-template-columns: minmax(0, 1fr); }
+    .pf-shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pf-steam__b { grid-template-columns: minmax(0, 1fr); }
+    .pf-ph__t { font-size: 28px; }
+  }
+  @media (max-width: 760px) {
+    .pf-top.is-open .pf-nav { padding: 8px 16px 16px; }
+    .pf-tbtn--drafts { display: none; }
+    .pf-top.is-open .pf-nav__drafts { display: block; margin-top: 8px; padding-top: 14px !important; border-top: 2px solid #2a4a7c; }
+    .pf-win { padding: 20px 18px; }
+    .pf-paper { padding: 24px 20px 28px; }
+    .pf-ph { padding: 24px 0 200px; }
+    .pf-ph .pf-plaque__in, .pf-ph .pf-plaque__in--solo { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px 18px 22px; }
+    .pf-ph .pf-photo { justify-self: start; width: min(100%, 200px); }
+    .pf-ph__art { justify-self: stretch; width: auto; }
+    .pf-ph__t { margin: 12px 0 8px !important; font-size: 28px; }
+    .pf-ph__lead { font-size: 16px; }
+    .pf-sub { padding-top: 168px; }
+    .pf-sec .pf-wc { padding: 56px 0 24px; }
+    .pf-inv__i { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; }
+    .pf-tools { gap: 10px 16px; }
+    .pf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pf-stats b { font-size: 24px; }
+    .pf-tl__i { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .pf-tl__d { grid-auto-flow: column; justify-content: start; align-items: center; }
+    .pf-tl__d::before { top: 4px; }
+    .pf-letter h3 { font: 400 22px/1.5 'Galmuri11', monospace; }
+    .pf-letter p:not(.pf-letter__n), .pf-blk p, .pf-notes li { font-size: 16px; }
+    .pf-shelf { grid-template-columns: minmax(0, 1fr); padding: 16px; gap: 24px; }
+    .pf-q { grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 16px 18px; }
+    .pf-q dd + dt { margin-top: 10px; }
+    .pf-kv { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .pf-screen { gap: 12px; }
+    .pf-screen--empty { aspect-ratio: 4 / 3; }
+    .pf-screen p { font-size: 14px; }
+    .pf-pager { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .pf-pager > :nth-child(2) { text-align: left; }
+    .pf-save { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; }
+    .pf-save__ic { width: 64px; height: 64px; }
+    .pf-save__ic i { width: 28px; height: 32px; background-image: var(--mb-mini); }
+    .pf-save__top em { margin-left: 0; width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pf-tl__i.is-now .pf-tl__d::before { animation: none; } .pf-cart2 { transition: none !important; } }
 </style>
 <script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
@@ -1020,8 +1253,8 @@
 
   <section class="part" id="play-part">
     <div class="part__head"><span class="part__num">PART 00</span><h3><span class="i18n-ko">전체 흐름 — 플레이어블</span><span class="i18n-en">The whole flow — playable</span></h3></div>
-    <p class="part__desc"><span class="i18n-ko">"홈에서 사진 및 간단한 인적사항 - 나 이력 확정 - 그리고 아랫부분에 게임기와 프로젝트 카드로 이어지는 흐름" — 그 셋을 한 페이지로 이어 붙여, 내리기만 해도 끝까지 놀 수 있게 만든 시안입니다. 1-1 하늘에 사진 · 간단한 인적사항 · 숫자 넷, 1-2 지하에 나 이력(모래 길), 1-3 에 벽돌 휴대기가 화면에 붙고 프로젝트 카트리지가 내리는 만큼 하나씩 꽂혀 화면에 개요가 켜집니다.</span><span class="i18n-en">"Photo and basic details on the home, then the confirmed career (나), then the console and project cards below" — joined into one page you can play to the end just by scrolling. 1-1 sky: photo, basic details and the four numbers; 1-2 underground: the career (the sand road); 1-3: the brick handheld pins to the screen and each project cartridge goes in as you scroll, lighting up its overview.</span></p>
-    <a class="playlink" href="drafts.html?play" data-playlink><b>▶ <span class="i18n-ko">플레이</span><span class="i18n-en">Play</span></b><span class="i18n-ko">새 화면으로 열기 — WORLD 1-1 나 · 1-2 이력 · 1-3 프로젝트</span><span class="i18n-en">Open it full-page — WORLD 1-1 me · 1-2 career · 1-3 projects</span></a>
+    <p class="part__desc"><span class="i18n-ko">"홈에서 사진 및 간단한 인적사항 - 나 이력 확정 - 그리고 아랫부분에 게임기와 프로젝트 카드로 이어지는 흐름" — 그 셋을 한 페이지로 이어 붙여, 내리기만 해도 끝까지 놀 수 있게 만든 시안입니다. 1-1 하늘에 사진 · 간단한 인적사항 · 숫자 넷, 1-2 지하에 나 이력(모래 길), 1-3 에 보유 기술(물음표 블록을 치면 도구가 나오는 인벤토리), 1-4 에 벽돌 휴대기가 화면에 붙고 프로젝트 카트리지가 내리는 만큼 하나씩 꽂혀 화면에 개요가 켜집니다. 이력서 · 자기소개서 · 프로젝트 · 자세히 · 게임플레이 페이지도 같은 월드 문법(하늘 머리 → 땅 블록 → 지하의 창)으로 이어집니다.</span><span class="i18n-en">"Photo and basic details on the home, then the confirmed career (나), then the console and project cards below" — joined into one page you can play to the end just by scrolling. 1-1 sky: photo, basic details and the four numbers; 1-2 underground: the career (the sand road); 1-3: skills (an inventory where each question block gives up its tools); 1-4: the brick handheld pins to the screen and each project cartridge goes in as you scroll, lighting up its overview. The résumé, about-me, projects, project detail and play-log pages follow the same world grammar (sky header → ground blocks → underground windows).</span></p>
+    <a class="playlink" href="drafts.html?play" data-playlink><b>▶ <span class="i18n-ko">플레이</span><span class="i18n-en">Play</span></b><span class="i18n-ko">새 화면으로 열기 — WORLD 1 홈 · 2 이력서 · 3 자기소개서 · 4 프로젝트 · 5 게임플레이</span><span class="i18n-en">Open it full-page — WORLD 1 home · 2 résumé · 3 about me · 4 projects · 5 play log</span></a>
   </section>
 
   <section class="part" id="story">
@@ -1047,6 +1280,7 @@
 </div></footer>
 
 <script src="assets/content.js" charset="utf-8"></script>
+<script src="assets/play-steam.js" charset="utf-8"></script>
 <!-- 게임기 그림 데이터: fc-level-art-<이름>.js 가 FcLevelArt.add(이름, 데이터) 를 부르므로 받아 두기만 함 -->
 <script>window.FcLevelArt = { add: function (n, d) { (window.__ART = window.__ART || {})[n] = d; }, draw: function () { return null; } };</script>
 <script src="assets/js/themes/fc-level-art-brick.js" charset="utf-8"></script>
@@ -2134,14 +2368,24 @@
     var s = t(C.hero && C.hero.titleHtml).replace(/<span class="accent">([\s\S]*?)<\/span>/g, '\u0001$1\u0002').replace(/\s*<br\s*\/?>\s*/g, '\u0003').replace(/<[^>]+>/g, '');
     return esc(s).replace(/\u0001/g, '<em>').replace(/\u0002/g, '</em>').replace(/\u0003/g, '<br>');
   }
-  function pfDetail(p) { return 'projects/detail.html?p=' + encodeURIComponent(p.id) + '&' + PF_SKIN; }
+  function pfDetail(p) { return '#/p/' + encodeURIComponent(p.id); }          /* 자세히 보기 = 같은 테마의 하위 페이지(해시 주소라 저장소 · 아티팩트 어디서나 한 장 안에서 넘어감) */
+  var PF_PAGES = [['resume', '2'], ['cover', '3'], ['projects', '4'], ['play', '5']];      /* 페이지 = 월드: 홈 1 · 이력서 2 · 자기소개서 3 · 프로젝트 4(자세히 4-n) · 게임플레이 5 */
+  function pfNm(k) { return t(C.nav && C.nav[k]); }
+  function pfRoute() {
+    var h = (location.hash || '').replace(/^#\/?/, ''), m = /^p\/(.+)$/.exec(h);
+    if (m) { var id = decodeURIComponent(m[1]); for (var i = 0; i < PROJ.length; i++) if (PROJ[i].id === id) return { pg: 'detail', i: i, key: 'p/' + id }; }
+    if (/^(resume|cover|projects|play)$/.test(h)) return { pg: h, key: h };
+    return { pg: 'home', key: '' };
+  }
+  function pfMore(href, label) { return '<p class="pf-more"><a href="' + href + '">' + label + ' →</a></p>'; }
 
-  function pfTop() {
-    var nav = SITE ? [['resume.html', 'resume'], ['cover-letter.html', 'cover'], ['projects.html', 'projects'], ['play.html', 'play']].map(function (n) {
-      return '<a href="' + n[0] + '?' + PF_SKIN + '">' + esc(t(C.nav && C.nav[n[1]])) + '</a>'; }).join('') : '';
-    return '<header class="pf-top"><div class="pf-top__in"><a class="pf-logo" href="#pf-hero"><i aria-hidden="true"></i><b>' + esc(NAME) + '</b><small>' + esc(t(C.meta && C.meta.role)) + '</small></a>' +
-      '<nav class="pf-nav">' + nav + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world>WORLD 1-1</b><span data-pf-wname>' + T('나', 'Me') + '</span></p>' +
-      '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' + (SITE ? '<a class="pf-tbtn" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
+  function pfTop(pg) {
+    var nav = PF_PAGES.map(function (n) {
+      return '<a href="#/' + n[0] + '"' + (pg === n[0] || (pg === 'detail' && n[0] === 'projects') ? ' aria-current="page"' : '') + '>' + esc(pfNm(n[0])) + '</a>'; }).join('');
+    return '<header class="pf-top"><div class="pf-top__in"><a class="pf-logo" href="#/"><i aria-hidden="true"></i><b>' + esc(NAME) + '</b><small>' + esc(t(C.meta && C.meta.role)) + '</small></a>' +
+      '<nav class="pf-nav" id="pf-nav"><a href="#/"' + (pg === 'home' ? ' aria-current="page"' : '') + '>' + esc(pfNm('home')) + '</a>' + nav + (SITE ? '<a class="pf-nav__drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world></b><span data-pf-wname></span></p>' +
+      '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' +
+      '<button type="button" class="pf-tbtn pf-mbtn" data-pf-mbtn aria-expanded="false" aria-controls="pf-nav">MENU</button>' + (SITE ? '<a class="pf-tbtn pf-tbtn--drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
   }
   function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 1000px 한 기둥에 점수판 · 제목 판(벽돌 테 + 크림 판: 큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) — 그 판 왼쪽 아래 땅 위에 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
@@ -2153,7 +2397,7 @@
     var contact = [];
     if (m.email) contact.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
     if (m.github) contact.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
-    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1"><i class="pf-s s-cloud" style="left:5%;top:4px"></i><i class="pf-s s-cloud" style="right:5%;top:8px"></i>' +
+    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '"><i class="pf-s s-cloud" style="left:5%;top:4px"></i><i class="pf-s s-cloud" style="right:5%;top:8px"></i>' +
       '<div class="pf-in"><div class="pf-ts"><div class="pf-hud">' + hud + '</div>' +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in">' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
@@ -2164,10 +2408,26 @@
       }).join('') + '</ul>' + (contact.length ? '<dl class="pf-contact">' + contact.map(function (c) { return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>'; }).join('') + '</dl>' : '') + '</div></div></div></div></div></div>' +
       '<i class="pf-s s-bush" style="left:38%"></i><i class="pf-s s-hill pf-hide-s" style="right:20%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
-  function pfWorld(code, h, p) { return '<header class="pf-wc"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2><p class="pf-wc__s">' + p + '</p></header>'; }
+  function pfWorld(code, h, p, left) { return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + '"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>'; }
   function pfCareer() {
-    return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true }) + '</div></section>';
+    return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
+      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true }) +
+      '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
+  }
+  /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
+  function pfSkills() {
+    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0;
+    cards.forEach(function (c) { n += (c.tools || []).length; });
+    return '<div class="pf-win pf-inv"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + cards.length + ' · 도구 ' + n + '개', cards.length + ' kinds · ' + n + ' tools') + '</span></p>' + cards.map(function (c) {
+      var tl = c.tools || [];
+      return '<div class="pf-inv__i" data-pf-rv><i class="pf-inv__b" aria-hidden="true"></i><div><p class="pf-inv__h"><b>' + esc(t(c.title)) + '</b><em class="ps">x' + tl.length + '</em></p><p class="pf-inv__p">' + esc(t(c.body)) + '</p>' +
+        '<ul class="pf-tools">' + tl.map(function (k, j) { return '<li class="pf-tool" style="--k:' + j + '"><i><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="26" height="26"></i>' + esc((TOOLS[k] || [k])[0]) + '</li>'; }).join('') + '</ul></div></div>';
+    }).join('') + '</div>';
+  }
+  function pfSkillSec() {
+    var sk = (C.resume && C.resume.skills) || {};
+    return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
+      '<div class="pf-col">' + pfSkills() + pfMore('#/resume', T('이력서의 핵심역량으로', 'Core skills in the résumé')) + '</div></div></section>';
   }
   function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음 */
     return '<span class="pf-slot">' + '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" aria-label="' + esc(t(p.title)) + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
@@ -2177,18 +2437,19 @@
   function pfProj() {
     var m = C.meta || {};
     var keys = pfKey('pf-key--l', 'data-pf-step="-1"', T('이전 카트리지', 'Previous cartridge'), 'dpadL') + pfKey('pf-key--r', 'data-pf-step="1"', T('다음 카트리지', 'Next cartridge'), 'dpadR') +
-      pfKey('pf-key--b', 'data-pf-b', T('B 꺼내기', 'B eject'), 'b') + pfKey('pf-key--a', 'data-pf-a', SITE ? T('A 자세히 보기', 'A read more') : T('A 배운 것', 'A what I learned'), 'a') +
+      pfKey('pf-key--b', 'data-pf-b', T('B 꺼내기', 'B eject'), 'b') + pfKey('pf-key--a', 'data-pf-a', T('A 자세히 보기', 'A read more'), 'a') +
       (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
-    var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', SITE ? T('A 자세히', 'A OPEN') : T('A 배운 것', 'A NOTES')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
-    return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-3"><div class="pf-in">' +
-      pfWorld('1-3', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 내리면 하나씩 꽂혀 화면이 켜집니다', PROJ.length + ' cartridges · scroll and they go in one by one')) + '</div>' +
+    var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', T('A 자세히', 'A OPEN')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
+    return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-4" data-pf-nm="' + T('프로젝트', 'Projects') + '"><div class="pf-in">' +
+      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 내리면 하나씩 꽂혀 화면이 켜집니다', PROJ.length + ' cartridges · scroll and they go in one by one')) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
       '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><i class="pf-gap" aria-hidden="true"></i>' +
-      '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div></section>';
+      '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +
+      '<div class="pf-in"><div class="pf-col">' + pfMore('#/projects', T('프로젝트 전체 보기', 'All projects')) + '</div></div></section>';
   }
   function pfFoot() {
     var m = C.meta || {};
-    var pages = SITE ? '<p class="pf-foot__pages">' + [['resume.html', 'resume'], ['cover-letter.html', 'cover'], ['projects.html', 'projects'], ['play.html', 'play']].map(function (n) { return '<a href="' + n[0] + '?' + PF_SKIN + '">' + esc(t(C.nav && C.nav[n[1]])) + ' →</a>'; }).join('') + '</p>' : '';
+    var pages = '<p class="pf-foot__pages"><a href="#/">' + esc(pfNm('home')) + '</a>' + PF_PAGES.map(function (n) { return '<a href="#/' + n[0] + '">' + esc(pfNm(n[0])) + '</a>'; }).join('') + '</p>';
     return '<footer class="pf-foot"><div class="pf-in"><p class="pf-foot__me"><b>' + esc(NAME) + '</b> · ' + esc(t(m.role)) + '</p><p>' + (m.email ? '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>' : '') +
       (m.github ? ' · <a href="' + esc(m.github) + '" target="_blank" rel="noopener">GitHub</a>' : '') + '</p>' + pages + '</div><i class="pf-uground" aria-hidden="true"></i></footer>';
   }
@@ -2208,7 +2469,7 @@
       (q && q.goal ? '<p class="pf-ov__q"><b>' + T('퀘스트', 'Quest') + '</b>' + esc(t(q.goal)) + ' → <strong>' + esc(t(q.result)) + '</strong></p>' : '');
     return '<div class="pf-ov" data-grade="' + pfGrade(p) + '">' + pfArt(p, 1) + '<div class="pf-ov__txt"><p class="pf-ov__meta"><i>' + esc(pfCat(p)) + '</i><span>' + esc(t(p.tag)) + '</span><em class="ps">' + pfGrade(p) + '</em></p>' +
       '<h3>' + esc(t(p.title)) + '</h3><p class="pf-ov__sub">' + esc(t(p.sub)) + '</p>' + tail +
-      '<p class="pf-ov__go"><span class="ps">A</span>' + (SITE ? '<a href="' + esc(pfDetail(p)) + '">' + T('자세히 보기', 'Read more') + ' →</a>' : notes ? T('개요로', 'Back to the overview') : T('배운 것', 'What I learned')) + '</p></div></div>';
+      '<p class="pf-ov__go"><span class="ps">A</span><a href="' + esc(pfDetail(p)) + '">' + T('자세히 보기', 'Read more') + ' →</a></p></div></div>';
   }
 
   var PF = null;                              /* 지금 그린 화면의 상태(재는 값 · 고른 칸) */
@@ -2225,10 +2486,12 @@
     });
   }
   function pfLayout() {
-    var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d) return;
+    var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d || !root.querySelector('.pf-stick')) return;
     var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
     var H = innerHeight - top, W = st.clientWidth, mob = W < 760, dpr = window.devicePixelRatio || 1;
-    var ch = mob ? 84 : Math.round(Math.max(128, Math.min(176, H * .21)) / 4) * 4, cw = Math.round(ch * (mob ? .8 : .76) / 4) * 4, gap = Math.round(ch * .42 / 4) * 4 + (mob ? 12 : 24);
+    var ch = mob ? 84 : Math.round(Math.max(128, Math.min(176, H * .21)) / 4) * 4, cw = Math.round(ch * (mob ? .8 : .76) / 4) * 4;
+    if (mob) { var fitW = Math.floor((W - 16 - (PROJ.length - 1) * 8) / PROJ.length / 4) * 4; if (fitW < cw) { cw = fitW; ch = Math.round(cw / .8 / 4) * 4; } }   /* 좁은 휴대폰(360px)에서도 진열판이 한 줄에 */
+    var gap = Math.round(ch * .42 / 4) * 4 + (mob ? 12 : 24);
     var dockH = mob ? 220 : 0, availW = Math.min(W - (mob ? 16 : 64), 1120), availH = H - ch - gap - dockH - (mob ? 32 : 56);
     var sd = Math.max(1, Math.floor(Math.min(availW / d.w, availH / d.h) * dpr)), cell = sd / dpr;
     pfDraw(cv, d, sd); cv.style.width = d.w * cell + 'px'; cv.style.height = d.h * cell + 'px';
@@ -2303,30 +2566,206 @@
     else if (tt < .6) pfScreen('sel:' + i + ':' + (tt >= .12), pfSel(i, tt >= .12), hint);
     else if (tt < .68) pfScreen('boot:' + i, pfBoot(), PF.mob ? pfBoot() : '');
     else pfScreen('ov:' + i + ':' + PF.notes, pfOv(i, PF.notes), PF.mob ? pfOv(i, PF.notes) : '');
-    /* 위 띠의 WORLD — 지금 머리 아래에 걸린 칸 */
-    var top = parseFloat(PF.st.style.top) || 0, w = '1-1';
-    [].forEach.call(PF.root.querySelectorAll('[data-pf-sec]'), function (s) { if (s.getBoundingClientRect().top <= top + 8) w = s.getAttribute('data-pf-sec'); });
-    if (PF.w !== w) {
-      PF.w = w; PF.root.querySelector('[data-pf-world]').textContent = 'WORLD ' + w;
-      PF.root.querySelector('[data-pf-wname]').textContent = w === '1-1' ? (L === 'en' ? 'Me' : '나') : w === '1-2' ? (L === 'en' ? 'Career' : '이력') : (L === 'en' ? 'Projects' : '프로젝트');
-    }
   }
+  function pfWorldTick() {                      /* 위 띠의 WORLD — 지금 머리 아래에 걸린 칸(data-pf-sec · data-pf-nm) */
+    var root = document.querySelector('[data-pf]'); if (!root) return;
+    var top = root.querySelector('.pf-top').offsetHeight, cur = null;
+    [].forEach.call(root.querySelectorAll('[data-pf-sec]'), function (s) { if (!cur || s.getBoundingClientRect().top <= top + 8) cur = s; });
+    if (!cur || root.__w === cur) return;
+    root.__w = cur;
+    root.querySelector('[data-pf-world]').textContent = 'WORLD ' + cur.getAttribute('data-pf-sec');
+    root.querySelector('[data-pf-wname]').textContent = cur.getAttribute('data-pf-nm') || '';
+  }
+  function pfRvTick() {                         /* 화면에 들어온 창 · 줄 · 카트리지는 한 번 올라옴(인벤토리 줄은 블록이 튀고 도구가 나옴) · 숫자는 0 → 값 */
+    var vh = innerHeight;
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-inv__i') ? .8 : .92)) el.classList.add('is-in'); });
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-count]'), function (el) { lCount(el, vh); });
+  }
+  /* ════ 하위 페이지 — 같은 테마 ════
+     사용자: "다른 페이지들도 비슷한 테마로 맞춰야할듯 자세하게 보러가는 페이지들".
+     한 페이지 = 한 월드(홈 1 · 이력서 2 · 자기소개서 3 · 프로젝트 4 · 자세히 4-n · 게임플레이 5): 하늘 머리(홈 제목 판과 같은 벽돌 테 + 크림 판) → 땅 블록 → 어두워지는 띠 →
+     지하의 창(검은 메시지 블록 — 이력 목록과 같은 재료) · 긴 글은 크림 종이(밝은 판 위 어두운 글자). 페이지 끝은 앞뒤 월드로 가는 단추.
+     주소는 해시(#/resume · #/cover · #/projects · #/p/<id> · #/play) — 위 띠 · 바닥 · 홈의 '전체 보기' · 게임기 A 가 여기로 옴. 가려 둔 인적사항 값은 넣지 않음 */
+  function pfHead(o) {
+    return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '"><i class="pf-s s-cloud pf-hide-m" style="left:5%;top:12px"></i><i class="pf-s s-cloud" style="right:6%;top:28px"></i>' +
+      '<div class="pf-in"><div class="pf-ts">' + (o.back ? '<a class="pf-back" href="' + o.back[0] + '"><span aria-hidden="true">◀</span>' + o.back[1] + '</a>' : '') +
+      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + '">' + (o.side || '') +
+      '<div class="pf-ph__txt"><p class="pf-role">' + o.eyebrow + '<span class="ps">WORLD ' + o.w + '</span></p><h1 class="pf-ph__t">' + o.title + '</h1>' +
+      (o.line ? '<p class="pf-line">' + o.line + '</p>' : '') + (o.lead ? '<p class="pf-ph__lead">' + o.lead + '</p>' : '') + (o.extra || '') + '</div></div></div></div></div>' +
+      '<i class="pf-s s-bush" style="left:10%"></i><i class="pf-s s-hill pf-hide-s" style="right:16%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
+  }
+  function pfUnder(html) { return '<div class="pf-ug pf-sub"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' + html + '</div></div>'; }
+  function pfSec(w, nm, h, p, body, label) {         /* w = 월드 칸(위 띠에 뜸) · label = 칸 번호 대신 쓰는 영어 이름표(자세히 페이지) */
+    var head = label ? '<header class="pf-wc pf-wc--l"><p class="ps pf-sec__l">' + label + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>' : pfWorld(w, h, p, 1);
+    return '<section class="pf-sec"' + (w ? ' data-pf-sec="' + w + '" data-pf-nm="' + nm + '"' : '') + '>' + head + '<div class="pf-col">' + body + '</div></section>';
+  }
+  function pfPager(a, b) {                            /* [주소, 이름표, 제목] 둘 — 앞 · 뒤 */
+    return '<nav class="pf-pager" aria-label="' + T('앞뒤로 가기', 'Previous and next') + '">' + [a, b].map(function (x) {
+      return x ? '<a class="pf-win" href="' + x[0] + '"><span class="ps pf-pager__d">' + x[1] + '</span><span class="pf-pager__t">' + x[2] + '</span></a>' : '<span></span>'; }).join('') + '</nav>';
+  }
+  function pfWorldNav(pg) {                           /* 페이지 끝 — 앞 월드 · 다음 월드(게임플레이 다음은 홈) */
+    var order = ['', 'resume', 'cover', 'projects', 'play'], i = order.indexOf(pg), pv = order[i - 1], nx = order[i + 1];
+    function nm(k) { return esc(pfNm(k || 'home')); }
+    return '<section class="pf-sec pf-sec--next"><div class="pf-col">' + pfPager(['#/' + pv, 'WORLD ' + i, '◀ ' + nm(pv)], nx ? ['#/' + nx, 'WORLD ' + (i + 2), nm(nx) + ' ▶'] : ['#/', 'WORLD 1', nm('') + ' ▶']) + '</div></section>';
+  }
+  function pfContact(pdf) {
+    var m = C.meta || {}, rows = [];
+    if (m.email) rows.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
+    if (m.github) rows.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
+    if (pdf && SITE && m.resumeUrl) rows.push([T('이력서', 'Résumé'), '<a href="' + esc(m.resumeUrl) + '" target="_blank" rel="noopener">PDF ↓</a>']);
+    return rows.length ? '<dl class="pf-contact">' + rows.map(function (c) { return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>'; }).join('') + '</dl>' : '';
+  }
+  function pfChips(a) { a = (a || []).map(function (x) { return t(x && x.text != null ? x.text : x); }).filter(Boolean); return a.length ? '<ul class="pf-chips">' + a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; }
+  function pfParas(f) { return t(f).split(/\n{2,}/).filter(function (x) { return x.trim(); }).map(function (x) { return '<p>' + esc(x.trim()) + '</p>'; }).join(''); }
+  function pfPhoto(src) { var ph = C.home && C.home.player; return src ? '<figure class="pf-photo"><img src="' + esc(IMG(src)) + '" alt="' + esc(t(ph && ph.photoAlt) || NAME) + '"></figure>' : ''; }
+
+  /* WORLD 2 이력서 — 머리(사진 · 이름 · 한 줄 · 연락처) → 숫자 넷 → 핵심역량(홈과 같은 인벤토리) → 경력 · 활동(날짜 칸 | 내용) */
+  function pfResume() {
+    var r = C.resume || {}, ph = C.home && C.home.player, sk = r.skills || {}, ca = r.career || {}, nm = esc(pfNm('resume'));
+    var head = pfHead({ w: '2', nm: nm, eyebrow: nm, title: esc(NAME), line: pfTitleHtml().replace('<br>', ' '), side: pfPhoto(String(r.photo || (ph && ph.photo) || '').trim()), back: ['#/', esc(pfNm('home'))], extra: pfContact(true) });
+    var st = stats.length ? pfSec('2-1', T('숫자', 'Numbers'), T('숫자로 보는 ' + YRS + '년', YRS + ' years in numbers'), T('출시작 · 다운로드 · 커뮤니티 · 해', 'Titles, downloads, community and years'),
+      '<div class="pf-win" data-pf-count data-pf-rv><div class="pf-stats">' + stats.map(function (s) {
+        return '<p><span class="pf-stats__l">' + esc(t(s.label)) + '</span><b class="ps"><span data-l-count="' + esc(s.num) + '">' + esc(s.num) + '</span><small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('') + '</div></div>') : '';
+    var tl = (ca.items || []).map(function (c) {
+      return '<div class="pf-tl__i' + (c.now ? ' is-now' : '') + '" data-pf-rv><p class="pf-tl__d"><span>' + esc(t(c.date)) + '</span>' + (c.now ? '<span class="pf-tl__now">' + T('진행 중', 'Ongoing') + '</span>' : '') + '</p>' +
+        '<div><h3 class="pf-tl__t">' + esc(t(c.role)) + '</h3><p class="pf-tl__o">' + esc(t(c.org)) + '</p><p class="pf-tl__b">' + esc(t(c.body)) + '</p>' + pfChips(c.tags) + '</div></div>';
+    }).join('');
+    return head + pfUnder(st + pfSec('2-2', esc(t(sk.title)), esc(t(sk.title)), esc(t(sk.lead)), pfSkills()) +
+      (tl ? pfSec('2-3', esc(t(ca.title)), esc(t(ca.title)), esc(t(ca.lead)), '<div class="pf-win pf-tl">' + tl + '</div>') : '') + pfWorldNav('resume'));
+  }
+
+  /* WORLD 3 자기소개서 — 머리(요약 제목) → 강점(업적 칸) → 글(크림 종이 한 장 = 한 편) */
+  function pfCover() {
+    var cl = C.coverLetter || {}, sm = cl.summary || {}, items = sm.items || [], bl = cl.blocks || [], nm = esc(pfNm('cover'));
+    var head = pfHead({ w: '3', nm: nm, eyebrow: nm, title: esc(t(sm.title) || t(cl.title)), lead: T('강점 ' + items.length + '가지 · 글 ' + bl.length + '편', items.length + ' strengths · ' + bl.length + ' short pieces'), back: ['#/', esc(pfNm('home'))] });
+    var ach = items.length ? pfSec('3-1', T('강점', 'Strengths'), T('일하는 방식', 'How I work'), T('함께 일할 때 기대할 수 있는 것', 'What to expect when we work together'), '<div class="pf-ach">' + items.map(function (it) {
+      var tg = String(it.tag || '').split('/');
+      return '<article class="pf-win" data-pf-rv><p class="pf-ach__n"><b class="ps">' + esc((tg[0] || '').trim()) + '</b><span class="ps">' + esc((tg[1] || '').trim()) + '</span></p><h3>' + esc(t(it.title)) + '</h3><p>' + esc(t(it.body)) + '</p></article>';
+    }).join('') + '</div>') : '';
+    var let_ = bl.length ? pfSec('3-2', T('자기소개', 'In my words'), T('자기소개', 'In my words'), T('짧은 글 ' + bl.length + '편', bl.length + ' short pieces'), '<div class="pf-letter">' + bl.map(function (b, i) {
+      return '<article class="pf-paper" data-pf-rv><p class="ps pf-letter__n">PAGE ' + (i + 1) + ' / ' + bl.length + '</p>' + (t(b.heading) ? '<h3>' + esc(t(b.heading)) + '</h3>' : '') + pfParas(b.body) + '</article>';
+    }).join('') + '</div>') : pfSec('3-2', T('자기소개', 'In my words'), T('자기소개', 'In my words'), '', '<div class="pf-paper">' + esc(t(cl.lead)) + '</div>');
+    return head + pfUnder(ach + let_ + pfWorldNav('cover'));
+  }
+
+  /* WORLD 4 프로젝트 — 분류마다 진열판 위 카트리지(누르면 그 카트리지의 자세히 페이지) */
+  function pfCart2(p) {
+    return '<a class="pf-cart2" href="' + esc(pfDetail(p)) + '" data-grade="' + pfGrade(p) + '" data-pf-rv><span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p) +
+      '<b class="pf-cart2__t">' + esc(t(p.title)) + '</b><span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span><span class="pf-cart2__s">' + esc(t(p.sub)) + '</span><span class="pf-cart2__p">' + esc(t(p.period)) + '</span></span></a>';
+  }
+  function pfProjects() {
+    var pr = C.projects || {}, nm = esc(pfNm('projects'));
+    var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), lead: T('카트리지 ' + PROJ.length + '개 · 하나를 누르면 자세히 봅니다', PROJ.length + ' cartridges · open one to read more'), back: ['#/', esc(pfNm('home'))] });
+    var secs = [['game', 'GAMES'], ['planning', 'PLANNING']].map(function (c) {
+      var list = PROJ.filter(function (p) { return p.category === c[0]; }); if (!list.length) return '';
+      var cn = esc(t(TABS[c[0]]) || c[0]);
+      return pfSec('4', cn, cn, T('카트리지 ' + list.length + '개', list.length + ' cartridges'), '<div class="pf-shelf">' + list.map(pfCart2).join('') + '</div>', c[1]);
+    }).join('');
+    return head + pfUnder(secs + pfWorldNav('projects'));
+  }
+
+  /* WORLD 4-n 프로젝트 자세히 — 머리(그림 · 분류 · 이름 · 한 줄 · 등급 · 기간) → 한눈에(목표 → 결과 · 표 · 장르) → 플레이 화면 → 배운 것 → (만든 과정) → 앞뒤 카트리지 */
+  function pfDetailPg(i) {
+    var p = PROJ[i], q = p.quest || {}, nm = esc(t(p.title)), lk = p.links || {}, md = p.media || {}, d = p.detailBlocks || {}, n = PROJ.length;
+    var head = pfHead({ w: '4-' + (i + 1), nm: nm, eyebrow: esc(pfCat(p)) + ' · ' + esc(t(p.tag)), title: nm, lead: esc(t(p.sub)), side: '<div class="pf-ph__art">' + pfArt(p, 1) + '</div>', back: ['#/projects', T('프로젝트 목록', 'All projects')],
+      extra: '<p class="pf-ph__meta"><em class="ps pf-grade" data-grade="' + pfGrade(p) + '">' + pfGrade(p) + '</em><span>' + esc(t(p.period)) + '</span></p>' });
+    var kv = [[T('기간', 'Period'), p.period], [T('인원', 'Team'), p.headcount], [T('맡은 역할', 'My role'), p.myRole], [T('상태', 'Status'), p.status]].filter(function (r) { return r[1] && t(r[1]); });
+    var stores = [['Google Play', lk.googlePlay], ['Steam', lk.steam]].filter(function (x) { return x[1] && String(x[1]).trim(); });
+    var glance = (t(q.goal) || t(q.result) ? '<dl class="pf-q">' + (t(q.goal) ? '<dt>' + T('목표', 'Goal') + '</dt><dd>' + esc(t(q.goal)) + '</dd>' : '') + (t(q.result) ? '<dt>' + T('결과', 'Result') + '</dt><dd><strong>' + esc(t(q.result)) + '</strong></dd>' : '') + '</dl>' : '') +
+      (kv.length ? '<dl class="pf-kv">' + kv.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + esc(t(r[1])) + '</dd></div>'; }).join('') + '</dl>' : '') + pfChips(p.genres) +
+      (stores.length ? '<p class="pf-stores">' + stores.map(function (x) { return '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener noreferrer">' + x[0] + ' ↗</a>'; }).join('') + '</p>' : '');
+    var emb = String(md.embed || '').trim();
+    var secs = pfSec('', '', T('한눈에', 'At a glance'), '', '<div class="pf-win" data-pf-rv>' + glance + '</div>', 'STATUS') +
+      pfSec('', '', T('플레이 화면', 'Gameplay'), '', '<div class="pf-screen' + (emb ? '' : ' pf-screen--empty') + '" data-pf-rv>' + (emb ? '<iframe src="' + esc(emb) + '" title="' + nm + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe>' :
+        '<b class="ps">NO SIGNAL</b><p>' + esc(t(md.note) || (L === 'en' ? 'Space for gameplay video and images.' : '게임 영상·이미지가 들어갈 자리입니다.')) + '</p>') + '</div>', 'SCREEN');
+    if (p.learned && p.learned.length) secs += pfSec('', '', T('배운 것', 'What I learned'), '', '<div class="pf-paper" data-pf-rv><ul class="pf-notes">' + p.learned.map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul></div>', 'NOTES');
+    var bl = [['문제', 'The problem', 'PROBLEM', d.problem], ['접근', 'The approach', 'APPROACH', d.approach], ['다시 한다면', 'Retrospective', 'RETRO', d.retrospective]].filter(function (b) { return t(b[3]); });
+    if (bl.length) secs += pfSec('', '', T('만든 과정', 'How it was made'), '', '<div class="pf-paper pf-blk" data-pf-rv>' + bl.map(function (b) { return '<section><h3>' + T(b[0], b[1]) + '<small>' + b[2] + '</small></h3>' + pfParas(b[3]) + '</section>'; }).join('') + '</div>', 'LOG');
+    var pv = PROJ[i - 1], nx = PROJ[i + 1];
+    secs += '<section class="pf-sec pf-sec--next"><div class="pf-col">' + pfPager(pv ? [esc(pfDetail(pv)), 'WORLD 4-' + i, '◀ ' + esc(t(pv.title))] : ['#/projects', 'WORLD 4', '◀ ' + T('프로젝트 목록', 'All projects')],
+      nx ? [esc(pfDetail(nx)), 'WORLD 4-' + (i + 2), esc(t(nx.title)) + ' ▶'] : ['#/play', 'WORLD 5', esc(pfNm('play')) + ' ▶']) + '</div></section>';
+    return head + pfUnder(secs);
+  }
+
+  /* WORLD 5 게임플레이 — 장르별 플레이 시간(스팀 · 계열 하나라 강조색 하나 · 범례 없음 · 제곱근 눈금 · 같은 값을 표로 한 번 더) → 저장 슬롯(기획서를 바꾼 게임) */
+  function pfSteam() {
+    var d = window.PORTFOLIO_STEAM, s = (C.play && C.play.steam) || {}, axes = (d && d.axes) || [];
+    if (!axes.length) return '';
+    var names = s.genreNames || {}, hU = t(s.hourUnit), cU = t(s.countUnit);
+    function gname(a) { var x = names[String(a.id)]; return x ? t(x) : (a.name || String(a.id)); }
+    function nf(v) { return String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    function hrs(v) { return nf(v) + hU; }
+    function f1(v) { return v.toFixed(1); }
+    var CX = 200, CY = 168, R = 104, N = axes.length, max = 1;
+    axes.forEach(function (a) { max = Math.max(max, a.hours || 0); });
+    function pt(i, r) { var an = Math.PI * 2 * i / N - Math.PI / 2; return [CX + Math.cos(an) * r, CY + Math.sin(an) * r]; }
+    function ring(r) { var q = []; for (var i = 0; i < N; i++) q.push(pt(i, r).map(f1).join(',')); return '<polygon class="g" points="' + q.join(' ') + '"/>'; }
+    var grid = ring(R) + ring(R * 2 / 3) + ring(R / 3), sp = '', lab = '', dots = '', shape = [];
+    axes.forEach(function (a, i) {
+      var r = R * Math.sqrt(Math.max(0, a.hours || 0) / max), e = pt(i, R), p = pt(i, r), l = pt(i, R + 18);
+      sp += '<line class="s" x1="' + CX + '" y1="' + CY + '" x2="' + f1(e[0]) + '" y2="' + f1(e[1]) + '"/>';
+      shape.push(f1(p[0]) + ',' + f1(p[1]));
+      dots += '<g><title>' + esc(gname(a) + ' ' + hrs(a.hours)) + '</title><circle class="hit" cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="16"/><rect class="d" x="' + f1(p[0] - 5) + '" y="' + f1(p[1] - 5) + '" width="10" height="10"/></g>';
+      var anc = Math.abs(l[0] - CX) < 2 ? 'middle' : l[0] > CX ? 'start' : 'end', dy = l[1] < CY - R * .6 ? -6 : l[1] > CY + R * .6 ? 14 : 0;
+      lab += '<text class="n" x="' + f1(l[0]) + '" y="' + f1(l[1] + dy) + '" text-anchor="' + anc + '">' + esc(gname(a)) + '</text><text class="v" x="' + f1(l[0]) + '" y="' + f1(l[1] + dy + 17) + '" text-anchor="' + anc + '">' + esc(hrs(a.hours)) + '</text>';
+    });
+    var alt = axes.map(function (a) { return gname(a) + ' ' + hrs(a.hours); }).join(', ');
+    var svg = '<svg class="pf-sr" viewBox="0 0 400 336" role="img" aria-label="' + esc(t(s.title) + ': ' + alt) + '">' + grid + sp +
+      '<g data-pf-grow data-c="' + CX + ' ' + CY + '"><polygon class="a" points="' + shape.join(' ') + '"/>' + dots + '</g>' + lab + '</svg>';
+    var tot = d.totals || {}, rec = (d.recent || []).slice(0, 2).map(function (x) { return x.name; }).join(' · ');
+    var st = '<dl class="pf-steam__stats"><div><dt>' + esc(t(s.totalLabel)) + '</dt><dd>' + esc(hrs(tot.hours)) + '</dd></div><div><dt>' + esc(t(s.gamesLabel)) + '</dt><dd>' + esc(nf(tot.games) + cU) + '</dd></div>' +
+      (rec ? '<div><dt>' + esc(t(s.recentLabel)) + '</dt><dd class="pf-steam__recent">' + esc(rec) + '</dd></div>' : '') + '</dl>';
+    var rows = axes.map(function (a) { return '<tr><th scope="row">' + esc(gname(a)) + '</th><td>' + esc(hrs(a.hours)) + '</td><td>' + esc(nf(a.games) + cU) + '</td></tr>'; }).join('') +
+      (d.restHours > 0 ? '<tr class="rest"><th scope="row">' + esc(t(s.restLabel)) + '</th><td>' + esc(hrs(d.restHours)) + '</td><td>' + esc(nf(d.restGenres) + cU) + '</td></tr>' : '');
+    var table = '<table><caption class="sr-only">' + esc(t(s.title)) + '</caption><thead><tr><th scope="col">' + esc(t(s.tableGenre)) + '</th><th scope="col" style="text-align:right">' + esc(t(s.tableHours)) + '</th><th scope="col" style="text-align:right">' + esc(t(s.tableGames)) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    return '<div class="pf-win pf-steam" data-pf-rv><div class="pf-steam__h"><h3>' + esc(t(s.title)) + '</h3>' + (d.sample ? '<span class="pf-steam__sample">' + esc(t(s.sampleLabel)) + '</span>' : '') +
+      '<p class="pf-steam__note">' + esc(t(s.note) + (d.generatedAt ? ' · ' + t(s.updatedLabel) + ' ' + d.generatedAt : '')) + '</p></div><div class="pf-steam__b"><figure>' + svg + '</figure><div>' + st + table + '</div></div></div>';
+  }
+  function pfSteamTick() {                     /* 그래프 모양은 화면에 들어온 만큼 가운데에서 자라남(모션 최소화면 처음부터 다) */
+    var g = document.querySelector('.pf [data-pf-grow]'); if (!g) return;
+    var f = RM ? 1 : clamp01((innerHeight * .95 - g.ownerSVGElement.getBoundingClientRect().top) / (innerHeight * .4)), c = g.getAttribute('data-c').split(' ');
+    if (g.__f === f) return; g.__f = f;
+    g.setAttribute('transform', 'translate(' + c[0] + ' ' + c[1] + ') scale(' + f.toFixed(3) + ') translate(-' + c[0] + ' -' + c[1] + ')');
+  }
+  function pfPlayPg() {
+    var pl = C.play || {}, s = pl.steam || {}, nm = esc(pfNm('play')), cards = pl.cards || [], steam = pfSteam();
+    var head = pfHead({ w: '5', nm: nm, eyebrow: nm, title: esc(t(pl.title)), lead: esc(t(pl.lead)), back: ['#/', esc(pfNm('home'))] });
+    var secs = (steam ? pfSec('5-1', esc(t(s.title)), T('스팀 기록', 'Steam log'), esc(t(s.note)), steam) : '') +
+      (cards.length ? pfSec(steam ? '5-2' : '5-1', T('저장 슬롯', 'Save files'), T('기획서를 바꾼 게임', 'Games that changed my docs'), T('저장 슬롯 ' + cards.length + '개', cards.length + ' save files'), '<div class="pf-slots">' + cards.map(function (g) {
+        var ic = String(g.icon || '').trim();
+        return '<article class="pf-win pf-save" data-pf-rv><span class="pf-save__ic">' + (ic ? '<img src="' + esc(IMG(ic)) + '" alt="">' : '<i aria-hidden="true"></i>') + '</span><div><p class="pf-save__top"><b>' + esc(t(g.name)) + '</b><em>' + esc(t(g.hours)) + '</em></p>' +
+          '<p class="pf-save__g">' + esc(t(g.genre)) + '</p><p class="pf-save__n">' + esc(t(g.note)) + '</p></div></article>';
+      }).join('') + '</div>') : '');
+    return head + pfUnder(secs + pfWorldNav('play'));
+  }
+
+  var PF_R = null, PF_POS = {}, PF_CLICK = 0;     /* 지금 페이지 · 페이지마다 마지막 스크롤 자리(뒤로 가면 그 자리로) · 링크를 눌러 온 것인지 */
   function renderPlay() {
     document.body.classList.add('is-play');
     if (typeof MINIG !== 'undefined') document.documentElement.style.setProperty('--mb-mini', spr(MINIG));
     document.documentElement.style.setProperty('--pf-lip', spr(PF_LIP)); document.documentElement.style.setProperty('--pf-body', spr(PF_BODY));
+    document.documentElement.style.setProperty('--mb-used', spr(MB_USED));
+    var r = pfRoute(); PF_R = r;
+    var body = r.pg === 'resume' ? pfResume() : r.pg === 'cover' ? pfCover() : r.pg === 'projects' ? pfProjects() : r.pg === 'play' ? pfPlayPg() : r.pg === 'detail' ? pfDetailPg(r.i) : pfHero() + pfCareer() + pfSkillSec() + pfProj();
     var root = document.getElementById('play');
-    root.innerHTML = '<div class="pf" data-pf>' + pfTop() + pfHero() + pfCareer() + pfProj() + pfFoot() + '</div>';
-    document.title = NAME + ' · ' + t(C.meta && C.meta.role) + ' — ' + T('홈 흐름 시안', 'Home flow draft');
-    SCROLLERS = []; SCRUBS = []; LTICKS = [];
-    wireL3();
-    LTICKS.push(function () { pfTick(); });
+    root.innerHTML = '<div class="pf' + (RM ? '' : ' rv-on') + '" data-pf data-pg="' + r.pg + '">' + pfTop(r.pg) + body + pfFoot() + '</div>';
+    var who = NAME + ' · ' + t(C.meta && C.meta.role);
+    document.title = r.pg === 'home' ? who + ' — ' + (L === 'en' ? 'Home flow draft' : '홈 흐름 시안') : (r.pg === 'detail' ? t(PROJ[r.i].title) : pfNm(r.pg)) + ' · ' + who;
+    SCROLLERS = []; SCRUBS = []; LTICKS = []; PF = null;
     var pf = root.querySelector('[data-pf]');
     pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
+    var top = pf.querySelector('.pf-top'), mb = pf.querySelector('[data-pf-mbtn]');
+    mb.addEventListener('click', function () { var o = !top.classList.contains('is-open'); top.classList.toggle('is-open', o); mb.setAttribute('aria-expanded', String(o)); });
+    LTICKS.push(pfWorldTick, pfRvTick);
+    if (r.pg === 'play') LTICKS.push(pfSteamTick);
     var menu = pf.querySelector('[data-pf-menu]');
-    function menuOn(li) { [].forEach.call(menu.children, function (x) { x.classList.toggle('on', x === li); }); }
-    menu.addEventListener('mouseover', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
-    menu.addEventListener('focusin', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
+    if (menu) {
+      wireL3();
+      LTICKS.push(function () { pfTick(); });
+      var menuOn = function (li) { [].forEach.call(menu.children, function (x) { x.classList.toggle('on', x === li); }); };
+      menu.addEventListener('mouseover', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
+      menu.addEventListener('focusin', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
+    }
     pf.addEventListener('click', function (e) {
       var jm = e.target.closest('[data-pf-jump]');
       if (jm) { e.preventDefault(); var tg = pf.querySelector(jm.getAttribute('href')); if (tg) window.scrollTo({ top: tg.getBoundingClientRect().top + scrollY - (jm.getAttribute('href') === '#pf-career' ? 0 : 40), behavior: RM ? 'auto' : 'smooth' }); return; }
@@ -2335,10 +2774,9 @@
       if (e.target.closest('[data-pf-b]')) { var c2 = pfProg(); if (c2[0] >= 0) pfGo(c2[0], .04); return; }
       if (e.target.closest('[data-pf-a]')) {
         var c3 = pfProg(); if (c3[0] < 0 || c3[1] < .68) { pfGo(Math.max(0, c3[0]), .8); return; }
-        if (SITE) location.href = pfDetail(PROJ[c3[0]]); else { PF.notes = !PF.notes; pfTick(); }
+        PF_CLICK = 1; location.hash = pfDetail(PROJ[c3[0]]);
         return;
       }
-      if (!SITE && e.target.closest('.pf-ov__go')) { PF.notes = !PF.notes; pfTick(); }
     });
     if (!window.__pfKeys) {
       window.__pfKeys = 1;
@@ -2354,6 +2792,22 @@
     pfLayout();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { pfLayout(); scrollTick(); });
     scrollTick();
+  }
+
+  if (PLAY) {
+    try { history.scrollRestoration = 'manual'; } catch (e) {}
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#/"]'); if (!a) return;
+      var h = a.getAttribute('href');
+      if (PF_R && (h === location.hash || (h === '#/' && PF_R.pg === 'home'))) { e.preventDefault(); window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
+      PF_CLICK = 1;
+    }, true);
+    window.addEventListener('hashchange', function () {
+      var nr = pfRoute(); if (PF_R && nr.key === PF_R.key) return;
+      if (PF_R) PF_POS[PF_R.key] = scrollY;
+      var y = !PF_CLICK && PF_POS[nr.key] != null ? PF_POS[nr.key] : 0; PF_CLICK = 0;
+      render(); window.scrollTo(0, y); scrollTick();
+    });
   }
 
   var DRAFTS4 = [
