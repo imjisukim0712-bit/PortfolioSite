@@ -589,7 +589,7 @@
 
   /* ── 목록판(아래로 쭉 · 짧게) — 시기 하나 = 짧은 덩어리 하나(이름 · 기간 / 한 줄 / 사실 몇 개). 게임 결산 글은 없음 ──
      다: 붙어 있는 점수판 + 월드마다 글 | 장면(나란히 — 월드 한 칸 = 장면 높이) · 나: 왼쪽 모래 길을 따라 메시지 블록 아홉(섬 지도 없음) */
-  .l-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--mu); }
+  .l-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--mu); }
   .l-facts > span { display: inline-block; padding: 0 16px; border-left: 2px solid #3a4256; }
   .l-facts > span:first-child { padding-left: 0; border-left: 0; }
   @media (max-width: 640px) { .l-facts { gap: 4px 16px; } .l-facts > span { padding: 0; border-left: 0; } }
@@ -795,60 +795,63 @@
   .pf-tbtn { flex: none; padding: 6px 12px; background: transparent; border: 2px solid var(--cream); color: var(--cream); font: 700 13px/1.2 'Pretendard Variable', Pretendard, sans-serif; text-decoration: none; cursor: pointer; }
   .pf-tbtn:hover { background: var(--cream); color: var(--navy); }
   .pf :focus-visible { outline: 4px solid var(--or); outline-offset: 2px; }
-  /* 1-1 하늘 = 타이틀 화면 — 점수판 · 제목 판(벽돌색 면 · 검은 4px 테 · 위왼쪽 밝게 / 아래오른쪽 어둡게 · 네 귀 리벳) 안에 사진과 이름 · 그 아래 메뉴(▶ 고스트 커서) · 연락처 줄.
-     땅 위 왼쪽에는 관과 1P(이력 레일이 위로 늘어나 품고 있음) — 내리면 고스트가 관 속으로 들어가 땅 밑 이력으로 */
-  .pf-hero { position: relative; display: flex; min-height: calc(100vh - 64px); padding: 64px 0 196px; overflow: hidden; background: #5c94fc; }
+  /* 1-1 하늘 = 타이틀 화면 — 1000px 한 기둥(.pf-ts)을 가운데에: 점수판 · 제목 판. 아래 이력 목록도 같은 기둥이라 관(레일 가운데 = 기둥 왼쪽 + 64px)은 판 왼쪽 아래 땅 위에 섬.
+     판 아래 여백 256px = 땅 128 + 관 머리 64 + 1P 56 + 틈 8 — 판이 관 · 1P 위에 오도록(겹치지 않게) */
+  .pf-hero { position: relative; display: flex; min-height: calc(100vh - 64px); padding: 48px 0 256px; overflow: hidden; background: #5c94fc; }
   .pf-hero > .pf-in { display: flex; flex-direction: column; justify-content: center; width: 100%; }
-  /* 점수판 · 판 · ©줄이 한 기둥(.pf-ts, 왼쪽 144px 는 관 · 1P 자리)에 같은 폭으로 — 왼 · 오른 끝이 맞음 */
-  .pf-ts { display: flex; flex-direction: column; align-items: center; padding-left: 144px; }
-  .pf-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; width: min(100%, 1000px); margin-bottom: 32px; }
-  .pf-hud p { display: grid; gap: 12px; align-content: start; }
-  .pf-hud span { font-size: 14px; font-weight: 800; line-height: 1.3; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
+  .pf-ts { display: flex; flex-direction: column; width: min(100%, 1000px); margin: 0 auto; }
+  /* 점수판 — 하늘 위 작은 글자는 남색(스테이지 규칙), 숫자만 흰색 + 남색 그림자 */
+  .pf-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; margin-bottom: 20px; }
+  .pf-hud p { display: grid; gap: 10px; align-content: start; }
+  .pf-hud span { font-size: 15px; font-weight: 800; line-height: 1.3; color: var(--navy); }
   .pf-hud b { font-size: 24px; line-height: 1; color: #fff; text-shadow: 4px 4px 0 var(--navy); white-space: nowrap; }
-  .pf-hud small { margin-left: 8px; font: 800 16px/1 'Pretendard Variable', Pretendard, sans-serif; text-shadow: 2px 2px 0 var(--navy); }
-  /* 제목 판 — 벽돌색 면 · 검은 4px 테 · 위왼쪽 밝게 / 아래오른쪽 어둡게 · 네 귀 리벳. 글 칸은 사진 높이에 맞춰 위(누구) · 아래(할 일) 끝을 맞춤 */
-  .pf-plaque { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 48px; align-items: stretch; width: min(100%, 1000px); padding: 40px 48px 40px 40px;
-    background: #c84c0c; border: 4px solid #171c28; box-shadow: inset 4px 4px 0 #fc9838, inset -4px -4px 0 #7c2c08, 8px 8px 0 rgb(16 35 70 / .5); }
-  .pf-rv { position: absolute; inset: 12px; pointer-events: none;
-    background: linear-gradient(#fcbcb0 0 0) 4px 4px / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 4px) 4px / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) 4px calc(100% - 4px) / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 4px) calc(100% - 4px) / 8px 8px no-repeat,
-      linear-gradient(#171c28 0 0) 0 0 / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 100% 0 / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 0 100% / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 100% 100% / 16px 16px no-repeat; }
-  .pf-photo { position: relative; z-index: 1; align-self: center; width: 304px; background: #171c28; border: 4px solid #171c28; box-shadow: 0 0 0 4px #fcbcb0; }
+  .pf-hud small { margin-left: 8px; font: 800 16px/1 'Pretendard Variable', Pretendard, sans-serif; color: var(--navy); text-shadow: none; }
+  /* 제목 판 = 벽돌색 테(위왼쪽 밝게 · 아래오른쪽 어둡게 · 네 귀 리벳) 안에 크림 판(남색 4px 테) — 글은 크림 위 남색이라 또렷 */
+  .pf-plaque { position: relative; padding: 20px; background: #c84c0c; border: 4px solid #171c28; box-shadow: inset 4px 4px 0 #fc9838, inset -4px -4px 0 #7c2c08, 8px 8px 0 rgb(16 35 70 / .5); }
+  .pf-rv { position: absolute; inset: 2px; pointer-events: none;
+    background: linear-gradient(#fcbcb0 0 0) 6px 6px / 4px 4px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 6px) 6px / 4px 4px no-repeat, linear-gradient(#fcbcb0 0 0) 6px calc(100% - 6px) / 4px 4px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 6px) calc(100% - 6px) / 4px 4px no-repeat,
+      linear-gradient(#171c28 0 0) 2px 2px / 12px 12px no-repeat, linear-gradient(#171c28 0 0) calc(100% - 2px) 2px / 12px 12px no-repeat, linear-gradient(#171c28 0 0) 2px calc(100% - 2px) / 12px 12px no-repeat, linear-gradient(#171c28 0 0) calc(100% - 2px) calc(100% - 2px) / 12px 12px no-repeat; }
+  .pf-plaque__in { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 40px; padding: 20px 32px 20px 20px; background: var(--cream); border: 4px solid #171c28; color: var(--navy); }
+  .pf-photo { align-self: center; width: 280px; background: #171c28; border: 4px solid #171c28; }
   .pf-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  .pf-plaque__txt { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-width: 0; padding: 4px 0; }
-  .pf-role { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 14px; font-weight: 800; line-height: 1; color: #fcbcb0; }
-  .pf-role .ps { padding: 6px 8px; background: #171c28; color: #fca044; font-size: 8px; }
-  .pf-name { margin: 16px 0 12px !important; font: 400 56px/1.1 'Galmuri14', 'Galmuri11', monospace; color: #fff6dd; text-shadow: 4px 4px 0 #171c28; }
-  .pf-line { font: 400 22px/1.5 'Galmuri11', monospace; color: #fff6dd; }
-  .pf-line em { font-style: normal; color: #f8d878; }
-  /* 아래 덩어리 — 홈 파인 구분선(어두운 줄 + 밝은 줄) · ▶ 고스트 커서 메뉴 · 연락처(도트 이름표 + 값) */
-  .pf-act { padding-top: 20px; border-top: 4px solid #7c2c08; box-shadow: inset 0 4px 0 #fc9838; }
+  .pf-plaque__txt { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; padding: 4px 0; }
+  .pf-role { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1; color: #c84c0c; }
+  .pf-role .ps { padding: 6px 8px; background: var(--navy); color: #f8d878; font-size: 8px; }
+  .pf-name { margin: 16px 0 12px !important; font: 400 56px/1.1 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
+  .pf-line { font: 400 22px/1.5 'Galmuri11', monospace; color: var(--navy); }
+  .pf-line em { font-style: normal; color: var(--red); }
+  /* 아래 덩어리 — 구분선 · ▶ 고스트 커서 메뉴 · 연락처(이름표 + 값) */
+  .pf-act { padding-top: 20px; border-top: 4px solid #e6d4ae; }
   .pf-menu { display: grid; gap: 0; }
   .pf-menu li { position: relative; padding-left: 40px; }
   .pf-menu li.on::before { content: ''; position: absolute; left: 0; top: 50%; width: 28px; height: 32px; margin-top: -16px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-  .pf-menu a { display: inline-block; font: 400 22px/1.5 'Galmuri11', monospace; color: #fff6dd; text-decoration: none; }
-  .pf-menu li.on a, .pf-menu a:hover { color: #f8d878; }
-  .pf-contact { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 20px !important; padding-left: 40px; }
-  .pf-contact div { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
-  .pf-contact dt { font-size: 8px; line-height: 1; color: #fcbcb0; }
-  .pf-contact dd { min-width: 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
-  .pf-contact a { color: #fff6dd; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  .pf-copy { margin-top: 24px; font-size: 8px; line-height: 1; color: #fff6dd; }
+  .pf-menu a { display: inline-block; font: 400 22px/1.5 'Galmuri11', monospace; color: var(--navy); text-decoration: none; }
+  .pf-menu li.on a, .pf-menu a:hover { color: var(--red); }
+  .pf-contact { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px !important; padding-left: 40px; }
+  .pf-contact div { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .pf-contact dt { font-size: 13px; font-weight: 800; color: #c84c0c; }
+  .pf-contact dd { min-width: 0; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+  .pf-contact a { color: var(--navy); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
   .pf-hero .s-hill, .pf-hero .s-bush { bottom: 128px; }
   .pf-ground { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x, var(--lv-ground) 0 64px / 64px 64px repeat-x; image-rendering: pixelated; }
   /* 1-2 · 1-3 — 땅 블록이 지하 검정으로 어두워지는 띠 · 코스 시작 화면처럼 검은 바탕 위 WORLD 카드 */
   .pf-ug { position: relative; background: #000; }
   .pf-fade { position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: 192px; background: linear-gradient(rgb(0 0 0 / .3), #000 90%), var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
   .pf-wc { display: grid; justify-items: center; gap: 14px; padding: 72px 0 48px; text-align: center; }
-  .pf-career .pf-wc { justify-items: start; padding: 240px 0 48px 128px; text-align: left; }   /* 이력 카드는 아래 메시지 블록과 같은 왼쪽 선 */
+  .pf-career .pf-wc { justify-items: start; max-width: 1000px; margin: 0 auto; padding: 240px 0 48px 128px; text-align: left; }   /* 이력 카드는 아래 메시지 블록과 같은 왼쪽 선 */
   .pf-wc__w { font-size: 32px; line-height: 1; color: #fcfcfc; }
   .pf-wc h2 { font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fff6dd; }
-  .pf-wc__s { font-size: 15px; font-weight: 600; color: var(--mu); }
+  .pf-wc__s { font-size: 16px; font-weight: 600; color: #c8d2ec; }
   .pf .swl { padding: 0; background: transparent; border-radius: 0; }
   /* 관 — 이력 레일 안(고스트보다 위 칸): 머리 · 몸통 · 아래 입구. 레일 가운데(24px)에 맞춰 128px */
   .swl-pipe { position: absolute; z-index: 4; left: -40px; top: 56px; width: 128px; height: 0; pointer-events: none; image-rendering: pixelated;
     background: var(--pf-lip) 0 0 / 128px 40px no-repeat, var(--pf-lip) 0 100% / 128px 40px no-repeat, var(--pf-body) 0 0 / 128px 4px repeat-y; }
   .pf .swl__rail { left: 40px; }
-  .pf .swl-c__box { max-width: 880px; }
+  .pf .swl { --mu: #c8d2ec; }
+  .pf .swl-c__box { gap: 10px; padding: 20px 28px 22px; }
+  .pf .swl-c__head em { font-size: 15px; }
+  .pf .swl-c__line { font-size: 17px; }
+  .pf .swl { max-width: 1000px; margin: 0 auto; }
   .pf .swl-c__t { flex: 0 1 auto; }
   .pf .swl-c { grid-template-columns: 128px minmax(0, 1fr); }
   .pf .swl-c__node { left: 64px; }
@@ -863,7 +866,7 @@
   .pf-key:hover { background: rgb(255 246 221 / .14); }
   .pf-key--l, .pf-key--r { border-radius: 0; }
   .pf-key--m { border-radius: 8px; }
-  .pf-lbl { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: center; font: 400 11px/1 'Galmuri11', monospace; color: var(--gold); white-space: nowrap; pointer-events: none; }
+  .pf-lbl { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: center; font: 400 11px/1 'Galmuri11', monospace; color: var(--cream); white-space: nowrap; pointer-events: none; }
   .pf.is-nolbl .pf-lbl { display: none; }
   .pf-tray { position: relative; z-index: 1; display: flex; flex: none; justify-content: center; gap: 16px; }
   .pf-slot { display: block; flex: none; width: var(--pf-cw, 132px); height: var(--pf-ch, 176px); background: #0c0a0c; box-shadow: inset 0 0 0 4px #2a2026; }
@@ -873,7 +876,7 @@
   .pf-cart.is-live { z-index: 2; transition: none; }
   .pf.pf-measure .pf-cart { transition: none !important; }
   .pf-cart__lab { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 8px; background: var(--cream); border: 4px solid #000; }
-  .pf-cart__lab > b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 13px; font-weight: 800; line-height: 1.3; }
+  .pf-cart__lab > b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 14px; font-weight: 800; line-height: 1.3; }
   .pf-cart__meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
   .pf-cart__meta i { padding: 0 4px; border: 2px solid var(--red); color: var(--red); font-size: 11px; font-style: normal; font-weight: 800; line-height: 1.4; }
   .pf-cart__meta em, .pf-ov__meta em { padding: 4px 4px 3px; background: #7c7c7c; color: #fff; font-size: 8px; font-style: normal; line-height: 1; }
@@ -905,12 +908,12 @@
   .pf-ov__meta { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: #d8cdb0; }
   .pf-ov__meta i { padding: 0 6px; border: 2px solid var(--cream); font-style: normal; color: var(--cream); }
   .pf-ov h3 { margin: 6px 0 2px !important; font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: var(--cream); }
-  .pf-ov__sub { font-size: 14px; color: #d8cdb0; }
-  .pf-ov dl { display: grid; gap: 2px; margin-top: 10px !important; font-size: 14px; }
+  .pf-ov__sub { font-size: 15px; color: #e6dcc2; }
+  .pf-ov dl { display: grid; gap: 2px; margin-top: 12px !important; font-size: 15px; }
   .pf-ov dl div { display: flex; gap: 14px; }
   .pf-ov dt { flex: none; width: 3.4em; font-weight: 800; color: var(--or); }
   .pf-ov dd { font-weight: 700; }
-  .pf-ov__q { margin-top: 10px !important; padding: 6px 10px; background: #2a2026; border-left: 4px solid var(--or); font-size: 14px; }
+  .pf-ov__q { margin-top: 12px !important; padding: 8px 12px; background: #2a2026; border-left: 4px solid var(--or); font-size: 15px; }
   .pf-ov__q b { margin-right: 10px; color: var(--or); }
   .pf-ov__learn { display: grid; gap: 6px; margin-top: 10px !important; font-size: 14px; }
   .pf-ov__learn li { position: relative; padding-left: 18px; }
@@ -935,27 +938,26 @@
   .pf-foot__pages { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-top: 8px !important; }
   .pf-uground { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-uground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
   @media (max-width: 1100px) { .pf-nav { display: none; } }
-  @media (max-width: 1100px) { .pf-photo { width: 264px; } .pf-plaque { gap: 32px; } }
-  @media (max-width: 900px) { .pf-name { font-size: 42px; } .pf-photo { width: 232px; } .pf-ts { padding-left: 0; } .pf-hero { padding-bottom: 312px; } }
+  @media (max-width: 1100px) { .pf-photo { width: 256px; } .pf-plaque__in { gap: 32px; } }
+  @media (max-width: 900px) { .pf-name { font-size: 42px; } .pf-photo { width: 224px; } }
   /* 휴대폰 — 게임기가 작아 화면엔 이름만, 개요는 아래 창(.pf-dock)에 */
   @media (max-width: 760px) {
     .pf-in, .pf-top__in { padding: 0 16px; }
     .pf-top__in { gap: 10px; height: 52px; }
     .pf-logo small, .pf-world span { display: none; }
-    .pf-hero { min-height: 0; padding: 88px 0 312px; }
+    .pf-hero { min-height: 0; padding: 72px 0 296px; }
     .pf-hero > .pf-in { gap: 28px; }
     .pf-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .pf-hud b { font-size: 16px; }
     .pf-hud span { font-size: 13px; }
-    .pf-plaque { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 36px 24px 28px; }
+    .pf-plaque { padding: 12px; }
+    .pf-plaque__in { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 20px 18px; }
     .pf-photo { justify-self: center; width: min(100%, 280px); }
     .pf-role { font-size: 13px; }
     .pf-name { margin: 8px 0 6px !important; font-size: 42px; }
     .pf-line { font: 700 16px/1.6 'Pretendard Variable', Pretendard, sans-serif; }   /* Galmuri11 은 11 의 배수로만 — 휴대폰은 본문 글꼴 */
     .pf-menu a { font-size: 22px; }
     .pf-contact { flex-direction: column; gap: 10px; padding-left: 0; }
-    .pf-ts { align-items: stretch; }
-    .pf-copy { align-self: center; }
     .pf-hud { margin-bottom: 24px; }
     .pf-hide-s { display: none; }
     .pf-wc { justify-items: start; text-align: left; }
@@ -2112,7 +2114,7 @@
   /* 관 — tools/fc-pixel/stage-props.py 의 pipe 와 같은 칸(머리 10칸 + 몸통 한 줄을 세로로 되풀이). 땅 위에 서서 땅 블록을 뚫고 지하 천장 아래로 입구가 열림 */
   var PF_LIPIN = 'GggG' + 'g'.repeat(14) + 'GGgGGGgGGGGG', PF_BODYIN = 'GggG' + 'g'.repeat(12) + 'GGgGGGgGGG';
   var PF_LIP = ['K'.repeat(32)].concat(Array(8).fill('K' + PF_LIPIN + 'K'), ['K'.repeat(32)]), PF_BODY = ['..K' + PF_BODYIN + 'K..'];
-  var PF_ABOVE = 96, PF_FADE = 192;           /* 관이 땅 위로 선 높이 · 땅 블록이 지하 검정으로 어두워지는 띠 */
+  var PF_ABOVE = 64, PF_FADE = 192;           /* 관이 땅 위로 선 높이 · 땅 블록이 지하 검정으로 어두워지는 띠 */
   function pfSeed(s) { var h = 5381; s = String(s || ''); for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return Math.abs(h); }
   function pfGen(h) {                        /* render.js 의 genArt 와 같은 그림(사진 없는 프로젝트 = id 로 늘 같은 무늬) */
     var kind = h % 4, g = '', i, x, y;
@@ -2141,27 +2143,26 @@
       '<nav class="pf-nav">' + nav + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world>WORLD 1-1</b><span data-pf-wname>' + T('나', 'Me') + '</span></p>' +
       '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' + (SITE ? '<a class="pf-tbtn" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
   }
-  function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 점수판 · 제목 판(큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) · ©줄이 한 기둥에 같은 폭으로 · 땅 위 관과 1P */
+  function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 1000px 한 기둥에 점수판 · 제목 판(벽돌 테 + 크림 판: 큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) — 그 판 왼쪽 아래 땅 위에 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
     var hud = stats.map(function (s) { return '<p><span>' + esc(t(s.label)) + '</span><b class="ps">' + esc(s.num) + '<small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('');
-    /* 사진이 판의 주인공("사진이 너무 작으면 안 돼"). 글 칸은 위(누구) · 아래(할 일) 두 덩어리로 사진 높이에 맞춰 위아래 끝을 맞춤 */
+    /* 사진이 판의 주인공("사진이 너무 작으면 안 돼") · 글은 크림 판 위 남색("가독성 · 시인성") */
     var menu = [['#pf-career', T('이력 보기', 'Career')], ['#pf-proj', T('프로젝트 보기', 'Projects')]];
     if (SITE && m.resumeUrl) menu.push([m.resumeUrl, T('이력서 PDF', 'Résumé PDF'), 1]);
     if (m.email) menu.push(['mailto:' + m.email, T('메일 보내기', 'Send an email')]);
     var contact = [];
-    if (m.email) contact.push(['EMAIL', '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
-    if (m.github) contact.push(['GITHUB', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
-    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1"><i class="pf-s s-cloud" style="left:6%;top:8px"></i><i class="pf-s s-cloud pf-hide-s" style="left:44%;top:4px"></i><i class="pf-s s-cloud" style="right:8%;top:12px"></i>' +
+    if (m.email) contact.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
+    if (m.github) contact.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
+    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1"><i class="pf-s s-cloud" style="left:5%;top:4px"></i><i class="pf-s s-cloud" style="right:5%;top:8px"></i>' +
       '<div class="pf-in"><div class="pf-ts"><div class="pf-hud">' + hud + '</div>' +
-      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i>' +
+      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in">' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
       '<div class="pf-plaque__txt"><div class="pf-id"><p class="pf-role">' + esc(t(m.role)) + '<span class="ps">PLAYER 1</span></p><h1 class="pf-name">' + esc(NAME) + '</h1><p class="pf-line">' + pfTitleHtml().replace('<br>', ' ') + '</p></div>' +
       '<div class="pf-act"><ul class="pf-menu" data-pf-menu>' + menu.map(function (it, j) {
         var jump = it[0].charAt(0) === '#';
         return '<li' + (j === 0 ? ' class="on"' : '') + '><a href="' + esc(it[0]) + '"' + (jump ? ' data-pf-jump' : it[2] ? ' target="_blank" rel="noopener"' : '') + '>' + it[1] + '</a></li>';
-      }).join('') + '</ul>' + (contact.length ? '<dl class="pf-contact">' + contact.map(function (c) { return '<div><dt class="ps">' + c[0] + '</dt><dd>' + c[1] + '</dd></div>'; }).join('') + '</dl>' : '') + '</div></div></div>' +
-      '<p class="pf-copy ps">&copy;2016 ' + esc(((m.name && m.name.en) || 'Jisu Kim').toUpperCase()) + '</p></div></div>' +
-      '<i class="pf-s s-bush" style="left:34%"></i><i class="pf-s s-hill pf-hide-s" style="right:22%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
+      }).join('') + '</ul>' + (contact.length ? '<dl class="pf-contact">' + contact.map(function (c) { return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>'; }).join('') + '</dl>' : '') + '</div></div></div></div></div></div>' +
+      '<i class="pf-s s-bush" style="left:38%"></i><i class="pf-s s-hill pf-hide-s" style="right:20%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
   function pfWorld(code, h, p) { return '<header class="pf-wc"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2><p class="pf-wc__s">' + p + '</p></header>'; }
   function pfCareer() {
