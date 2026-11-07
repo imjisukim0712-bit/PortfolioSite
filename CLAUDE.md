@@ -286,7 +286,8 @@
 ## 게임플레이 — 스팀 연동 방사형 그래프
 
 게임플레이 페이지 맨 위의 장르별 그래프는 스팀 기록입니다 (자세한 사용법: `docs/steam-play-log.md`).
-**계속 연동하지 않고 한 번만 넣기로 함**(사용자) — 사용자가 준 게임 · 시간 목록으로 `assets/play-steam.js` 를 한 번 만들고, 매주 자동 실행은 껐습니다(수동 실행만 남김).
+**계속 연동하지 않고 한 번만 넣기로 함**(사용자) — 사용자가 준 게임 · 시간 목록으로 `STEAM_LIST=목록.json STEAM_CACHE=캐시.json node tools/steam-sync.mjs`(키 없이, 이름으로 상점 검색 → 같은 규칙으로 거름)를 한 번 돌려 `assets/play-steam.js` 를 만들었고, 매주 자동 실행은 껐습니다(수동 실행만 남김).
+목록 · 캐시 파일에는 빠진 게임 이름도 들어 있으니 **저장소에 올리지 않습니다**(결과 파일만 올림).
 
 - 흐름(키로 자동 수집할 때): `.github/workflows/steam-sync.yml`(수동 실행만 — 주 1회 일정은 껐음) → `tools/steam-sync.mjs` → `assets/play-steam.js`
   (`window.PORTFOLIO_STEAM`) → `render.js` 의 `steamBlock()`. 데이터가 없으면 블록을 아예 그리지 않습니다.

@@ -7,6 +7,10 @@
    ① 개인 API 키가 소스에 노출되고 ② 스팀이 CORS 를 열어 주지 않아 막힙니다.)
 
      실행:  STEAM_API_KEY=... STEAM_ID=... node tools/steam-sync.mjs
+     한 번만 넣기(키 없이): STEAM_LIST=목록.json [STEAM_CACHE=캐시.json] node tools/steam-sync.mjs
+            목록 = [{ "name": "게임 이름", "minutes": 분, "last": "YYYY-MM-DD" }, …] — 스팀 '내 게임' 화면을 옮겨 적은 것.
+            appid 는 상점 검색(키 없이)으로 찾고, 못 찾으면 '상점 정보 없음'으로 빠집니다(연령 게이트 게임이 여기서 걸러짐).
+            목록 · 캐시에는 빠진 게임 이름도 들어 있으니 저장소에 올리지 말고 바깥(임시 폴더)에 두세요.
      설정:  assets/content.js 의 play.steam  (제외 목록·최소 시간·축 개수 …)
      결과:  assets/play-steam.js       — 화면이 읽는 집계 결과 (window.PORTFOLIO_STEAM)
             tools/steam-cache.json     — appid → 장르·연령 정보 캐시(호출 수 절약)
@@ -26,11 +30,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'assets', 'play-steam.js');
-const CACHE = path.join(ROOT, 'tools', 'steam-cache.json');
+const CACHE = process.env.STEAM_CACHE ? path.resolve(process.env.STEAM_CACHE) : path.join(ROOT, 'tools', 'steam-cache.json');
 
 const KEY = (process.env.STEAM_API_KEY || '').trim();
 const ID = (process.env.STEAM_ID || '').trim();
-if (!KEY || !ID) {
+const LIST = (process.env.STEAM_LIST || '').trim();     /* 한 번만 넣기 — 키 대신 사용자가 준 목록 */
+if (!LIST && (!KEY || !ID)) {
   console.error('STEAM_API_KEY 와 STEAM_ID 환경변수가 필요합니다. (깃허브 저장소 Secrets 에 등록)');
   process.exit(1);
 }
@@ -72,7 +77,34 @@ async function getJson(url, tries = 3) {
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+/* 목록 모드 — 이름으로 상점을 찾아 appid 를 붙임(정확히 같은 이름 우선) */
+const norm = s => String(s || '').toLowerCase().replace(/[™®©]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
+async function findApp(name) {
+  const term = String(name).replace(/[™®©]/g, '').trim();
+  for (const [l, cc] of [['korean', 'KR'], ['english', 'US']]) {
+    const j = await getJson('https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=' + l + '&cc=' + cc, 2);
+    const items = (j && j.items) || [];
+    const hit = items.find(it => norm(it.name) === norm(term)) || items.find(it => norm(term).startsWith(norm(it.name)) || norm(it.name).startsWith(norm(term)));
+    await sleep(800);
+    if (hit) return hit.id;
+  }
+  return 0;
+}
+let LISTED = [];
+async function listedGames() {
+  const rows = JSON.parse(fs.readFileSync(path.resolve(LIST), 'utf8'));
+  const out = [];
+  for (const r of rows) {
+    const minutes = num(r.minutes, 0);
+    if (minutes < MIN_MINUTES) { out.push({ appid: 0, name: r.name, playtime_forever: minutes, last: r.last || '' }); continue; }
+    out.push({ appid: await findApp(r.name), name: r.name, playtime_forever: minutes, last: r.last || '' });
+  }
+  LISTED = out;
+  return out;
+}
+
 async function ownedGames() {
+  if (LIST) return listedGames();
   const url = 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=' + encodeURIComponent(KEY) +
     '&steamid=' + encodeURIComponent(ID) + '&include_appinfo=1&include_played_free_games=1&format=json';
   const j = await getJson(url);
@@ -85,6 +117,7 @@ async function ownedGames() {
 }
 
 async function recentGames() {
+  if (LIST) return LISTED.filter(g => g.appid && g.last).sort((a, b) => b.last.localeCompare(a.last)).map(g => ({ appid: g.appid, name: g.name }));
   const url = 'https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/?key=' + encodeURIComponent(KEY) +
     '&steamid=' + encodeURIComponent(ID) + '&count=5&format=json';
   const j = await getJson(url);
@@ -144,6 +177,7 @@ const kept = [], dropped = [];
 
 for (const g of played) {
   if (manuallyExcluded(g)) { dropped.push([g, '직접 제외']); continue; }
+  if (!g.appid) { dropped.push([g, '상점 정보 없음(연령 게이트 등)']); continue; }
   let info = cache[g.appid];
   if (!info) {
     if (fetched >= FETCH_LIMIT) { dropped.push([g, '이번 실행에서 못 받음(다음 실행에 포함)']); continue; }
@@ -221,7 +255,7 @@ for (const { game } of kept.slice(0, 20)) {
 if (dropped.length) {
   console.log('\n빠진 게임 ' + dropped.length + '종');
   for (const [g, reason] of dropped.slice(0, 30)) {
-    console.log('  ' + String(g.appid).padStart(8) + '  ' + reason + '\t' + (reason === '성인 콘텐츠 표시' || reason === '성인 장르' ? '(이름 생략)' : g.name));
+    console.log('  ' + String(g.appid).padStart(8) + '  ' + reason + '\t' + (/성인|18세|상점 정보 없음/.test(reason) ? '(이름 생략)' : g.name));
   }
 }
 console.log('\n장르 축: ' + axes.map(a => a.name + ' ' + a.hours + 'h').join(' · '));
