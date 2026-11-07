@@ -620,8 +620,8 @@
   .swl { grid-template-columns: minmax(0, 1fr); }
   .swl__list { position: relative; display: grid; gap: 12px; margin: 0; padding: 8px 0; list-style: none; }
   .swl__rail { position: absolute; left: 20px; top: 0; bottom: 0; width: 48px; pointer-events: none; }
-  .swl__rail::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 4px; background: repeating-linear-gradient(180deg, #fce0a8 0 4px, transparent 4px 12px); }
-  .swl__road { position: absolute; left: 14px; top: 0; width: 20px; height: 0; background: #fce0a8; box-shadow: inset 4px 0 #171c28, inset -4px 0 #171c28; }
+  .swl__rail::before { content: ''; position: absolute; left: 22px; top: var(--r0, 0px); bottom: 0; width: 4px; background: repeating-linear-gradient(180deg, #fce0a8 0 4px, transparent 4px 12px); }
+  .swl__road { position: absolute; left: 14px; top: var(--r0, 0px); width: 20px; height: 0; background: #fce0a8; box-shadow: inset 4px 0 #171c28, inset -4px 0 #171c28; }
   .swl-me { position: sticky; z-index: 3; top: 45vh; display: block; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
   .swl-c { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); }
   .swl-c__node { position: absolute; z-index: 2; left: 44px; top: 36px; transform: translate(-50%, -50%); opacity: .45; }
@@ -793,45 +793,56 @@
   .pf-tbtn { flex: none; padding: 6px 12px; background: transparent; border: 2px solid var(--cream); color: var(--cream); font: 700 13px/1.2 'Pretendard Variable', Pretendard, sans-serif; text-decoration: none; cursor: pointer; }
   .pf-tbtn:hover { background: var(--cream); color: var(--navy); }
   .pf :focus-visible { outline: 4px solid var(--or); outline-offset: 2px; }
-  /* 1-1 하늘 — 숫자 넷(점수판) · 사진 · 간단한 인적사항 · 땅 블록 */
-  .pf-hero { position: relative; display: flex; min-height: calc(100vh - 64px); padding: 88px 0 168px; overflow: hidden; background: #5c94fc; }
-  .pf-hero > .pf-in { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+  /* 1-1 하늘 = 타이틀 화면 — 점수판 · 제목 판(벽돌색 면 · 검은 4px 테 · 위왼쪽 밝게 / 아래오른쪽 어둡게 · 네 귀 리벳) 안에 사진과 이름 · 그 아래 메뉴(▶ 고스트 커서) · 연락처 줄.
+     땅 위 왼쪽에는 관과 1P(이력 레일이 위로 늘어나 품고 있음) — 내리면 고스트가 관 속으로 들어가 땅 밑 이력으로 */
+  .pf-hero { position: relative; display: flex; min-height: calc(100vh - 64px); padding: 76px 0 208px; overflow: hidden; background: #5c94fc; }
+  .pf-hero > .pf-in { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; width: 100%; }
   .pf-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; }
   .pf-hud p { display: grid; gap: 12px; align-content: start; }
   .pf-hud span { font-size: 14px; font-weight: 800; line-height: 1.3; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
   .pf-hud b { font-size: 24px; line-height: 1; color: #fff; text-shadow: 4px 4px 0 var(--navy); white-space: nowrap; }
   .pf-hud small { margin-left: 6px; font: 800 16px/1 'Pretendard Variable', Pretendard, sans-serif; text-shadow: 2px 2px 0 var(--navy); }
-  .pf-me { flex: 1; display: grid; grid-template-columns: 256px minmax(0, 1fr); gap: 56px; align-items: center; }
-  .pf-photo { padding: 8px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 8px 8px 0 rgb(16 35 70 / .55); }
+  .pf-ts { display: flex; flex-direction: column; align-items: center; }
+  .pf-plaque { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 32px; align-items: center; width: min(100%, 800px); padding: 32px 48px 32px 40px;
+    background: #c84c0c; border: 4px solid #171c28; box-shadow: inset 4px 4px 0 #fc9838, inset -4px -4px 0 #7c2c08, 8px 8px 0 rgb(16 35 70 / .5); }
+  .pf-rv { position: absolute; inset: 12px; pointer-events: none;
+    background: linear-gradient(#fcbcb0 0 0) 4px 4px / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 4px) 4px / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) 4px calc(100% - 4px) / 8px 8px no-repeat, linear-gradient(#fcbcb0 0 0) calc(100% - 4px) calc(100% - 4px) / 8px 8px no-repeat,
+      linear-gradient(#171c28 0 0) 0 0 / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 100% 0 / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 0 100% / 16px 16px no-repeat, linear-gradient(#171c28 0 0) 100% 100% / 16px 16px no-repeat; }
+  .pf-photo { position: relative; z-index: 1; width: 152px; background: #171c28; border: 4px solid #171c28; box-shadow: 0 0 0 4px #fcbcb0; }
   .pf-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  .pf-me__txt { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
-  .pf-eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px; background: var(--cream); border: 4px solid var(--navy); color: var(--red); font-size: 14px; font-weight: 800; }
-  .pf-eyebrow i { width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-  .pf-title { margin: 16px 0 24px !important; font: 400 56px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fff; text-shadow: 4px 4px 0 var(--navy); }
-  .pf-title em { font-style: normal; color: #fcd8a8; }
-  .pf-info { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); gap: 8px 36px; padding: 16px 22px 18px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 8px 8px 0 rgb(16 35 70 / .55); color: var(--navy); }
-  .pf-info div { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
-  .pf-info dt { flex: none; width: 4.6em; font-size: 14px; font-weight: 800; color: var(--red); }
-  .pf-info dd { min-width: 0; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
-  .pf-info a { text-decoration: underline; text-underline-offset: 3px; }
-  .pf-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 24px !important; }
-  .pf .pf-btn { display: inline-block; padding: 10px 18px; background: var(--cream); border: 4px solid var(--navy); box-shadow: 4px 4px 0 var(--navy); color: var(--navy); font-size: 15px; font-weight: 800; text-decoration: none; }
-  .pf .pf-btn--a { background: var(--red); color: #fff; }
-  .pf .pf-btn:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--navy); }
-  .pf-cue { display: flex; align-items: center; gap: 10px; margin-left: 8px; font-size: 15px; font-weight: 800; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
-  .pf-cue span { color: var(--or); animation: pf-bob 1s steps(2) infinite; }
-  @keyframes pf-bob { 50% { transform: translateY(4px); } }
-  .pf-hero .s-hill, .pf-hero .s-bush, .pf-hero .s-pipe { bottom: 128px; }
+  .pf-plaque__txt { min-width: 0; }
+  .pf-role { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 15px; font-weight: 800; color: #fcbcb0; }
+  .pf-role .ps { padding: 4px 6px; background: #171c28; color: #fca044; font-size: 8px; }
+  .pf-name { margin: 10px 0 12px !important; font: 400 56px/1.15 'Galmuri14', 'Galmuri11', monospace; color: #fff6dd; text-shadow: 4px 4px 0 #171c28; }
+  .pf-line { font: 400 22px/1.5 'Galmuri11', monospace; color: #fff6dd; text-shadow: 4px 4px 0 #7c2c08; }
+  .pf-line em { font-style: normal; color: #fff; text-decoration: underline 4px #fca044; text-underline-offset: 4px; text-decoration-skip-ink: none; }
+  .pf-copy { margin-top: 20px; font-size: 8px; line-height: 1; color: #fff6dd; }
+  .pf-menu { display: grid; gap: 2px; margin-top: 20px !important; }
+  .pf-menu li { position: relative; padding-left: 44px; }
+  .pf-menu li.on::before { content: ''; position: absolute; left: 0; top: 50%; width: 28px; height: 32px; margin-top: -16px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-menu a { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; font: 400 22px/1.5 'Galmuri11', monospace; color: #fff; text-decoration: none; text-shadow: 4px 4px 0 rgb(16 35 70 / .45); }
+  .pf-menu small { font: 800 13px/1.3 'Pretendard Variable', Pretendard, sans-serif; color: #fcd8a8; text-shadow: none; }
+  .pf-menu li.on a { color: #fcd8a8; }
+  .pf-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; margin-top: 18px !important; font-size: 14px; font-weight: 700; color: #fff; text-shadow: 2px 2px 0 var(--navy); }
+  .pf-contact a { text-decoration: underline; text-underline-offset: 3px; }
+  .pf-hero .s-hill, .pf-hero .s-bush { bottom: 128px; }
   .pf-ground { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-ground) 0 0 / 64px 64px repeat-x, var(--lv-ground) 0 64px / 64px 64px repeat-x; image-rendering: pixelated; }
-  /* 1-2 · 1-3 지하 — 검정 위 절 머리(남색 이름표) */
-  .pf-ug { position: relative; background: #000; padding-top: 112px; }
-  .pf-sec { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: 36px; }
-  .pf-sec b { padding: 8px 10px; background: var(--navy); border: 4px solid #fcfcfc; font-size: 8px; color: var(--or); }
-  .pf-sec h2 { font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fcfcfc; }
-  .pf-sec p { flex-basis: 100%; font-size: 15px; font-weight: 600; color: var(--mu); }
+  /* 1-2 · 1-3 — 땅 블록이 지하 검정으로 어두워지는 띠 · 코스 시작 화면처럼 검은 바탕 위 WORLD 카드 */
+  .pf-ug { position: relative; background: #000; }
+  .pf-fade { position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: 192px; background: linear-gradient(rgb(0 0 0 / .3), #000 90%), var(--lv-ground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
+  .pf-wc { display: grid; justify-items: center; gap: 14px; padding: 72px 0 48px; text-align: center; }
+  .pf-career .pf-wc { padding-top: 240px; }
+  .pf-wc__w { font-size: 32px; line-height: 1; color: #fcfcfc; }
+  .pf-wc h2 { font: 400 28px/1.3 'Galmuri14', 'Galmuri11', monospace; color: #fff6dd; }
+  .pf-wc__s { font-size: 15px; font-weight: 600; color: var(--mu); }
   .pf .swl { padding: 0; background: transparent; border-radius: 0; }
+  /* 관 — 이력 레일 안(고스트보다 위 칸): 머리 · 몸통 · 아래 입구. 레일 가운데(24px)에 맞춰 128px */
+  .swl-pipe { position: absolute; z-index: 4; left: -40px; top: 56px; width: 128px; height: 0; pointer-events: none; image-rendering: pixelated;
+    background: var(--pf-lip) 0 0 / 128px 40px no-repeat, var(--pf-lip) 0 100% / 128px 40px no-repeat, var(--pf-body) 0 0 / 128px 4px repeat-y; }
+  .pf .swl__rail { left: 40px; }
+  .pf .swl-c { grid-template-columns: 128px minmax(0, 1fr); }
+  .pf .swl-c__node { left: 64px; }
   /* 1-3 벽돌 휴대기 + 카트리지 — 판(.pf-stick)이 화면에 붙고, 내리는 만큼 카트리지가 하나씩 꽂힘 */
-  .pf-proj { padding-top: 128px; }
   .pf-run { position: relative; }
   .pf-stick { position: sticky; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 16px 24px; }
   .pf-dev { position: relative; z-index: 3; flex: none; }
@@ -913,38 +924,40 @@
   .pf-foot__pages { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-top: 8px !important; }
   .pf-uground { position: absolute; left: 0; right: 0; bottom: 0; height: 128px; background: var(--lv-uground) 0 0 / 64px 64px repeat; image-rendering: pixelated; }
   @media (max-width: 1100px) { .pf-nav { display: none; } }
-  @media (max-width: 900px) {
-    .pf-me { grid-template-columns: 200px minmax(0, 1fr); gap: 32px; }
-    .pf-title { font-size: 42px; }
-    .pf-info { grid-template-columns: minmax(0, 1fr); }
-  }
+  @media (max-width: 900px) { .pf-name { font-size: 42px; } }
   /* 휴대폰 — 게임기가 작아 화면엔 이름만, 개요는 아래 창(.pf-dock)에 */
   @media (max-width: 760px) {
     .pf-in, .pf-top__in { padding: 0 16px; }
     .pf-top__in { gap: 10px; height: 52px; }
     .pf-logo small, .pf-world span { display: none; }
-    .pf-hero { min-height: 0; padding: 96px 0 168px; }
-    .pf-cue { flex-basis: 100%; margin: 8px 0 0; }
+    .pf-hero { min-height: 0; padding: 88px 0 312px; }
     .pf-hero > .pf-in { gap: 28px; }
     .pf-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .pf-hud b { font-size: 16px; }
     .pf-hud span { font-size: 13px; }
-    .pf-me { grid-template-columns: 136px minmax(0, 1fr); gap: 0 20px; align-items: end; }
-    .pf-me__txt { display: contents; }
-    .pf-eyebrow { align-self: end; justify-self: start; flex-direction: column; align-items: flex-start; gap: 6px; padding: 8px 10px; }
-    .pf-title, .pf-info, .pf-btns { grid-column: 1 / -1; }
-    .pf-title { margin: 24px 0 20px !important; font-size: 28px; }
-    .pf-info { padding: 12px 16px 14px; }
-    .pf-info dd { font-size: 15px; }
+    .pf-plaque { grid-template-columns: 104px minmax(0, 1fr); grid-template-rows: 1fr auto auto; gap: 0 16px; padding: 32px 28px; }
+    .pf-photo { grid-row: 1 / 3; width: 104px; }
+    .pf-role { grid-column: 2; grid-row: 1; align-self: end; flex-direction: column; align-items: flex-start; gap: 6px; font-size: 13px; }
+    .pf-name { grid-column: 2; grid-row: 2; margin: 8px 0 0 !important; font-size: 28px; }
+    .pf-line { grid-column: 1 / -1; grid-row: 3; margin-top: 16px !important; font-size: 16px; }
+    .pf-plaque__txt { display: contents; }
+    .pf-menu { justify-self: start; }
+    .pf-menu a { font-size: 22px; }
+    .pf-contact { flex-direction: column; align-items: flex-start; gap: 2px; }
+    .pf-contact > span { display: none; }
+    .pf-ts { align-items: stretch; }
+    .pf-copy { align-self: center; }
     .pf-hide-s { display: none; }
-    .pf-sec h2 { font-size: 22px; font-family: 'Galmuri11', monospace; }
+    .pf-wc { justify-items: start; text-align: left; }
+    .pf-career .pf-wc { padding-left: 88px; }
+    .pf-wc__w { font-size: 24px; }
+    .pf-wc h2 { font-size: 22px; font-family: 'Galmuri11', monospace; }
     .pf-tray { gap: 8px; }
     .pf-cart { padding: 8px 4px 4px; }
     .pf-cart__lab { padding: 4px; gap: 4px; }
     .pf-cart__lab > b { font-size: 11px; }
     .pf-cart__meta { display: none; }
     .pf-cart::before { left: 8px; right: 8px; }
-    .pf-proj { padding-top: 96px; }
     .pf-stick { padding: 8px 8px 16px; }
     .pf-gap { height: var(--pf-gapH, 48px); }
     .pf.is-mob .pf-dock { display: block; width: 100%; max-width: 440px; margin-bottom: 12px; overflow: hidden; padding: 12px 14px; background: #141014; border: 4px solid var(--cream); color: var(--cream); }
@@ -967,9 +980,10 @@
     .pf.is-mob .pf-dock .pf-ov__sub, .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go, .pf.is-mob .pf-dock .pf-ov__learn { font-size: 13px; }
     .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go { margin-top: 8px !important; }
     .pf.is-mob .pf-dock .pf-boot { font-size: 11px; }
+    .pf .swl__rail { left: 16px; } .pf .swl-c { grid-template-columns: 76px minmax(0, 1fr); } .pf .swl-c__node { left: 40px; }
     .pf-dock__hint { display: grid; place-items: center; height: 100%; font-size: 14px; font-weight: 700; color: #b0a890; text-align: center; }
   }
-  @media (prefers-reduced-motion: reduce) { .pf-cue span, .pf-sel li.on button::before, .pf-sel li em, .pf-dots::after { animation: none; } .pf-cart { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .pf-sel li.on button::before, .pf-sel li em, .pf-dots::after { animation: none; } .pf-cart { transition: none; } }
 </style>
 <script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
@@ -1975,16 +1989,17 @@
         '<p class="swl-c__line">' + it.line + '</p>' + lFacts(it) + '</div></li>';
     }).join('');
     return '<section class="sw swl" data-swl aria-label="' + T('모래 길을 따라 코스 목록 — 10년 이력', 'Courses along the sand road — ten years') + '">' +
-      '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li>' + list + '</ol></section>';
+      '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i>' + (opt && opt.pipe ? '<i class="swl-pipe"></i>' : '') + '</li>' + list + '</ol></section>';
   }
   function wireL3() {
     var root = document.querySelector('[data-swl]'); if (!root) return;
-    var list = root.querySelector('.swl__list'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), items = [].slice.call(root.querySelectorAll('[data-swl-i]')), hit = {};
+    var rail = root.querySelector('.swl__rail'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), items = [].slice.call(root.querySelectorAll('[data-swl-i]')), hit = {};
     function tick() {
       if (!root.offsetParent) return;
-      var vh = innerHeight, lr = list.getBoundingClientRect(), gy = Math.max(0, Math.min(lr.height - 56, vh * .45 - lr.top)), line = vh * .45 + 28;
-      road.style.height = Math.round((gy + 28) / 4) * 4 + 'px';
-      me.style.transform = Math.floor(gy / 12) % 2 && gy > 0 && gy < lr.height - 56 ? 'translateY(-4px)' : '';
+      /* 길은 레일 기준 — 레일이 위로 늘어나 관을 품으면(전체 흐름) 관 입구 아래(rail.__r0)부터 그림 */
+      var vh = innerHeight, rr = rail.getBoundingClientRect(), r0 = rail.__r0 || 0, gy = Math.max(0, Math.min(rr.height - 56, vh * .45 - rr.top)), line = vh * .45 + 28;
+      road.style.height = Math.max(0, Math.round((gy + 28 - r0) / 4) * 4) + 'px';
+      me.style.transform = Math.floor(gy / 12) % 2 && gy > r0 && gy < rr.height - 56 ? 'translateY(-4px)' : '';
       items.forEach(function (el, i) {
         var node = el.querySelector('.swl-c__node'), reached = el.getBoundingClientRect().top + 34 < line;
         node.classList.toggle('done', reached);
@@ -2084,6 +2099,10 @@
   var PF_KEYS = { dpad: [5.26, 27.02, 16, 16], rubber: [5.84, 61.33, 14.9, 7.4], b: [177.71, 27.02, 16, 16], a: [177.71, 52.77, 16, 16],
     lDpad: [6.41, 46.47, 13.7, 3.4], lRubber: [6.41, 71.07, 13.7, 3.4], lB: [179.43, 45.33, 12.6, 3.4], lA: [179.43, 71.07, 12.6, 3.4] };
   var PROJ = (C.projects && C.projects.items) || [], TABS = (C.projects && C.projects.tabs) || {};
+  /* 관 — tools/fc-pixel/stage-props.py 의 pipe 와 같은 칸(머리 10칸 + 몸통 한 줄을 세로로 되풀이). 땅 위에 서서 땅 블록을 뚫고 지하 천장 아래로 입구가 열림 */
+  var PF_LIPIN = 'GggG' + 'g'.repeat(14) + 'GGgGGGgGGGGG', PF_BODYIN = 'GggG' + 'g'.repeat(12) + 'GGgGGGgGGG';
+  var PF_LIP = ['K'.repeat(32)].concat(Array(8).fill('K' + PF_LIPIN + 'K'), ['K'.repeat(32)]), PF_BODY = ['..K' + PF_BODYIN + 'K..'];
+  var PF_ABOVE = 96, PF_FADE = 192;           /* 관이 땅 위로 선 높이 · 땅 블록이 지하 검정으로 어두워지는 띠 */
   function pfSeed(s) { var h = 5381; s = String(s || ''); for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return Math.abs(h); }
   function pfGen(h) {                        /* render.js 의 genArt 와 같은 그림(사진 없는 프로젝트 = id 로 늘 같은 무늬) */
     var kind = h % 4, g = '', i, x, y;
@@ -2112,26 +2131,31 @@
       '<nav class="pf-nav">' + nav + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world>WORLD 1-1</b><span data-pf-wname>' + T('나', 'Me') + '</span></p>' +
       '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' + (SITE ? '<a class="pf-tbtn" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
   }
-  function pfHero() {
+  function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 위 점수판 · 가운데 제목 판(사진 + 이름 · 직무 · 한 줄) · 그 아래 메뉴(▶ 고스트 커서) · 맨 아래 연락처 줄 · 땅 위 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
-    var info = [[T('이름', 'Name'), esc(NAME)], [T('직무', 'Role'), esc(t(m.role))], [T('경력', 'Career'), L === 'en' ? 'Since 2016 · ' + esc(YRS) + ' years' : '2016년부터 · ' + esc(YRS) + '년째']];
-    if (m.email) info.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
-    if (m.github) info.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
     var hud = stats.map(function (s) { return '<p><span>' + esc(t(s.label)) + '</span><b class="ps">' + esc(s.num) + '<small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('');
+    var menu = [['#pf-career', T('이력 보기', 'Career'), T('관을 타고 내려가기', 'down the pipe')], ['#pf-proj', T('프로젝트 보기', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges')]];
+    if (SITE && m.resumeUrl) menu.push([m.resumeUrl, T('이력서 PDF', 'Résumé PDF'), '', 1]);
+    if (m.email) menu.push(['mailto:' + m.email, T('메일 보내기', 'Send an email'), '']);
+    var contact = [L === 'en' ? 'Since 2016 · ' + esc(YRS) + ' years of making games' : '2016년부터 ' + esc(YRS) + '년째 게임을 만드는 중'];
+    if (m.email) contact.push('<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>');
+    if (m.github) contact.push('<a href="' + esc(m.github) + '" target="_blank" rel="noopener">GitHub ' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>');
     return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1"><i class="pf-s s-cloud" style="left:6%;top:28px"></i><i class="pf-s s-cloud pf-hide-s" style="left:44%;top:20px"></i><i class="pf-s s-cloud" style="right:8%;top:36px"></i>' +
-      '<div class="pf-in"><div class="pf-hud">' + hud + '</div><div class="pf-me">' +
+      '<div class="pf-in"><div class="pf-hud">' + hud + '</div><div class="pf-ts">' +
+      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i>' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
-      '<div class="pf-me__txt"><p class="pf-eyebrow"><i aria-hidden="true"></i>' + esc(t(m.role)) + ' · Portfolio</p><h1 class="pf-title">' + pfTitleHtml() + '</h1>' +
-      '<dl class="pf-info">' + info.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>'; }).join('') + '</dl>' +
-      '<p class="pf-btns">' + (SITE && m.resumeUrl ? '<a class="pf-btn pf-btn--a" href="' + esc(m.resumeUrl) + '" target="_blank" rel="noopener">' + T('이력서 PDF', 'Résumé PDF') + '</a>' : '') +
-      (m.email ? '<a class="pf-btn" href="mailto:' + esc(m.email) + '">' + T('메일 보내기', 'Send an email') + '</a>' : '') +
-      '<span class="pf-cue"><span aria-hidden="true">▼</span>' + T('내리면 2016년부터 이력이 이어집니다', 'Scroll — the career runs on from 2016') + '</span></p></div></div></div>' +
-      '<i class="pf-s s-hill" style="left:2%"></i><i class="pf-s s-bush" style="left:26%"></i><i class="pf-s s-bush pf-hide-s" style="left:64%"></i><i class="pf-s s-pipe" style="right:6%"></i><i class="pf-ground"></i></section>';
+      '<div class="pf-plaque__txt"><p class="pf-role">' + esc(t(m.role)) + '<span class="ps">PLAYER 1</span></p><h1 class="pf-name">' + esc(NAME) + '</h1><p class="pf-line">' + pfTitleHtml().replace('<br>', ' ') + '</p></div></div>' +
+      '<p class="pf-copy ps">&copy;2016 ' + esc(((m.name && m.name.en) || 'Jisu Kim').toUpperCase()) + '</p>' +
+      '<ul class="pf-menu" data-pf-menu>' + menu.map(function (it, j) {
+        var jump = it[0].charAt(0) === '#';
+        return '<li' + (j === 0 ? ' class="on"' : '') + '><a href="' + esc(it[0]) + '"' + (jump ? ' data-pf-jump' : it[3] ? ' target="_blank" rel="noopener"' : '') + '>' + it[1] + (it[2] ? '<small>' + it[2] + '</small>' : '') + '</a></li>';
+      }).join('') + '</ul><p class="pf-contact">' + contact.join('<span aria-hidden="true">·</span>') + '</p></div></div>' +
+      '<i class="pf-s s-bush" style="left:34%"></i><i class="pf-s s-hill pf-hide-s" style="right:22%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
-  function pfSecHead(code, h, p) { return '<header class="pf-sec"><b class="ps">WORLD ' + code + '</b><h2>' + h + '</h2><p>' + p + '</p></header>'; }
+  function pfWorld(code, h, p) { return '<header class="pf-wc"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2><p class="pf-wc__s">' + p + '</p></header>'; }
   function pfCareer() {
-    return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2"><div class="pf-in">' +
-      pfSecHead('1-2', T('이력', 'Career'), T('2016 → 지금 · 내리면 고스트가 모래 길을 따라 내려갑니다', '2016 → now · scroll and the ghost follows the sand road down')) + draftL3({ skipStart: true }) + '</div></section>';
+    return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
+      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true }) + '</div></section>';
   }
   function pfCart(p, i) {
     return '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" aria-label="' + esc(t(p.title)) + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
@@ -2145,7 +2169,7 @@
       (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
     var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', SITE ? T('A 자세히', 'A OPEN') : T('A 배운 것', 'A NOTES')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
     return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-3"><div class="pf-in">' +
-      pfSecHead('1-3', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 내리면 하나씩 꽂혀 화면이 켜집니다', PROJ.length + ' cartridges · scroll and they go in one by one')) + '</div>' +
+      pfWorld('1-3', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 내리면 하나씩 꽂혀 화면이 켜집니다', PROJ.length + ' cartridges · scroll and they go in one by one')) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
       '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><i class="pf-gap" aria-hidden="true"></i>' +
       '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div></section>';
@@ -2216,6 +2240,15 @@
     PF = { root: root, st: st, cards: cards, base: cards.map(function (c) { var r = c.getBoundingClientRect(); return [r.left - sr.left, r.top - sr.top]; }),
       slotX: dr.left - sr.left + (100 - d.x) * cell - cw / 2, preY: bodyB + 4, insY: bodyB - Math.round(ch * .6 / 4) * 4, key: '', i: -2, notes: false, mob: mob };
     root.classList.remove('pf-measure');
+    /* 관: 첫 화면 땅 위(머리) → 땅 블록 · 어두워지는 띠를 뚫고 → 지하 띠 끝에서 입구. 이력 레일을 그 머리 위(고스트 서는 자리)까지 위로 늘려 고스트 · 길 · 관을 한 줄에 */
+    var hero = root.querySelector('.pf-hero'), rail = root.querySelector('.swl__rail'), list = root.querySelector('.swl__list');
+    if (hero && rail && list) {
+      var heroB = hero.getBoundingClientRect().bottom + scrollY, lipTop = heroB - 128 - PF_ABOVE, mouthB = heroB + PF_FADE - 16;
+      var listTop = list.getBoundingClientRect().top + scrollY, pipeH = Math.round((mouthB - lipTop) / 4) * 4;
+      rail.style.top = Math.round(lipTop - 56 - listTop) + 'px';
+      rail.querySelector('.swl-pipe').style.height = pipeH + 'px';
+      rail.__r0 = 56 + pipeH; rail.style.setProperty('--r0', rail.__r0 + 'px');
+    }
     pfTick(true);
   }
   function pfProg() {                          /* 카트리지 칸 번호 i(-1 = 아직) · 칸 안 진행 t */
@@ -2269,6 +2302,7 @@
   function renderPlay() {
     document.body.classList.add('is-play');
     if (typeof MINIG !== 'undefined') document.documentElement.style.setProperty('--mb-mini', spr(MINIG));
+    document.documentElement.style.setProperty('--pf-lip', spr(PF_LIP)); document.documentElement.style.setProperty('--pf-body', spr(PF_BODY));
     var root = document.getElementById('play');
     root.innerHTML = '<div class="pf" data-pf>' + pfTop() + pfHero() + pfCareer() + pfProj() + pfFoot() + '</div>';
     document.title = NAME + ' · ' + t(C.meta && C.meta.role) + ' — ' + T('홈 흐름 시안', 'Home flow draft');
@@ -2277,7 +2311,13 @@
     LTICKS.push(function () { pfTick(); });
     var pf = root.querySelector('[data-pf]');
     pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
+    var menu = pf.querySelector('[data-pf-menu]');
+    function menuOn(li) { [].forEach.call(menu.children, function (x) { x.classList.toggle('on', x === li); }); }
+    menu.addEventListener('mouseover', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
+    menu.addEventListener('focusin', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
     pf.addEventListener('click', function (e) {
+      var jm = e.target.closest('[data-pf-jump]');
+      if (jm) { e.preventDefault(); var tg = pf.querySelector(jm.getAttribute('href')); if (tg) window.scrollTo({ top: tg.getBoundingClientRect().top + scrollY - (jm.getAttribute('href') === '#pf-career' ? 0 : 40), behavior: RM ? 'auto' : 'smooth' }); return; }
       var g = e.target.closest('[data-pf-go]'); if (g) { pfGo(+g.getAttribute('data-pf-go'), .8); return; }
       var s = e.target.closest('[data-pf-step]'); if (s) { var c = pfProg(); pfGo(c[0] < 0 ? 0 : c[0] + +s.getAttribute('data-pf-step'), .8); return; }
       if (e.target.closest('[data-pf-b]')) { var c2 = pfProg(); if (c2[0] >= 0) pfGo(c2[0], .04); return; }
