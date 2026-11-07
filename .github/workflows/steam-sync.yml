@@ -1,6 +1,6 @@
 # 스팀 플레이 기록 자동 갱신
 # ---------------------------------------------------------------------------
-# 주 1회(월요일 03:00 KST) 스팀에서 플레이 기록을 모아 assets/play-steam.js 를 갱신하고,
+# 손으로 돌릴 때만(Run workflow) 스팀에서 플레이 기록을 모아 assets/play-steam.js 를 갱신하고,
 # 바뀐 게 있으면 커밋한 뒤 그 자리에서 GitHub Pages 까지 배포합니다.
 #   · 필요한 Secrets : STEAM_API_KEY · STEAM_ID   (저장소 Settings → Secrets → Actions)
 #   · 무엇을 넣고 뺄지 : assets/content.js 의 play.steam  (exclude 에 appid·이름)
@@ -9,9 +9,9 @@
 # 배포 단계를 이 워크플로 안에 이어 붙여 두었습니다.
 name: Steam play log
 
+# 계속 연동하지 않고 한 번만 넣기로 해서(사용자) 매주 자동 실행(schedule)은 껐습니다 — 키 없이 돌면 매주 실패하기 때문.
+# 다시 켜려면 아래에 schedule: - cron: '0 18 * * 0' (월요일 03:00 KST) 을 되살리고 Secrets 를 등록하세요.
 on:
-  schedule:
-    - cron: '0 18 * * 0'      # 일요일 18:00 UTC = 월요일 03:00 KST
   workflow_dispatch:
 
 permissions:

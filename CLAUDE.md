@@ -285,9 +285,10 @@
 
 ## 게임플레이 — 스팀 연동 방사형 그래프
 
-게임플레이 페이지 맨 위의 장르별 그래프는 **자동 수집**입니다 (자세한 사용법: `docs/steam-play-log.md`).
+게임플레이 페이지 맨 위의 장르별 그래프는 스팀 기록입니다 (자세한 사용법: `docs/steam-play-log.md`).
+**계속 연동하지 않고 한 번만 넣기로 함**(사용자) — 사용자가 준 게임 · 시간 목록으로 `assets/play-steam.js` 를 한 번 만들고, 매주 자동 실행은 껐습니다(수동 실행만 남김).
 
-- 흐름: `.github/workflows/steam-sync.yml`(주 1회·수동) → `tools/steam-sync.mjs` → `assets/play-steam.js`
+- 흐름(키로 자동 수집할 때): `.github/workflows/steam-sync.yml`(수동 실행만 — 주 1회 일정은 껐음) → `tools/steam-sync.mjs` → `assets/play-steam.js`
   (`window.PORTFOLIO_STEAM`) → `render.js` 의 `steamBlock()`. 데이터가 없으면 블록을 아예 그리지 않습니다.
 - **무엇을 넣고 뺄지는 `content.js` 의 `play.steam` 한 곳**에서 정합니다 (`exclude` 에 appid·이름, `minMinutes`,
   `axes`, `topCount`, `excludeGenres`, `genreNames`). 수집 스크립트가 이 파일을 그대로 평가해 설정을 읽습니다 —
