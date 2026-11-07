@@ -79,13 +79,29 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* 목록 모드 — 이름으로 상점을 찾아 appid 를 붙임(정확히 같은 이름 우선) */
 const norm = s => String(s || '').toLowerCase().replace(/[™®©]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
+/* 한글 · 영문이 섞인 이름('Palworld / 팰월드', 'Manor Lords 매너 로드')은 통째 · 영문만 · 한글만 순서로 찾습니다.
+   storesearch 는 한글 검색어에 답하지 않아, 한글은 상점의 검색어 제안(search/suggest, koreana)으로 찾습니다. */
 async function findApp(name) {
-  const term = String(name).replace(/[™®©]/g, '').trim();
-  for (const [l, cc] of [['korean', 'KR'], ['english', 'US']]) {
-    const j = await getJson('https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=' + l + '&cc=' + cc, 2);
-    const items = (j && j.items) || [];
-    const hit = items.find(it => norm(it.name) === norm(term)) || items.find(it => norm(term).startsWith(norm(it.name)) || norm(it.name).startsWith(norm(term)));
-    await sleep(800);
+  const full = String(name).replace(/[™®©]/g, '').trim();
+  const latin = full.replace(/[\p{Script=Hangul}]+/gu, ' ').replace(/[\s/\-–:]+$/u, '').replace(/^[\s/\-–:]+/u, '').replace(/\s+/g, ' ').trim();
+  const hangul = (full.match(/[\p{Script=Hangul}][\p{Script=Hangul}\s\d]*/gu) || []).map(s => s.trim()).filter(Boolean).join(' ');
+  const pick = (items, term) => items.find(it => norm(it.name) === norm(term)) ||
+    items.find(it => norm(term).startsWith(norm(it.name)) || norm(it.name).startsWith(norm(term)));
+  for (const term of [...new Set([full, latin, hangul].filter(Boolean))]) {
+    let hit = null;
+    for (const cc of ['KR', 'US']) {                      /* 나라마다 검색 결과가 달라 둘 다 봄 */
+      const j = await getJson('https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=english&cc=' + cc, 2);
+      hit = pick((j && j.items) || [], term);
+      await sleep(800);
+      if (hit) break;
+    }
+    if (!hit && /[\p{Script=Hangul}]/u.test(term)) {
+      let html = '';
+      try { html = await (await fetch('https://store.steampowered.com/search/suggest?term=' + encodeURIComponent(term) + '&f=games&cc=KR&l=koreana&realm=1', { headers: { 'User-Agent': 'portfolio-steam-sync' } })).text(); } catch (e) {}
+      const items = [...html.matchAll(/data-ds-appid="(\d+)"[\s\S]*?match_name[^>]*>([^<]*)</g)].map(m => ({ id: Number(m[1]), name: m[2] }));
+      hit = pick(items, term);
+      await sleep(800);
+    }
     if (hit) return hit.id;
   }
   return 0;
@@ -97,7 +113,7 @@ async function listedGames() {
   for (const r of rows) {
     const minutes = num(r.minutes, 0);
     if (minutes < MIN_MINUTES) { out.push({ appid: 0, name: r.name, playtime_forever: minutes, last: r.last || '' }); continue; }
-    out.push({ appid: await findApp(r.name), name: r.name, playtime_forever: minutes, last: r.last || '' });
+    out.push({ appid: num(r.appid, 0) || await findApp(r.name), name: r.name, playtime_forever: minutes, last: r.last || '' });   /* 목록에 appid 를 적어 두면 그대로 씀 */
   }
   LISTED = out;
   return out;
