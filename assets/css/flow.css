@@ -1219,3 +1219,43 @@
     .pf-save__top em { margin-left: 0; width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .pf-tl__i.is-now .pf-tl__d::before { animation: none; } .pf-cart2 { transition: none !important; } }
+
+  /* ════ 가독성 · 화면 틀(실제 사이트 1차 피드백) ════
+     "스크롤하면 아래 화면들이 검정색이니까 가독성이 떨어짐" → 지하 바탕은 검정 대신 짙은 남색(--ug), 글이 든 창은 모두 크림 판 + 남색 글(밝은 판 위 어두운 글자 —
+     제목 판 · 자기소개서 종이와 같은 재료). 게임기 화면 · 진열판 · NO SIGNAL 화면처럼 '화면'인 것만 어둡게 둠.
+     "화면 전체가 하늘색이라 눈 아픔 · 좌우는 다른 걸로" → 1180px 이상은 월드를 가운데 화면(--pf-screen) 한 장에 담고, 좌우는 게임기 테(짙은 플라스틱 · 도트 무늬) */
+  .pf { --ug: #121b33; --ink: #1f2c48; --ink-mu: #4f5a78; --acc: #b5400a; --line: #e2d1a8; }
+  body.is-play { background: #121b33; }
+  .pf-ug, .pf-foot { background: var(--ug); }
+  .pf-fade { background: linear-gradient(rgb(18 27 51 / .3), var(--ug) 90%), var(--lv-ground) 0 0 / 64px 64px repeat; }
+  @media (min-width: 1180px) {
+    body.is-play { background: #26222c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'%3E%3Crect width='4' height='4' fill='%232d2934'/%3E%3Crect x='4' y='4' width='4' height='4' fill='%232d2934'/%3E%3C/svg%3E") 0 0 / 8px 8px; }
+    .pf { --pf-screen: 1096px; max-width: var(--pf-screen); margin: 0 auto; box-shadow: 0 0 0 4px #000, 0 0 0 8px #4a4352, 0 0 0 12px #000; }
+    .pf-hero__cloud { display: none; }
+  }
+  /* 크림 판 — 이력 메시지 블록 · 창(.pf-win) · 보유 기술 칸 */
+  .pf .swl-c__box, .pf .pf-win { --wh: #102346; --mu: var(--ink-mu); --or: var(--acc); color: var(--ink); background: var(--cream); border: 4px solid #171c28; box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 8px var(--line); }
+  .pf .swl-c--start .swl-c__box, .pf .swl-c--flag .swl-c__box { box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 8px #f0a04a; }
+  .pf .swl-c__box .l-facts > span { border-left-color: var(--line); }
+  .pf .swl-c__box .l-bar { border-color: #102346; }
+  .pf-win__h { border-bottom-color: var(--line); }
+  .pf-chips li { border-color: #cdbb8f; }
+  .pf .pf-sk__c { background: #fbefd2; box-shadow: inset 0 0 0 4px var(--line); }
+  .pf .pf-sk__c h3 { color: #102346; }
+  .pf .pf-sk__c p { color: var(--ink); }
+  .pf .pf-it__box { box-shadow: 0 0 0 4px #171c28; }
+  .pf .pf-win .pf-stats b, .pf .pf-win .pf-tl__t, .pf .pf-win .pf-ach h3, .pf .pf-win .pf-steam__h h3, .pf .pf-win .pf-save__top b, .pf .pf-win .pf-pager__t, .pf .pf-win .pf-steam__stats dd { color: #102346; }
+  .pf-pager a.pf-win:hover .pf-pager__t { color: var(--acc); }
+  .pf .pf-win .pf-tl__d::before { background: #102346; }
+  .pf .pf-win .pf-tl__i.is-now .pf-tl__d::before { background: var(--acc); }
+  .pf .pf-win .pf-tl__i { border-top-color: var(--line); }
+  .pf .pf-win .pf-ach p { color: var(--ink); }
+  .pf .pf-win .pf-sr .g, .pf .pf-win .pf-sr .s { stroke: #d6c497; }
+  .pf .pf-win .pf-sr .a { fill: rgb(181 64 10 / .18); }
+  .pf .pf-win .pf-sr .n { fill: #102346; }
+  .pf .pf-win .pf-steam th, .pf .pf-win .pf-steam td { border-bottom-color: var(--line); }
+  .pf .pf-win .pf-save__top::before { background: var(--acc); color: #fff; }
+  .pf .pf-win .pf-q { background: #f6e7c3; }
+  .pf .pf-win .pf-q dd { color: #102346; }
+  .pf .pf-win .pf-stores a { border-color: #102346; color: #102346; }
+  .pf .pf-win .pf-stores a:hover { background: #102346; color: var(--cream); }
