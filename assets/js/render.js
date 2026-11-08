@@ -138,7 +138,7 @@
   }
 
   var PAGES = ['home','resume','cover','projects','play'];
-  var HREF = { home:'index.html', resume:'resume.html', cover:'cover-letter.html', projects:'projects.html', play:'play.html' };
+  var HREF = { home:'home.html', resume:'resume.html', cover:'cover-letter.html', projects:'projects.html', play:'play.html' };
 
   /* ---------- 공통 조각 ---------- */
   function navHtml(c, lang, base, active) {

@@ -17,7 +17,7 @@
   var REPO_DEFAULTS = { branch: 'claude/game-planner-portfolio-landing-ote57w' };
 
   var PAGES = [
-    { k:'home',   f:'index.html',        n:'홈' },
+    { k:'home',   f:'home.html',         n:'홈' },
     { k:'resume', f:'resume.html',       n:'이력서' },
     { k:'cover',  f:'cover-letter.html', n:'자기소개서' },
     { k:'projects',f:'projects.html',    n:'프로젝트' },

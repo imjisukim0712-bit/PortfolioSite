@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko" class="no-js">
+<html lang="ko" data-skin="pixel-fc-level">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* 편집기(?ve=1) · 시안 둘러보기(?skin=) · ?classic 은 예전 홈(home.html)으로 — 같은 탭에서는 계속 예전 화면 */(function(){var c=/[?&](ve|skin|classic)(=|&|$)/.test(location.search)||window.top!==window.self;try{if(c)sessionStorage.setItem('portfolio:classic','1');else if(sessionStorage.getItem('portfolio:classic'))c=true;}catch(e){}if(c)location.replace('home.html'+location.search+location.hash);})();</script>
 <title>김지수 · 게임 기획자 포트폴리오</title>
 <meta name="description" content="문제를 정면으로 마주하는 게임 기획자 김지수의 포트폴리오.">
-<meta name="theme-color" content="#f0eee6">
+<meta name="theme-color" content="#5c94fc">
 <meta name="color-scheme" content="light dark">
 <meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,37 +19,23 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/themes.js" charset="utf-8"></script>
-<script>try{var t=localStorage.getItem('portfolio:theme');if(t==='dark'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Press+Start+2P">
+<!-- 스테이지 소품 그림(--lv-ground · --lv-qblock …)만 빌려 씀: html[data-skin="pixel-fc-level"] 에 걸린 토큰 -->
+<link rel="stylesheet" href="assets/css/themes/pixel-fc-folio.css">
+<link rel="stylesheet" href="assets/css/flow.css">
 </head>
-<body data-page="home">
+<body>
 
-<a class="skip-link" href="#main">본문으로 건너뛰기</a>
-
-<div class="nav-wrap">
-  <nav class="nav" aria-label="주요 메뉴" data-slot="nav"></nav>
-</div>
-<button type="button" class="nav-handle" data-nav-handle aria-label="메뉴 펼치기"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-
-<div class="sheet" id="mobile-menu" data-menu aria-hidden="true">
-  <div class="sheet__panel" data-slot="sheet"></div>
-</div>
-
-<main id="main" data-slot="main"></main>
-
-<noscript><div class="wrap" style="padding:120px 20px 64px"><p style="line-height:1.6">이 페이지는 자바스크립트로 내용을 불러옵니다. 브라우저에서 자바스크립트를 켜 주세요.</p></div></noscript>
-
-<footer class="footer"><div class="wrap" data-slot="footer"></div></footer>
-
-<button type="button" class="to-top" data-to-top aria-label="맨 위로">
-  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 12V3M2.6 7.2 7 2.6l4.4 4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
+<div id="play"></div>
+<noscript><div style="padding:120px 20px 64px"><p style="line-height:1.6">이 페이지는 자바스크립트로 내용을 불러옵니다. 브라우저에서 자바스크립트를 켜 주세요.</p></div></noscript>
 
 <script src="assets/content.js" charset="utf-8"></script>
-<script src="assets/overrides.js" charset="utf-8"></script>
-<script src="assets/js/skin.js" charset="utf-8"></script>
-<script src="assets/js/render.js" charset="utf-8"></script>
-<script src="assets/js/main.js" charset="utf-8"></script>
+<script src="assets/play-steam.js" charset="utf-8"></script>
+<!-- 게임기 그림 데이터: fc-level-art-<이름>.js 가 FcLevelArt.add(이름, 데이터) 를 부르므로 받아 두기만 함 -->
+<script>window.FcLevelArt = { add: function (n, d) { (window.__ART = window.__ART || {})[n] = d; }, draw: function () { return null; } };</script>
+<script src="assets/js/themes/fc-level-art-brick.js" charset="utf-8"></script>
+<script>window.__PLAY = true; window.__SITE = true;</script>
+<script src="assets/js/flow.js" charset="utf-8"></script>
 </body>
 </html>
