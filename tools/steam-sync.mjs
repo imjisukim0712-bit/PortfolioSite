@@ -58,6 +58,9 @@ const EXCLUDE = Array.isArray(CFG.exclude) ? CFG.exclude : [];
 const EXCLUDE_GENRES = (Array.isArray(CFG.excludeGenres) ? CFG.excludeGenres : [23, 37, 70]).map(String);
 const MERGE = Object.fromEntries(Object.entries(CFG.merge || {}).map(([a, b]) => [String(a), String(b)]));   /* 장르 묶기 */
 const EXTRA = Object.entries(CFG.extraHours || {}).map(([id, h]) => [String(id), num(h, 0)]).filter(([, h]) => h > 0);   /* 스팀 밖 시간(어림) */
+/* 태그로 장르 붙이기 — { "4": ["rogue"] } 는 사용자 태그(상위 TAG_TOP 개)에 'rogue' 가 든 게임을 캐주얼에도 넣습니다 */
+const TAG_GENRES = Object.entries(CFG.tagGenres || {}).map(([id, ws]) => [String(id), (ws || []).map(w => String(w).toLowerCase())]);
+const TAG_TOP = 12;
 const gmap = ids => [...new Set(ids.filter(id => !EXCLUDE_GENRES.includes(id) && !SOFTWARE_GENRES.includes(id)).map(id => MERGE[id] || id))];
 
 const ADULT_DESCRIPTORS = [1, 3, 4];        /* 노출·성적 콘텐츠 표시 */
@@ -162,6 +165,17 @@ async function appDetails(appid) {
   };
 }
 
+/* 사용자 태그(SteamSpy) — 스팀 장르에는 '로그라이크' 같은 갈래가 없어 태그로 봅니다. 표가 많은 순 상위만 */
+async function appTags(appid) {
+  const j = await getJson('https://steamspy.com/api.php?request=appdetails&appid=' + appid, 2);
+  const t = (j && j.tags && typeof j.tags === 'object') ? j.tags : {};
+  return Object.entries(t).sort((a, b) => b[1] - a[1]).slice(0, TAG_TOP).map(([n]) => n);
+}
+function tagGenres(info) {
+  const tags = (info.tags || []).map(n => n.toLowerCase());
+  return TAG_GENRES.filter(([, ws]) => ws.some(w => tags.some(n => n.includes(w)))).map(([id]) => id);
+}
+
 /* ── 걸러내기 ─────────────────────────────────────────────────────────────── */
 function manuallyExcluded(game) {
   return EXCLUDE.some(rule => {
@@ -207,6 +221,7 @@ for (const g of played) {
   }
   const reason = why(info);
   if (reason) { dropped.push([g, reason]); continue; }
+  if (TAG_GENRES.length && !Array.isArray(info.tags)) { info.tags = await appTags(g.appid); await sleep(1100); }
   kept.push({ game: g, info });
 }
 
@@ -216,7 +231,7 @@ let totalMinutes = 0;
 for (const { game, info } of kept) {
   const mins = num(game.playtime_forever, 0);
   totalMinutes += mins;
-  const gs = gmap(info.genres);
+  const gs = gmap(info.genres.concat(tagGenres(info)));
   if (!gs.length) continue;
   const share = mins / gs.length;
   for (const id of gs) {
@@ -254,8 +269,7 @@ const out = {
   totals: {
     games: kept.length,
     hours: Math.round(totalMinutes / 60),
-    excluded: dropped.length,
-    extraHours: Math.round(extraMinutes / 60)   /* 이 중 스팀 밖(어림)으로 더한 시간 */
+    excluded: dropped.length
   },
   axes,                                   /* 방사형 그래프 축 (시간 많은 순) */
   restHours: rest.reduce((s, g) => s + g.hours, 0),
@@ -264,7 +278,7 @@ const out = {
     appid: game.appid,
     name: game.name || info.name,
     hours: Math.round(num(game.playtime_forever, 0) / 60),
-    genres: gmap(info.genres)
+    genres: gmap(info.genres.concat(tagGenres(info)))
   })),
   recent
 };

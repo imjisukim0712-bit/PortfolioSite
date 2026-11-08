@@ -5,26 +5,25 @@ window.PORTFOLIO_STEAM = {
   "totals": {
     "games": 100,
     "hours": 7452,
-    "excluded": 9,
-    "extraHours": 2300
+    "excluded": 9
   },
   "axes": [
     {
       "id": "2",
       "name": "Strategy",
-      "hours": 2298,
+      "hours": 2180,
       "games": 45
     },
     {
       "id": "28",
       "name": "Simulation",
-      "hours": 1691,
+      "hours": 1689,
       "games": 46
     },
     {
       "id": "25",
       "name": "Adventure",
-      "hours": 1335,
+      "hours": 1328,
       "games": 51
     },
     {
@@ -36,8 +35,8 @@ window.PORTFOLIO_STEAM = {
     {
       "id": "4",
       "name": "Casual",
-      "hours": 729,
-      "games": 26
+      "hours": 858,
+      "games": 32
     }
   ],
   "restHours": 90,
@@ -103,7 +102,8 @@ window.PORTFOLIO_STEAM = {
       "name": "Slay the Spire",
       "hours": 209,
       "genres": [
-        "2"
+        "2",
+        "4"
       ]
     },
     {

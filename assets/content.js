@@ -376,7 +376,7 @@ window.PORTFOLIO_CONTENT = {
        ────────────────────────────────────────────────────────────────────── */
     steam: {
       title:       { ko: "게임 플레이 타임", en: "Play time" },
-      note:        { ko: "PC · 모바일 합산 · 모바일 등은 어림값", en: "PC and mobile combined · mobile and other platforms are estimates" },
+      note:        { ko: "PC · 모바일 합산", en: "PC and mobile combined" },
       totalLabel:  { ko: "총 플레이",     en: "Total played" },
       gamesLabel:  { ko: "집계 게임",     en: "Games counted" },
       recentLabel: { ko: "요즘 하는 게임", en: "Playing lately" },
@@ -398,7 +398,8 @@ window.PORTFOLIO_CONTENT = {
       exclude: [],           // 직접 빼기: appid 숫자 또는 이름 일부. 예) [ 431960, "Wallpaper" ]
       excludeGenres: [23, 37, 70],   // 축으로 세우지 않을 장르 id (인디 · 무료 플레이 · 앞서 해보기)
       merge: { "3": "25" },          // 장르 묶기: RPG → 어드벤처 (한 게임이 둘 다면 한 번만 셈)
-      // 스팀 밖(모바일 · 다른 플랫폼) 플레이 시간 — 사용자가 어림한 값을 장르에 더합니다(묶은 뒤의 id 기준, 시간)
+      tagGenres: { "4": ["rogue"] }, // 태그로 장르 붙이기: 사용자 태그에 로그라이크 · 로그라이트가 있으면 캐주얼에도 넣음
+      // 스팀 밖(모바일 · 다른 플랫폼) 플레이 시간 — 장르에 더합니다(묶은 뒤의 id 기준, 시간)
       extraHours: { "4": 600, "25": 800, "1": 900 },   // 캐주얼 +600 · 어드벤처(RPG 몫) +800 · 액션(FPS 등) +900
       // 게임은 아니지만 함께 보여 줄 제작 시간 — 그래프 축이 아니라 요약 숫자 한 칸
       making: { name: "GameMaker", hours: 5110,

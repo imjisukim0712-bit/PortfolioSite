@@ -1037,7 +1037,7 @@
   .pf.rv-on [data-pf-rv]:not(.pf-sk__c):not(.is-in) { opacity: 0; transform: translateY(24px); }
   .pf.rv-on [data-pf-rv]:not(.pf-sk__c).is-in { transition: opacity .32s steps(4), transform .32s steps(4); }
   /* 페이지 머리(하늘) — 홈의 제목 판과 같은 재료, 높이만 낮게 */
-  .pf-ph { position: relative; padding: 40px 0 232px; overflow: hidden; background: #5c94fc; }
+  .pf-ph { position: relative; padding: 40px 0 264px; overflow: hidden; background: #5c94fc; }   /* 땅 128 + 관 머리 64 + 1P 56 + 틈 16 */
   .pf-ph .s-hill, .pf-ph .s-bush { bottom: 128px; }
   .pf-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 15px; font-weight: 800; color: var(--navy); text-decoration: none; }
   .pf-back:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
@@ -1057,7 +1057,11 @@
   .pf-grade { padding: 5px 6px 4px; background: #7c7c7c; color: #fff; font-size: 8px; line-height: 1; font-style: normal; }
   .pf-grade[data-grade="SSR"] { background: var(--red); } .pf-grade[data-grade="SR"] { background: #c84c0c; }
   /* 지하 — 땅 블록이 어두워지는 띠(192px) 아래에서 창이 시작 */
-  .pf-sub { padding: 128px 0 32px; }
+  .pf-sub { padding: 224px 0 32px; }   /* 관에서 나온 1P 가 첫 절 머리 위에 내려설 자리(관 입구 176 + 1P 56 + 틈) */
+  .pf-dive { position: absolute; z-index: 4; top: 0; left: 0; width: 48px; height: 0; pointer-events: none; }
+  .pf-dive .swl-pipe { left: -40px; top: 56px; }
+  .pf-dive__me { position: absolute; left: 0; top: 0; }
+  .pf-dive__road { position: absolute; left: 14px; width: 20px; height: 0; background: #fce0a8; box-shadow: inset 4px 0 #171c28, inset -4px 0 #171c28; }
   .pf-sec { padding-bottom: 40px; }
   .pf-sec .pf-wc { padding: 72px 0 32px; }
   .pf-sec--next { padding-top: 40px; }
@@ -1199,13 +1203,13 @@
     .pf-top.is-open .pf-nav__drafts { display: block; margin-top: 8px; padding-top: 14px !important; border-top: 2px solid #2a4a7c; }
     .pf-win { padding: 20px 18px; }
     .pf-paper { padding: 24px 20px 28px; }
-    .pf-ph { padding: 24px 0 200px; }
+    .pf-ph { padding: 24px 0 264px; }
     .pf-ph .pf-plaque__in, .pf-ph .pf-plaque__in--solo { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px 18px 22px; }
     .pf-ph .pf-photo { justify-self: start; width: min(100%, 200px); }
     .pf-ph__art { justify-self: stretch; width: auto; }
     .pf-ph__t { margin: 12px 0 8px !important; font-size: 28px; }
     .pf-ph__lead { font-size: 16px; }
-    .pf-sub { padding-top: 168px; }
+    .pf-sub { padding-top: 256px; }
     .pf-sec .pf-wc { padding: 56px 0 24px; }
     .pf-sk { gap: 12px; margin-top: 20px !important; }
     .pf-sk__c { padding: 18px 18px 16px; }
@@ -2494,6 +2498,7 @@
     });
   }
   function pfLayout() {
+    pfDive();
     var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d || !root.querySelector('.pf-stick')) return;
     var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
     var H = innerHeight - top, W = st.clientWidth, mob = W < 760, dpr = window.devicePixelRatio || 1;
@@ -2600,9 +2605,32 @@
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + '">' + (o.side || '') +
       '<div class="pf-ph__txt"><p class="pf-role">' + o.eyebrow + '<span class="ps">WORLD ' + o.w + '</span></p><h1 class="pf-ph__t">' + o.title + '</h1>' +
       (o.line ? '<p class="pf-line">' + o.line + '</p>' : '') + (o.lead ? '<p class="pf-ph__lead">' + o.lead + '</p>' : '') + (o.extra || '') + '</div></div></div></div></div>' +
-      '<i class="pf-s s-bush" style="left:10%"></i><i class="pf-s s-hill pf-hide-s" style="right:16%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
+      '<i class="pf-s s-bush pf-hide-s" style="right:42%"></i><i class="pf-s s-hill pf-hide-s" style="right:16%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
-  function pfUnder(html) { return '<div class="pf-ug pf-sub"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' + html + '</div></div>'; }
+  function pfUnder(html) {                       /* 지하 — 머리 땅 위에 선 관(1P 가 그 머리 위)에서 내려가는 길 .pf-dive 를 함께 둠(자리는 pfDive) */
+    return '<div class="pf-ug pf-sub"><i class="pf-fade" aria-hidden="true"></i><i class="pf-dive" aria-hidden="true"><i class="swl-pipe"></i><i class="pf-dive__road"></i><i class="swl-me pf-dive__me"></i></i><div class="pf-in">' + html + '</div></div>';
+  }
+  /* 하위 페이지의 관 — 홈 첫 화면과 같은 문법: 머리 판 왼쪽 아래 땅 위에 관 머리 · 그 위에 1P. 내리면 1P 가 관 속으로 들어가
+     땅 블록 · 어두워지는 띠를 지나 지하 입구로 나와 모래 길을 따라 첫 절 머리 옆까지 내려감. 관 가운데 = 1000px 기둥 왼쪽 + 64px(홈과 같은 x) */
+  var PFD = null;
+  function pfDive() {
+    var dv = document.querySelector('.pf-dive'), ph = document.querySelector('.pf-ph'), ts = ph && ph.querySelector('.pf-ts'); PFD = null;
+    if (!dv || !ts) return;
+    var ug = dv.parentNode, ugr = ug.getBoundingClientRect(), x = Math.round(ts.getBoundingClientRect().left - ugr.left);
+    var ground = ph.getBoundingClientRect().bottom - ugr.top - 128;                   /* 지하 기준 땅 윗면(음수) */
+    var lip = ground - PF_ABOVE, mouth = PF_FADE - 16, top = lip - 56, h = Math.round((mouth + 72 - top) / 4) * 4;
+    dv.style.left = x + 'px'; dv.style.top = Math.round(top) + 'px'; dv.style.height = h + 'px';
+    dv.querySelector('.swl-pipe').style.height = Math.round((mouth - lip) / 4) * 4 + 'px';
+    PFD = { dv: dv, me: dv.querySelector('.pf-dive__me'), road: dv.querySelector('.pf-dive__road'), r0: 56 + Math.round((mouth - lip) / 4) * 4, h: h, y0: Math.round(top) + ugr.top + scrollY };
+    pfDiveTick();
+  }
+  function pfDiveTick() {                        /* 1P 는 처음 선 자리(화면 45% 보다 위면 그 자리)에 붙은 채, 관 · 길이 그 밑으로 지나감 */
+    if (!PFD || !PFD.dv.isConnected) return;
+    var line = Math.min(innerHeight * .45, PFD.y0), gy = Math.max(0, Math.min(PFD.h - 56, scrollY + line - PFD.y0));
+    gy = Math.round(gy / 4) * 4;
+    PFD.me.style.top = gy + 'px';                 /* transform 은 모션 최소화 규칙이 지우므로 top 으로 */
+    PFD.road.style.top = PFD.r0 + 'px'; PFD.road.style.height = Math.max(0, gy + 28 - PFD.r0) + 'px';
+  }
   function pfSec(w, nm, h, p, body, label) {         /* w = 월드 칸(위 띠에 뜸) · label = 칸 번호 대신 쓰는 영어 이름표(자세히 페이지) */
     var head = label ? '<header class="pf-wc pf-wc--l"><p class="ps pf-sec__l">' + label + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>' : pfWorld(w, h, p, 1);
     return '<section class="pf-sec"' + (w ? ' data-pf-sec="' + w + '" data-pf-nm="' + nm + '"' : '') + '>' + head + '<div class="pf-col">' + body + '</div></section>';
@@ -2764,7 +2792,7 @@
     pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
     var top = pf.querySelector('.pf-top'), mb = pf.querySelector('[data-pf-mbtn]');
     mb.addEventListener('click', function () { var o = !top.classList.contains('is-open'); top.classList.toggle('is-open', o); mb.setAttribute('aria-expanded', String(o)); });
-    LTICKS.push(pfWorldTick, pfRvTick);
+    LTICKS.push(pfWorldTick, pfRvTick, pfDiveTick);
     if (r.pg === 'play') LTICKS.push(pfSteamTick);
     var menu = pf.querySelector('[data-pf-menu]');
     if (menu) {
