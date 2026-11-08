@@ -1112,7 +1112,7 @@
     var contact = [];
     if (m.email) contact.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
     if (m.github) contact.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
-    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 680px);top:20px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 680px);top:28px"></i>' +
+    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:20px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
       '<div class="pf-in"><div class="pf-ts"><div class="pf-hud">' + hud + '</div>' +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in">' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
@@ -1308,7 +1308,7 @@
      지하의 창(검은 메시지 블록 — 이력 목록과 같은 재료) · 긴 글은 크림 종이(밝은 판 위 어두운 글자). 페이지 끝은 앞뒤 월드로 가는 단추.
      주소는 해시(#/resume · #/cover · #/projects · #/p/<id> · #/play) — 위 띠 · 바닥 · 홈의 '전체 보기' · 게임기 A 가 여기로 옴. 가려 둔 인적사항 값은 넣지 않음 */
   function pfHead(o) {
-    return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 680px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 680px);top:28px"></i>' +
+    return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
       '<div class="pf-in"><div class="pf-ts">' + (o.back ? '<a class="pf-back" href="' + o.back[0] + '"><span aria-hidden="true">◀</span>' + o.back[1] + '</a>' : '') +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + '">' + (o.side || '') +
       '<div class="pf-ph__txt"><p class="pf-role">' + o.eyebrow + '<span class="ps">WORLD ' + o.w + '</span></p><h1 class="pf-ph__t">' + o.title + '</h1>' +
