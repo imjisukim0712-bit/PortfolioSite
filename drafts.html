@@ -2722,11 +2722,12 @@
       '<g data-pf-grow data-c="' + CX + ' ' + CY + '"><polygon class="a" points="' + shape.join(' ') + '"/>' + dots + '</g>' + lab + '</svg>';
     var tot = d.totals || {}, rec = (d.recent || []).slice(0, 2).map(function (x) { return x.name; }).join(' · ');
     var st = '<dl class="pf-steam__stats"><div><dt>' + esc(t(s.totalLabel)) + '</dt><dd>' + esc(hrs(tot.hours)) + '</dd></div><div><dt>' + esc(t(s.gamesLabel)) + '</dt><dd>' + esc(nf(tot.games) + cU) + '</dd></div>' +
-      (rec ? '<div><dt>' + esc(t(s.recentLabel)) + '</dt><dd class="pf-steam__recent">' + esc(rec) + '</dd></div>' : '') + '</dl>';
+      (rec ? '<div><dt>' + esc(t(s.recentLabel)) + '</dt><dd class="pf-steam__recent">' + esc(rec) + '</dd></div>' : '') +
+      (s.making && s.making.hours ? '<div><dt>' + esc(t(s.making.label)) + '</dt><dd>' + esc(hrs(s.making.hours)) + '</dd></div>' : '') + '</dl>';
     var rows = axes.map(function (a) { return '<tr><th scope="row">' + esc(gname(a)) + '</th><td>' + esc(hrs(a.hours)) + '</td><td>' + esc(nf(a.games) + cU) + '</td></tr>'; }).join('') +
       (d.restHours > 0 ? '<tr class="rest"><th scope="row">' + esc(t(s.restLabel)) + '</th><td>' + esc(hrs(d.restHours)) + '</td><td>' + esc(nf(d.restGenres) + cU) + '</td></tr>' : '');
     var table = '<table><caption class="sr-only">' + esc(t(s.title)) + '</caption><thead><tr><th scope="col">' + esc(t(s.tableGenre)) + '</th><th scope="col" style="text-align:right">' + esc(t(s.tableHours)) + '</th><th scope="col" style="text-align:right">' + esc(t(s.tableGames)) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
-    return '<div class="pf-win pf-steam" data-pf-rv><div class="pf-steam__h"><h3>' + esc(t(s.title)) + '</h3>' + (d.sample ? '<span class="pf-steam__sample">' + esc(t(s.sampleLabel)) + '</span>' : '') +
+    return '<div class="pf-win pf-steam" data-pf-rv><div class="pf-steam__h"><h3>' + T('장르별 시간', 'Hours by genre') + '</h3>' + (d.sample ? '<span class="pf-steam__sample">' + esc(t(s.sampleLabel)) + '</span>' : '') +
       '<p class="pf-steam__note">' + esc(t(s.note) + (d.generatedAt ? ' · ' + t(s.updatedLabel) + ' ' + d.generatedAt : '')) + '</p></div><div class="pf-steam__b"><figure>' + svg + '</figure><div>' + st + table + '</div></div></div>';
   }
   function pfSteamTick() {                     /* 그래프 모양은 화면에 들어온 만큼 가운데에서 자라남(모션 최소화면 처음부터 다) */
@@ -2738,7 +2739,7 @@
   function pfPlayPg() {
     var pl = C.play || {}, s = pl.steam || {}, nm = esc(pfNm('play')), cards = pl.cards || [], steam = pfSteam();
     var head = pfHead({ w: '5', nm: nm, eyebrow: nm, title: esc(t(pl.title)), lead: esc(t(pl.lead)), back: ['#/', esc(pfNm('home'))] });
-    var secs = (steam ? pfSec('5-1', esc(t(s.title)), T('스팀 기록', 'Steam log'), esc(t(s.note)), steam) : '') +
+    var secs = (steam ? pfSec('5-1', esc(t(s.title)), esc(t(s.title)), T('장르별로 묶은 시간', 'Hours grouped by genre'), steam) : '') +
       (cards.length ? pfSec(steam ? '5-2' : '5-1', T('저장 슬롯', 'Save files'), T('기획서를 바꾼 게임', 'Games that changed my docs'), T('저장 슬롯 ' + cards.length + '개', cards.length + ' save files'), '<div class="pf-slots">' + cards.map(function (g) {
         var ic = String(g.icon || '').trim();
         return '<article class="pf-win pf-save" data-pf-rv><span class="pf-save__ic">' + (ic ? '<img src="' + esc(IMG(ic)) + '" alt="">' : '<i aria-hidden="true"></i>') + '</span><div><p class="pf-save__top"><b>' + esc(t(g.name)) + '</b><em>' + esc(t(g.hours)) + '</em></p>' +

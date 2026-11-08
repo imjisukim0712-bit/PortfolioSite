@@ -592,6 +592,8 @@
       '<div><dt>' + esc(t(s.gamesLabel, lang)) + '</dt><dd>' + esc(nf(d.totals && d.totals.games) + cUnit) + '</dd></div>' +
       (arr(d.recent).length ? '<div><dt>' + esc(t(s.recentLabel, lang)) + '</dt><dd class="steam__recent">' +
         esc(arr(d.recent).slice(0, 2).map(function (r) { return r.name; }).join(' · ')) + '</dd></div>' : '') +
+      /* 게임은 아니지만 함께 보여 주는 제작 시간(play.steam.making) — 그래프 축이 아니라 요약 한 칸 */
+      (s.making && s.making.hours ? '<div><dt' + ep('play.steam.making.label') + '>' + esc(t(s.making.label, lang)) + '</dt><dd>' + esc(hrs(s.making.hours)) + '</dd></div>' : '') +
       '</dl>';
 
     /* 같은 내용의 표 — 그래프를 못 읽어도 값이 그대로 남습니다 */

@@ -287,6 +287,7 @@
 
 게임플레이 페이지 맨 위의 장르별 그래프는 스팀 기록입니다 (자세한 사용법: `docs/steam-play-log.md`).
 **계속 연동하지 않고 한 번만 넣기로 함**(사용자) — 사용자가 준 게임 · 시간 목록으로 `STEAM_LIST=목록.json STEAM_CACHE=캐시.json node tools/steam-sync.mjs`(키 없이, 이름으로 상점 검색 → 같은 규칙으로 거름)를 한 번 돌려 `assets/play-steam.js` 를 만들었고, 매주 자동 실행은 껐습니다(수동 실행만 남김).
+화면 제목은 '스팀 기록'이 아니라 **'게임 플레이 타임'**(사용자). `play.steam` 의 `merge`(RPG → 어드벤처로 합침) · `extraHours`(스팀 밖 모바일 · FPS 등 장르별 어림 시간 — 캐주얼 +600 · 어드벤처 +800 · 액션 +900) · `making`(게임 아닌 GameMaker 제작 시간 — 축이 아니라 요약 칸)도 같은 실행에서 반영됩니다.
 목록 · 캐시 파일에는 빠진 게임 이름도 들어 있으니 **저장소에 올리지 않습니다**(결과 파일만 올림).
 
 - 흐름(키로 자동 수집할 때): `.github/workflows/steam-sync.yml`(수동 실행만 — 주 1회 일정은 껐음) → `tools/steam-sync.mjs` → `assets/play-steam.js`

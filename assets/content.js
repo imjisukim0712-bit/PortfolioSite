@@ -375,8 +375,8 @@ window.PORTFOLIO_CONTENT = {
          성인 콘텐츠·연령 제한 게임은 적지 않아도 자동으로 빠집니다.
        ────────────────────────────────────────────────────────────────────── */
     steam: {
-      title:       { ko: "장르별 플레이 시간", en: "Hours by genre" },
-      note:        { ko: "스팀 라이브러리 기준", en: "From my Steam library" },
+      title:       { ko: "게임 플레이 타임", en: "Play time" },
+      note:        { ko: "PC · 모바일 합산 · 모바일 등은 어림값", en: "PC and mobile combined · mobile and other platforms are estimates" },
       totalLabel:  { ko: "총 플레이",     en: "Total played" },
       gamesLabel:  { ko: "집계 게임",     en: "Games counted" },
       recentLabel: { ko: "요즘 하는 게임", en: "Playing lately" },
@@ -391,12 +391,18 @@ window.PORTFOLIO_CONTENT = {
 
       /* 여기부터는 수집 설정 — tools/steam-sync.mjs 가 읽습니다 */
       minMinutes: 60,        // 이만큼(분) 못 논 게임은 그래프에서 뺍니다
-      axes: 6,               // 방사형 축 개수 (5~7 권장)
+      axes: 5,               // 방사형 축 개수 (5~7 권장) — RPG 를 어드벤처에 합쳐 다섯
       topCount: 8,           // 결과 파일에 이름을 남길 게임 수 (나머지는 숫자로만)
       fetchLimit: 140,       // 한 번 실행에 새로 받을 상점 정보 수 (스팀 호출 제한 대비)
       skipSoftware: true,    // 월페이퍼 엔진 같은 '게임 아닌 것' 빼기
       exclude: [],           // 직접 빼기: appid 숫자 또는 이름 일부. 예) [ 431960, "Wallpaper" ]
       excludeGenres: [23, 37, 70],   // 축으로 세우지 않을 장르 id (인디 · 무료 플레이 · 앞서 해보기)
+      merge: { "3": "25" },          // 장르 묶기: RPG → 어드벤처 (한 게임이 둘 다면 한 번만 셈)
+      // 스팀 밖(모바일 · 다른 플랫폼) 플레이 시간 — 사용자가 어림한 값을 장르에 더합니다(묶은 뒤의 id 기준, 시간)
+      extraHours: { "4": 600, "25": 800, "1": 900 },   // 캐주얼 +600 · 어드벤처(RPG 몫) +800 · 액션(FPS 등) +900
+      // 게임은 아니지만 함께 보여 줄 제작 시간 — 그래프 축이 아니라 요약 숫자 한 칸
+      making: { name: "GameMaker", hours: 5110,
+                label: { ko: "게임 제작 · GameMaker", en: "Making games · GameMaker" } },
 
       /* 장르 이름표 (스팀 장르 id → 우리말·영어). 없는 id 는 스팀이 준 영어 이름을 그대로 씁니다 */
       genreNames: {

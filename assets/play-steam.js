@@ -1,51 +1,46 @@
 /* 스팀 플레이 기록 — tools/steam-sync.mjs 가 자동으로 씁니다. 직접 고치지 마세요.
    무엇을 넣고 뺄지는 assets/content.js 의 play.steam 에서 정합니다. */
 window.PORTFOLIO_STEAM = {
-  "generatedAt": "2026-11-07",
+  "generatedAt": "2026-11-08",
   "totals": {
     "games": 100,
-    "hours": 5152,
-    "excluded": 9
+    "hours": 7452,
+    "excluded": 9,
+    "extraHours": 2300
   },
   "axes": [
     {
       "id": "2",
       "name": "Strategy",
-      "hours": 2296,
+      "hours": 2298,
       "games": 45
     },
     {
       "id": "28",
       "name": "Simulation",
-      "hours": 1690,
+      "hours": 1691,
       "games": 46
-    },
-    {
-      "id": "1",
-      "name": "Action",
-      "hours": 362,
-      "games": 34
-    },
-    {
-      "id": "3",
-      "name": "RPG",
-      "hours": 348,
-      "games": 19
     },
     {
       "id": "25",
       "name": "Adventure",
-      "hours": 232,
-      "games": 41
+      "hours": 1335,
+      "games": 51
+    },
+    {
+      "id": "1",
+      "name": "Action",
+      "hours": 1303,
+      "games": 34
     },
     {
       "id": "4",
       "name": "Casual",
-      "hours": 128,
+      "hours": 729,
       "games": 26
     }
   ],
-  "restHours": 89,
+  "restHours": 90,
   "restGenres": 2,
   "top": [
     {
@@ -89,7 +84,7 @@ window.PORTFOLIO_STEAM = {
       "hours": 252,
       "genres": [
         "1",
-        "3",
+        "25",
         "28",
         "2"
       ]
@@ -116,7 +111,7 @@ window.PORTFOLIO_STEAM = {
       "name": "Project Zomboid",
       "hours": 174,
       "genres": [
-        "3",
+        "25",
         "28"
       ]
     }

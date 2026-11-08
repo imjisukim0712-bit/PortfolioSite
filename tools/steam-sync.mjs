@@ -56,6 +56,9 @@ const TOP_COUNT = Math.max(0, num(CFG.topCount, 8));  /* 결과 파일에 이름
 const SKIP_SOFTWARE = CFG.skipSoftware !== false;
 const EXCLUDE = Array.isArray(CFG.exclude) ? CFG.exclude : [];
 const EXCLUDE_GENRES = (Array.isArray(CFG.excludeGenres) ? CFG.excludeGenres : [23, 37, 70]).map(String);
+const MERGE = Object.fromEntries(Object.entries(CFG.merge || {}).map(([a, b]) => [String(a), String(b)]));   /* 장르 묶기 */
+const EXTRA = Object.entries(CFG.extraHours || {}).map(([id, h]) => [String(id), num(h, 0)]).filter(([, h]) => h > 0);   /* 스팀 밖 시간(어림) */
+const gmap = ids => [...new Set(ids.filter(id => !EXCLUDE_GENRES.includes(id) && !SOFTWARE_GENRES.includes(id)).map(id => MERGE[id] || id))];
 
 const ADULT_DESCRIPTORS = [1, 3, 4];        /* 노출·성적 콘텐츠 표시 */
 const ADULT_GENRES = ['71', '72'];          /* 성적 콘텐츠 · 노출 */
@@ -213,7 +216,7 @@ let totalMinutes = 0;
 for (const { game, info } of kept) {
   const mins = num(game.playtime_forever, 0);
   totalMinutes += mins;
-  const gs = info.genres.filter(id => !EXCLUDE_GENRES.includes(id) && !SOFTWARE_GENRES.includes(id));
+  const gs = gmap(info.genres);
   if (!gs.length) continue;
   const share = mins / gs.length;
   for (const id of gs) {
@@ -223,6 +226,15 @@ for (const { game, info } of kept) {
     byGenre.set(id, cur);
   }
 }
+
+/* 스팀 밖 시간 — 설정의 어림값을 장르와 총합에 더함(게임 수는 그대로) */
+let extraMinutes = 0;
+for (const [id, h] of EXTRA) {
+  const cur = byGenre.get(id) || { minutes: 0, games: 0, name: '' };
+  cur.minutes += h * 60; extraMinutes += h * 60;
+  byGenre.set(id, cur);
+}
+totalMinutes += extraMinutes;
 
 const genres = [...byGenre.entries()]
   .map(([id, v]) => ({ id, name: v.name, hours: Math.round(v.minutes / 60), games: v.games }))
@@ -242,7 +254,8 @@ const out = {
   totals: {
     games: kept.length,
     hours: Math.round(totalMinutes / 60),
-    excluded: dropped.length
+    excluded: dropped.length,
+    extraHours: Math.round(extraMinutes / 60)   /* 이 중 스팀 밖(어림)으로 더한 시간 */
   },
   axes,                                   /* 방사형 그래프 축 (시간 많은 순) */
   restHours: rest.reduce((s, g) => s + g.hours, 0),
@@ -251,7 +264,7 @@ const out = {
     appid: game.appid,
     name: game.name || info.name,
     hours: Math.round(num(game.playtime_forever, 0) / 60),
-    genres: info.genres.filter(id => !EXCLUDE_GENRES.includes(id) && !SOFTWARE_GENRES.includes(id))
+    genres: gmap(info.genres)
   })),
   recent
 };
