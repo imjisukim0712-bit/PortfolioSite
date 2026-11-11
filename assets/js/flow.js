@@ -1696,7 +1696,7 @@
         '<div><h5>' + T('고려할 점', 'Trade-offs') + '</h5><ul>' + d.cons[L].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></div></article>';
   }
   function renderDrafts() {
-    document.getElementById('toc').innerHTML = '<a href="#play-part">' + T('전체 흐름 · 플레이', 'Whole flow · play') + '</a>' + DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 나′ · 다′ · 가 · 라 · S', 'Earlier · 나′ · 다′ · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
+    document.getElementById('toc').innerHTML = '<a href="#carts">' + T('카트리지 시안', 'Cartridge drafts') + '</a><a href="#play-part">' + T('전체 흐름 · 플레이', 'Whole flow · play') + '</a>' + DRAFTS4.map(function (d) { return '<a href="#story-' + d.id + '">' + esc(t(d.name).split(' — ')[0]) + '</a>'; }).join('') + '<a href="#older">' + T('지난 안 · 나′ · 다′ · 가 · 라 · S', 'Earlier · 나′ · 다′ · 가 · 라 · S') + '</a><a href="#consoles">' + T('게임기 — 벽돌 휴대기', 'Console — brick handheld') + '</a>';
     document.getElementById('rules').innerHTML = RULES4.map(function (r) { return '<li><b>' + esc(t(r.h)) + '</b>' + esc(t(r.b)) + '</li>'; }).join('');
     document.getElementById('drafts4').innerHTML = DRAFTS4.map(draftHTML).join('');
     document.getElementById('drafts-old').innerHTML = DRAFTS_OLD.map(draftHTML).join('');
@@ -1742,12 +1742,64 @@
     Array.prototype.forEach.call(document.querySelectorAll('canvas[data-art]'), function (cv) { var d = A[cv.getAttribute('data-art')]; if (d) drawArt(cv, d); });
   }
 
+
+  /* ── 카트리지 시안(PART 03) — 사용자: "카드 다 똑같은 색이면 안 되고, 또 카드끼리 구분이 잘 되어야 함 · 카드 시안 몇 개 뽑아와" ──
+     프로젝트마다 색 하나 + (안에 따라) 도트 그림 · 번호 · 모양. 색 · 그림 짝은 CV_ID(시안용 — 고르면 content.js 의 projects.items 로 옮김), 없는 id 는 순서대로 색을 받음.
+     그림은 이 파일의 문자 격자(12 × 12칸 · 4px · 검은 외곽선)로 새로 찍은 것 — 탑 · 곡괭이 · 주사위 · 검 · 동전 */
+  var CV_ICON = {
+    tower: ['KKK.KKKK.KKK', 'KsK.KssK.KsK', 'KsKKKssKKKsK', 'KssssssssssK', 'KKKKKKKKKKKK', '.KssssssssK.', '.KssssssssK.', '.KsssKKsssK.', '.KssKooKssK.', '.KssKooKssK.', '.KssKooKssK.', '.KKKKKKKKKK.'],
+    pick: ['..KKKKKKK...', '.KsssssssK..', 'KsKKKKKssSK.', 'KK....KmsSK.', '.....KmKsSK.', '....KmK.KsK.', '...KmK..KsK.', '..KmK....K..', '.KmK........', 'KmK.........', 'KK..........', '............'],
+    dice: ['.KKKKKKKKKK.', 'KwwwwwwwwwwK', 'KwKKwwwwKKwK', 'KwKKwwwwKKwK', 'KwwwwwwwwwwK', 'KwwwwKKwwwwK', 'KwwwwKKwwwwK', 'KwwwwwwwwwwK', 'KwKKwwwwKKwK', 'KwKKwwwwKKwK', 'KwwwwwwwwwwK', '.KKKKKKKKKK.'],
+    sword: ['.........KKK', '........KwwK', '.......KwsK.', '......KwsK..', '.....KwsK...', '.K..KwsK....', 'KoKKwsK.....', '.KoKsK......', '..KoK.......', '.KmKoK......', 'KmK.KK......', 'KK..........'],
+    coin: ['...KKKKKK...', '..KooooooK..', '.KoowwooooK.', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoooooKKoooK', '.KooooooooK.', '..KooooooK..', '...KKKKKK...']
+  };
+  var CV_COL = {          /* 셸(면 · 빛 · 그늘) · 그림 칸 옅은 색 · 라벨 색 · 라벨 글자색 */
+    red: ['#c8102e', '#ea3a33', '#8c0e22', '#fbd9d2', '#c8102e', '#fff'], gold: ['#e09a10', '#f8c848', '#a06400', '#fdebb8', '#f0b020', '#102346'],
+    green: ['#1f9a3a', '#4cc85a', '#0f6a24', '#d9f0d2', '#177a30', '#fff'], purple: ['#7a44cc', '#a070ec', '#50288c', '#e6dbfa', '#6e3cc0', '#fff'],
+    blue: ['#2060d8', '#4c90f8', '#123c98', '#d6e4fc', '#1c56c8', '#fff'], teal: ['#0e8f8f', '#3cc0c0', '#066060', '#d2f0ee', '#0a7878', '#fff']
+  };
+  var CV_ORDER = ['red', 'gold', 'green', 'purple', 'blue', 'teal'];
+  var CV_ID = { 'league-of-defense': ['red', 'tower'], comstock: ['gold', 'pick'], 'indie-games': ['green', 'dice'], 'sample-combat-doc': ['purple', 'sword'], 'sample-economy-doc': ['blue', 'coin'] };
+  function cvCart(v, p, i, small) {
+    var m = CV_ID[p.id] || [CV_ORDER[i % CV_ORDER.length], p.category === 'planning' ? 'coin' : 'dice'], c = CV_COL[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p);
+    var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + c[4] + ';--ink:' + c[5] + ';--ic:var(--cv-' + m[1] + ')';
+    var title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', grade = '<em class="ps" data-g="' + g + '">' + g + '</em>';
+    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = small ? ' is-s' : '', h;
+    if (v === 'a') h = '<span class="cv cv--a' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + pfArt(p) + '</span></span>';
+    else if (v === 'c') h = '<span class="cv cv--c' + sz + '" style="' + st + '"><span class="cv__lab"><span class="cv__top"><b class="ps cv__no">' + no + '</b>' + grade + '</span>' + title + '<span class="cv__art">' + ic + '</span></span></span>';
+    else if (v === 'd' && p.category === 'planning') h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
+      '<span class="cv__top">' + ic + '<small class="ps cv__no">' + no + '</small>' + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span></span>';
+    else h = '<span class="cv cv--b' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + '<span class="cv__art"><small class="ps cv__no">' + no + '</small>' + ic + '</span></span></span>';
+    return '<span class="cv-slot">' + h + '</span>';
+  }
+  var CV_DRAFTS = [
+    { v: 'a', k: '가', name: { ko: '색 셸', en: 'Coloured shells' }, d: { ko: '셸(플라스틱) 색만 프로젝트마다 다르게 — 라벨은 지금 그대로. 가장 적게 바꾸는 안.', en: 'Only the plastic shell changes colour per project — the label stays as it is now. The smallest change.' },
+      by: { ko: '구분: 색', en: 'Told apart by: colour' } },
+    { v: 'b', k: '나', name: { ko: '색 셸 + 도트 그림', en: 'Coloured shells + pixel emblem' }, d: { ko: '색 셸에 프로젝트마다 다른 도트 그림과 번호. 라벨 그림 칸도 그 색의 옅은 색.', en: 'Coloured shells plus a pixel emblem and a number per project. The picture window takes a light tint of the same colour.' },
+      by: { ko: '구분: 색 + 그림 + 번호', en: 'Told apart by: colour + emblem + number' } },
+    { v: 'c', k: '다', name: { ko: '회색 셸 · 색 라벨', en: 'Grey shells, coloured labels' }, d: { ko: '셸은 모두 같은 회색(옛 카트리지), 라벨 한 장이 프로젝트 색. 큰 번호 · 그림.', en: 'Every shell is the same old-cartridge grey; the label is the project colour, with a big number and an emblem.' },
+      by: { ko: '구분: 라벨 색 + 큰 번호 + 그림', en: 'Told apart by: label colour + big number + emblem' } },
+    { v: 'd', k: '라', name: { ko: '분류별 모양', en: 'Shape by category' }, d: { ko: '게임은 카트리지, 기획서는 디스켓 — 모양으로 분류를, 색 · 그림으로 프로젝트를 구분.', en: 'Games are cartridges, planning docs are diskettes — shape tells the category, colour and emblem tell the project.' },
+      by: { ko: '구분: 모양(분류) + 색 + 그림', en: 'Told apart by: shape (category) + colour + emblem' } }
+  ];
+  function renderCartDrafts() {
+    var box = document.getElementById('cartdrafts'); if (!box) return;
+    var rs = document.documentElement.style;
+    Object.keys(CV_ICON).forEach(function (k) { rs.setProperty('--cv-' + k, spr(CV_ICON[k])); });
+    rs.setProperty('--mb-mini', spr(MINIG));
+    box.innerHTML = CV_DRAFTS.map(function (d) {
+      return '<article class="cvd" id="cart-' + d.v + '"><header class="cvd__head"><span class="cvd__k">' + d.k + '</span><b>' + esc(t(d.name)) + '</b><em>' + esc(t(d.by)) + '</em><p>' + esc(t(d.d)) + '</p></header>' +
+        '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false); }).join('') + '</div>' +
+        '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true); }).join('') + '</div></div></article>';
+    }).join('');
+  }
+
   function applyLang() {
     document.documentElement.setAttribute('lang', L);
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); } }
+  function render() { applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); } }, 150); });
