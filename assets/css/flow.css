@@ -844,7 +844,7 @@
   .pf-stick { position: sticky; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 16px 24px; }
   .pf-dev { position: relative; z-index: 3; flex: none; }
   .pf-art-cv { display: block; image-rendering: pixelated; }
-  .pf-gap { display: block; flex: none; height: var(--pf-gapH, 96px); }
+  .pf-gap { display: grid; place-items: center; flex: none; height: var(--pf-gapH, 96px); margin: 0; }
   .pf-scr { position: absolute; overflow: hidden; background: #141014; color: var(--cream); }
   .pf-key { position: absolute; z-index: 2; padding: 0; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
   .pf-key:hover { background: rgb(255 246 221 / .14); }
@@ -856,7 +856,7 @@
   .pf-slot { display: block; flex: none; width: var(--pf-cw, 132px); height: var(--pf-ch, 176px); background: #0c0a0c; box-shadow: inset 0 0 0 4px #2a2026; }
   .pf-cart { position: relative; display: block; flex: none; width: var(--pf-cw, 132px); height: var(--pf-ch, 176px); padding: 12px 8px 8px; background: var(--red); border: 4px solid #000; box-shadow: inset 4px 4px 0 #ea3a33, inset -4px -4px 0 #8c0e22; color: var(--navy); font: inherit; text-align: left; cursor: pointer; transition: transform .24s steps(4); }
   .pf-cart::before { content: ''; position: absolute; left: 16px; right: 16px; top: 2px; height: 4px; background: repeating-linear-gradient(90deg, #8c0e22 0 4px, transparent 4px 8px); }
-  .pf-cart:hover:not(.is-live) { transform: translateY(-8px); }
+  .pf-cart:hover:not(.is-live):not(.is-move) { transform: translateY(-8px); }
   .pf-cart.is-live { z-index: 2; transition: none; }
   .pf.pf-measure .pf-cart { transition: none !important; }
   .pf-cart__lab { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 8px; background: var(--cream); border: 4px solid #000; }
@@ -1258,3 +1258,27 @@
   .pf .pf-win .pf-q dd { color: #102346; }
   .pf .pf-win .pf-stores a { border-color: #102346; color: #102346; }
   .pf .pf-win .pf-stores a:hover { background: #102346; color: var(--cream); }
+
+  /* ════ 카트리지는 직접 꽂기(사용자: "직접 하게끔 유도 · 드래그로 계속 교체하는 게 아니라") ════
+     비어 있으면 화면은 '카트리지를 꽂아 주세요'가 깜빡이고, 진열판 카트리지가 차례로 한 번씩 들썩이며, 게임기 아래 '▲ 여기에 꽂기 ▲'가 깜빡임.
+     끌어 올리면(진열판 위) 게임기가 받을 준비 — 꽂기 표시가 밝아지고, 놓으면 꽂힘. 누르기 · 화면 목록 · ◀ ▶ 로도 꽂힘, B = 꺼내기 */
+  .pf-cart { cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; }
+  .pf-cart.is-live { cursor: default; }
+  .pf-cart.is-drag { z-index: 6; cursor: grabbing; transition: none; filter: drop-shadow(8px 8px 0 rgb(0 0 0 / .45)); }
+  .pf-cart.is-move { z-index: 2; transition: none; }
+  .pf-stick.is-drag .pf-tray, .pf-stick.is-fly .pf-tray { z-index: 4; }   /* 끄는 동안 · 게임기 위에서 놓은 뒤 입구까지는 게임기 앞으로, 입구에서 밀어 넣을 땐 뒤로 */
+  .pf-insert { font: 400 22px/1 'Galmuri11', monospace; color: #7f8bb0; letter-spacing: .04em; opacity: 0; }
+  .pf.pf-empty .pf-insert { opacity: 1; color: var(--cream); animation: pf-blink 1s steps(1) infinite; }
+  .pf-stick.is-drag .pf-insert { opacity: 1; color: var(--cream); animation: none; }
+  .pf-stick.is-over .pf-insert { color: #f0a04a; animation: pf-blink .3s steps(1) infinite; }
+  .pf-stick.is-over .pf-dev { filter: drop-shadow(0 0 0 #f0a04a) drop-shadow(0 4px 0 #f0a04a) drop-shadow(0 -4px 0 #f0a04a) drop-shadow(4px 0 0 #f0a04a) drop-shadow(-4px 0 0 #f0a04a); }
+  .pf.pf-empty .pf-cart:not(.is-drag):not(.is-move) { animation: pf-bob 3.2s steps(1) infinite; animation-delay: calc(var(--k, 0) * .4s); }
+  .pf.pf-empty .pf-cart:hover { animation: none; }
+  @keyframes pf-bob { 0%, 14%, 100% { transform: none; } 4% { transform: translateY(-12px); } 8% { transform: translateY(-4px); } }
+  .pf-sel__ins { color: var(--or); animation: pf-blink 1s steps(1) infinite; }
+  .pf-sel.is-empty .pf-sel__f { color: var(--cream); }
+  .pf-dock__hint { color: var(--cream); }
+  .pf.is-mob .pf-insert { font-size: 11px; }
+  @media (prefers-reduced-motion: reduce) {
+    .pf.pf-empty .pf-cart, .pf.pf-empty .pf-insert, .pf-sel__ins { animation: none !important; }
+  }
