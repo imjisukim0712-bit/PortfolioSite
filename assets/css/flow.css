@@ -924,7 +924,7 @@
   @media (max-width: 1100px) { .pf-nav { display: none; } }
   @media (max-width: 1100px) { .pf-photo { width: 256px; } .pf-plaque__in { gap: 32px; } }
   @media (max-width: 900px) { .pf-name { font-size: 42px; } .pf-photo { width: 224px; } }
-  /* 휴대폰 — 게임기가 작아 화면엔 이름만, 개요는 아래 창(.pf-dock)에 */
+  /* 휴대폰 — 따로 떨어진 개요 창 없이("이건 왜 분리돼있니") 게임기를 폭 가득 키워 화면 안에 짧은 개요를 그대로 */
   @media (max-width: 760px) {
     .pf-in, .pf-top__in { padding: 0 16px; }
     .pf-top__in { gap: 10px; height: 52px; }
@@ -956,28 +956,25 @@
     .pf-cart::before { left: 8px; right: 8px; }
     .pf-stick { padding: 8px 8px 16px; }
     .pf-gap { height: var(--pf-gapH, 48px); }
-    .pf.is-mob .pf-dock { display: block; width: 100%; max-width: 440px; margin-bottom: 12px; overflow: hidden; padding: 12px 14px; background: #141014; border: 4px solid var(--cream); color: var(--cream); }
-    .pf.is-mob .pf-scr .pf-ov { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 0; padding: 8px 12px; text-align: center; }
-    .pf.is-mob .pf-scr .pf-ov > .pf-art, .pf.is-mob .pf-scr .pf-ov__sub, .pf.is-mob .pf-scr .pf-ov dl, .pf.is-mob .pf-scr .pf-ov__q, .pf.is-mob .pf-scr .pf-ov__go, .pf.is-mob .pf-scr .pf-ov__learn { display: none; }
-    .pf.is-mob .pf-scr .pf-ov__meta { justify-content: center; font-size: 11px; }
-    .pf.is-mob .pf-scr .pf-ov h3 { font: 400 11px/1.4 'Galmuri11', monospace; }
+    .pf.is-mob .pf-scr .pf-ov { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 0; padding: 8px 12px; }
+    .pf.is-mob .pf-scr .pf-ov > .pf-art, .pf.is-mob .pf-scr .pf-ov__q, .pf.is-mob .pf-scr .pf-ov__learn, .pf.is-mob .pf-scr .pf-ov__meta span { display: none; }
+    .pf.is-mob .pf-scr .pf-ov__meta { gap: 6px; font-size: 11px; }
+    .pf.is-mob .pf-scr .pf-ov h3 { margin: 4px 0 2px !important; font: 800 15px/1.3 'Pretendard Variable', Pretendard, sans-serif; }
+    .pf.is-mob .pf-scr .pf-ov__sub { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 12px; line-height: 1.4; }
+    .pf.is-mob .pf-scr .pf-ov dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 10px; margin-top: 4px !important; font-size: 12px; line-height: 1.4; }
+    .pf.is-mob .pf-scr .pf-ov dl div:nth-child(n+3) { display: none; }
+    .pf.is-mob .pf-scr .pf-ov dl div { gap: 6px; min-width: 0; }
+    .pf.is-mob .pf-scr .pf-ov dt { width: auto; }
+    .pf.is-mob .pf-scr .pf-ov dd { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pf.is-mob .pf-scr .pf-ov__go { margin-top: 6px !important; font-size: 12px; }
+    .pf.is-mob .pf-scr .pf-ov__go .ps { width: 18px; height: 18px; }
     .pf.is-mob .pf-scr .pf-sel { padding: 6px 10px; gap: 2px; }
     .pf.is-mob .pf-scr .pf-sel__h, .pf.is-mob .pf-scr .pf-sel__f { font-size: 11px; }
     .pf.is-mob .pf-scr .pf-sel button { padding: 0 0 0 16px; font-size: 11px; line-height: 1.5; }
     .pf.is-mob .pf-scr .pf-sel li.on button::before { left: 0; font-size: 9px; }
     .pf.is-mob .pf-scr .pf-sel li em { display: none; }
     .pf.is-mob .pf-scr .pf-boot { font-size: 11px; }
-    .pf.is-mob .pf-dock .pf-ov { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0; padding: 0; }
-    .pf.is-mob .pf-dock .pf-ov > .pf-art { display: none; }
-    .pf.is-mob .pf-dock .pf-ov h3 { font: 400 22px/1.3 'Galmuri11', monospace; }
-    .pf.is-mob .pf-dock .pf-ov dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; margin-top: 6px !important; font-size: 13px; }
-    .pf.is-mob .pf-dock .pf-ov dl div { gap: 8px; }
-    .pf.is-mob .pf-dock .pf-ov dt { width: auto; }
-    .pf.is-mob .pf-dock .pf-ov__sub, .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go, .pf.is-mob .pf-dock .pf-ov__learn { font-size: 13px; }
-    .pf.is-mob .pf-dock .pf-ov__q, .pf.is-mob .pf-dock .pf-ov__go { margin-top: 8px !important; }
-    .pf.is-mob .pf-dock .pf-boot { font-size: 11px; }
     .pf .swl__rail { left: 16px; } .pf .swl-c { grid-template-columns: 76px minmax(0, 1fr); } .pf .swl-c__node { left: 40px; }
-    .pf-dock__hint { display: grid; place-items: center; height: 100%; font-size: 14px; font-weight: 700; color: #b0a890; text-align: center; }
   }
   @media (prefers-reduced-motion: reduce) { .pf-sel li.on button::before, .pf-sel li em, .pf-dots::after { animation: none; } .pf-cart { transition: none; } }
   /* ── 1-3 보유 기술 · 하위 페이지(같은 테마: 하늘 머리 → 땅 블록 → 지하 창) ───────────────────────── */
@@ -1276,9 +1273,14 @@
   .pf.pf-empty .pf-tray:hover .pf-cart { animation: none; }
   @keyframes pf-bob { 0%, 14%, 100% { transform: none; } 4% { transform: translateY(-12px); } 8% { transform: translateY(-4px); } }
   .pf-sel__ins { font-size: 8px; color: var(--or); animation: pf-blink 1s steps(1) infinite; }
-  .pf-dock__hint { color: var(--cream); font-size: 8px; animation: pf-blink 1s steps(1) infinite; }
   .pf.is-mob .pf-insert { font-size: 8px; }
   .pf.is-mob .pf-slot::after { top: -24px; font-size: 14px; }
   @media (prefers-reduced-motion: reduce) {
-    .pf.pf-empty .pf-cart, .pf.pf-empty .pf-insert, .pf.pf-empty .pf-slot::after, .pf-sel__ins, .pf-dock__hint { animation: none !important; }
   }
+  /* 화면에 넘칠 때 접는 순서(pfFit) */
+  .pf-ov.fit-1 .pf-ov__q, .pf-ov.fit-1 .pf-ov__learn { display: none; }
+  .pf-ov.fit-2 dl div:nth-child(n+3) { display: none; }
+  .pf-ov.fit-3 .pf-ov__sub { display: none; }
+  .pf.is-mob .pf-scr .pf-ov h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pf.is-mob .pf-ov.fit-2 dl { display: none; }
+  .pf.is-mob .pf-ov.fit-3 .pf-ov__meta { display: none; }

@@ -1163,7 +1163,7 @@
       pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges')) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
       '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><p class="pf-gap" aria-hidden="true"><span class="pf-insert">▲</span></p>' +
-      '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +
+      '<div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +
       '<div class="pf-in"><div class="pf-col">' + pfMore('#/projects', T('프로젝트 전체 보기', 'All projects')) + '</div></div></section>';
   }
   function pfFoot() {
@@ -1208,11 +1208,11 @@
     pfDive();
     var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d || !root.querySelector('.pf-stick')) return;
     var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
-    var H = innerHeight - top, W = st.clientWidth, mob = W < 760, dpr = window.devicePixelRatio || 1;
+    var H = innerHeight - top, W = st.clientWidth, mob = innerWidth <= 760, dpr = window.devicePixelRatio || 1;
     var ch = mob ? 84 : Math.round(Math.max(128, Math.min(176, H * .21)) / 4) * 4, cw = Math.round(ch * (mob ? .8 : .76) / 4) * 4;
     if (mob) { var fitW = Math.floor((W - 16 - (PROJ.length - 1) * 8) / PROJ.length / 4) * 4; if (fitW < cw) { cw = fitW; ch = Math.round(cw / .8 / 4) * 4; } }   /* 좁은 휴대폰(360px)에서도 진열판이 한 줄에 */
     var gap = Math.round(ch * .42 / 4) * 4 + (mob ? 12 : 24);
-    var dockH = mob ? 220 : 0, availW = Math.min(W - (mob ? 16 : 64), 1120), availH = H - ch - gap - dockH - (mob ? 32 : 56);
+    var dockH = 0, availW = Math.min(W - (mob ? 16 : 64), 1120), availH = H - ch - gap - dockH - (mob ? 32 : 56);
     var sd = Math.max(1, Math.floor(Math.min(availW / d.w, availH / d.h) * dpr)), cell = sd / dpr;
     pfDraw(cv, d, sd); cv.style.width = d.w * cell + 'px'; cv.style.height = d.h * cell + 'px';
     dev.style.width = d.w * cell + 'px'; dev.style.height = d.h * cell + 'px';
@@ -1223,11 +1223,10 @@
       if (k === 'dpadL') c = [c[0], c[1], c[2] / 2, c[3]]; else if (k === 'dpadR') c = [c[0] + c[2] / 2, c[1], c[2] / 2, c[3]];
       if (c) at(el, c);
     });
-    st.style.top = top + 'px'; st.style.height = H + 'px';
-    if (mob) root.querySelector('[data-pf-dock]').style.height = Math.round(Math.max(220, Math.min(296, H - ch - gap - d.h * cell - 48)) / 4) * 4 + 'px';
+    st.style.top = top + 'px'; st.style.height = mob ? '' : H + 'px';   /* 휴대폰은 판 높이만큼(위아래 빈 공간 없이) */
     root.style.setProperty('--pf-cw', cw + 'px'); root.style.setProperty('--pf-ch', ch + 'px'); root.style.setProperty('--pf-gapH', gap + 'px'); root.style.setProperty('--pf-top', top + 'px');
     root.classList.toggle('is-mob', mob); root.classList.toggle('is-s3', !mob && cell < 4); root.classList.toggle('is-nolbl', cell < 4);          /* 인쇄 글자는 게임기가 칸 4px 이상일 때만(작으면 화면 테로 넘침) */
-    var run = root.querySelector('[data-pf-run]'); run.style.height = H + 'px';   /* 한 화면 — 꽂기는 스크롤이 아니라 손으로 */
+    var run = root.querySelector('[data-pf-run]'); run.style.height = mob ? '' : H + 'px';   /* 한 화면 — 꽂기는 스크롤이 아니라 손으로 */
     /* 카트리지 자리(진열판에 놓인 자리) · 꽂는 자리(게임기 몸 아래 가운데) — 판(.pf-stick) 기준 좌표 */
     var cards = [].slice.call(root.querySelectorAll('.pf-cart'));
     root.classList.add('pf-measure'); cards.forEach(function (c) { c.style.transform = ''; }); void root.offsetWidth;   /* 되돌아가는 중인 카트리지도 제자리에서 잼 */
@@ -1265,11 +1264,11 @@
   }
   function pfEase(f) { return f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; }
   function pfShow() {                           /* 상태 → 화면 · 아래 창 · 카트리지 표시 */
-    var s = PFS, hint = '<p class="pf-dock__hint ps">PRESS START</p>';
+    var s = PFS, hint = '';
     if (s.cur < 0) pfScreen('sel', pfSel(-1, ''), hint);
     else if (s.ph === 'ins' || s.ph === 'ej') pfScreen('sel:' + s.cur + ':' + s.ph, pfSel(s.cur, s.ph === 'ins' ? T('꽂는 중', 'inserting') : T('꺼내는 중', 'ejecting')), hint);
-    else if (s.ph === 'boot') pfScreen('boot:' + s.cur, pfBoot(), PF.mob ? pfBoot() : '');
-    else pfScreen('ov:' + s.cur, pfOv(s.cur, false), PF.mob ? pfOv(s.cur, false) : '');
+    else if (s.ph === 'boot') pfScreen('boot:' + s.cur, pfBoot(), '');
+    else pfScreen('ov:' + s.cur, pfOv(s.cur, false), '');
     PF.root.classList.toggle('pf-empty', s.cur < 0);
     PF.cards.forEach(function (c, j) { c.classList.toggle('is-live', j === s.cur); c.setAttribute('aria-pressed', String(j === s.cur && s.ph === 'on')); });
   }
@@ -1313,12 +1312,16 @@
       function () { c.classList.remove('is-move'); c.style.transform = ''; });
   }
   function pfStep(d) { var n = PROJ.length; pfInsert(PFS.cur < 0 ? (d > 0 ? 0 : n - 1) : (PFS.cur + d + n) % n); }
+  function pfFit(scr) {                        /* 화면에 개요가 넘치면 덜 중요한 줄부터 접음(퀘스트 → 표 뒤 두 줄 → 한 줄 소개) — '자세히 보기'는 늘 보이게 */
+    var o = scr.querySelector('.pf-ov'); if (!o) return;
+    ['fit-1', 'fit-2', 'fit-3'].forEach(function (c) { if (o.scrollHeight > scr.clientHeight + 1) o.classList.add(c); });
+  }
   function pfScreen(key, html, dock) {
     if (PF.key === key) return;
     var first = PF.key === '';
     PF.key = key;
     var scr = PF.root.querySelector('[data-pf-scr]'); scr.innerHTML = html; if (!first) pop(scr);
-    var dk = PF.root.querySelector('[data-pf-dock]'); dk.innerHTML = dock; if (!first && dock) pop(dk);
+    pfFit(scr);
   }
   function pfWorldTick() {                      /* 위 띠의 WORLD — 지금 머리 아래에 걸린 칸(data-pf-sec · data-pf-nm) */
     var root = document.querySelector('[data-pf]'); if (!root) return;
