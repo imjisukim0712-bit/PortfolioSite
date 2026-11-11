@@ -1149,7 +1149,7 @@
       '<div class="pf-col">' + pfSkills() + '</div></div></section>';
   }
   function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음 */
-    return '<span class="pf-slot">' + '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" style="--k:' + i + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
+    return '<span class="pf-slot" style="--k:' + i + '">' + '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" style="--k:' + i + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
       '<span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p) + '</span></button></span>';
   }
   function pfKey(cls, attr, label, k) { return '<' + (attr.indexOf('href') === 0 ? 'a ' + attr : 'button type="button" ' + attr) + ' class="pf-key ' + cls + '" data-pf-k="' + k + '" aria-label="' + label + '"></' + (attr.indexOf('href') === 0 ? 'a' : 'button') + '>'; }
@@ -1160,9 +1160,9 @@
       (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
     var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', T('A 자세히', 'A OPEN')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
     return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-4" data-pf-nm="' + T('프로젝트', 'Projects') + '"><div class="pf-in">' +
-      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개 · 하나를 끌어다 게임기에 꽂아 보세요', PROJ.length + ' cartridges · drag one into the console')) + '</div>' +
+      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges')) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
-      '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><p class="pf-gap" aria-hidden="true"><span class="pf-insert">' + T('▲ 여기에 꽂기 ▲', '▲ INSERT HERE ▲') + '</span></p>' +
+      '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><p class="pf-gap" aria-hidden="true"><span class="pf-insert">▲</span></p>' +
       '<div class="pf-dock" data-pf-dock></div><div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +
       '<div class="pf-in"><div class="pf-col">' + pfMore('#/projects', T('프로젝트 전체 보기', 'All projects')) + '</div></div></section>';
   }
@@ -1174,10 +1174,10 @@
   }
 
   /* 게임기 화면 — 고르기 목록(아무것도 안 꽂힘 · 꽂는 중) / 읽는 중 / 개요 */
-  function pfSel(cur, busy) {
-    return '<div class="pf-sel' + (cur < 0 ? ' is-empty' : '') + '"><p class="pf-sel__h"><b class="ps">1P</b>' + (cur < 0 ? '<span class="pf-sel__ins">' + T('카트리지를 꽂아 주세요', 'Insert a cartridge') + '</span>' : T('카트리지 고르기', 'Select a cartridge')) + '</p><ol>' + PROJ.map(function (p, j) {
+  function pfSel(cur, busy) {                  /* 비어 있으면 'PRESS START' 만 깜빡임 — 설명 글 없이 눌러 보게("긴 설명 없애고 걍 눌러보게") */
+    return '<div class="pf-sel' + (cur < 0 ? ' is-empty' : '') + '"><p class="pf-sel__h"><b class="ps">1P</b>' + (cur < 0 ? '<span class="ps pf-sel__ins">PRESS START</span>' : '') + '</p><ol>' + PROJ.map(function (p, j) {
       return '<li' + (j === cur ? ' class="on"' : '') + '><button type="button" data-pf-go="' + j + '">' + esc(t(p.title)) + '</button>' + (j === cur && busy ? '<em>' + busy + '</em>' : '') + '</li>';
-    }).join('') + '</ol><p class="pf-sel__f">' + T('▼ 아래 카트리지를 끌어다 꽂거나 눌러 보세요', '▼ Drag a cartridge below into the console — or just click one') + '</p></div>';
+    }).join('') + '</ol></div>';
   }
   function pfBoot() { return '<div class="pf-boot"><p>' + T('읽는 중', 'Loading') + '<span class="pf-dots"></span></p></div>'; }
   function pfOv(i, notes) {
@@ -1246,7 +1246,7 @@
     }
     pfPlace();
   }
-  /* 카트리지는 직접 꽂음(사용자: "직접 하게끔 유도 · 드래그로 계속 교체하는 게 아니라") — 끌어다 게임기 위로 놓거나 · 누르거나 · 화면 목록 · ◀ ▶ 로 꽂고, B 로 꺼냄.
+  /* 카트리지는 직접 꽂음(사용자: "직접 하게끔 유도 · 드래그로 계속 교체하는 게 아니라" → "그냥 누르면 바로 꼽히게") — 누르기 · 화면 목록 · ◀ ▶ 로 꽂고, B 로 꺼냄.
      PFS = 꽂힌 칸(cur, -1 = 비어 있음) · 단계(ins 꽂는 중 → boot 읽는 중 → on 개요 / ej 꺼내는 중) · busy(연출 중엔 새 입력을 받지 않음) */
   var PFS = { cur: -1, ph: '', busy: 0 }, PFA = 0;
   function pfQ(v) { return Math.round(v / 4) * 4; }
@@ -1265,7 +1265,7 @@
   }
   function pfEase(f) { return f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; }
   function pfShow() {                           /* 상태 → 화면 · 아래 창 · 카트리지 표시 */
-    var s = PFS, hint = '<p class="pf-dock__hint">' + T('아래 카트리지를 눌러 게임기에 꽂아 보세요', 'Tap a cartridge below to put it in') + '</p>';
+    var s = PFS, hint = '<p class="pf-dock__hint ps">PRESS START</p>';
     if (s.cur < 0) pfScreen('sel', pfSel(-1, ''), hint);
     else if (s.ph === 'ins' || s.ph === 'ej') pfScreen('sel:' + s.cur + ':' + s.ph, pfSel(s.cur, s.ph === 'ins' ? T('꽂는 중', 'inserting') : T('꺼내는 중', 'ejecting')), hint);
     else if (s.ph === 'boot') pfScreen('boot:' + s.cur, pfBoot(), PF.mob ? pfBoot() : '');
@@ -1274,7 +1274,7 @@
     PF.cards.forEach(function (c, j) { c.classList.toggle('is-live', j === s.cur); c.setAttribute('aria-pressed', String(j === s.cur && s.ph === 'on')); });
   }
   function pfPlace() {                          /* 다시 잰 뒤 — 연출 중이던 것은 끝난 자리로 */
-    PFA++; PF.st.classList.remove('is-fly', 'is-drag', 'is-over');
+    PFA++; PF.st.classList.remove('is-fly');
     if (PFS.ph === 'ej') { PFS.cur = -1; PFS.ph = ''; }
     else if (PFS.cur >= 0) PFS.ph = 'on';
     PFS.busy = 0;
@@ -1289,12 +1289,12 @@
     if (s.cur >= 0) { pfEject(function () { pfInsert(j, from); }); return; }
     var c = PF.cards[j], b = PF.base[j], p0 = from || b, p1 = [PF.slotX, PF.preY], p2 = [PF.slotX, PF.insY], up = from ? 0 : 32;
     s.cur = j; s.ph = 'ins'; s.busy = 1; c.classList.add('is-move'); pfShow();
-    pfRun(c, j, 560, function (t) {
+    pfRun(c, j, 320, function (t) {
       if (t < .7) { var f = t / .7, e = pfEase(f); return [p0[0] + (p1[0] - p0[0]) * e, p0[1] + (p1[1] - p0[1]) * e - Math.sin(Math.PI * f) * up]; }
       return [p1[0], p1[1] + (p2[1] - p1[1]) * (t - .7) / .3];
     }, function () {
       c.classList.remove('is-move'); s.ph = 'boot'; pfShow();
-      setTimeout(function () { if (PFS === s && s.cur === j && s.ph === 'boot') { s.ph = 'on'; s.busy = 0; pfShow(); } }, RM ? 0 : 420);
+      setTimeout(function () { if (PFS === s && s.cur === j && s.ph === 'boot') { s.ph = 'on'; s.busy = 0; pfShow(); } }, RM ? 0 : 220);
     }, function (t) { return from && t < .7; });
   }
   function pfEject(then) {
@@ -1302,7 +1302,7 @@
     if (s.busy) return;
     var j = s.cur, c = PF.cards[j], b = PF.base[j], p1 = [PF.slotX, PF.preY];
     s.ph = 'ej'; s.busy = 1; c.classList.add('is-move'); pfShow();
-    pfRun(c, j, 420, function (t) {
+    pfRun(c, j, 240, function (t) {
       if (t < .3) return [p1[0], PF.insY + (p1[1] - PF.insY) * t / .3];
       var f = (t - .3) / .7, e = pfEase(f); return [p1[0] + (b[0] - p1[0]) * e, p1[1] + (b[1] - p1[1]) * e - Math.sin(Math.PI * f) * 24];
     }, function () { c.classList.remove('is-move'); c.style.transform = ''; s.cur = -1; s.ph = ''; s.busy = 0; pfShow(); if (then) then(); });
@@ -1313,30 +1313,6 @@
       function () { c.classList.remove('is-move'); c.style.transform = ''; });
   }
   function pfStep(d) { var n = PROJ.length; pfInsert(PFS.cur < 0 ? (d > 0 ? 0 : n - 1) : (PFS.cur + d + n) % n); }
-  function pfDrag(root) {                        /* 끌기 — 진열판 위로 들어 올리면 게임기가 받을 준비(▲ 여기에 꽂기 가 밝아짐), 놓으면 꽂힘 */
-    root.addEventListener('pointerdown', function (e) {
-      var c = e.target.closest('.pf-cart'); if (!c || !PF || (e.button && e.button !== 0)) return;
-      var j = PF.cards.indexOf(c); if (j < 0 || j === PFS.cur || PFS.busy || c.classList.contains('is-move')) return;
-      var sx = e.clientX, sy = e.clientY, moved = false, b = PF.base[j];
-      function over(ev) { var tr = PF.root.querySelector('.pf-tray').getBoundingClientRect(); return ev.clientY < tr.top - 8; }
-      function mv(ev) {
-        var dx = ev.clientX - sx, dy = ev.clientY - sy;
-        if (!moved) { if (Math.abs(dx) + Math.abs(dy) < 8) return; moved = true; try { c.setPointerCapture(e.pointerId); } catch (er) {} c.classList.add('is-drag'); PF.st.classList.add('is-drag'); }
-        ev.preventDefault();
-        c.style.transform = 'translate(' + pfQ(dx) + 'px,' + pfQ(dy) + 'px)';
-        PF.st.classList.toggle('is-over', over(ev));
-      }
-      function up(ev) {
-        c.removeEventListener('pointermove', mv); c.removeEventListener('pointerup', up); c.removeEventListener('pointercancel', up);
-        if (!moved || !PF) return;
-        c.__dragged = 1; setTimeout(function () { c.__dragged = 0; }, 0);
-        var ok = ev.type === 'pointerup' && over(ev), pos = [b[0] + ev.clientX - sx, b[1] + ev.clientY - sy];
-        c.classList.remove('is-drag'); PF.st.classList.remove('is-drag', 'is-over');
-        if (ok) pfInsert(j, pos); else pfBack(c, j, pos);
-      }
-      c.addEventListener('pointermove', mv); c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
-    });
-  }
   function pfScreen(key, html, dock) {
     if (PF.key === key) return;
     var first = PF.key === '';
@@ -1562,7 +1538,6 @@
     var menu = pf.querySelector('[data-pf-menu]');
     if (menu) {
       wireL3();
-      pfDrag(pf);
       var menuOn = function (li) { [].forEach.call(menu.children, function (x) { x.classList.toggle('on', x === li); }); };
       menu.addEventListener('mouseover', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
       menu.addEventListener('focusin', function (e) { var li = e.target.closest('li'); if (li) menuOn(li); });
@@ -1570,7 +1545,7 @@
     pf.addEventListener('click', function (e) {
       var jm = e.target.closest('[data-pf-jump]');
       if (jm) { e.preventDefault(); var tg = pf.querySelector(jm.getAttribute('href')); if (tg) window.scrollTo({ top: tg.getBoundingClientRect().top + scrollY - (jm.getAttribute('href') === '#pf-career' ? 0 : 40), behavior: RM ? 'auto' : 'smooth' }); return; }
-      var g = e.target.closest('[data-pf-go]'); if (g) { if (!g.__dragged) pfInsert(+g.getAttribute('data-pf-go')); return; }
+      var g = e.target.closest('[data-pf-go]'); if (g) { pfInsert(+g.getAttribute('data-pf-go')); return; }
       var s = e.target.closest('[data-pf-step]'); if (s) { pfStep(+s.getAttribute('data-pf-step')); return; }
       if (e.target.closest('[data-pf-b]')) { pfEject(); return; }
       if (e.target.closest('[data-pf-a]')) {
