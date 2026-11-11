@@ -1744,7 +1744,7 @@
 
 
   /* ── 카트리지 시안(PART 03) — 사용자: "카드 다 똑같은 색이면 안 되고, 또 카드끼리 구분이 잘 되어야 함 · 카드 시안 몇 개 뽑아와" ──
-     프로젝트마다 색 하나 + (안에 따라) 도트 그림 · 번호 · 모양. 색 · 그림 짝은 CV_ID(시안용 — 고르면 content.js 의 projects.items 로 옮김), 없는 id 는 순서대로 색을 받음.
+     프로젝트마다 색 하나 + (안에 따라) 도트 그림 · 번호 · 모양. 색 · 그림 짝은 CV_KEY · CV_PAL(시안용 — 고르면 content.js 의 projects.items 로 옮김), 없는 id 는 순서대로 색을 받음.
      그림은 이 파일의 문자 격자(12 × 12칸 · 4px · 검은 외곽선)로 새로 찍은 것 — 탑 · 곡괭이 · 주사위 · 검 · 동전 */
   var CV_ICON = {
     tower: ['KKK.KKKK.KKK', 'KsK.KssK.KsK', 'KsKKKssKKKsK', 'KssssssssssK', 'KKKKKKKKKKKK', '.KssssssssK.', '.KssssssssK.', '.KsssKKsssK.', '.KssKooKssK.', '.KssKooKssK.', '.KssKooKssK.', '.KKKKKKKKKK.'],
@@ -1753,18 +1753,24 @@
     sword: ['.........KKK', '........KwwK', '.......KwsK.', '......KwsK..', '.....KwsK...', '.K..KwsK....', 'KoKKwsK.....', '.KoKsK......', '..KoK.......', '.KmKoK......', 'KmK.KK......', 'KK..........'],
     coin: ['...KKKKKK...', '..KooooooK..', '.KoowwooooK.', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoowooKKoooK', 'KoooooKKoooK', '.KooooooooK.', '..KooooooK..', '...KKKKKK...']
   };
-  var CV_COL = {          /* 셸(면 · 빛 · 그늘) · 그림 칸 옅은 색 · 라벨 색 · 라벨 글자색 */
-    red: ['#c8102e', '#ea3a33', '#8c0e22', '#fbd9d2', '#c8102e', '#fff'], gold: ['#e09a10', '#f8c848', '#a06400', '#fdebb8', '#f0b020', '#102346'],
-    green: ['#1f9a3a', '#4cc85a', '#0f6a24', '#d9f0d2', '#177a30', '#fff'], purple: ['#7a44cc', '#a070ec', '#50288c', '#e6dbfa', '#6e3cc0', '#fff'],
-    blue: ['#2060d8', '#4c90f8', '#123c98', '#d6e4fc', '#1c56c8', '#fff'], teal: ['#0e8f8f', '#3cc0c0', '#066060', '#d2f0ee', '#0a7878', '#fff']
+  /* 색 묶음 — 줄 하나 = [셸 면, 빛, 그늘, 그림 칸 옅은 색, 라벨 색, 라벨 글자색, (띠 안) 띠 · 칩 색]. 순서는 CV_KEY(프로젝트 → 칸), 없는 id 는 차례대로 */
+  var CV_PAL = {
+    vivid: [['#c8102e', '#ea3a33', '#8c0e22', '#fbd9d2', '#c8102e', '#fff'], ['#e09a10', '#f8c848', '#a06400', '#fdebb8', '#f0b020', '#102346'], ['#1f9a3a', '#4cc85a', '#0f6a24', '#d9f0d2', '#177a30', '#fff'],
+      ['#7a44cc', '#a070ec', '#50288c', '#e6dbfa', '#6e3cc0', '#fff'], ['#2060d8', '#4c90f8', '#123c98', '#d6e4fc', '#1c56c8', '#fff']],
+    /* 라-1 계열 둘 — 게임은 사이트의 따뜻한 색(빨강 · 벽돌 · 금색), 기획서는 푸른 색(남색 · 청록) */
+    fam: [['#c8102e', '#ea3a33', '#8c0e22', '#fbd9d2'], ['#c85a1c', '#e88040', '#8c3a0c', '#fbe0cc'], ['#d4a23e', '#ecc668', '#9a7020', '#faecc4'], ['#2c4f9c', '#4c74c8', '#1a3068', '#d8e2f6'], ['#3d7f8f', '#62a8b8', '#24525e', '#d6ecef']],
+    /* 라-2 톤 다운 — 다섯 색을 채도 낮춰(바랜 플라스틱) */
+    dusty: [['#b5473f', '#d46a60', '#7c2c28', '#f6dcd6'], ['#c9a14a', '#e2c070', '#8e6e28', '#f6ebc8'], ['#6f9a5b', '#94bc80', '#486a38', '#dfecd6'], ['#8a6aa8', '#ac90c8', '#5c4474', '#e8def0'], ['#5a82b0', '#80a6d0', '#3a587c', '#dae4f0']],
+    /* 라-3 색은 띠 하나 — 셸은 분류별 한 색(게임 아이보리 · 기획서 회색), 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만 */
+    stripe: [['#e6dabd', '#f6eed8', '#b4a684', '#fbd9d2', '', '', '#c8102e'], ['#e6dabd', '#f6eed8', '#b4a684', '#fbe0cc', '', '', '#c85a1c'], ['#e6dabd', '#f6eed8', '#b4a684', '#faecc4', '', '', '#b07c14'],
+      ['#aab0c0', '#ccd0dc', '#747a8c', '#d8e2f6', '', '', '#2c4f9c'], ['#aab0c0', '#ccd0dc', '#747a8c', '#d6ecef', '', '', '#2f6c7c']]
   };
-  var CV_ORDER = ['red', 'gold', 'green', 'purple', 'blue', 'teal'];
-  var CV_ID = { 'league-of-defense': ['red', 'tower'], comstock: ['gold', 'pick'], 'indie-games': ['green', 'dice'], 'sample-combat-doc': ['purple', 'sword'], 'sample-economy-doc': ['blue', 'coin'] };
-  function cvCart(v, p, i, small) {
-    var m = CV_ID[p.id] || [CV_ORDER[i % CV_ORDER.length], p.category === 'planning' ? 'coin' : 'dice'], c = CV_COL[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p);
-    var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + c[4] + ';--ink:' + c[5] + ';--ic:var(--cv-' + m[1] + ')';
+  var CV_KEY = { 'league-of-defense': [0, 'tower'], comstock: [1, 'pick'], 'indie-games': [2, 'dice'], 'sample-combat-doc': [3, 'sword'], 'sample-economy-doc': [4, 'coin'] };
+  function cvCart(v, p, i, small, pal) {
+    var P = CV_PAL[pal || 'vivid'], m = CV_KEY[p.id] || [i % P.length, p.category === 'planning' ? 'coin' : 'dice'], c = P[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p), band = !!c[6];
+    var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + (c[4] || c[0]) + ';--ink:' + (c[5] || '#fff') + ';--ch:' + (c[6] || c[2]) + ';--ic:var(--cv-' + m[1] + ')';
     var title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', grade = '<em class="ps" data-g="' + g + '">' + g + '</em>';
-    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = small ? ' is-s' : '', h;
+    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = (small ? ' is-s' : '') + (band ? ' cv--band' : ''), h;
     if (v === 'a') h = '<span class="cv cv--a' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + pfArt(p) + '</span></span>';
     else if (v === 'c') h = '<span class="cv cv--c' + sz + '" style="' + st + '"><span class="cv__lab"><span class="cv__top"><b class="ps cv__no">' + no + '</b>' + grade + '</span>' + title + '<span class="cv__art">' + ic + '</span></span></span>';
     else if (v === 'd' && p.category === 'planning') h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
@@ -1772,26 +1778,33 @@
     else h = '<span class="cv cv--b' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + '<span class="cv__art"><small class="ps cv__no">' + no + '</small>' + ic + '</span></span></span>';
     return '<span class="cv-slot">' + h + '</span>';
   }
+  /* 지금 고르는 것 = 라(분류별 모양)의 색 — "라 쪽으로 가는 게 좋아 보이긴 한데 색이 너무 또렷 · 너무 무지개" */
   var CV_DRAFTS = [
-    { v: 'a', k: '가', name: { ko: '색 셸', en: 'Coloured shells' }, d: { ko: '셸(플라스틱) 색만 프로젝트마다 다르게 — 라벨은 지금 그대로. 가장 적게 바꾸는 안.', en: 'Only the plastic shell changes colour per project — the label stays as it is now. The smallest change.' },
-      by: { ko: '구분: 색', en: 'Told apart by: colour' } },
-    { v: 'b', k: '나', name: { ko: '색 셸 + 도트 그림', en: 'Coloured shells + pixel emblem' }, d: { ko: '색 셸에 프로젝트마다 다른 도트 그림과 번호. 라벨 그림 칸도 그 색의 옅은 색.', en: 'Coloured shells plus a pixel emblem and a number per project. The picture window takes a light tint of the same colour.' },
-      by: { ko: '구분: 색 + 그림 + 번호', en: 'Told apart by: colour + emblem + number' } },
-    { v: 'c', k: '다', name: { ko: '회색 셸 · 색 라벨', en: 'Grey shells, coloured labels' }, d: { ko: '셸은 모두 같은 회색(옛 카트리지), 라벨 한 장이 프로젝트 색. 큰 번호 · 그림.', en: 'Every shell is the same old-cartridge grey; the label is the project colour, with a big number and an emblem.' },
-      by: { ko: '구분: 라벨 색 + 큰 번호 + 그림', en: 'Told apart by: label colour + big number + emblem' } },
-    { v: 'd', k: '라', name: { ko: '분류별 모양', en: 'Shape by category' }, d: { ko: '게임은 카트리지, 기획서는 디스켓 — 모양으로 분류를, 색 · 그림으로 프로젝트를 구분.', en: 'Games are cartridges, planning docs are diskettes — shape tells the category, colour and emblem tell the project.' },
-      by: { ko: '구분: 모양(분류) + 색 + 그림', en: 'Told apart by: shape (category) + colour + emblem' } }
+    { v: 'd', pal: 'fam', id: 'd1', k: '라-1', name: { ko: '계열 둘', en: 'Two colour families' }, by: { ko: '색 수: 따뜻한 계열 + 푸른 계열', en: 'Hues: one warm family + one cool family' },
+      d: { ko: '게임은 사이트의 따뜻한 색(빨강 · 벽돌 · 금색), 기획서는 푸른 색(남색 · 청록). 분류끼리는 한 계열이라 무지개가 되지 않고, 분류가 모양과 색 온도 둘 다로 갈립니다.', en: 'Games take the site\'s warm colours (red, brick, gold); planning docs take cool ones (navy, teal). Each category stays in one family, so it never turns into a rainbow, and category shows in both shape and colour temperature.' } },
+    { v: 'd', pal: 'dusty', id: 'd2', k: '라-2', name: { ko: '톤 다운', en: 'Toned down' }, by: { ko: '색 수: 다섯 그대로, 채도만 낮춤', en: 'Hues: still five, just less saturated' },
+      d: { ko: '다섯 색은 그대로 두고 채도를 낮춰 바랜 플라스틱처럼. 프로젝트마다 색이 확실히 다르면서 눈은 덜 아픕니다.', en: 'The same five colours, desaturated like faded plastic. Every project still has its own clear colour, with less glare.' } },
+    { v: 'd', pal: 'stripe', id: 'd3', k: '라-3', name: { ko: '색은 띠 하나', en: 'Colour as one band' }, by: { ko: '색 수: 셸 둘(아이보리 · 회색) + 띠', en: 'Hues: two shells (ivory, grey) + a band' },
+      d: { ko: '셸은 분류별 한 색(게임 아이보리 · 기획서 회색)이고, 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만. 가장 차분한 안.', en: 'Shells come in one colour per category (ivory games, grey docs); the project colour only appears on the label band, the chip and the picture window. The calmest option.' } }
   ];
+  var CV_OLD = [
+    { v: 'a', id: 'a', k: '가', name: { ko: '색 셸', en: 'Coloured shells' }, by: { ko: '구분: 색', en: 'Told apart by: colour' }, d: { ko: '셸(플라스틱) 색만 프로젝트마다 다르게 — 라벨은 그대로.', en: 'Only the plastic shell changes colour per project — the label stays.' } },
+    { v: 'b', id: 'b', k: '나', name: { ko: '색 셸 + 도트 그림', en: 'Coloured shells + pixel emblem' }, by: { ko: '구분: 색 + 그림 + 번호', en: 'Told apart by: colour + emblem + number' }, d: { ko: '색 셸에 프로젝트마다 다른 도트 그림과 번호.', en: 'Coloured shells plus a pixel emblem and a number per project.' } },
+    { v: 'c', id: 'c', k: '다', name: { ko: '회색 셸 · 색 라벨', en: 'Grey shells, coloured labels' }, by: { ko: '구분: 라벨 색 + 큰 번호 + 그림', en: 'Told apart by: label colour + big number + emblem' }, d: { ko: '셸은 모두 같은 회색, 라벨 한 장이 프로젝트 색. 큰 번호 · 그림.', en: 'Every shell is the same grey; the label is the project colour, with a big number and an emblem.' } },
+    { v: 'd', id: 'd', k: '라', name: { ko: '분류별 모양 — 또렷한 다섯 색', en: 'Shape by category — five vivid colours' }, by: { ko: '구분: 모양(분류) + 색 + 그림', en: 'Told apart by: shape (category) + colour + emblem' }, d: { ko: '게임은 카트리지, 기획서는 디스켓. 모양은 골랐고 색이 "너무 무지개"라 위에서 다시 잡는 중.', en: 'Games are cartridges, docs are diskettes. The shape is chosen; the colours were "too rainbow", so they are being reworked above.' } }
+  ];
+  function cvDraft(d) {
+    return '<article class="cvd" id="cart-' + d.id + '"><header class="cvd__head"><span class="cvd__k">' + d.k + '</span><b>' + esc(t(d.name)) + '</b><em>' + esc(t(d.by)) + '</em><p>' + esc(t(d.d)) + '</p></header>' +
+      '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false, d.pal); }).join('') + '</div>' +
+      '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal); }).join('') + '</div></div></article>';
+  }
   function renderCartDrafts() {
     var box = document.getElementById('cartdrafts'); if (!box) return;
-    var rs = document.documentElement.style;
+    var rs = document.documentElement.style, was = box.querySelector('details'), open = was && was.open;
     Object.keys(CV_ICON).forEach(function (k) { rs.setProperty('--cv-' + k, spr(CV_ICON[k])); });
     rs.setProperty('--mb-mini', spr(MINIG));
-    box.innerHTML = CV_DRAFTS.map(function (d) {
-      return '<article class="cvd" id="cart-' + d.v + '"><header class="cvd__head"><span class="cvd__k">' + d.k + '</span><b>' + esc(t(d.name)) + '</b><em>' + esc(t(d.by)) + '</em><p>' + esc(t(d.d)) + '</p></header>' +
-        '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false); }).join('') + '</div>' +
-        '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true); }).join('') + '</div></div></article>';
-    }).join('');
+    box.innerHTML = CV_DRAFTS.map(cvDraft).join('') + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — 가 색 셸 · 나 도트 그림 · 다 색 라벨 · 라 또렷한 다섯 색', 'Earlier — 가 shells · 나 emblems · 다 labels · 라 five vivid colours') +
+      '<small>' + T('1차', 'round 1') + '</small></summary><div>' + CV_OLD.map(cvDraft).join('') + '</div></details>';
   }
 
   function applyLang() {

@@ -1306,11 +1306,11 @@
   .cv__lab { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 8px; background: var(--cream); border: 4px solid #000; }
   .cv__t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; flex: none; font-size: 14px; font-weight: 800; line-height: 1.3; }
   .cv__meta { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 4px; }
-  .cv__meta i { padding: 0 4px; border: 2px solid var(--sh-d); color: var(--sh-d); font-size: 11px; font-style: normal; font-weight: 800; line-height: 1.4; }
+  .cv__meta i { padding: 0 4px; border: 2px solid var(--ch); color: var(--ch); font-size: 11px; font-style: normal; font-weight: 800; line-height: 1.4; }
   .cv em.ps { flex: none; padding: 4px 4px 3px; background: #7c7c7c; color: #fff; font-size: 8px; line-height: 1; }
   .cv em.ps[data-g="SSR"] { background: #c8102e; } .cv em.ps[data-g="SR"] { background: #c84c0c; }
   .cv__ic { display: block; flex: none; width: 48px; height: 48px; background: var(--ic) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-  .cv__no { font-size: 8px; line-height: 1; color: var(--sh-d); }
+  .cv__no { font-size: 8px; line-height: 1; color: var(--ch); }
   .cv .pf-art { border: 2px solid var(--navy); }
   /* 나 — 그림 칸 = 그 색의 옅은 색 + 도트 그림 + 번호 */
   .cv--b .cv__art { display: grid; flex: 1; grid-template-columns: 22px 48px minmax(0, 1fr); align-items: center; justify-items: center; min-height: 0; overflow: hidden; background: var(--tint); border: 2px solid var(--navy); }
@@ -1349,3 +1349,8 @@
   .cv--disk.is-s .cv__lab { align-items: flex-start; overflow: hidden; }
   .cv--disk.is-s .cv__top { display: flex; }
   .cv--disk.is-s .cv__top em { display: none; }
+  /* 띠 안(라-3) — 프로젝트 색은 라벨 윗띠 하나 */
+  .cv--band .cv__lab { padding-top: 16px; box-shadow: inset 0 8px 0 var(--ch); }
+  .cv--band.is-s .cv__lab { padding-top: 6px; box-shadow: inset 0 4px 0 var(--ch); }
+  #cartdrafts .older > div { padding-top: 4px; }
+  .cv--disk.cv--band.is-s .cv__shut { height: 8px; }
