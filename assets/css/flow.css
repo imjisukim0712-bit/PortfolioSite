@@ -1350,7 +1350,15 @@
   .cv--disk.is-s .cv__top { display: flex; }
   .cv--disk.is-s .cv__top em { display: none; }
   /* 띠 안(라-3) — 프로젝트 색은 라벨 윗띠 하나 */
-  .cv--band .cv__lab { padding-top: 16px; box-shadow: inset 0 8px 0 var(--ch); }
-  .cv--band.is-s .cv__lab { padding-top: 6px; box-shadow: inset 0 4px 0 var(--ch); }
+  .cv--band .cv__lab { padding-top: 16px; box-shadow: inset 0 8px 0 var(--ac); }
+  .cv--band.is-s .cv__lab { padding-top: 6px; box-shadow: inset 0 4px 0 var(--ac); }
   #cartdrafts .older > div { padding-top: 4px; }
   .cv--disk.cv--band.is-s .cv__shut { height: 8px; }
+  /* 어두운 셸 + 포인트 색(라-4 ~ 6) — 테 안: 라벨 테두리가 포인트 색 / 어두운 라벨: 크림 글자 · 포인트 칩 · 번호 · 그림 칸 테 */
+  .cv--frame .cv__lab { border-color: var(--ac); }
+  .cv--dk .cv__lab { background: #1b1d25; color: var(--cream); }
+  .cv--dk .cv__meta i { border-color: var(--ac); color: var(--ac); }
+  .cv--dk .cv__no { color: var(--ac); }
+  .cv--dk.cv--b .cv__art { border-color: var(--ac); }
+  .cv--dk.cv--b .cv__art .cv__no { color: var(--ch); }
+  .cv--dk.cv--disk .cv__ic { margin: 2px; background-color: var(--tint); box-shadow: 0 0 0 2px var(--tint); }

@@ -1763,14 +1763,17 @@
     dusty: [['#b5473f', '#d46a60', '#7c2c28', '#f6dcd6'], ['#c9a14a', '#e2c070', '#8e6e28', '#f6ebc8'], ['#6f9a5b', '#94bc80', '#486a38', '#dfecd6'], ['#8a6aa8', '#ac90c8', '#5c4474', '#e8def0'], ['#5a82b0', '#80a6d0', '#3a587c', '#dae4f0']],
     /* 라-3 색은 띠 하나 — 셸은 분류별 한 색(게임 아이보리 · 기획서 회색), 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만 */
     stripe: [['#e6dabd', '#f6eed8', '#b4a684', '#fbd9d2', '', '', '#c8102e'], ['#e6dabd', '#f6eed8', '#b4a684', '#fbe0cc', '', '', '#c85a1c'], ['#e6dabd', '#f6eed8', '#b4a684', '#faecc4', '', '', '#b07c14'],
-      ['#aab0c0', '#ccd0dc', '#747a8c', '#d8e2f6', '', '', '#2c4f9c'], ['#aab0c0', '#ccd0dc', '#747a8c', '#d6ecef', '', '', '#2f6c7c']]
+      ['#aab0c0', '#ccd0dc', '#747a8c', '#d8e2f6', '', '', '#2c4f9c'], ['#aab0c0', '#ccd0dc', '#747a8c', '#d6ecef', '', '', '#2f6c7c']],
+    /* 라-4 ~ 6 어두운 셸 + 포인트 색 — "실제 칩처럼 어두운 톤에 포인트 컬러를 달리": 셸은 모두 짙은 회색, 프로젝트 색은 작은 면(띠 · 테 · 칩)에만. [.., 칩 글자색(크림 위), 포인트 색] */
+    dark: [['#30323c', '#50545f', '#17181e', '#fbd9d2', '', '', '#c8102e', '#e0403a'], ['#30323c', '#50545f', '#17181e', '#fbe0cc', '', '', '#c85a1c', '#f08a30'], ['#30323c', '#50545f', '#17181e', '#faecc4', '', '', '#a87410', '#f0bc30'],
+      ['#30323c', '#50545f', '#17181e', '#d8e2f6', '', '', '#2c4f9c', '#5a94f0'], ['#30323c', '#50545f', '#17181e', '#d6ecef', '', '', '#2f6c7c', '#40b8a8']]
   };
   var CV_KEY = { 'league-of-defense': [0, 'tower'], comstock: [1, 'pick'], 'indie-games': [2, 'dice'], 'sample-combat-doc': [3, 'sword'], 'sample-economy-doc': [4, 'coin'] };
-  function cvCart(v, p, i, small, pal) {
-    var P = CV_PAL[pal || 'vivid'], m = CV_KEY[p.id] || [i % P.length, p.category === 'planning' ? 'coin' : 'dice'], c = P[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p), band = !!c[6];
-    var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + (c[4] || c[0]) + ';--ink:' + (c[5] || '#fff') + ';--ch:' + (c[6] || c[2]) + ';--ic:var(--cv-' + m[1] + ')';
+  function cvCart(v, p, i, small, pal, cls) {
+    var P = CV_PAL[pal || 'vivid'], m = CV_KEY[p.id] || [i % P.length, p.category === 'planning' ? 'coin' : 'dice'], c = P[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p);
+    var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + (c[4] || c[0]) + ';--ink:' + (c[5] || '#fff') + ';--ch:' + (c[6] || c[2]) + ';--ac:' + (c[7] || c[6] || c[0]) + ';--ic:var(--cv-' + m[1] + ')';
     var title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', grade = '<em class="ps" data-g="' + g + '">' + g + '</em>';
-    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = (small ? ' is-s' : '') + (band ? ' cv--band' : ''), h;
+    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = (small ? ' is-s' : '') + (cls ? ' ' + cls : ''), h;
     if (v === 'a') h = '<span class="cv cv--a' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + pfArt(p) + '</span></span>';
     else if (v === 'c') h = '<span class="cv cv--c' + sz + '" style="' + st + '"><span class="cv__lab"><span class="cv__top"><b class="ps cv__no">' + no + '</b>' + grade + '</span>' + title + '<span class="cv__art">' + ic + '</span></span></span>';
     else if (v === 'd' && p.category === 'planning') h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
@@ -1778,16 +1781,22 @@
     else h = '<span class="cv cv--b' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + '<span class="cv__art"><small class="ps cv__no">' + no + '</small>' + ic + '</span></span></span>';
     return '<span class="cv-slot">' + h + '</span>';
   }
-  /* 지금 고르는 것 = 라(분류별 모양)의 색 — "라 쪽으로 가는 게 좋아 보이긴 한데 색이 너무 또렷 · 너무 무지개" */
+  /* 지금 고르는 것 = 라(분류별 모양) + 어두운 셸 · 포인트 색 — "라 쪽으로" → "색이 너무 또렷 · 너무 무지개" → "이것보단 실제 칩처럼 어두운 톤에 포인트 컬러를 달리 하는 게" */
   var CV_DRAFTS = [
+    { v: 'd', pal: 'dark', cls: 'cv--frame', id: 'd4', k: '라-4', name: { ko: '포인트 테', en: 'Accent frame' }, by: { ko: '포인트: 라벨 테두리 + 칩 + 그림 칸', en: 'Accent on: label frame + chip + picture window' },
+      d: { ko: '셸은 모두 짙은 회색, 라벨을 두른 테두리가 프로젝트 색. 테가 라벨을 한 바퀴 돌아서 휴대폰 크기에서도 색이 남습니다.', en: 'Every shell is dark grey; the frame around the label carries the project colour. Because it runs all the way round, the colour survives at phone size.' } },
+    { v: 'd', pal: 'dark', cls: 'cv--band', id: 'd5', k: '라-5', name: { ko: '포인트 띠', en: 'Accent band' }, by: { ko: '포인트: 라벨 윗띠 + 칩 + 그림 칸', en: 'Accent on: label band + chip + picture window' },
+      d: { ko: '짙은 회색 셸에 크림 라벨, 프로젝트 색은 라벨 윗띠 하나. 가장 얌전한 안.', en: 'Dark grey shell, cream label, and the project colour as one band across the top of the label. The quietest option.' } },
+    { v: 'd', pal: 'dark', cls: 'cv--band cv--dk', id: 'd6', k: '라-6', name: { ko: '어두운 라벨', en: 'Dark label' }, by: { ko: '포인트: 띠 + 칩 + 번호 + 그림 칸 테', en: 'Accent on: band + chip + number + window frame' },
+      d: { ko: '라벨까지 어둡게 — 크림 글자, 프로젝트 색은 띠 · 칩 · 번호 · 그림 칸 테에. 가장 칩 같은 안.', en: 'The label goes dark too — cream text, with the project colour on the band, chip, number and window frame. The most chip-like option.' } }
+  ];
+  var CV_OLD = [
     { v: 'd', pal: 'fam', id: 'd1', k: '라-1', name: { ko: '계열 둘', en: 'Two colour families' }, by: { ko: '색 수: 따뜻한 계열 + 푸른 계열', en: 'Hues: one warm family + one cool family' },
       d: { ko: '게임은 사이트의 따뜻한 색(빨강 · 벽돌 · 금색), 기획서는 푸른 색(남색 · 청록). 분류끼리는 한 계열이라 무지개가 되지 않고, 분류가 모양과 색 온도 둘 다로 갈립니다.', en: 'Games take the site\'s warm colours (red, brick, gold); planning docs take cool ones (navy, teal). Each category stays in one family, so it never turns into a rainbow, and category shows in both shape and colour temperature.' } },
     { v: 'd', pal: 'dusty', id: 'd2', k: '라-2', name: { ko: '톤 다운', en: 'Toned down' }, by: { ko: '색 수: 다섯 그대로, 채도만 낮춤', en: 'Hues: still five, just less saturated' },
       d: { ko: '다섯 색은 그대로 두고 채도를 낮춰 바랜 플라스틱처럼. 프로젝트마다 색이 확실히 다르면서 눈은 덜 아픕니다.', en: 'The same five colours, desaturated like faded plastic. Every project still has its own clear colour, with less glare.' } },
-    { v: 'd', pal: 'stripe', id: 'd3', k: '라-3', name: { ko: '색은 띠 하나', en: 'Colour as one band' }, by: { ko: '색 수: 셸 둘(아이보리 · 회색) + 띠', en: 'Hues: two shells (ivory, grey) + a band' },
-      d: { ko: '셸은 분류별 한 색(게임 아이보리 · 기획서 회색)이고, 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만. 가장 차분한 안.', en: 'Shells come in one colour per category (ivory games, grey docs); the project colour only appears on the label band, the chip and the picture window. The calmest option.' } }
-  ];
-  var CV_OLD = [
+    { v: 'd', pal: 'stripe', cls: 'cv--band', id: 'd3', k: '라-3', name: { ko: '색은 띠 하나', en: 'Colour as one band' }, by: { ko: '색 수: 셸 둘(아이보리 · 회색) + 띠', en: 'Hues: two shells (ivory, grey) + a band' },
+      d: { ko: '셸은 분류별 한 색(게임 아이보리 · 기획서 회색)이고, 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만. 가장 차분한 안.', en: 'Shells come in one colour per category (ivory games, grey docs); the project colour only appears on the label band, the chip and the picture window. The calmest option.' } },
     { v: 'a', id: 'a', k: '가', name: { ko: '색 셸', en: 'Coloured shells' }, by: { ko: '구분: 색', en: 'Told apart by: colour' }, d: { ko: '셸(플라스틱) 색만 프로젝트마다 다르게 — 라벨은 그대로.', en: 'Only the plastic shell changes colour per project — the label stays.' } },
     { v: 'b', id: 'b', k: '나', name: { ko: '색 셸 + 도트 그림', en: 'Coloured shells + pixel emblem' }, by: { ko: '구분: 색 + 그림 + 번호', en: 'Told apart by: colour + emblem + number' }, d: { ko: '색 셸에 프로젝트마다 다른 도트 그림과 번호.', en: 'Coloured shells plus a pixel emblem and a number per project.' } },
     { v: 'c', id: 'c', k: '다', name: { ko: '회색 셸 · 색 라벨', en: 'Grey shells, coloured labels' }, by: { ko: '구분: 라벨 색 + 큰 번호 + 그림', en: 'Told apart by: label colour + big number + emblem' }, d: { ko: '셸은 모두 같은 회색, 라벨 한 장이 프로젝트 색. 큰 번호 · 그림.', en: 'Every shell is the same grey; the label is the project colour, with a big number and an emblem.' } },
@@ -1795,16 +1804,16 @@
   ];
   function cvDraft(d) {
     return '<article class="cvd" id="cart-' + d.id + '"><header class="cvd__head"><span class="cvd__k">' + d.k + '</span><b>' + esc(t(d.name)) + '</b><em>' + esc(t(d.by)) + '</em><p>' + esc(t(d.d)) + '</p></header>' +
-      '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false, d.pal); }).join('') + '</div>' +
-      '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal); }).join('') + '</div></div></article>';
+      '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false, d.pal, d.cls); }).join('') + '</div>' +
+      '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal, d.cls); }).join('') + '</div></div></article>';
   }
   function renderCartDrafts() {
     var box = document.getElementById('cartdrafts'); if (!box) return;
     var rs = document.documentElement.style, was = box.querySelector('details'), open = was && was.open;
     Object.keys(CV_ICON).forEach(function (k) { rs.setProperty('--cv-' + k, spr(CV_ICON[k])); });
     rs.setProperty('--mb-mini', spr(MINIG));
-    box.innerHTML = CV_DRAFTS.map(cvDraft).join('') + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — 가 색 셸 · 나 도트 그림 · 다 색 라벨 · 라 또렷한 다섯 색', 'Earlier — 가 shells · 나 emblems · 다 labels · 라 five vivid colours') +
-      '<small>' + T('1차', 'round 1') + '</small></summary><div>' + CV_OLD.map(cvDraft).join('') + '</div></details>';
+    box.innerHTML = CV_DRAFTS.map(cvDraft).join('') + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — 라-1 계열 둘 · 라-2 톤 다운 · 라-3 띠 하나 · 가 · 나 · 다 · 라 또렷한 다섯 색', 'Earlier — 라-1 two families · 라-2 toned down · 라-3 one band · 가 · 나 · 다 · 라 five vivid colours') +
+      '<small>' + T('1 · 2차', 'rounds 1–2') + '</small></summary><div>' + CV_OLD.map(cvDraft).join('') + '</div></details>';
   }
 
   function applyLang() {
