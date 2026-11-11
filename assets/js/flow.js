@@ -1779,7 +1779,7 @@
     else if (v === 'd' && p.category === 'planning') h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
       '<span class="cv__top">' + ic + '<small class="ps cv__no">' + no + '</small>' + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span></span>';
     else h = '<span class="cv cv--b' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + '<span class="cv__art"><small class="ps cv__no">' + no + '</small>' + ic + '</span></span></span>';
-    return '<span class="cv-slot">' + h + '</span>';
+    return '<span class="cv-slot' + (v === 'd' && p.category === 'planning' ? ' cv-slot--disk' : '') + '">' + h + '</span>';
   }
   /* 지금 고르는 것 = 라(분류별 모양) + 어두운 셸 · 포인트 색 — "라 쪽으로" → "색이 너무 또렷 · 너무 무지개" → "이것보단 실제 칩처럼 어두운 톤에 포인트 컬러를 달리 하는 게" */
   var CV_DRAFTS = [

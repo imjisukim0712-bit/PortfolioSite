@@ -1324,9 +1324,14 @@
   .cv--c .cv__art { display: grid; flex: 1; place-items: center; min-height: 0; margin-top: 2px; background: var(--cream); border: 2px solid #000; }
   .cv--c em.ps { background: #000; }   /* 라벨이 색이라 등급 칩은 검정 하나(빨강 라벨 위 빨강 칩이 묻힘) */
   /* 라 — 기획서는 디스켓(모서리 따낸 몸 · 금속 셔터 · 종이 라벨) */
-  .cv--disk { --cut: polygon(0 0, calc(100% - 16px) 0, calc(100% - 16px) 8px, calc(100% - 8px) 8px, calc(100% - 8px) 16px, 100% 16px, 100% 100%, 0 100%); padding: 4px; background: #000; border: 0; box-shadow: none; clip-path: var(--cut); }
+  /* 따낸 귀퉁이 = 계단 두 칸(--n). 바깥 검은 선 · 안쪽 몸 · 몸의 오른쪽 그늘이 모두 같은 계단을 따라가고, 진열 칸(.cv-slot--disk)은 비워 귀퉁이 뒤로 칸 테가 비치지 않게 — "모서리 깨진 것" */
+  .cv--disk { --n: 8px; --cut: polygon(0 0, calc(100% - var(--n) * 2) 0, calc(100% - var(--n) * 2) var(--n), calc(100% - var(--n)) var(--n), calc(100% - var(--n)) calc(var(--n) * 2), 100% calc(var(--n) * 2), 100% 100%, 0 100%); padding: 4px; background: #000; border: 0; box-shadow: none; clip-path: var(--cut); }
+  .cv-slot--disk { background: none; box-shadow: none; }
   .cv--disk::before { display: none; }
-  .cv--disk .cv__body { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 0 8px 8px; background: var(--sh); box-shadow: inset 4px 4px 0 var(--sh-l), inset -4px -4px 0 var(--sh-d); clip-path: var(--cut); }
+  .cv--disk .cv__body { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 0 8px 8px; clip-path: var(--cut); background-color: var(--sh); background-repeat: no-repeat;
+    background-image: linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-l), var(--sh-l)), linear-gradient(var(--sh-l), var(--sh-l));
+    background-size: 4px var(--n), 4px var(--n), 4px 100%, 100% 4px, 100% 4px, 4px 100%;
+    background-position: right calc(var(--n) * 2) top 0, right var(--n) top var(--n), right 0 top 0, left 0 bottom 0, left 0 top 0, left 0 top 0; }
   .cv--disk .cv__shut { position: relative; display: block; flex: none; width: 60%; height: 36px; margin-left: 12px; background: #c8cad2; border: 4px solid #000; border-top: 0; box-shadow: inset -4px 0 0 #8a8c98; }
   .cv--disk .cv__shut::after { content: ''; position: absolute; right: 12px; top: 4px; width: 12px; height: 20px; background: #000; }
   .cv--disk .cv__lab { flex: 1; min-height: 0; height: auto; gap: 4px; }
@@ -1342,7 +1347,7 @@
   .cv.is-s .cv__ic { width: 24px; height: 24px; }
   .cv--b.is-s .cv__t, .cv--c.is-s .cv__t, .cv--disk.is-s .cv__t { display: block; flex: none; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cv--b.is-s .cv__art { grid-template-columns: minmax(0, 1fr); }
-  .cv--disk.is-s { --cut: polygon(0 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% 100%, 0 100%); }
+  .cv--disk.is-s { --n: 4px; }
   .cv--disk.is-s .cv__body { gap: 4px; padding: 0 4px 4px; }
   .cv--disk.is-s .cv__shut { height: 12px; margin-left: 8px; }
   .cv--disk.is-s .cv__shut::after { right: 4px; top: 0; width: 8px; height: 8px; }
