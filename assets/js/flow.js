@@ -1078,11 +1078,15 @@
   function pfCC(p) {
     var i = Math.max(0, PROJ.indexOf(p)), c = p.cart || {}, v = PF_CC[c.color] || PF_CC[PF_CCK[i % PF_CCK.length]], disk = p.category === 'planning';
     var art = CV_ICON[c.art] ? c.art : disk ? 'coin' : 'dice';
-    return { st: '--ch:' + v[0] + ';--ac:' + v[1] + ';--tint:' + v[2] + ';--ic:var(--cv-' + art + ')', no: (i < 9 ? '0' : '') + (i + 1), disk: disk };
+    return { st: '--ch:' + v[0] + ';--ac:' + v[1] + ';--tint:' + v[2] + ';--ic:var(--cv-' + art + ')', no: (i < 9 ? '0' : '') + (i + 1), disk: disk, art: art };
   }
-  function pfArt(p, big) {                    /* 그림 칸 = 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬) */
-    var h = pfSeed(p.id);
-    return '<span class="pf-art' + (big ? ' is-big' : '') + '" style="' + pfCC(p).st + '" aria-hidden="true">' + (big ? '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg>' : '') + '<i class="pf-art__ic"></i></span>';
+  /* 생성 도트 그림(Codex 원화 → tools/pixel-art/pixelize.py · assets/img/cart/<이름>-64.png)이 있는 그림 — 큰 그림 칸은 이것을, 작은 진열판 카드는 손으로 찍은 12칸 그림을 씀
+     (사용자: "추천대로 하자" — 큰 칸에만 생성 그림). 칸 크기에 맞춰 1 · 2 · 3배(64 · 128 · 192px)로만 — flow.css 의 @container */
+  var PF_GEN = { tower: 1, pick: 1, dice: 1, sword: 1, coin: 1 };
+  function pfArt(p, big) {                    /* 그림 칸 = 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬 · 생성 도트 그림) */
+    var h = pfSeed(p.id), c = pfCC(p), gen = big && PF_GEN[c.art];
+    return '<span class="pf-art' + (big ? ' is-big' : '') + '" style="' + c.st + '" aria-hidden="true">' + (big ? '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg>' : '') +
+      '<i class="pf-art__ic' + (gen ? ' pf-art__ic--gen" style="background-image:url(' + IMG('assets/img/cart/' + c.art + '-64.png') + ')' : '') + '"></i></span>';
   }
   function pfGrade(p) { var g = String(p.grade || 'A').toUpperCase(); return /^(SSR|SR|R|A)$/.test(g) ? g : 'A'; }
   function pfCat(p) { var c = TABS[p.category]; return c ? t(c) : ''; }
@@ -1156,11 +1160,15 @@
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
       '<div class="pf-col">' + pfSkills() + '</div></div></section>';
   }
-  function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음. 모양 · 색은 시안 라-5 의 .cv 규칙 그대로(게임 = 카트리지 · 기획서 = 디스켓) */
+  function pfCartIn(p) {                       /* 작은 카트리지 · 디스켓의 속(시안 라-5 의 .cv 규칙 그대로) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
-    return '<span class="pf-slot' + (c.disk ? ' is-disk' : '') + '" style="--k:' + i + '">' + '<button type="button" class="pf-cart cv cv--band ' + (c.disk ? 'cv--disk' : 'cv--b') + '" data-pf-go="' + i + '" data-grade="' + g + '" style="--k:' + i + ';' + c.st + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '">' +
-      (c.disk ? '<span class="cv__body"><i class="cv__shut"></i><span class="cv__lab"><span class="cv__top">' + ic + no + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span>' :
-        '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art">' + no + ic + '</span></span>') + '</button></span>';
+    return c.disk ? '<span class="cv__body"><i class="cv__shut"></i><span class="cv__lab"><span class="cv__top">' + ic + no + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span>' :
+      '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art">' + no + ic + '</span></span>';
+  }
+  function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음. 모양 · 색은 시안 라-5 의 .cv 규칙 그대로(게임 = 카트리지 · 기획서 = 디스켓) */
+    var c = pfCC(p);
+    return '<span class="pf-slot' + (c.disk ? ' is-disk' : '') + '" style="--k:' + i + '">' + '<button type="button" class="pf-cart cv cv--band ' + (c.disk ? 'cv--disk' : 'cv--b') + '" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" style="--k:' + i + ';' + c.st + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '">' +
+      pfCartIn(p) + '</button></span>';
   }
   function pfKey(cls, attr, label, k) { return '<' + (attr.indexOf('href') === 0 ? 'a ' + attr : 'button type="button" ' + attr) + ' class="pf-key ' + cls + '" data-pf-k="' + k + '" aria-label="' + label + '"></' + (attr.indexOf('href') === 0 ? 'a' : 'button') + '>'; }
   function pfProj() {
@@ -1180,7 +1188,8 @@
     var m = C.meta || {};
     var pages = '<p class="pf-foot__pages"><a href="#/">' + esc(pfNm('home')) + '</a>' + PF_PAGES.map(function (n) { return '<a href="#/' + n[0] + '">' + esc(pfNm(n[0])) + '</a>'; }).join('') + '</p>';
     return '<footer class="pf-foot"><div class="pf-in"><p class="pf-foot__me"><b>' + esc(NAME) + '</b> · ' + esc(t(m.role)) + '</p><p>' + (m.email ? '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>' : '') +
-      (m.github ? ' · <a href="' + esc(m.github) + '" target="_blank" rel="noopener">GitHub</a>' : '') + '</p>' + pages + '</div><i class="pf-uground" aria-hidden="true"></i></footer>';
+      (m.github ? ' · <a href="' + esc(m.github) + '" target="_blank" rel="noopener">GitHub</a>' : '') + '</p>' + pages +
+      '<p class="pf-foot__note">' + T('프로젝트 도트 그림: AI 이미지 생성 후 픽셀 변환', 'Project pixel art: AI image generation, then pixel conversion') + '</p></div><i class="pf-uground" aria-hidden="true"></i></footer>';
   }
 
   /* 게임기 화면 — 고르기 목록(아무것도 안 꽂힘 · 꽂는 중) / 읽는 중 / 개요 */
@@ -1358,9 +1367,9 @@
   function pfHead(o) {
     return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
       '<div class="pf-in"><div class="pf-ts">' + (o.back ? '<a class="pf-back" href="' + o.back[0] + '"><span aria-hidden="true">◀</span>' + o.back[1] + '</a>' : '') +
-      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + '">' + (o.side || '') +
+      '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + (o.tail ? ' pf-plaque__in--tail' : '') + '">' + (o.side || '') +
       '<div class="pf-ph__txt"><p class="pf-role">' + o.eyebrow + '<span class="ps">WORLD ' + o.w + '</span></p><h1 class="pf-ph__t">' + o.title + '</h1>' +
-      (o.line ? '<p class="pf-line">' + o.line + '</p>' : '') + (o.lead ? '<p class="pf-ph__lead">' + o.lead + '</p>' : '') + (o.extra || '') + '</div></div></div></div></div>' +
+      (o.line ? '<p class="pf-line">' + o.line + '</p>' : '') + (o.lead ? '<p class="pf-ph__lead">' + o.lead + '</p>' : '') + (o.extra || '') + '</div>' + (o.tail || '') + '</div></div></div></div>' +
       '<i class="pf-s s-bush pf-hide-s" style="right:42%"></i><i class="pf-s s-hill pf-hide-s" style="right:16%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
   function pfUnder(html) {                       /* 지하 — 머리 땅 위에 선 관(1P 가 그 머리 위)에서 내려가는 길 .pf-dive 를 함께 둠(자리는 pfDive) */
@@ -1440,22 +1449,40 @@
     return head + pfUnder(ach + let_ + pfWorldNav('cover'));
   }
 
-  /* WORLD 4 프로젝트 — 분류마다 진열판 위 카트리지(누르면 그 카트리지의 자세히 페이지) */
-  function pfCart2H(p, art, link) {           /* 큰 카트리지 한 장 — art = 그림 칸 HTML, link = 누르면 자세히 페이지(시안 모음의 견본은 링크 없이) */
-    var c = pfCC(p);
-    var lab = '<span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps">' + pfGrade(p) + '</em></span>' + art +
-      '<b class="pf-cart2__t">' + esc(t(p.title)) + '</b><span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span><span class="pf-cart2__s">' + esc(t(p.sub)) + '</span><span class="pf-cart2__p">' + esc(t(p.period)) + '</span></span>';
-    return '<' + (link ? 'a href="' + esc(pfDetail(p)) + '" data-pf-rv' : 'span') + ' class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" data-grade="' + pfGrade(p) + '">' +
-      (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</' + (link ? 'a' : 'span') + '>';
+  /* WORLD 4 프로젝트 — 사용자: "프로젝트 페이지 개선 좀 해야 할 듯, 레이아웃이 좀 개판"(첫 화면에 프로젝트가 안 보임 · 머리 판이 빔 · 2장짜리 줄이 한쪽으로 쏠림 · 카드에 정보는 적고 빈칸은 큼).
+     → 머리 판 오른쪽에 바로가기(작은 카트리지 다섯 — 누르면 그 줄로 내려감) · 분류마다 크림 창 하나에 줄 목록(이력서의 경력 줄과 같은 문법):
+     한 줄 = 큰 카트리지 · 디스켓(번호 · 등급 · 생성 도트 그림 · 대표 태그) | 분류 · 장르 / 이름 / 한 줄 / 목표 → 결과 / 기간 · 인원 · 역할 · 상태 / 자세히 보기. 줄 전체가 자세히 페이지 링크 */
+  function pfPjCart(p) {
+    var c = pfCC(p), g = pfGrade(p);
+    var lab = '<span class="pf-cart2__lab"><span class="pf-cart2__top"><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps" data-g="' + g + '">' + g + '</em></span>' + pfArt(p, 1) + '<span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span></span>';
+    return '<span class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" aria-hidden="true">' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</span>';
   }
-  function pfCart2(p) { return pfCart2H(p, pfArt(p, 1), true); }
+  function pfPj(p) {
+    var c = pfCC(p), q = p.quest || {}, tag = t(p.tag);
+    var kv = [[T('기간', 'Period'), p.period], [T('인원', 'Team'), p.headcount], [T('역할', 'Role'), p.myRole], [T('상태', 'Status'), p.status]].filter(function (r) { return r[1] && t(r[1]); });
+    var gen = (p.genres || []).map(function (x) { return t(x); }).filter(function (x) { return x && x !== tag; });   /* 대표 태그는 카트리지 라벨에 있으니 여기서는 뺌 */
+    return '<li class="pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '">' + pfPjCart(p) +
+      '<span class="pf-pj__info"><span class="pf-pj__meta"><i>' + esc(pfCat(p)) + '</i>' + (gen.length ? '<span>' + esc(gen.join(' · ')) + '</span>' : '') + '</span>' +
+      '<b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span>' +
+      (t(q.goal) || t(q.result) ? '<span class="pf-pj__q">' + (t(q.goal) ? '<span><b>' + T('목표', 'Goal') + '</b>' + esc(t(q.goal)) + '</span>' : '') + (t(q.result) ? '<span><b>' + T('결과', 'Result') + '</b><strong>' + esc(t(q.result)) + '</strong></span>' : '') + '</span>' : '') +
+      (kv.length ? '<span class="pf-pj__kv">' + kv.map(function (r) { return '<span><b>' + r[0] + '</b>' + esc(t(r[1])) + '</span>'; }).join('') + '</span>' : '') +
+      '<span class="pf-pj__go">' + T('자세히 보기', 'Read more') + ' →</span></span></a></li>';
+  }
   function pfProjects() {
     var pr = C.projects || {}, nm = esc(pfNm('projects'));
-    var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), lead: T('카트리지 ' + PROJ.length + '개 · 하나를 누르면 자세히 봅니다', PROJ.length + ' cartridges · open one to read more'), back: ['#/', esc(pfNm('home'))] });
+    var ng = PROJ.filter(function (p) { return p.category === 'game'; }).length, np = PROJ.filter(function (p) { return p.category === 'planning'; }).length;
+    var index = '<nav class="pf-pjx" aria-label="' + T('프로젝트 바로가기', 'Jump to a project') + '">' + ['game', 'planning'].map(function (cat) {   /* 분류끼리 묶음 — 좁으면 묶음째 줄바꿈(게임 셋 / 기획서 둘) */
+      return '<span class="pf-pjx__g">' + PROJ.filter(function (p) { return p.category === cat; }).map(function (p) {
+        var c = pfCC(p);
+        return '<button type="button" class="pf-pjx__b" data-pf-jump="pj-' + esc(p.id) + '" aria-label="' + esc(t(p.title)) + '"><span class="cv cv--band is-s ' + (c.disk ? 'cv--disk' : 'cv--b') + '" style="' + c.st + '">' + pfCartIn(p) + '</span></button>';
+      }).join('') + '</span>';
+    }).join('') + '</nav>';
+    var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), tail: index, back: ['#/', esc(pfNm('home'))],
+      lead: T('게임 ' + ng + '개 · 기획서 ' + np + '개 — 줄을 누르면 자세히 봅니다', ng + ' games · ' + np + ' planning docs — open a row to read more') });
     var secs = [['game', 'GAMES'], ['planning', 'PLANNING']].map(function (c) {
       var list = PROJ.filter(function (p) { return p.category === c[0]; }); if (!list.length) return '';
       var cn = esc(t(TABS[c[0]]) || c[0]);
-      return pfSec('4', cn, cn, T('카트리지 ' + list.length + '개', list.length + ' cartridges'), '<div class="pf-shelf">' + list.map(pfCart2).join('') + '</div>', c[1]);
+      return pfSec('4', cn, cn, c[0] === 'planning' ? T('디스켓 ' + list.length + '개', list.length + ' diskettes') : T('카트리지 ' + list.length + '개', list.length + ' cartridges'), '<ul class="pf-win pf-pjs">' + list.map(pfPj).join('') + '</ul>', c[1]);
     }).join('');
     return head + pfUnder(secs + pfWorldNav('projects'));
   }
@@ -1567,6 +1594,8 @@
       var jm = e.target.closest('[data-pf-jump]');
       if (jm) { e.preventDefault(); var tg = pf.querySelector(jm.getAttribute('href')); if (tg) window.scrollTo({ top: tg.getBoundingClientRect().top + scrollY - (jm.getAttribute('href') === '#pf-career' ? 0 : 40), behavior: RM ? 'auto' : 'smooth' }); return; }
       var g = e.target.closest('[data-pf-go]'); if (g) { pfInsert(+g.getAttribute('data-pf-go')); return; }
+      var jp = e.target.closest('[data-pf-jump]');
+      if (jp) { var row = document.getElementById(jp.getAttribute('data-pf-jump')); if (row) { row.classList.add('is-in'); row.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' }); row.classList.remove('is-flash'); void row.offsetWidth; row.classList.add('is-flash'); } return; }
       var s = e.target.closest('[data-pf-step]'); if (s) { pfStep(+s.getAttribute('data-pf-step')); return; }
       if (e.target.closest('[data-pf-b]')) { pfEject(); return; }
       if (e.target.closest('[data-pf-a]')) {
@@ -1832,11 +1861,7 @@
       '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal, d.cls, d.gen); }).join('') + '</div>' +
       (d.gen ? '<p class="cvd__cap">' + T('큰 그림 칸 — 프로젝트 페이지 · 게임기 화면 (64칸 그림을 2배로)', 'Large picture window — projects page, console screen (64-cell art at 2×)') + '</p><div class="cvd__row cvd__row--big">' + PROJ.map(cvBig).join('') + '</div>' : '') + '</div></article>';
   }
-  function cvBig(p) {                          /* 큰 카트리지 견본 — 그림 칸에 64칸 생성 그림을 2배(128px)로 */
-    var a = p.cart && CV_ICON[p.cart.art] ? p.cart.art : p.category === 'planning' ? 'coin' : 'dice';
-    return pfCart2H(p, '<span class="pf-art is-big" style="' + pfCC(p).st + '" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(pfSeed(p.id)) + '</svg>' +
-      '<i class="pf-art__ic pf-art__ic--gen" style="background-image:url(' + IMG('assets/img/cart/' + a + '-64.png') + ')"></i></span>', false);
-  }
+  function cvBig(p) { return pfPjCart(p); }      /* 큰 카트리지 견본 = 프로젝트 페이지의 큰 카트리지 그대로(그림 칸에 64칸 생성 그림을 2배로) */
   function renderCartDrafts() {
     var box = document.getElementById('cartdrafts'); if (!box) return;
     var rs = document.documentElement.style, was = box.querySelector('details'), open = was && was.open;
