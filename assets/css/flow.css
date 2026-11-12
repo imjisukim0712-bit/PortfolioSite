@@ -1425,3 +1425,14 @@
     background-size: 4px 100%, 100% 4px, 100% 4px, 4px 100%; background-position: right 0 top 0, left 0 bottom 0, left 0 top 0, left 0 top 0; }
   .pf-cart2__shut { position: relative; display: block; flex: none; width: 56%; height: 48px; margin-left: 20px; background: #c8cad2; border: 4px solid #000; border-top: 0; box-shadow: inset -4px 0 0 #8a8c98; }
   .pf-cart2__shut::after { content: ''; position: absolute; right: 16px; top: 4px; width: 16px; height: 28px; background: #000; }
+
+  /* ════ 생성 도트 그림 시안(라-5 ＋) — Codex 원화 → tools/pixel-art/pixelize.py. 그림은 제 크기나 정수배로만(작은 카드 32 · 24px 그대로, 큰 칸 64px × 2) ════ */
+  .cv__ic--gen { width: 32px; height: 32px; background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; }
+  .cv--gen.cv--b .cv__art { grid-template-columns: 22px minmax(0, 1fr) 22px; }
+  .cv--gen.cv--b.is-s .cv__art { grid-template-columns: minmax(0, 1fr); }
+  .cv--gen.is-s .cv__ic--gen, .cv--gen.cv--disk .cv__ic--gen { width: 24px; height: 24px; }
+  .pf-art__ic--gen { background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat; }
+  .pf-art.is-big .pf-art__ic--gen { width: 128px; height: 128px; }
+  .cvd__row--big { --red: #c8102e; flex-wrap: wrap; gap: 20px; align-items: stretch; min-width: 0; margin-bottom: 0; }
+  .cvd__row--big .ps { font-family: 'Press Start 2P', 'Galmuri11', monospace; font-weight: 400; font-style: normal; letter-spacing: 0; }
+  .cvd__row--big .pf-cart2 { flex: none; width: 288px; max-width: 100%; color: var(--navy); }

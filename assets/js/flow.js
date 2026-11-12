@@ -1441,12 +1441,14 @@
   }
 
   /* WORLD 4 프로젝트 — 분류마다 진열판 위 카트리지(누르면 그 카트리지의 자세히 페이지) */
-  function pfCart2(p) {
+  function pfCart2H(p, art, link) {           /* 큰 카트리지 한 장 — art = 그림 칸 HTML, link = 누르면 자세히 페이지(시안 모음의 견본은 링크 없이) */
     var c = pfCC(p);
-    var lab = '<span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p, 1) +
+    var lab = '<span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps">' + pfGrade(p) + '</em></span>' + art +
       '<b class="pf-cart2__t">' + esc(t(p.title)) + '</b><span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span><span class="pf-cart2__s">' + esc(t(p.sub)) + '</span><span class="pf-cart2__p">' + esc(t(p.period)) + '</span></span>';
-    return '<a class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" href="' + esc(pfDetail(p)) + '" style="' + c.st + '" data-grade="' + pfGrade(p) + '" data-pf-rv>' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</a>';
+    return '<' + (link ? 'a href="' + esc(pfDetail(p)) + '" data-pf-rv' : 'span') + ' class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" data-grade="' + pfGrade(p) + '">' +
+      (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</' + (link ? 'a' : 'span') + '>';
   }
+  function pfCart2(p) { return pfCart2H(p, pfArt(p, 1), true); }
   function pfProjects() {
     var pr = C.projects || {}, nm = esc(pfNm('projects'));
     var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), lead: T('카트리지 ' + PROJ.length + '개 · 하나를 누르면 자세히 봅니다', PROJ.length + ' cartridges · open one to read more'), back: ['#/', esc(pfNm('home'))] });
@@ -1785,20 +1787,26 @@
       ['#30323c', '#50545f', '#24262e', '#d8e2f6', '', '', '#2c4f9c', '#5a94f0'], ['#30323c', '#50545f', '#24262e', '#d6ecef', '', '', '#2f6c7c', '#40b8a8']]
   };
   var CV_KEY = { 'league-of-defense': [0, 'tower'], comstock: [1, 'pick'], 'indie-games': [2, 'dice'], 'sample-combat-doc': [3, 'sword'], 'sample-economy-doc': [4, 'coin'] };
-  function cvCart(v, p, i, small, pal, cls) {
+  function cvCart(v, p, i, small, pal, cls, gen) {
     var P = CV_PAL[pal || 'vivid'], m = CV_KEY[p.id] || [i % P.length, p.category === 'planning' ? 'coin' : 'dice'], c = P[m[0]], no = (i < 9 ? '0' : '') + (i + 1), g = pfGrade(p);
     var st = '--sh:' + c[0] + ';--sh-l:' + c[1] + ';--sh-d:' + c[2] + ';--tint:' + c[3] + ';--lab:' + (c[4] || c[0]) + ';--ink:' + (c[5] || '#fff') + ';--ch:' + (c[6] || c[2]) + ';--ac:' + (c[7] || c[6] || c[0]) + ';--ic:var(--cv-' + m[1] + ')';
     var title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', grade = '<em class="ps" data-g="' + g + '">' + g + '</em>';
-    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', ic = '<i class="cv__ic"></i>', sz = (small ? ' is-s' : '') + (cls ? ' ' + cls : ''), h;
+    var meta = '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span>', disk = v === 'd' && p.category === 'planning', sz = (small ? ' is-s' : '') + (cls ? ' ' + cls : '') + (gen ? ' cv--gen' : ''), h;
+    /* gen = 생성 도트 그림(Codex 원화 → tools/pixel-art/pixelize.py). 확대하지 않고 제 크기로: 카트리지 32px · 디스켓 · 휴대폰 크기 24px */
+    var ic = gen ? '<i class="cv__ic cv__ic--gen" style="background-image:url(' + IMG('assets/img/cart/' + m[1] + (small || disk ? '-24' : '-32') + '.png') + ')"></i>' : '<i class="cv__ic"></i>';
     if (v === 'a') h = '<span class="cv cv--a' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + pfArt(p) + '</span></span>';
     else if (v === 'c') h = '<span class="cv cv--c' + sz + '" style="' + st + '"><span class="cv__lab"><span class="cv__top"><b class="ps cv__no">' + no + '</b>' + grade + '</span>' + title + '<span class="cv__art">' + ic + '</span></span></span>';
-    else if (v === 'd' && p.category === 'planning') h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
+    else if (disk) h = '<span class="cv cv--disk' + sz + '" style="' + st + '"><span class="cv__body"><i class="cv__shut"></i><span class="cv__lab">' +
       '<span class="cv__top">' + ic + '<small class="ps cv__no">' + no + '</small>' + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span></span>';
     else h = '<span class="cv cv--b' + sz + '" style="' + st + '"><span class="cv__lab">' + title + meta + '<span class="cv__art"><small class="ps cv__no">' + no + '</small>' + ic + '</span></span></span>';
     return '<span class="cv-slot' + (v === 'd' && p.category === 'planning' ? ' cv-slot--disk' : '') + '">' + h + '</span>';
   }
   /* 지금 고르는 것 = 라(분류별 모양) + 어두운 셸 · 포인트 색 — "라 쪽으로" → "색이 너무 또렷 · 너무 무지개" → "이것보단 실제 칩처럼 어두운 톤에 포인트 컬러를 달리 하는 게" */
   var CV_DRAFTS = [
+    /* 라-5 ＋ 생성 도트 그림 — 사용자: "이걸로도 한번 시안 뽑아보자"(pixelfx 가이드 6절: Codex 이미지 생성 → pixelize.py). 손으로 찍은 12칸 그림 대신 */
+    { v: 'd', pal: 'dark', cls: 'cv--band', gen: true, id: 'd7', k: '라-5 ＋', name: { ko: '생성 도트 그림', en: 'Generated pixel art' }, by: { ko: '그림: AI 이미지 생성 후 픽셀 변환', en: 'Art: AI image generation, then pixel conversion' },
+      d: { ko: '라-5 그대로, 도트 그림만 새 도구(이미지 생성 → 픽셀 변환기)로 뽑았습니다. 그림마다 원화를 두 벌 만들었습니다 — 큰 칸용 64칸(2배로 보여 줌), 작은 카드용 32칸(휴대폰 크기 · 디스켓은 24칸). 모두 변환기 점검을 통과했고, 확대는 정수배만 씁니다.',
+        en: 'Same as 라-5; only the emblems come from the new tool (image generation → pixel converter). Each emblem has two originals — a 64-cell one for large windows (shown at 2×) and a 32-cell one for the small cards (24 cells on phone-size cards and diskettes). All pass the converter\'s checks and are only ever scaled by whole numbers.' } },
     { v: 'd', pal: 'dark', cls: 'cv--frame', id: 'd4', k: '라-4', name: { ko: '포인트 테', en: 'Accent frame' }, by: { ko: '포인트: 라벨 테두리 + 칩 + 그림 칸', en: 'Accent on: label frame + chip + picture window' },
       d: { ko: '셸은 모두 짙은 회색, 라벨을 두른 테두리가 프로젝트 색. 테가 라벨을 한 바퀴 돌아서 휴대폰 크기에서도 색이 남습니다.', en: 'Every shell is dark grey; the frame around the label carries the project colour. Because it runs all the way round, the colour survives at phone size.' } },
     { v: 'd', pal: 'dark', cls: 'cv--band', id: 'd5', k: '라-5', name: { ko: '포인트 띠', en: 'Accent band' }, by: { ko: '포인트: 라벨 윗띠 + 칩 + 그림 칸', en: 'Accent on: label band + chip + picture window' },
@@ -1820,8 +1828,14 @@
   ];
   function cvDraft(d) {
     return '<article class="cvd" id="cart-' + d.id + '"><header class="cvd__head"><span class="cvd__k">' + d.k + '</span><b>' + esc(t(d.name)) + '</b><em>' + esc(t(d.by)) + '</em><p>' + esc(t(d.d)) + '</p></header>' +
-      '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false, d.pal, d.cls); }).join('') + '</div>' +
-      '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal, d.cls); }).join('') + '</div></div></article>';
+      '<div class="cvd__stage"><p class="cvd__cap">' + T('컴퓨터 진열판 크기', 'Desktop tray size') + '</p><div class="cvd__row">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, false, d.pal, d.cls, d.gen); }).join('') + '</div>' +
+      '<p class="cvd__cap">' + T('휴대폰 크기', 'Phone size') + '</p><div class="cvd__row cvd__row--s">' + PROJ.map(function (p, i) { return cvCart(d.v, p, i, true, d.pal, d.cls, d.gen); }).join('') + '</div>' +
+      (d.gen ? '<p class="cvd__cap">' + T('큰 그림 칸 — 프로젝트 페이지 · 게임기 화면 (64칸 그림을 2배로)', 'Large picture window — projects page, console screen (64-cell art at 2×)') + '</p><div class="cvd__row cvd__row--big">' + PROJ.map(cvBig).join('') + '</div>' : '') + '</div></article>';
+  }
+  function cvBig(p) {                          /* 큰 카트리지 견본 — 그림 칸에 64칸 생성 그림을 2배(128px)로 */
+    var a = p.cart && CV_ICON[p.cart.art] ? p.cart.art : p.category === 'planning' ? 'coin' : 'dice';
+    return pfCart2H(p, '<span class="pf-art is-big" style="' + pfCC(p).st + '" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(pfSeed(p.id)) + '</svg>' +
+      '<i class="pf-art__ic pf-art__ic--gen" style="background-image:url(' + IMG('assets/img/cart/' + a + '-64.png') + ')"></i></span>', false);
   }
   function renderCartDrafts() {
     var box = document.getElementById('cartdrafts'); if (!box) return;
