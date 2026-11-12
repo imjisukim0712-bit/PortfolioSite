@@ -1072,9 +1072,17 @@
     else for (i = 0; i < 4; i++) g += '<path d="M50 ' + (5 + i * 11) + 'L' + (95 - i * 11) + ' 50L50 ' + (95 - i * 11) + 'L' + (5 + i * 11) + ' 50Z" fill="none" stroke="currentColor" stroke-width="1.1" opacity="' + (0.30 - i * 0.055).toFixed(2) + '"/>';
     return g;
   }
-  function pfArt(p, big) {
+  /* 카트리지 = 라-5(사용자: "라-5가 가장 좋네" → "깃허브 페이지에서도 반영") — 셸은 모두 짙은 회색, 프로젝트 색은 라벨 윗띠 · 칩 · 그림 칸에만. 게임 = 카트리지 · 기획서 = 디스켓.
+     색 · 도트 그림 짝은 content.js 의 projects.items[].cart = { color, art }(없으면 순서대로 · 분류 기본 그림). 색 이름 → [크림 위 칩 색, 포인트 색(띠 · 어두운 화면 위), 그림 칸 옅은 색] */
+  var PF_CC = { red: ['#c8102e', '#e0403a', '#fbd9d2'], orange: ['#c85a1c', '#f08a30', '#fbe0cc'], yellow: ['#a87410', '#f0bc30', '#faecc4'], blue: ['#2c4f9c', '#5a94f0', '#d8e2f6'], teal: ['#2f6c7c', '#40b8a8', '#d6ecef'] }, PF_CCK = Object.keys(PF_CC);
+  function pfCC(p) {
+    var i = Math.max(0, PROJ.indexOf(p)), c = p.cart || {}, v = PF_CC[c.color] || PF_CC[PF_CCK[i % PF_CCK.length]], disk = p.category === 'planning';
+    var art = CV_ICON[c.art] ? c.art : disk ? 'coin' : 'dice';
+    return { st: '--ch:' + v[0] + ';--ac:' + v[1] + ';--tint:' + v[2] + ';--ic:var(--cv-' + art + ')', no: (i < 9 ? '0' : '') + (i + 1), disk: disk };
+  }
+  function pfArt(p, big) {                    /* 그림 칸 = 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬) */
     var h = pfSeed(p.id);
-    return '<span class="pf-art pf-art--' + (h % 3) + '" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg><i class="pf-art__gh' + (big ? ' is-big' : '') + '"></i></span>';
+    return '<span class="pf-art' + (big ? ' is-big' : '') + '" style="' + pfCC(p).st + '" aria-hidden="true">' + (big ? '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg>' : '') + '<i class="pf-art__ic"></i></span>';
   }
   function pfGrade(p) { var g = String(p.grade || 'A').toUpperCase(); return /^(SSR|SR|R|A)$/.test(g) ? g : 'A'; }
   function pfCat(p) { var c = TABS[p.category]; return c ? t(c) : ''; }
@@ -1148,9 +1156,11 @@
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
       '<div class="pf-col">' + pfSkills() + '</div></div></section>';
   }
-  function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음 */
-    return '<span class="pf-slot" style="--k:' + i + '">' + '<button type="button" class="pf-cart" data-pf-go="' + i + '" data-grade="' + pfGrade(p) + '" style="--k:' + i + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '"><span class="pf-cart__lab"><b>' + esc(t(p.title)) + '</b>' +
-      '<span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p) + '</span></button></span>';
+  function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음. 모양 · 색은 시안 라-5 의 .cv 규칙 그대로(게임 = 카트리지 · 기획서 = 디스켓) */
+    var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
+    return '<span class="pf-slot' + (c.disk ? ' is-disk' : '') + '" style="--k:' + i + '">' + '<button type="button" class="pf-cart cv cv--band ' + (c.disk ? 'cv--disk' : 'cv--b') + '" data-pf-go="' + i + '" data-grade="' + g + '" style="--k:' + i + ';' + c.st + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '">' +
+      (c.disk ? '<span class="cv__body"><i class="cv__shut"></i><span class="cv__lab"><span class="cv__top">' + ic + no + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span>' :
+        '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art">' + no + ic + '</span></span>') + '</button></span>';
   }
   function pfKey(cls, attr, label, k) { return '<' + (attr.indexOf('href') === 0 ? 'a ' + attr : 'button type="button" ' + attr) + ' class="pf-key ' + cls + '" data-pf-k="' + k + '" aria-label="' + label + '"></' + (attr.indexOf('href') === 0 ? 'a' : 'button') + '>'; }
   function pfProj() {
@@ -1186,7 +1196,7 @@
     var tail = notes && p.learned && p.learned.length ? '<ul class="pf-ov__learn">' + p.learned.slice(0, 3).map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul>' :
       '<dl>' + rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + esc(t(r[1])) + '</dd></div>'; }).join('') + '</dl>' +
       (q && q.goal ? '<p class="pf-ov__q"><b>' + T('퀘스트', 'Quest') + '</b>' + esc(t(q.goal)) + ' → <strong>' + esc(t(q.result)) + '</strong></p>' : '');
-    return '<div class="pf-ov" data-grade="' + pfGrade(p) + '">' + pfArt(p, 1) + '<div class="pf-ov__txt"><p class="pf-ov__meta"><i>' + esc(pfCat(p)) + '</i><span>' + esc(t(p.tag)) + '</span><em class="ps">' + pfGrade(p) + '</em></p>' +
+    return '<div class="pf-ov" style="' + pfCC(p).st + '" data-grade="' + pfGrade(p) + '">' + pfArt(p, 1) + '<div class="pf-ov__txt"><p class="pf-ov__meta"><i>' + esc(pfCat(p)) + '</i><span>' + esc(t(p.tag)) + '</span><em class="ps">' + pfGrade(p) + '</em></p>' +
       '<h3>' + esc(t(p.title)) + '</h3><p class="pf-ov__sub">' + esc(t(p.sub)) + '</p>' + tail +
       '<p class="pf-ov__go"><span class="ps">A</span><a href="' + esc(pfDetail(p)) + '">' + T('자세히 보기', 'Read more') + ' →</a></p></div></div>';
   }
@@ -1210,7 +1220,7 @@
     var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
     var H = innerHeight - top, W = st.clientWidth, mob = innerWidth <= 760, dpr = window.devicePixelRatio || 1;
     var ch = mob ? 84 : Math.round(Math.max(128, Math.min(176, H * .21)) / 4) * 4, cw = Math.round(ch * (mob ? .8 : .76) / 4) * 4;
-    if (mob) { var fitW = Math.floor((W - 16 - (PROJ.length - 1) * 8) / PROJ.length / 4) * 4; if (fitW < cw) { cw = fitW; ch = Math.round(cw / .8 / 4) * 4; } }   /* 좁은 휴대폰(360px)에서도 진열판이 한 줄에 */
+    if (mob) { var fitW = Math.floor((W - 16 - (PROJ.length - 1) * 8) / PROJ.length / 4) * 4; if (fitW < cw) cw = fitW; }   /* 좁은 휴대폰(360px)에서도 진열판이 한 줄에 */
     var gap = Math.round(ch * .42 / 4) * 4 + (mob ? 12 : 24);
     var dockH = 0, availW = Math.min(W - (mob ? 16 : 64), 1120), availH = H - ch - gap - dockH - (mob ? 32 : 56);
     var sd = Math.max(1, Math.floor(Math.min(availW / d.w, availH / d.h) * dpr)), cell = sd / dpr;
@@ -1225,6 +1235,9 @@
     });
     st.style.top = top + 'px'; st.style.height = mob ? '' : H + 'px';   /* 휴대폰은 판 높이만큼(위아래 빈 공간 없이) */
     root.style.setProperty('--pf-cw', cw + 'px'); root.style.setProperty('--pf-ch', ch + 'px'); root.style.setProperty('--pf-gapH', gap + 'px'); root.style.setProperty('--pf-top', top + 'px');
+    /* 카트리지 크기 단계 — 높이에 따라 칩 · 번호 · 그림 크기를 줄임(라벨 안이 넘치지 않게): 172 이상 다 / ca 그림 36 / cb 칩 · 번호 없이 / cc 그림 24 · 디스켓 제목 한 줄 */
+    root.classList.toggle('is-ca', !mob && ch < 172 && ch >= 160); root.classList.toggle('is-cb', !mob && ch < 160 && ch >= 144); root.classList.toggle('is-cc', !mob && ch < 144);
+    [].forEach.call(root.querySelectorAll('.pf-cart'), function (c) { c.classList.toggle('is-s', mob); });
     root.classList.toggle('is-mob', mob); root.classList.toggle('is-s3', !mob && cell < 4); root.classList.toggle('is-nolbl', cell < 4);          /* 인쇄 글자는 게임기가 칸 4px 이상일 때만(작으면 화면 테로 넘침) */
     var run = root.querySelector('[data-pf-run]'); run.style.height = mob ? '' : H + 'px';   /* 한 화면 — 꽂기는 스크롤이 아니라 손으로 */
     /* 카트리지 자리(진열판에 놓인 자리) · 꽂는 자리(게임기 몸 아래 가운데) — 판(.pf-stick) 기준 좌표 */
@@ -1429,8 +1442,10 @@
 
   /* WORLD 4 프로젝트 — 분류마다 진열판 위 카트리지(누르면 그 카트리지의 자세히 페이지) */
   function pfCart2(p) {
-    return '<a class="pf-cart2" href="' + esc(pfDetail(p)) + '" data-grade="' + pfGrade(p) + '" data-pf-rv><span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p) +
-      '<b class="pf-cart2__t">' + esc(t(p.title)) + '</b><span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span><span class="pf-cart2__s">' + esc(t(p.sub)) + '</span><span class="pf-cart2__p">' + esc(t(p.period)) + '</span></span></a>';
+    var c = pfCC(p);
+    var lab = '<span class="pf-cart2__lab"><span class="pf-cart__meta"><i>' + esc(pfCat(p)) + '</i><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps">' + pfGrade(p) + '</em></span>' + pfArt(p, 1) +
+      '<b class="pf-cart2__t">' + esc(t(p.title)) + '</b><span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span><span class="pf-cart2__s">' + esc(t(p.sub)) + '</span><span class="pf-cart2__p">' + esc(t(p.period)) + '</span></span>';
+    return '<a class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" href="' + esc(pfDetail(p)) + '" style="' + c.st + '" data-grade="' + pfGrade(p) + '" data-pf-rv>' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</a>';
   }
   function pfProjects() {
     var pr = C.projects || {}, nm = esc(pfNm('projects'));
@@ -1524,6 +1539,7 @@
     document.body.classList.add('is-play');
     document.documentElement.lang = L;
     if (typeof MINIG !== 'undefined') document.documentElement.style.setProperty('--mb-mini', spr(MINIG));
+    Object.keys(CV_ICON).forEach(function (k) { document.documentElement.style.setProperty('--cv-' + k, spr(CV_ICON[k])); });
     document.documentElement.style.setProperty('--pf-lip', spr(PF_LIP)); document.documentElement.style.setProperty('--pf-body', spr(PF_BODY));
     var r = pfRoute(); PF_R = r;
     var body = r.pg === 'resume' ? pfResume() : r.pg === 'cover' ? pfCover() : r.pg === 'projects' ? pfProjects() : r.pg === 'play' ? pfPlayPg() : r.pg === 'detail' ? pfDetailPg(r.i) : pfHero() + pfCareer() + pfSkillSec() + pfProj();

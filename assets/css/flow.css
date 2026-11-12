@@ -866,7 +866,9 @@
   .pf-cart__meta em, .pf-ov__meta em { padding: 4px 4px 3px; background: #7c7c7c; color: #fff; font-size: 8px; font-style: normal; line-height: 1; }
   .pf-cart[data-grade="SSR"] .pf-cart__meta em, .pf-ov[data-grade="SSR"] .pf-ov__meta em { background: var(--red); }
   .pf-cart[data-grade="SR"] .pf-cart__meta em, .pf-ov[data-grade="SR"] .pf-ov__meta em { background: #c84c0c; }
-  .pf-art { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; border: 2px solid var(--navy); }
+  .pf-art { position: relative; display: grid; place-items: center; flex: 1; min-height: 0; overflow: hidden; background: var(--tint, #fce0d0); color: var(--ch, #c8102e); border: 2px solid var(--navy); }
+  .pf-art__ic { position: relative; display: block; width: 48px; height: 48px; background: var(--ic) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+  .pf-art.is-big .pf-art__ic { width: 96px; height: 96px; }
   .pf-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .pf-art--0 { background: #dce8fc; color: #2038ec; } .pf-art--1 { background: #fce0d0; color: #c8102e; } .pf-art--2 { background: #e4ecd4; color: #00802c; }
   .pf-art__gh { position: absolute; left: 50%; bottom: 0; width: 28px; height: 32px; margin-left: -14px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
@@ -1368,3 +1370,58 @@
   .cv--dk.cv--b .cv__art { border-color: var(--ac); }
   .cv--dk.cv--b .cv__art .cv__no { color: var(--ch); }
   .cv--dk.cv--disk .cv__ic { margin: 2px; background-color: var(--tint); box-shadow: 0 0 0 2px var(--tint); }
+
+  /* ════ 카트리지 = 라-5 실제 반영(사용자: "라-5가 가장 좋네" → "깃허브 페이지에서도 반영해줘") ════
+     홈 진열판(.pf-cart)은 시안의 .cv 규칙(짙은 회색 셸 · 크림 라벨 · 포인트 윗띠 · 게임 = 카트리지 / 기획서 = 디스켓)을 그대로 입고, 크기만 진열판 값(--pf-cw · --pf-ch)을 따름.
+     색(--ch 칩 · --ac 포인트 · --tint 그림 칸) · 도트 그림(--ic)은 flow.js 의 pfCC() 가 content.js 의 projects.items[].cart 로 넣음. */
+  .pf-cart.cv, .pf-cart2 { --sh: #30323c; --sh-l: #50545f; --sh-d: #24262e; }
+  .pf-cart.cv, .pf-cart.cv.is-s { --w: var(--pf-cw, 132px); --h: var(--pf-ch, 176px); }
+  .pf-cart .cv__lab { gap: 4px; }
+  .pf-cart .cv__t { overflow-wrap: anywhere; }
+  .pf-cart.cv--band .cv__lab { padding-top: 12px; }
+  .pf-cart.cv--band.is-s .cv__lab { padding-top: 6px; }
+  .pf-cart.cv--b .cv__art { grid-template-columns: 20px 48px minmax(0, 1fr); }
+  .pf-cart.cv--disk .cv__shut { height: 32px; }
+  /* 크기 단계(pfLayout 이 높이로 고름) — ca: 그림 36 · 디스켓 셔터 낮게 / cb: 칩 · 번호 없이 / cc: 그림 24 · 디스켓 제목 한 줄 */
+  .pf.is-ca .pf-cart.cv--b .cv__art { grid-template-columns: 20px 36px minmax(0, 1fr); }
+  .pf.is-ca .pf-cart.cv--b .cv__ic, .pf.is-cb .pf-cart.cv--b .cv__ic { width: 36px; height: 36px; }
+  .pf.is-ca .pf-cart.cv--disk .cv__shut, .pf.is-cb .pf-cart.cv--disk .cv__shut, .pf.is-cc .pf-cart.cv--disk .cv__shut { height: 24px; }
+  .pf.is-ca .pf-cart.cv--disk .cv__body, .pf.is-cb .pf-cart.cv--disk .cv__body, .pf.is-cc .pf-cart.cv--disk .cv__body { gap: 4px; }
+  .pf.is-cb .pf-cart .cv__meta, .pf.is-cc .pf-cart .cv__meta, .pf.is-cb .pf-cart .cv__no, .pf.is-cc .pf-cart .cv__no { display: none; }
+  .pf.is-cb .pf-cart .cv__t, .pf.is-cc .pf-cart .cv__t { font-size: 13px; }
+  .pf.is-cb .pf-cart.cv--b .cv__art, .pf.is-cc .pf-cart.cv--b .cv__art { grid-template-columns: minmax(0, 1fr); }
+  .pf.is-cc .pf-cart.cv--b .cv__ic { width: 24px; height: 24px; }
+  .pf.is-cb .pf-cart .cv__top, .pf.is-cc .pf-cart .cv__top { overflow: hidden; }
+  .pf.is-cc .pf-cart.cv--disk .cv__t { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* 디스켓이 떠난 빈 칸 — 같은 귀퉁이를 따낸 구멍(테가 계단을 따라감). 칸 자체는 비워 귀퉁이 뒤로 테가 비치지 않게 */
+  .pf-slot.is-disk { --n: 8px; background: none; box-shadow: none; }
+  .pf-slot.is-disk::before { content: ''; position: absolute; inset: 0; clip-path: polygon(0 0, calc(100% - var(--n) * 2) 0, calc(100% - var(--n) * 2) var(--n), calc(100% - var(--n)) var(--n), calc(100% - var(--n)) calc(var(--n) * 2), 100% calc(var(--n) * 2), 100% 100%, 0 100%); background-color: #2a2026; background-repeat: no-repeat;
+    background-image: linear-gradient(#2a2026, #2a2026), linear-gradient(#2a2026, #2a2026), linear-gradient(#2a2026, #2a2026), linear-gradient(#2a2026, #2a2026), linear-gradient(#0c0a0c, #0c0a0c);
+    background-size: 4px calc(var(--n) + 4px), calc(var(--n) + 4px) 4px, 4px calc(var(--n) + 4px), calc(var(--n) + 4px) 4px, calc(100% - 8px) calc(100% - 8px);
+    background-position: right calc(var(--n) * 2) top 0, right var(--n) top var(--n), right var(--n) top var(--n), right 0 top calc(var(--n) * 2), 4px 4px; }
+  .pf.is-mob .pf-slot.is-disk::before { clip-path: polygon(0 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% 100%, 0 100%);
+    background-image: linear-gradient(#2a2026, #2a2026), linear-gradient(#2a2026, #2a2026), linear-gradient(#0c0a0c, #0c0a0c);
+    background-size: 4px 8px, 8px 4px, calc(100% - 8px) calc(100% - 8px); background-position: right 4px top 0, right 0 top 4px, 4px 4px; }
+  /* 게임기 화면 개요 — 이름표 색이 꽂힌 카트리지의 포인트 색 */
+  .pf-ov > .pf-art { border-color: var(--ac, var(--cream)); }
+  .pf-ov > .pf-art .pf-art__ic { width: 72px; height: 72px; }
+  .pf-ov__meta i { border-color: var(--ac, var(--cream)); color: var(--ac, var(--cream)); }
+  .pf-ov dt, .pf-ov__q b { color: var(--ac, var(--or)); }
+  .pf-ov__q { border-left-color: var(--ac, var(--or)); }
+  .pf-ov__learn li::before { color: var(--ac, var(--or)); }
+  /* 프로젝트 페이지의 큰 카트리지 — 같은 차림(윗띠 12px · 번호 · 그림 칸에 큰 도트 그림), 기획서는 디스켓(셔터 + 따낸 귀퉁이) */
+  .pf-cart2 { background: var(--sh); box-shadow: inset 4px 4px 0 var(--sh-l), inset -4px -4px 0 var(--sh-d); }
+  .pf-cart2::before { background: repeating-linear-gradient(90deg, var(--sh-d) 0 4px, transparent 4px 8px); }
+  .pf-cart2__lab { padding-top: 24px; box-shadow: inset 0 12px 0 var(--ac); }
+  .pf-cart2 .pf-cart__meta { justify-content: flex-start; gap: 10px; }
+  .pf-cart2 .pf-cart__meta i { border-color: var(--ch); color: var(--ch); }
+  .pf-cart2 .pf-cart__meta em { margin-left: auto; }
+  .pf-cart2__no { font-size: 8px; line-height: 1; color: var(--ch); }
+  .pf-cart2__p { color: var(--ch); }
+  .pf-cart2.is-disk { --n: 12px; --cut: polygon(0 0, calc(100% - var(--n) * 2) 0, calc(100% - var(--n) * 2) var(--n), calc(100% - var(--n)) var(--n), calc(100% - var(--n)) calc(var(--n) * 2), 100% calc(var(--n) * 2), 100% 100%, 0 100%); padding: 4px; background: #000; border: 0; box-shadow: none; clip-path: var(--cut); }
+  .pf-cart2.is-disk::before { display: none; }
+  .pf-cart2__body { display: flex; flex: 1; flex-direction: column; gap: 12px; min-width: 0; padding: 0 12px 12px; clip-path: var(--cut); background-color: var(--sh); background-repeat: no-repeat;
+    background-image: linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-d), var(--sh-d)), linear-gradient(var(--sh-l), var(--sh-l)), linear-gradient(var(--sh-l), var(--sh-l));
+    background-size: 4px 100%, 100% 4px, 100% 4px, 4px 100%; background-position: right 0 top 0, left 0 bottom 0, left 0 top 0, left 0 top 0; }
+  .pf-cart2__shut { position: relative; display: block; flex: none; width: 56%; height: 48px; margin-left: 20px; background: #c8cad2; border: 4px solid #000; border-top: 0; box-shadow: inset -4px 0 0 #8a8c98; }
+  .pf-cart2__shut::after { content: ''; position: absolute; right: 16px; top: 4px; width: 16px; height: 28px; background: #000; }
