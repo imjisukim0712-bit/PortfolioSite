@@ -1080,8 +1080,13 @@
     var art = CV_ICON[c.art] ? c.art : disk ? 'coin' : 'dice';
     return { st: '--ch:' + v[0] + ';--ac:' + v[1] + ';--tint:' + v[2] + ';--ic:var(--cv-' + art + ')', no: (i < 9 ? '0' : '') + (i + 1), disk: disk };
   }
-  function pfArt(p, big) {                    /* 그림 칸 = 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬) */
-    var h = pfSeed(p.id);
+  function pfShot(p) {                        /* 프로젝트 스크린샷(content.js 의 projects.items[].thumb) — 있으면 그림 칸을 사진이 채움. 사진에는 필터 · 픽셀화를 걸지 않음 */
+    var src = t(p.thumb);
+    return src ? '<img class="pf-shot" src="' + esc(src) + '" alt="' + esc(t(p.title)) + '" loading="lazy" decoding="async">' : '';
+  }
+  function pfArt(p, big) {                    /* 그림 칸 = 스크린샷, 없으면 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬) */
+    var h = pfSeed(p.id), shot = pfShot(p);
+    if (shot) return '<span class="pf-art has-shot' + (big ? ' is-big' : '') + '" style="' + pfCC(p).st + '">' + shot + '</span>';
     return '<span class="pf-art' + (big ? ' is-big' : '') + '" style="' + pfCC(p).st + '" aria-hidden="true">' + (big ? '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg>' : '') + '<i class="pf-art__ic"></i></span>';
   }
   function pfGrade(p) { var g = String(p.grade || 'A').toUpperCase(); return /^(SSR|SR|R|A)$/.test(g) ? g : 'A'; }
@@ -1158,9 +1163,10 @@
   }
   function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음. 모양 · 색은 시안 라-5 의 .cv 규칙 그대로(게임 = 카트리지 · 기획서 = 디스켓) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
+    var shot = c.disk ? '' : pfShot(p);       /* 카트리지 라벨의 그림 칸도 스크린샷이 있으면 사진으로(디스켓은 그림 칸이 없어 그대로) */
     return '<span class="pf-slot' + (c.disk ? ' is-disk' : '') + '" style="--k:' + i + '">' + '<button type="button" class="pf-cart cv cv--band ' + (c.disk ? 'cv--disk' : 'cv--b') + '" data-pf-go="' + i + '" data-grade="' + g + '" style="--k:' + i + ';' + c.st + '" aria-label="' + esc(t(p.title)) + T(' 꽂기', ' — insert') + '">' +
       (c.disk ? '<span class="cv__body"><i class="cv__shut"></i><span class="cv__lab"><span class="cv__top">' + ic + no + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span>' :
-        '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art">' + no + ic + '</span></span>') + '</button></span>';
+        '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art' + (shot ? ' has-shot' : '') + '">' + no + (shot || ic) + '</span></span>') + '</button></span>';
   }
   function pfKey(cls, attr, label, k) { return '<' + (attr.indexOf('href') === 0 ? 'a ' + attr : 'button type="button" ' + attr) + ' class="pf-key ' + cls + '" data-pf-k="' + k + '" aria-label="' + label + '"></' + (attr.indexOf('href') === 0 ? 'a' : 'button') + '>'; }
   function pfProj() {

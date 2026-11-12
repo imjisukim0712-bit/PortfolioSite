@@ -21,6 +21,7 @@
 사용자 지시("이대로 실 사이트에 반영")로 시안 모음의 PART 00(홈 흐름 플레이)이 **실제 홈**이 됐습니다.
 - `index.html` 은 `window.__PLAY` · `window.__SITE` 를 켜고 `assets/js/flow.js` + `assets/css/flow.css` 로 그립니다. 이 두 파일은 `drafts.html`(시안 모음)과 **같은 파일**이라
   한쪽을 고치면 둘 다 바뀝니다(시안 모음 전용 글 · 링크는 `LIVE`(= `__SITE`) 가 아닐 때만). 글 · 숫자는 그대로 `content.js`, 게임기는 `fc-level-art-brick.js`, 플레이 시간은 `play-steam.js`.
+  프로젝트 스크린샷은 `projects.items[].thumb` 에 경로를 넣으면 새 홈에서도 카트리지 라벨 · 게임기 화면 개요 · 프로젝트 페이지 · 자세히 페이지의 그림 칸을 사진이 채웁니다(`flow.js` 의 `pfShot()`, 비우면 카트리지 도트 그림 · 디스켓은 그림 칸이 없어 그대로).
 - 페이지는 해시 하나: `#/resume` · `#/cover` · `#/projects` · `#/p/<id>` · `#/play`. 예전 주소(`resume.html` · `cover-letter.html` · `projects.html` · `play.html` · `projects/detail.html?p=<id>`)는
   `<head>` 맨 앞 한 줄이 같은 월드로 넘깁니다.
 - **예전 화면(스킨 체계)은 `home.html` + 예전 하위 페이지로 남아 있습니다** — `?ve=1`(시각 편집기) · `?skin=`(테마 갤러리 · 둘러보기) · `?classic` 이거나 iframe 안이면 넘기지 않고,
