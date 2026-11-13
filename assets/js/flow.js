@@ -1450,37 +1450,30 @@
   }
 
   /* WORLD 4 프로젝트 — 사용자: "프로젝트 페이지 개선 좀 해야 할 듯, 레이아웃이 좀 개판"(첫 화면에 프로젝트가 안 보임 · 머리 판이 빔 · 2장짜리 줄이 한쪽으로 쏠림 · 카드에 정보는 적고 빈칸은 큼).
-     → 머리 판 오른쪽에 바로가기(작은 카트리지 다섯 — 누르면 그 칸으로 내려감) · 분류마다 격자("세로 나열은 별로, 격자 형식으로" — 줄 목록으로 되돌리지 마세요):
-     한 칸 = 크림 창 하나 — 위 진열 칸에 큰 카트리지 · 디스켓(번호 · 등급 · 생성 도트 그림 · 대표 태그) / 분류 · 기간 / 이름 / 한 줄 / 자세히 보기(칸 바닥).
-     목표 · 결과 · 인원 · 역할 · 상태는 칸에 넣지 않음("카드 하나가 너무 길어, 누르기도 전에 너무 많은 정보" — 자세히 페이지에 다 있음).
+     → 분류마다 격자("세로 나열은 별로, 격자 형식으로"). 한 칸 = 크림 창 하나 — 스크린샷 / 이름 / 한 줄("칩은 안 보여 줘도 돼, 스크린샷 하고 밑에 제목하고 간단 설명만").
+     카트리지 · 분류 칩 · 기간 · 목표 · 결과 · 인원 · 역할은 이 화면에 넣지 않음(자세히 페이지에 있음). 모든 칸이 같은 크기("카드 모양이나 크기가 제각각이면 안 돼").
      열 수 = 그 분류의 개수(최대 3 — 기획서 둘은 두 칸이 폭을 나눠 가져 한쪽으로 쏠리지 않음). 칸 전체가 자세히 페이지 링크 */
   function pfPjCart(p) {
     var c = pfCC(p), g = pfGrade(p);
     var lab = '<span class="pf-cart2__lab"><span class="pf-cart2__top"><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps" data-g="' + g + '">' + g + '</em></span>' + pfArt(p, 1) + '<span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span></span>';
     return '<span class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" aria-hidden="true">' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</span>';
   }
-  function pfPj(p) {                           /* 한 칸 = 카트리지 + 분류 · 기간 / 이름 / 한 줄(두 줄까지). 목표 · 결과 · 인원 · 역할은 자세히 페이지에서 — "누르기도 전에 너무 많은 정보" */
-    var c = pfCC(p);
-    return '<li class="pf-win pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '"><span class="pf-pj__tray">' + pfPjCart(p) + '</span>' +
-      '<span class="pf-pj__info"><span class="pf-pj__meta"><i>' + esc(pfCat(p)) + '</i>' + (t(p.period) ? '<span>' + esc(t(p.period)) + '</span>' : '') + '</span>' +
-      '<b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span>' +
-      '<span class="pf-pj__go">' + T('자세히 보기', 'Read more') + ' →</span></span></a></li>';
+  function pfPj(p) {                           /* 한 칸 = 스크린샷(16:9) / 이름 / 한 줄 — "이 화면에서는 칩을 안 보여 줘도 돼, 스크린샷 하고 밑에 제목하고 간단 설명만".
+                                                  스크린샷 = content.js 의 projects.items[].thumb(비어 있으면 그 프로젝트의 색 · 도트 그림이 자리를 채움) */
+    var c = pfCC(p), th = String(p.thumb || '').trim();
+    return '<li class="pf-win pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '">' +
+      '<span class="pf-pj__shot">' + (th ? '<img src="' + esc(IMG(th)) + '" alt="" loading="lazy" decoding="async">' : pfArt(p, 1)) + '</span>' +
+      '<span class="pf-pj__info"><b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span></span></a></li>';
   }
   function pfProjects() {
     var pr = C.projects || {}, nm = esc(pfNm('projects'));
     var ng = PROJ.filter(function (p) { return p.category === 'game'; }).length, np = PROJ.filter(function (p) { return p.category === 'planning'; }).length;
-    var index = '<nav class="pf-pjx" aria-label="' + T('프로젝트 바로가기', 'Jump to a project') + '">' + ['game', 'planning'].map(function (cat) {   /* 분류끼리 묶음 — 좁으면 묶음째 줄바꿈(게임 셋 / 기획서 둘) */
-      return '<span class="pf-pjx__g">' + PROJ.filter(function (p) { return p.category === cat; }).map(function (p) {
-        var c = pfCC(p);
-        return '<button type="button" class="pf-pjx__b" data-pf-jump="pj-' + esc(p.id) + '" aria-label="' + esc(t(p.title)) + '"><span class="cv cv--band is-s ' + (c.disk ? 'cv--disk' : 'cv--b') + '" style="' + c.st + '">' + pfCartIn(p) + '</span></button>';
-      }).join('') + '</span>';
-    }).join('') + '</nav>';
-    var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), tail: index, back: ['#/', esc(pfNm('home'))],
-      lead: T('게임 ' + ng + '개 · 기획서 ' + np + '개 — 줄을 누르면 자세히 봅니다', ng + ' games · ' + np + ' planning docs — open a row to read more') });
+    var head = pfHead({ w: '4', nm: nm, eyebrow: nm, title: esc(t(pr.title) || pfNm('projects')), back: ['#/', esc(pfNm('home'))],
+      lead: T('게임 ' + ng + '개 · 기획서 ' + np + '개 — 누르면 자세히 봅니다', ng + ' games · ' + np + ' planning docs — open one to read more') });
     var secs = [['game', 'GAMES'], ['planning', 'PLANNING']].map(function (c) {
       var list = PROJ.filter(function (p) { return p.category === c[0]; }); if (!list.length) return '';
       var cn = esc(t(TABS[c[0]]) || c[0]);
-      return pfSec('4', cn, cn, c[0] === 'planning' ? T('디스켓 ' + list.length + '개', list.length + ' diskettes') : T('카트리지 ' + list.length + '개', list.length + ' cartridges'), '<ul class="pf-pjs is-n' + Math.min(3, list.length) + '">' + list.map(pfPj).join('') + '</ul>', c[1]);
+      return pfSec('4', cn, cn, c[0] === 'planning' ? T('기획서 ' + list.length + '개', list.length + ' planning docs') : T('게임 ' + list.length + '개', list.length + ' games'), '<ul class="pf-pjs is-n' + Math.min(3, list.length) + '">' + list.map(pfPj).join('') + '</ul>', c[1]);
     }).join('');
     return head + pfUnder(secs + pfWorldNav('projects'));
   }
