@@ -72,7 +72,8 @@
   var CAREER = (C.resume && C.resume.career && C.resume.career.items) || [];
   var ERAS = CAREER.slice().reverse();                 /* 오래된 순 — GAIN 과 짝 */
   var stats = (C.resume && C.resume.stats) || [];
-  var NAME = t(C.resume && C.resume.profile && C.resume.profile.items && C.resume.profile.items[0] && C.resume.profile.items[0].value) || '김지수';
+  function nameNow() { return t(C.resume && C.resume.profile && C.resume.profile.items && C.resume.profile.items[0] && C.resume.profile.items[0].value) || t(C.meta && C.meta.name) || '김지수'; }
+  var NAME = nameNow();   /* 언어를 바꾸면 render() 가 다시 읽음 */
   var CLS = { ko: '육각형 기획자', en: 'Hexagon game designer' };
   var YRS = (stats[3] && stats[3].num) || '10';
   function ax(k) { return AX.filter(function (a) { return a.k === k; })[0]; }
@@ -1505,7 +1506,7 @@
   function pfSteam() {
     var d = window.PORTFOLIO_STEAM, s = (C.play && C.play.steam) || {}, axes = (d && d.axes) || [];
     if (!axes.length) return '';
-    var names = s.genreNames || {}, hU = t(s.hourUnit), cU = t(s.countUnit);
+    var names = s.genreNames || {}, hU = t(s.hourUnit), cU = s.countUnit && typeof s.countUnit[L] === 'string' ? s.countUnit[L] : t(s.countUnit);   /* en 은 일부러 빈 값(숫자만) — t() 는 빈 en 을 ko 로 채우므로 직접 읽음 */
     function gname(a) { var x = names[String(a.id)]; return x ? t(x) : (a.name || String(a.id)); }
     function nf(v) { return String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
     function hrs(v) { return nf(v) + hU; }
@@ -1867,7 +1868,7 @@
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); } }
+  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); } }, 150); });

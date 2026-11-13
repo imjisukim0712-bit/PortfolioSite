@@ -547,7 +547,7 @@
 
     var names = s.genreNames || {};
     var gname = function (a) { var n = names[String(a.id)]; return n ? t(n, lang) : (a.name || String(a.id)); };
-    var hUnit = t(s.hourUnit, lang), cUnit = t(s.countUnit, lang);
+    var hUnit = t(s.hourUnit, lang), cUnit = s.countUnit && typeof s.countUnit[lang] === 'string' ? s.countUnit[lang] : t(s.countUnit, lang);
     var nf = function (n) { return String(Math.round(n || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
     var hrs = function (n) { return nf(n) + hUnit; };
 

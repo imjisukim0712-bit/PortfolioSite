@@ -392,7 +392,7 @@ window.PORTFOLIO_CONTENT = {
       tableHours:  { ko: "시간",          en: "Hours" },
       tableGames:  { ko: "게임 수",       en: "Titles" },
       hourUnit:    { ko: "시간",          en: "h" },
-      countUnit:   { ko: "종",            en: "" },
+      countUnit:   { ko: "종",            en: "" },   // en 은 일부러 비움 — 영어 표에서는 숫자만(머리 칸이 Titles)
 
       /* 여기부터는 수집 설정 — tools/steam-sync.mjs 가 읽습니다 */
       minMinutes: 60,        // 이만큼(분) 못 논 게임은 그래프에서 뺍니다
