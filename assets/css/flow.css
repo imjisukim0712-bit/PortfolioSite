@@ -1543,7 +1543,7 @@
   @media (prefers-reduced-motion: reduce) { .pf-pj { transition: none; } .pf-pj:hover { transform: none; } }
 
   /* ── 프로젝트 카드 = 작은 제목 판(테마) — 홈 제목 판과 같은 재료: 벽돌 테(위왼쪽 밝게 · 아래오른쪽 어둡게) + 네 귀 리벳 + 크림 판.
-     스크린샷은 검은 화면 테 안에, 왼쪽 위에 스테이지 번호(4-n · 자세히 페이지와 같은 번호, 왼쪽 띠 = 그 프로젝트의 포인트 색).
+     스크린샷은 검은 화면 테 안에(번호 · 이름표를 얹지 않음).
      올리면 판이 4px 단위로 떠오르고 이름 앞에 메뉴와 같은 고스트 커서. 구조 · 크기는 위 절 그대로(모든 칸 같은 크기). ── */
   .pf .pf-win.pf-pj { background: none; border: 0; box-shadow: none; }
   .pf .pf-pj .pf-pj__a { position: relative; padding: 20px; background: #c84c0c; border: 4px solid #171c28;
@@ -1551,7 +1551,6 @@
   .pf-pj__in { display: flex; flex: 1; flex-direction: column; min-width: 0; background: var(--cream); border: 4px solid #171c28; }
   .pf .pf-pj .pf-pj__shot { margin: 12px 12px 0; border: 4px solid #171c28; box-shadow: 4px 4px 0 #e2d1a8; }
   .pf-pj__shot::after { box-shadow: inset 0 0 0 4px #2a2026; }
-  .pf-pj__no { position: absolute; left: 0; top: 0; z-index: 1; padding: 8px 10px 8px 8px; background: #171c28; border-left: 8px solid var(--ac); color: #fff6dd; font: 400 16px/1 'Press Start 2P', monospace; font-style: normal; }
   .pf .pf-pj .pf-pj__info { padding: 16px 20px 20px 52px; }
   .pf .pf-pj .pf-pj__info { position: relative; }
   .pf-pj__info::before { content: ''; position: absolute; left: 14px; top: 16px; width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; opacity: 0; }
@@ -1565,7 +1564,6 @@
     .pf .pf-pj .pf-pj__a { padding: 12px; box-shadow: inset 4px 4px 0 #fc9838, inset -4px -4px 0 #7c2c08, 4px 4px 0 rgb(0 0 0 / .35); }
     .pf-pj .pf-rv { display: none; }
     .pf .pf-pj .pf-pj__shot { margin: 8px 8px 0; }
-    .pf-pj__no { padding: 6px 8px 6px 6px; border-left-width: 4px; font-size: 8px; }
     .pf .pf-pj .pf-pj__info { padding: 12px 14px 16px; }
     .pf-pj__info::before { display: none; }
   }
