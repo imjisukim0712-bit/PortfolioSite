@@ -1451,22 +1451,19 @@
 
   /* WORLD 4 프로젝트 — 사용자: "프로젝트 페이지 개선 좀 해야 할 듯, 레이아웃이 좀 개판"(첫 화면에 프로젝트가 안 보임 · 머리 판이 빔 · 2장짜리 줄이 한쪽으로 쏠림 · 카드에 정보는 적고 빈칸은 큼).
      → 머리 판 오른쪽에 바로가기(작은 카트리지 다섯 — 누르면 그 칸으로 내려감) · 분류마다 격자("세로 나열은 별로, 격자 형식으로" — 줄 목록으로 되돌리지 마세요):
-     한 칸 = 크림 창 하나 — 위 진열 칸에 큰 카트리지 · 디스켓(번호 · 등급 · 생성 도트 그림 · 대표 태그) / 분류 · 장르 / 이름 / 한 줄 / 목표 · 결과 / 기간 · 인원 · 역할 · 상태 / 자세히 보기(칸 바닥).
+     한 칸 = 크림 창 하나 — 위 진열 칸에 큰 카트리지 · 디스켓(번호 · 등급 · 생성 도트 그림 · 대표 태그) / 분류 · 기간 / 이름 / 한 줄 / 자세히 보기(칸 바닥).
+     목표 · 결과 · 인원 · 역할 · 상태는 칸에 넣지 않음("카드 하나가 너무 길어, 누르기도 전에 너무 많은 정보" — 자세히 페이지에 다 있음).
      열 수 = 그 분류의 개수(최대 3 — 기획서 둘은 두 칸이 폭을 나눠 가져 한쪽으로 쏠리지 않음). 칸 전체가 자세히 페이지 링크 */
   function pfPjCart(p) {
     var c = pfCC(p), g = pfGrade(p);
     var lab = '<span class="pf-cart2__lab"><span class="pf-cart2__top"><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps" data-g="' + g + '">' + g + '</em></span>' + pfArt(p, 1) + '<span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span></span>';
     return '<span class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" aria-hidden="true">' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</span>';
   }
-  function pfPj(p) {
-    var c = pfCC(p), q = p.quest || {}, tag = t(p.tag);
-    var kv = [[T('기간', 'Period'), p.period], [T('인원', 'Team'), p.headcount], [T('역할', 'Role'), p.myRole], [T('상태', 'Status'), p.status]].filter(function (r) { return r[1] && t(r[1]); });
-    var gen = (p.genres || []).map(function (x) { return t(x); }).filter(function (x) { return x && x !== tag; });   /* 대표 태그는 카트리지 라벨에 있으니 여기서는 뺌 */
+  function pfPj(p) {                           /* 한 칸 = 카트리지 + 분류 · 기간 / 이름 / 한 줄(두 줄까지). 목표 · 결과 · 인원 · 역할은 자세히 페이지에서 — "누르기도 전에 너무 많은 정보" */
+    var c = pfCC(p);
     return '<li class="pf-win pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '"><span class="pf-pj__tray">' + pfPjCart(p) + '</span>' +
-      '<span class="pf-pj__info"><span class="pf-pj__meta"><i>' + esc(pfCat(p)) + '</i>' + (gen.length ? '<span>' + esc(gen.join(' · ')) + '</span>' : '') + '</span>' +
+      '<span class="pf-pj__info"><span class="pf-pj__meta"><i>' + esc(pfCat(p)) + '</i>' + (t(p.period) ? '<span>' + esc(t(p.period)) + '</span>' : '') + '</span>' +
       '<b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span>' +
-      (t(q.goal) || t(q.result) ? '<span class="pf-pj__q">' + (t(q.goal) ? '<span><b>' + T('목표', 'Goal') + '</b>' + esc(t(q.goal)) + '</span>' : '') + (t(q.result) ? '<span><b>' + T('결과', 'Result') + '</b><strong>' + esc(t(q.result)) + '</strong></span>' : '') + '</span>' : '') +
-      (kv.length ? '<span class="pf-pj__kv">' + kv.map(function (r) { return '<span><b>' + r[0] + '</b>' + esc(t(r[1])) + '</span>'; }).join('') + '</span>' : '') +
       '<span class="pf-pj__go">' + T('자세히 보기', 'Read more') + ' →</span></span></a></li>';
   }
   function pfProjects() {

@@ -1546,3 +1546,21 @@
     .pf-cart2__tag { font-size: 11px; }
     .pf-cart2__top em { padding: 3px 3px 2px; }
   }
+
+  /* 격자 칸 줄이기 — "카드 하나가 너무 길어. 너무 많은 정보를 누르기도 전에 보여주려고 함":
+     칸 = 진열 칸(카트리지 200px · 그림 칸 148 × 128px — 생성 그림이 2배로 들어가는 가장 작은 크기) / 분류 · 기간 / 이름 / 한 줄(두 줄까지) / 자세히 보기 */
+  .pf-pj__tray { padding: 20px 12px 16px; }
+  .pf-pj .pf-cart2 { width: 200px; }
+  .pf-pj .pf-cart2 .pf-art { height: 132px; }   /* 테 2px 포함 — 안쪽 128px 이라야 그림이 2배 */
+  .pf-pj__info { gap: 8px; padding: 16px 20px 20px; }
+  .pf-pj__s { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 15px; line-height: 1.55; }
+  .pf-pj__go { padding-top: 4px; font-size: 14px; }
+  @media (max-width: 760px) {
+    .pf-pj .pf-cart2 { width: 128px; }
+    .pf-pj .pf-cart2 .pf-art { height: 80px; }
+  }
+  @media (max-width: 560px) {
+    .pf-pj .pf-cart2 { width: 120px; }
+    .pf-pj .pf-cart2 .pf-art { height: 72px; }
+    .pf-pj__meta span { display: none; }
+  }
