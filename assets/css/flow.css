@@ -1518,49 +1518,43 @@
   }
   @media (prefers-reduced-motion: reduce) { .pf-pjx__b, .pf-cart2 { transition: none; } .pf-pj.is-flash { animation: none; } }
 
-  /* 프로젝트 격자 — 좁은 화면도 격자로("세로 나열은 별로"): 760px 이하 2열, 홀수 개의 마지막 칸은 한 줄 전체로 눕혀(진열 칸 | 글) 빈자리 없이.
-     560px 이하는 칸이 좁아 목표 · 표를 접고(자세히 페이지에 다 있음) 분류 · 이름 · 한 줄만 */
-  @media (max-width: 760px) {
-    .pf-pjs, .pf-pjs.is-n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .pf-pjs.is-n1 { grid-template-columns: minmax(0, 1fr); }
-    .pf-pjs.is-n3 > .pf-pj:last-child { grid-column: 1 / -1; }
-    .pf-pjs.is-n3 > .pf-pj:last-child .pf-pj__a { flex-direction: row; }
-    .pf-pjs.is-n3 > .pf-pj:last-child .pf-pj__tray { flex: none; margin: 8px 0 8px 8px; padding: 16px 12px; }
-    .pf-pj__tray { padding: 16px 8px 12px; }
-    .pf-cart2 { width: 128px; }
-    .pf-cart2 .pf-art { height: 80px; }
+  /* ════ 프로젝트 카드 = 모두 같은 모양 · 같은 크기, 가로로 긴 카드 ════
+     사용자: "카드 모양이나 크기가 제각각이면 안 돼 · 웬만하면 상하보다 좌우로 길게". 분류(게임 3 · 기획서 2)와 상관없이 늘 같은 열 수(2열 → 900px 이하 1열)이고
+     칸 높이는 고정(--pj-h), 한 칸 = 왼쪽 진열 칸(고정 폭 · 카트리지 또는 디스켓을 가운데) | 오른쪽 글(분류 · 기간 / 이름 두 줄까지 / 한 줄 세 줄까지 / 자세히 보기는 바닥).
+     남는 자리(게임 3개의 마지막 줄)는 비워 둡니다 — 칸을 늘려 채우지 않음. 글이 길어도 칸이 늘지 않게 줄 수를 자릅니다 */
+  .pf { --pj-h: 304px; --pj-tray: 232px; }
+  .pf-pjs, .pf-pjs.is-n1, .pf-pjs.is-n2, .pf-pjs.is-n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .pf-pjs > .pf-pj, .pf-pjs.is-n3 > .pf-pj:last-child { grid-column: auto; height: var(--pj-h); }
+  .pf-pj .pf-pj__a, .pf-pjs.is-n3 > .pf-pj:last-child .pf-pj__a { flex-direction: row; }
+  .pf-pj .pf-pj__tray, .pf-pjs.is-n3 > .pf-pj:last-child .pf-pj__tray { flex: none; width: var(--pj-tray); margin: 8px 0 8px 8px; padding: 0; }
+  .pf-pj .pf-cart2 { width: 200px; }
+  .pf-pj .pf-cart2 .pf-art { height: 132px; }   /* 테 2px 포함 — 안쪽 128px 이라야 생성 그림이 2배 */
+  .pf-pj .pf-cart2__body { gap: 6px; }                          /* 디스켓은 셔터만큼 키가 커서 셔터 · 틈을 줄여 카트리지와 높이를 맞춤 */
+  .pf-pj .pf-cart2__shut { height: 24px; }
+  .pf-pj .pf-cart2__shut::after { height: 16px; }
+  .pf-pj__info { justify-content: center; gap: 8px; padding: 22px 24px 22px; overflow: hidden; }   /* 글 덩어리를 칸 가운데로 — 위에 몰리고 아래가 비지 않게 */
+  .pf-pj__t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 400 22px/1.4 'Galmuri11', monospace; }
+  .pf-pj__s { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: 15px; line-height: 1.55; }
+  .pf-pj__go { margin-top: 6px; padding-top: 0; font-size: 14px; }
+  @media (max-width: 900px) {
+    .pf-pjs, .pf-pjs.is-n1, .pf-pjs.is-n2, .pf-pjs.is-n3 { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   }
   @media (max-width: 560px) {
-    .pf-pjs, .pf-pjs.is-n2 { gap: 12px; }
-    .pf-pj__info { gap: 6px; padding: 12px 12px 16px; }
-    .pf-pj__meta span, .pf-pj__q, .pf-pj__kv { display: none; }
+    .pf { --pj-h: 216px; --pj-tray: 148px; }
+    .pf-pjs, .pf-pjs.is-n1, .pf-pjs.is-n2, .pf-pjs.is-n3 { gap: 12px; }
+    .pf-pj .pf-cart2 { width: 128px; padding: 8px 5px 5px; }
+    .pf-pj .pf-cart2 .pf-art { height: 80px; }
+    .pf-pj .pf-cart2__lab { gap: 5px; padding: 12px 5px 5px; box-shadow: inset 0 8px 0 var(--ac); }
+    .pf-pj .pf-cart2__tag { font-size: 11px; }
+    .pf-pj .pf-cart2__top em { padding: 3px 3px 2px; }
+    .pf-pj .pf-cart2.is-disk { padding: 4px; }
+    .pf-pj .pf-cart2__body { gap: 5px; padding: 0 5px 5px; }
+    .pf-pj .pf-cart2__shut { height: 18px; margin-left: 10px; }
+    .pf-pj .pf-cart2__shut::after { right: 8px; top: 2px; width: 8px; height: 10px; }
+    .pf-pj__info { gap: 5px; padding: 14px 14px 14px 16px; }
     .pf-pj__meta { font-size: 12px; }
     .pf-pj__meta i { padding: 0 6px; }
     .pf-pj__t { font: 800 17px/1.35 'Pretendard Variable', Pretendard, sans-serif; }
-    .pf-pj__s { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: 13px; line-height: 1.5; }
-    .pf-pj__go { padding-top: 4px; font-size: 13px; }
-    .pf-pj__tray { padding: 14px 6px 10px; }
-    .pf-cart2 { width: 120px; padding: 8px 5px 5px; }
-    .pf-cart2__lab { padding: 12px 5px 5px; }
-    .pf-cart2 .pf-art { height: 72px; }
-    .pf-cart2__tag { font-size: 11px; }
-    .pf-cart2__top em { padding: 3px 3px 2px; }
-  }
-
-  /* 격자 칸 줄이기 — "카드 하나가 너무 길어. 너무 많은 정보를 누르기도 전에 보여주려고 함":
-     칸 = 진열 칸(카트리지 200px · 그림 칸 148 × 128px — 생성 그림이 2배로 들어가는 가장 작은 크기) / 분류 · 기간 / 이름 / 한 줄(두 줄까지) / 자세히 보기 */
-  .pf-pj__tray { padding: 20px 12px 16px; }
-  .pf-pj .pf-cart2 { width: 200px; }
-  .pf-pj .pf-cart2 .pf-art { height: 132px; }   /* 테 2px 포함 — 안쪽 128px 이라야 그림이 2배 */
-  .pf-pj__info { gap: 8px; padding: 16px 20px 20px; }
-  .pf-pj__s { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 15px; line-height: 1.55; }
-  .pf-pj__go { padding-top: 4px; font-size: 14px; }
-  @media (max-width: 760px) {
-    .pf-pj .pf-cart2 { width: 128px; }
-    .pf-pj .pf-cart2 .pf-art { height: 80px; }
-  }
-  @media (max-width: 560px) {
-    .pf-pj .pf-cart2 { width: 120px; }
-    .pf-pj .pf-cart2 .pf-art { height: 72px; }
-    .pf-pj__meta span { display: none; }
+    .pf-pj__s { -webkit-line-clamp: 3; font-size: 13px; line-height: 1.5; }
+    .pf-pj__go { font-size: 13px; }
   }
