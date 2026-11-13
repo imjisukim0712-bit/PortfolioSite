@@ -1458,13 +1458,13 @@
     var lab = '<span class="pf-cart2__lab"><span class="pf-cart2__top"><small class="ps pf-cart2__no">' + c.no + '</small><em class="ps" data-g="' + g + '">' + g + '</em></span>' + pfArt(p, 1) + '<span class="pf-cart2__tag">' + esc(t(p.tag)) + '</span></span>';
     return '<span class="pf-cart2' + (c.disk ? ' is-disk' : '') + '" style="' + c.st + '" aria-hidden="true">' + (c.disk ? '<span class="pf-cart2__body"><i class="pf-cart2__shut"></i>' + lab + '</span>' : lab) + '</span>';
   }
-  function pfPj(p) {                           /* 한 칸 = 스크린샷(16:9) / 이름 / 한 줄 — "이 화면에서는 칩을 안 보여 줘도 돼, 스크린샷 하고 밑에 제목하고 간단 설명만".
-                                                  스크린샷 = content.js 의 projects.items[].thumb(비어 있으면 그 프로젝트의 색 · 도트 그림이 자리를 채움) */
-    var c = pfCC(p), th = String(p.thumb || '').trim();
-    return '<li class="pf-win pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '">' +
-      '<span class="pf-pj__shot">' + (th ? '<img src="' + esc(IMG(th)) + '" alt="" loading="lazy" decoding="async">' : pfArt(p, 1)) + '</span>' +
-      '<span class="pf-pj__info"><b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span></span></a></li>';
+  function pfPj(p) {   /* 한 칸 = 작은 제목 판(벽돌 테 · 리벳 · 크림 판) — 스크린샷(16:9, 검은 테 + 스테이지 번호) / 이름 / 한 줄 */
+    var c = pfCC(p), th = String(p.thumb || '').trim(), no = '4-' + (PROJ.indexOf(p) + 1);
+    return '<li class="pf-win pf-pj" id="pj-' + esc(p.id) + '" data-pf-rv><a class="pf-pj__a" href="' + esc(pfDetail(p)) + '" style="' + c.st + '"><i class="pf-rv" aria-hidden="true"></i><span class="pf-pj__in">' +
+      '<span class="pf-pj__shot">' + (th ? '<img src="' + esc(IMG(th)) + '" alt="" loading="lazy" decoding="async">' : pfArt(p, 1)) + '<em class="pf-pj__no" aria-hidden="true">' + no + '</em></span>' +
+      '<span class="pf-pj__info"><b class="pf-pj__t">' + esc(t(p.title)) + '</b><span class="pf-pj__s">' + esc(t(p.sub)) + '</span></span></span></a></li>';
   }
+
   function pfProjects() {
     var pr = C.projects || {}, nm = esc(pfNm('projects'));
     var ng = PROJ.filter(function (p) { return p.category === 'game'; }).length, np = PROJ.filter(function (p) { return p.category === 'planning'; }).length;
