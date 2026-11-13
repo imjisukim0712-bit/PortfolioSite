@@ -70,7 +70,7 @@
     { docs: 1, team: 2, dev: 1 }    /* 2026 게임 기획자 과정 */
   ];
   var CAREER = (C.resume && C.resume.career && C.resume.career.items) || [];
-  var ERAS = CAREER.slice().reverse();                 /* 오래된 순 — GAIN 과 짝 */
+  var ERAS = CAREER.slice().reverse().slice(0, 5);    /* 오래된 순 다섯 — GAIN · NUMS · POPS 와 짝(지난 시안 S 전용, 이력이 늘어도 다섯만) */
   var stats = (C.resume && C.resume.stats) || [];
   function nameNow() { return t(C.resume && C.resume.profile && C.resume.profile.items && C.resume.profile.items[0] && C.resume.profile.items[0].value) || t(C.meta && C.meta.name) || '김지수'; }
   var NAME = nameNow();   /* 언어를 바꾸면 render() 가 다시 읽음 */
@@ -381,6 +381,10 @@
     { id: 'course', k: 'house', x: 576, y: 128, code: 'HOUSE', short: { ko: '기획자 과정', en: 'Design course' }, c: function () { return car(/과정/); } },
     { id: 'com', k: 'castle', x: 704, y: 128, code: 'CASTLE', short: { ko: '컴스톡', en: 'Comstock' }, p: function () { return proj('comstock'); },
       big: ['STEAM', { ko: '석 달 만에 출시', en: 'shipped in 3 months' }] },
+    { id: 'dwh', k: 'panel', x: 640, y: 384, code: '1-5', short: { ko: '다녀가 용!', en: 'Dragon Was Here' }, c: function () { return car(/다녀가 용/); },
+      big: ['ITCH', { ko: 'itch.io 공개 · 스팀 CBT', en: 'on itch.io · Steam CBT' }] },
+    { id: 'popgon', k: 'panel', x: 704, y: 384, code: '1-6', short: { ko: 'POPGON', en: 'POPGON' }, c: function () { return car(/POPGON/); },
+      big: ['33', { ko: '종 게임 · 13개 언어', en: 'games · 13 languages' }] },
     { id: 'goal', k: 'flag', x: 704, y: 256, code: 'GOAL', short: { ko: '다음 목표 · PD', en: 'Next · PD' } }
   ];
   var WKIND = { start: { ko: '1P · 플레이어', en: '1P · Player' }, panel: { ko: '경력 · 활동', en: 'Career · activity' }, castle: { ko: '성 · 출시한 프로젝트', en: 'Castle · shipped project' }, house: { ko: '집 · 배운 곳', en: 'House · learning' }, flag: { ko: '깃발 · 다음 목표', en: 'Flag · next goal' } };
@@ -718,8 +722,8 @@
      위 검은 띠에 목숨(1P × 10년) · 지금 선 코스 이름, 아래 검은 메시지 블록(그 칸의 한 줄), 오른쪽 결산 화면(COURSE CLEAR! · 기간 · 숫자 · 보너스).
      스크롤 = 길: 한 칸 안에서 앞 7할은 그 코스(메시지가 써지고 숫자가 올라감), 뒤 3할은 고스트가 다음 칸으로 걸어가며 모래 길이 그 뒤로 그려짐 — 닿는 순간 다음 코스가 뜸 */
   var SWC = 4, SWW = 200, SWH = 112;                  /* 칸 4px · 지도 800 × 448 */
-  var SWN = { start: [16, 82], solo: [34, 82], comm: [44, 54], lod: [66, 34], blog: [92, 50], study: [112, 74], course: [134, 54], com: [156, 34], goal: [180, 60] };
-  var SWORD = ['start', 'solo', 'comm', 'lod', 'blog', 'study', 'course', 'com', 'goal'];
+  var SWN = { start: [16, 82], solo: [34, 82], comm: [44, 54], lod: [66, 34], blog: [92, 50], study: [112, 74], course: [134, 54], com: [156, 34], dwh: [164, 58], popgon: [176, 72], goal: [180, 60] };
+  var SWORD = ['start', 'solo', 'comm', 'lod', 'blog', 'study', 'course', 'com', 'dwh', 'popgon', 'goal'];
   function swPx(id) { var p = SWN[id]; return [p[0] * SWC + 2, p[1] * SWC + 2]; }
   function swHash(x, y) { var h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return (h ^ (h >>> 16)) >>> 0; }
   function swMap() {
