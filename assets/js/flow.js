@@ -1179,7 +1179,7 @@
       (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
     var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', T('A 자세히', 'A OPEN')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
     return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-4" data-pf-nm="' + T('프로젝트', 'Projects') + '"><div class="pf-in">' +
-      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges')) + '</div>' +
+      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges'), 1) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
       '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><p class="pf-gap" aria-hidden="true"><span class="pf-insert">▲</span></p>' +
       '<div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +

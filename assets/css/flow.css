@@ -798,7 +798,7 @@
   .pf-photo { align-self: center; width: 280px; background: #171c28; border: 4px solid #171c28; }
   .pf-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
   .pf-plaque__txt { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; padding: 4px 0; }
-  .pf-role { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1; color: #c84c0c; }
+  .pf-role { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1; color: var(--acc); }
   .pf-role .ps { padding: 6px 8px; background: var(--navy); color: #f8d878; font-size: 8px; }
   .pf-name { margin: 16px 0 12px !important; font: 400 56px/1.1 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
   .pf-line { font: 400 22px/1.5 'Galmuri11', monospace; color: var(--navy); }
@@ -812,7 +812,7 @@
   .pf-menu li.on a, .pf-menu a:hover { color: var(--red); }
   .pf-contact { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px !important; padding-left: 40px; }
   .pf-contact div { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-  .pf-contact dt { font-size: 13px; font-weight: 800; color: #c84c0c; }
+  .pf-contact dt { font-size: 13px; font-weight: 800; color: var(--acc); }
   .pf-contact dd { min-width: 0; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
   .pf-contact a { color: var(--navy); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
   .pf-hero .s-hill, .pf-hero .s-bush { bottom: 128px; }
@@ -1035,7 +1035,7 @@
   .pf-ph .pf-contact { margin-top: 20px !important; padding: 16px 0 0; border-top: 4px solid #e6d4ae; }
   .pf-ph__art { position: relative; align-self: center; width: 280px; aspect-ratio: 4 / 3; border: 4px solid #171c28; }
   .pf-ph__art .pf-art { position: absolute; inset: 0; border: 0; }
-  .pf-ph__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 16px !important; font-size: 15px; font-weight: 800; color: #c84c0c; }
+  .pf-ph__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 16px !important; font-size: 15px; font-weight: 800; color: var(--acc); }
   .pf-grade { padding: 5px 6px 4px; background: #7c7c7c; color: #fff; font-size: 8px; line-height: 1; font-style: normal; }
   .pf-grade[data-grade="SSR"] { background: var(--red); } .pf-grade[data-grade="SR"] { background: #c84c0c; }
   /* 지하 — 땅 블록이 어두워지는 띠(192px) 아래에서 창이 시작 */
@@ -1073,7 +1073,7 @@
   .pf-ach h3 { margin-top: 20px !important; font: 400 22px/1.4 'Galmuri11', monospace; color: #fcfcfc; }
   .pf-ach p { margin-top: 8px !important; font-size: 16px; line-height: 1.75; color: var(--mu); }
   .pf-letter { display: grid; gap: 32px; }
-  .pf-letter__n { font-size: 8px; line-height: 1; color: #c84c0c; }
+  .pf-letter__n { font-size: 8px; line-height: 1; color: var(--acc); }
   .pf-letter h3 { margin: 16px 0 20px !important; font: 400 28px/1.45 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
   .pf-letter p:not(.pf-letter__n) { max-width: 720px; font-size: 17px; line-height: 1.9; color: #1f2c48; }
   .pf-letter p + p { margin-top: 1em !important; }
@@ -1091,7 +1091,7 @@
   .pf-cart2 .pf-art { flex: none; aspect-ratio: 3 / 2; }
   .pf-cart2__t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 400 22px/1.4 'Galmuri11', monospace; }
   .pf-cart2__s { font-size: 15px; font-weight: 600; line-height: 1.6; color: #2c3a5a; }
-  .pf-cart2__p { margin-top: auto !important; font-size: 13px; font-weight: 800; color: #c84c0c; }
+  .pf-cart2__p { margin-top: auto !important; font-size: 13px; font-weight: 800; color: var(--acc); }
   .pf-cart2__tag { overflow: hidden; font-size: 13px; font-weight: 800; color: #2c3a5a; text-overflow: ellipsis; white-space: nowrap; }
   /* 프로젝트 자세히 — 한눈에(목표 → 결과 · 표) · 플레이 화면 · 배운 것 · 앞뒤 카트리지 */
   .pf-q { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 20px; align-items: baseline; padding: 20px 24px; background: #141014; border-left: 8px solid var(--or); }
@@ -1114,7 +1114,7 @@
   .pf-notes li::before { content: '▶'; position: absolute; left: 0; top: 2px; font-size: 14px; color: var(--red); }
   .pf-blk { display: grid; gap: 24px; }
   .pf-blk h3 { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px !important; font: 400 22px/1.4 'Galmuri11', monospace; color: var(--navy); }
-  .pf-blk h3 small { font: 400 8px/1 'Press Start 2P', monospace; color: #c84c0c; }
+  .pf-blk h3 small { font: 400 8px/1 'Press Start 2P', monospace; color: var(--acc); }
   .pf-blk p { max-width: 720px; font-size: 17px; line-height: 1.85; color: #1f2c48; }
   .pf-blk p + p { margin-top: .8em !important; }
   .pf-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
@@ -1242,12 +1242,12 @@
   .pf .pf-sk__c h3 { color: #102346; }
   .pf .pf-sk__c p { color: var(--ink); }
   .pf .pf-it__box { box-shadow: 0 0 0 4px #171c28; }
-  .pf .pf-win .pf-stats b, .pf .pf-win .pf-tl__t, .pf .pf-win .pf-ach h3, .pf .pf-win .pf-steam__h h3, .pf .pf-win .pf-save__top b, .pf .pf-win .pf-pager__t, .pf .pf-win .pf-steam__stats dd { color: #102346; }
+  .pf .pf-win .pf-stats b, .pf .pf-win .pf-tl__t, .pf .pf-ach .pf-win h3, .pf .pf-win .pf-steam__h h3, .pf .pf-win .pf-save__top b, .pf .pf-win .pf-pager__t, .pf .pf-win .pf-steam__stats dd { color: #102346; }
   .pf-pager a.pf-win:hover .pf-pager__t { color: var(--acc); }
   .pf .pf-win .pf-tl__d::before { background: #102346; }
   .pf .pf-win .pf-tl__i.is-now .pf-tl__d::before { background: var(--acc); }
   .pf .pf-win .pf-tl__i { border-top-color: var(--line); }
-  .pf .pf-win .pf-ach p { color: var(--ink); }
+  .pf .pf-ach .pf-win p { color: var(--ink); }
   .pf .pf-win .pf-sr .g, .pf .pf-win .pf-sr .s { stroke: #d6c497; }
   .pf .pf-win .pf-sr .a { fill: rgb(181 64 10 / .18); }
   .pf .pf-win .pf-sr .n { fill: #102346; }
@@ -1568,3 +1568,10 @@
     .pf-pj__info::before { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .pf .pf-pj .pf-pj__a { transition: none; } .pf .pf-pj .pf-pj__a:hover { transform: none; } }
+
+  /* ── 테마 일관성(검수) — 절 머리는 어느 페이지든 한 가지: 큰 도트 이름표(흰 32px · 휴대폰 24px) → 제목 → 한 줄, 왼쪽 정렬.
+     프로젝트 · 자세히 페이지의 영어 이름표(GAMES · STATUS …)도 WORLD 칸과 같은 크기 · 색(예전엔 주황 16px 로 혼자 작았음). ── */
+  .pf-sec__l { font-size: 32px; color: #fcfcfc; }
+  @media (max-width: 760px) { .pf-sec__l { font-size: 24px; } }
+  /* 하늘 위 '◀ 홈' 단추 — 하늘 위 작은 글자는 남색(`.pf a { color: inherit }` 가 흰색으로 덮고 있었음). 크림 판 위 작은 이름표는 벽돌 판 색 #c84c0c 대신 읽히는 강조색 --acc. */
+  .pf .pf-back { color: var(--navy); }
