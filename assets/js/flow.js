@@ -893,18 +893,34 @@
     var n = WN[i], c = n.c && n.c(), p = n.p && n.p(), cs = wCourse(), f = [];
     if (n.k === 'start') return { title: esc(NAME), sub: T('게임 기획자', 'Game designer'), when: '2016 – ' + new Date().getFullYear(), line: esc(plain(t(C.hero && C.hero.titleHtml))),
       facts: stats.map(function (s) { var u = t(s.unit), lb = t(s.label); return lNum(s.num, lb.toLowerCase().indexOf(u.toLowerCase()) < 0 ? (/^[a-z]/i.test(u) ? ' ' : '') + u : '', lb); }) };
-    if (n.k === 'flag') return { title: 'PD', sub: T('다음 목표', 'Next goal'), when: '', line: esc(t(WGOAL)), facts: cs ? [lCourse(cs)] : [] };
-    var team = p && p.headcount ? t(p.headcount) + (p.myRole ? ' · ' + t(p.myRole) : '') : c && c.org ? t(c.org) : '';
+    if (n.k === 'flag') return { title: 'PD', sub: T('다음 목표', 'Next goal'), when: '', line: esc(t(WGOAL)), facts: cs ? [lCourse(cs)] : [], team: '', rest: cs ? [lCourse(cs)] : [] };
+    var team = p && p.headcount ? t(p.headcount) + (p.myRole ? ' · ' + t(p.myRole) : '') : c && c.org ? t(c.org) : '', rest = [];
     if (team) f.push('<span>' + esc(team) + '</span>');
     if (n.big) f.push(lNum(n.big[0], '', t(n.big[1])));
-    if (p && p.quest && p.quest.goal && LQUEST[n.id]) f.push('<span>' + esc(t(p.quest.goal)) + ' <b>' + esc(t(p.quest.result)) + '</b></span>');
-    if (n.k === 'house' && cs) f.push(lCourse(cs, 1));
+    if (p && p.quest && p.quest.goal && LQUEST[n.id]) rest.push('<span>' + esc(t(p.quest.goal)) + ' <b>' + esc(t(p.quest.result)) + '</b></span>');
+    if (n.k === 'house' && cs) rest.push(lCourse(cs, 1));
+    f = f.concat(rest);
     return { title: esc(wTitle(n)), sub: '', when: esc(wPeriod(n)) + (wNow(n) && !/현재/.test((c && c.date && c.date.ko) || '') ? ' · ' + T('진행 중', 'ongoing') : ''),
-      line: esc(c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : ''), facts: f };
+      line: esc(c && c.body ? t(c.body) : p && p.learned && p.learned[0] ? t(p.learned[0]) : ''), facts: f,
+      team: team, rest: rest, big: n.big, now: wNow(n), thumb: String((c && c.thumb) || (p && p.thumb) || '').trim(), p: p };
   }
   function lCount(el, vh) {           /* 숫자는 그 칸이 화면 아래 4분의 1 을 지나는 동안 0 → 값(읽을 자리에서는 다 올라가 있음) */
     var cu = clamp01((vh - el.getBoundingClientRect().top) / (vh * .25));
     [].forEach.call(el.querySelectorAll('[data-l-count]'), function (x) { x.textContent = countUp(x.getAttribute('data-l-count'), cu); });
+  }
+  /* 홈 이력 카드(썸네일 판) — 왼쪽 썸네일 칸(경력 thumb · 프로젝트 thumb, 없으면 프로젝트 도트 그림 · 그 칸의 길 표식) | 기간 → 이름 → 한 줄 → 소속 · 인원 | 오른쪽 큰 숫자 */
+  function lThumb(it, node) {
+    if (it.thumb) return '<span class="swl-c__th"><img src="' + esc(IMG(it.thumb)) + '" alt="" loading="lazy" decoding="async"></span>';
+    if (it.p && it.p.id) return '<span class="swl-c__th">' + pfArt(it.p, 1) + '</span>';
+    return '<span class="swl-c__th is-empty" aria-hidden="true"><i class="sw-s ' + node + '"></i></span>';
+  }
+  function lCard(it, node) {
+    var big = it.big ? '<p class="swl-c__big"><b class="ps" data-l-count="' + esc(it.big[0]) + '">' + esc(it.big[0]) + '</b><span>' + esc(t(it.big[1])) + '</span></p>' : '';
+    var when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
+    return '<div class="swl-c__box has-th">' + lThumb(it, node) + '<div class="swl-c__main">' +
+      (when || it.sub ? '<p class="swl-c__when">' + (it.sub ? '<b>' + it.sub + '</b>' : '') + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</p>' : '') +
+      '<h3 class="swl-c__t">' + it.title + '</h3>' + (it.line ? '<p class="swl-c__line">' + it.line + '</p>' : '') +
+      (it.team || (it.rest || []).length ? '<p class="l-facts">' + (it.team ? '<span>' + esc(it.team) + '</span>' : '') + (it.rest || []).join('') + '</p>' : '') + '</div>' + big + '</div>';
   }
   function lFacts(it) { return it.facts.length ? '<p class="l-facts">' + it.facts.join('') + '</p>' : ''; }
 
@@ -949,6 +965,7 @@
     var list = WN.map(function (n, i) {
       if (opt && opt.skipStart && n.k === 'start') return '';
       var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y'), it = lItem(i);
+      if (opt && opt.thumb) return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span>' + lCard(it, node) + '</li>';
       return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__box">' +
         '<p class="swl-c__head"><span class="swl-c__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</span><em>' + it.when + '</em></p>' +
         '<p class="swl-c__line">' + it.line + '</p>' + lFacts(it) + '</div></li>';
@@ -1142,7 +1159,7 @@
   function pfWorld(code, h, p, left) { return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + '"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>'; }
   function pfCareer() {
     return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true }) +
+      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true }) +
       '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
@@ -1310,7 +1327,7 @@
     if (!PF || j < 0 || j >= PROJ.length) return;
     var s = PFS;
     if (s.busy) return;
-    if (s.cur === j) { if (s.ph === 'on') pop(PF.root.querySelector('[data-pf-scr]')); return; }
+    if (s.cur === j) { if (s.ph === 'on') pfEject(); return; }   /* 꽂힌 카드를 다시 누르면 꺼냄(사용자) */
     if (s.cur >= 0) { pfEject(function () { pfInsert(j, from); }); return; }
     var c = PF.cards[j], b = PF.base[j], p0 = from || b, p1 = [PF.slotX, PF.preY], p2 = [PF.slotX, PF.insY], up = from ? 0 : 32;
     s.cur = j; s.ph = 'ins'; s.busy = 1; c.classList.add('is-move'); pfShow();
