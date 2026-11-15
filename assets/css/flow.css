@@ -1575,3 +1575,19 @@
   @media (max-width: 760px) { .pf-sec__l { font-size: 24px; } }
   /* 하늘 위 '◀ 홈' 단추 — 하늘 위 작은 글자는 남색(`.pf a { color: inherit }` 가 흰색으로 덮고 있었음). 크림 판 위 작은 이름표는 벽돌 판 색 #c84c0c 대신 읽히는 강조색 --acc. */
   .pf .pf-back { color: var(--navy); }
+
+  /* ── 게임기 화면: 게임 목록 없이 '카드를 꽂아 주세요' 한 장 → 꽂으면 그 프로젝트 개요(사용자 지시) ── */
+  .pf-ins { display: flex; flex-direction: column; height: 100%; padding: 20px 28px; }
+  .pf-ins__h b { padding: 4px 6px; background: var(--red); font-size: 8px; }
+  .pf-ins__c { flex: 1; display: grid; place-content: center; justify-items: center; gap: 16px; text-align: center; }
+  .pf-ins__t { font: 400 22px/1.4 'Galmuri11', monospace; color: var(--cream); }
+  .pf-ins__s { font-size: 8px; line-height: 1; color: var(--or); animation: pf-blink 1s steps(1) infinite; }
+  .pf-ins__a { font-size: 16px; line-height: 1; color: var(--or); animation: pf-nudge-y .8s steps(2) infinite; }
+  @keyframes pf-nudge-y { 50% { transform: translateY(4px); } }
+  .pf.is-s3 .pf-ins { padding: 14px 20px; }
+  .pf.is-s3 .pf-ins__c { gap: 10px; }
+  .pf.is-s3 .pf-ins__t { font-size: 11px; }
+  .pf.is-mob .pf-scr .pf-ins { padding: 6px 10px; }
+  .pf.is-mob .pf-scr .pf-ins__c { gap: 8px; }
+  .pf.is-mob .pf-scr .pf-ins__t { font-size: 11px; }
+  @media (prefers-reduced-motion: reduce) { .pf-ins__s, .pf-ins__a { animation: none; } }

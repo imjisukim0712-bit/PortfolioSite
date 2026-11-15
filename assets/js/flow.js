@@ -1197,11 +1197,10 @@
       '<p class="pf-foot__note">' + T('프로젝트 도트 그림: AI 이미지 생성 후 픽셀 변환', 'Project pixel art: AI image generation, then pixel conversion') + '</p></div><i class="pf-uground" aria-hidden="true"></i></footer>';
   }
 
-  /* 게임기 화면 — 고르기 목록(아무것도 안 꽂힘 · 꽂는 중) / 읽는 중 / 개요 */
-  function pfSel(cur, busy) {                  /* 비어 있으면 'PRESS START' 만 깜빡임 — 설명 글 없이 눌러 보게("긴 설명 없애고 걍 눌러보게") */
-    return '<div class="pf-sel' + (cur < 0 ? ' is-empty' : '') + '"><p class="pf-sel__h"><b class="ps">1P</b>' + (cur < 0 ? '<span class="ps pf-sel__ins">PRESS START</span>' : '') + '</p><ol>' + PROJ.map(function (p, j) {
-      return '<li' + (j === cur ? ' class="on"' : '') + '><button type="button" data-pf-go="' + j + '">' + esc(t(p.title)) + '</button>' + (j === cur && busy ? '<em>' + busy + '</em>' : '') + '</li>';
-    }).join('') + '</ol></div>';
+  /* 게임기 화면 — 비어 있음('카드를 꽂아 주세요') · 꽂는 중 · 꺼내는 중 / 읽는 중 / 개요. 게임 목록은 화면에 두지 않음(사용자: "화면에 게임 목록 나오면 안 됨 · 카드 꽂는 걸로만") */
+  function pfIns(busy) {
+    return '<div class="pf-ins' + (busy ? ' is-busy' : '') + '"><p class="pf-ins__h"><b class="ps">1P</b></p><div class="pf-ins__c"><p class="pf-ins__t">' + (busy || T('카드를 꽂아 주세요', 'Insert a cartridge')) + (busy ? '<span class="pf-dots"></span>' : '') + '</p>' +
+      (busy ? '' : '<p class="ps pf-ins__s">INSERT CARTRIDGE</p><p class="pf-ins__a" aria-hidden="true">▼</p>') + '</div></div>';
   }
   function pfBoot() { return '<div class="pf-boot"><p>' + T('읽는 중', 'Loading') + '<span class="pf-dots"></span></p></div>'; }
   function pfOv(i, notes) {
@@ -1292,8 +1291,8 @@
   function pfEase(f) { return f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; }
   function pfShow() {                           /* 상태 → 화면 · 아래 창 · 카트리지 표시 */
     var s = PFS, hint = '';
-    if (s.cur < 0) pfScreen('sel', pfSel(-1, ''), hint);
-    else if (s.ph === 'ins' || s.ph === 'ej') pfScreen('sel:' + s.cur + ':' + s.ph, pfSel(s.cur, s.ph === 'ins' ? T('꽂는 중', 'inserting') : T('꺼내는 중', 'ejecting')), hint);
+    if (s.cur < 0) pfScreen('ins', pfIns(''), hint);
+    else if (s.ph === 'ins' || s.ph === 'ej') pfScreen('ins:' + s.ph, pfIns(s.ph === 'ins' ? T('꽂는 중', 'Inserting') : T('꺼내는 중', 'Ejecting')), hint);
     else if (s.ph === 'boot') pfScreen('boot:' + s.cur, pfBoot(), '');
     else pfScreen('ov:' + s.cur, pfOv(s.cur, false), '');
     PF.root.classList.toggle('pf-empty', s.cur < 0);
