@@ -1145,7 +1145,7 @@
     var contact = [];
     if (m.email) contact.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
     if (m.github) contact.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
-    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:20px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
+    return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '">' + pfSky() + '<i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:20px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
       '<div class="pf-in"><div class="pf-ts"><div class="pf-hud">' + hud + '</div>' +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in">' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
@@ -1385,8 +1385,28 @@
      한 페이지 = 한 월드(홈 1 · 이력서 2 · 자기소개서 3 · 프로젝트 4 · 자세히 4-n · 게임플레이 5): 하늘 머리(홈 제목 판과 같은 벽돌 테 + 크림 판) → 땅 블록 → 어두워지는 띠 →
      지하의 창(검은 메시지 블록 — 이력 목록과 같은 재료) · 긴 글은 크림 종이(밝은 판 위 어두운 글자). 페이지 끝은 앞뒤 월드로 가는 단추.
      주소는 해시(#/resume · #/cover · #/projects · #/p/<id> · #/play) — 위 띠 · 바닥 · 홈의 '전체 보기' · 게임기 A 가 여기로 옴. 가려 둔 인적사항 값은 넣지 않음 */
+  /* 시안: 하늘 양옆(콘텐츠 기둥 1000px 바깥) 채우기 — ?sky=a · b · c · d 로만 켜짐(고르면 기본으로 옮기고 나머지는 지움)
+     항목 = [그림, 쪽 l|r, 기둥 끝에서 바깥으로 px, 'top' | 'gnd'(땅 위에서 위로 px), 값]. 좁은 화면에서는 바깥 것부터 창 밖으로 잘림 */
+  var SKY = (/[?&]sky=([a-d])/.exec(location.search) || [])[1] || '';
+  var SKY_SET = {
+    a: [['cloud', 'l', 60, 'top', 150], ['cloud', 'l', 300, 'top', 330], ['cloud', 'l', 120, 'top', 560], ['cloud', 'l', 470, 'top', 90], ['cloud', 'l', 640, 'top', 450],
+        ['cloud', 'r', 90, 'top', 250], ['cloud', 'r', 330, 'top', 110], ['cloud', 'r', 180, 'top', 470], ['cloud', 'r', 520, 'top', 360], ['cloud', 'r', 700, 'top', 180]],
+    b: [['hill', 'l', 40, 'gnd', 0], ['bush', 'l', 250, 'gnd', 0], ['hill', 'l', 430, 'gnd', 0], ['bush', 'l', 660, 'gnd', 0], ['cloud', 'l', 150, 'top', 170], ['cloud', 'l', 480, 'top', 300],
+        ['bush', 'r', 50, 'gnd', 0], ['hill', 'r', 220, 'gnd', 0], ['bush', 'r', 460, 'gnd', 0], ['hill', 'r', 620, 'gnd', 0], ['cloud', 'r', 120, 'top', 230], ['cloud', 'r', 430, 'top', 120]],
+    c: [['brick', 'l', 80, 'gnd', 192], ['qb', 'l', 144, 'gnd', 192], ['brick', 'l', 208, 'gnd', 192], ['coin', 'l', 164, 'gnd', 272], ['brick', 'l', 400, 'gnd', 384], ['brick', 'l', 464, 'gnd', 384], ['qb', 'l', 528, 'gnd', 384], ['cloud', 'l', 220, 'top', 130],
+        ['qb', 'r', 120, 'gnd', 256], ['brick', 'r', 380, 'gnd', 160], ['qb', 'r', 444, 'gnd', 160], ['brick', 'r', 508, 'gnd', 160], ['coin', 'r', 140, 'gnd', 336], ['cloud', 'r', 260, 'top', 180]],
+    d: [['pipe', 'l', 120, 'gnd', 0], ['bush', 'l', 300, 'gnd', 0], ['cloud', 'l', 80, 'top', 180], ['cloud', 'l', 380, 'top', 320],
+        ['hard', 'r', 160, 'gnd', 0], ['pole', 'r', 130, 'gnd', 64], ['flagt', 'r', 130, 'gnd', 208], ['bush', 'r', 330, 'gnd', 0], ['cloud', 'r', 100, 'top', 140], ['cloud', 'r', 420, 'top', 280]]
+  };
+  function pfSky() {
+    if (!SKY || !SKY_SET[SKY]) return '';
+    return '<span class="pf-sky pf-sky--' + SKY + '" aria-hidden="true">' + SKY_SET[SKY].map(function (q, i) {
+      var h = (q[1] === 'l' ? 'right' : 'left') + ':calc(50% + 500px + ' + q[2] + 'px)', v = q[3] === 'top' ? 'top:' + q[4] + 'px' : 'bottom:' + (128 + q[4]) + 'px';
+      return '<i class="pf-s s-' + q[0] + '" style="' + h + ';' + v + ';--k:' + i + '"></i>';
+    }).join('') + '</span>';
+  }
   function pfHead(o) {
-    return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '"><i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
+    return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '">' + pfSky() + '<i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
       '<div class="pf-in"><div class="pf-ts">' + (o.back ? '<a class="pf-back" href="' + o.back[0] + '"><span aria-hidden="true">◀</span>' + o.back[1] + '</a>' : '') +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in' + (o.side ? '' : ' pf-plaque__in--solo') + (o.tail ? ' pf-plaque__in--tail' : '') + '">' + (o.side || '') +
       '<div class="pf-ph__txt"><p class="pf-role">' + o.eyebrow + '<span class="ps">WORLD ' + o.w + '</span></p><h1 class="pf-ph__t">' + o.title + '</h1>' +
