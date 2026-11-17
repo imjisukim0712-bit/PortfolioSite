@@ -1635,13 +1635,6 @@
   }
 
 
-  /* 시안: 하늘 양옆 채우기(?sky=a · b · c · d) — 1180px 이상에서만 */
-  .pf-sky { display: none; }
-  @media (min-width: 1180px) {
-    .pf-sky { display: contents; }
-    .pf-sky .s-cloud { animation: pf-drift 14s steps(14) infinite alternate; animation-delay: calc(var(--k) * -2.3s); }
-    .pf-sky .s-coin { animation: pf-coin-bob 1.2s steps(2) infinite; }
-  }
-  @keyframes pf-drift { to { translate: 28px 0; } }
-  @keyframes pf-coin-bob { 50% { translate: 0 -8px; } }
-  @media (prefers-reduced-motion: reduce) { .pf-sky .pf-s { animation: none; } }
+/* 하늘 좌우의 떠 있는 블록(flow.js PF_SKY) — 기둥 바깥 빈 하늘에만 */
+.pf-sky { display: none; }
+@media (min-width: 1180px) { .pf-sky { display: contents; } }

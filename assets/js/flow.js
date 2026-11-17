@@ -1245,7 +1245,7 @@
     });
   }
   function pfLayout() {
-    pfDive();
+    pfDive(); pfSkyFit();
     var root = document.querySelector('[data-pf]'), d = (window.__ART || {}).brick; if (!root || !d || !root.querySelector('.pf-stick')) return;
     var top = root.querySelector('.pf-top').offsetHeight, st = root.querySelector('.pf-stick'), dev = root.querySelector('.pf-dev'), cv = root.querySelector('.pf-art-cv');
     var H = innerHeight - top, W = st.clientWidth, mob = innerWidth <= 760, dpr = window.devicePixelRatio || 1;
@@ -1387,23 +1387,20 @@
      주소는 해시(#/resume · #/cover · #/projects · #/p/<id> · #/play) — 위 띠 · 바닥 · 홈의 '전체 보기' · 게임기 A 가 여기로 옴. 가려 둔 인적사항 값은 넣지 않음 */
   /* 시안: 하늘 양옆(콘텐츠 기둥 1000px 바깥) 채우기 — ?sky=a · b · c · d 로만 켜짐(고르면 기본으로 옮기고 나머지는 지움)
      항목 = [그림, 쪽 l|r, 기둥 끝에서 바깥으로 px, 'top' | 'gnd'(땅 위에서 위로 px), 값]. 좁은 화면에서는 바깥 것부터 창 밖으로 잘림 */
-  var SKY = (/[?&]sky=([a-d])/.exec(location.search) || [])[1] || '';
-  var SKY_SET = {
-    a: [['cloud', 'l', 60, 'top', 150], ['cloud', 'l', 300, 'top', 330], ['cloud', 'l', 120, 'top', 560], ['cloud', 'l', 470, 'top', 90], ['cloud', 'l', 640, 'top', 450],
-        ['cloud', 'r', 90, 'top', 250], ['cloud', 'r', 330, 'top', 110], ['cloud', 'r', 180, 'top', 470], ['cloud', 'r', 520, 'top', 360], ['cloud', 'r', 700, 'top', 180]],
-    b: [['hill', 'l', 40, 'gnd', 0], ['bush', 'l', 250, 'gnd', 0], ['hill', 'l', 430, 'gnd', 0], ['bush', 'l', 660, 'gnd', 0], ['cloud', 'l', 150, 'top', 170], ['cloud', 'l', 480, 'top', 300],
-        ['bush', 'r', 50, 'gnd', 0], ['hill', 'r', 220, 'gnd', 0], ['bush', 'r', 460, 'gnd', 0], ['hill', 'r', 620, 'gnd', 0], ['cloud', 'r', 120, 'top', 230], ['cloud', 'r', 430, 'top', 120]],
-    c: [['brick', 'l', 80, 'gnd', 192], ['qb', 'l', 144, 'gnd', 192], ['brick', 'l', 208, 'gnd', 192], ['coin', 'l', 164, 'gnd', 272], ['brick', 'l', 400, 'gnd', 384], ['brick', 'l', 464, 'gnd', 384], ['qb', 'l', 528, 'gnd', 384], ['cloud', 'l', 220, 'top', 130],
-        ['qb', 'r', 120, 'gnd', 256], ['brick', 'r', 380, 'gnd', 160], ['qb', 'r', 444, 'gnd', 160], ['brick', 'r', 508, 'gnd', 160], ['coin', 'r', 140, 'gnd', 336], ['cloud', 'r', 260, 'top', 180]],
-    d: [['pipe', 'l', 120, 'gnd', 0], ['bush', 'l', 300, 'gnd', 0], ['cloud', 'l', 80, 'top', 180], ['cloud', 'l', 380, 'top', 320],
-        ['hard', 'r', 160, 'gnd', 0], ['pole', 'r', 130, 'gnd', 64], ['flagt', 'r', 130, 'gnd', 208], ['bush', 'r', 330, 'gnd', 0], ['cloud', 'r', 100, 'top', 140], ['cloud', 'r', 420, 'top', 280]]
-  };
+  /* 하늘 좌우 빈자리 — 1000px 기둥 바깥에 떠 있는 벽돌 · 물음표 블록 몇 개만(구름은 더 늘리지 않음 — 사용자).
+     [그림, 쪽(l · r), 기둥 가장자리에서 떨어진 px, 땅 윗면에서 높이 px, 묶음]. 1180px 이상에서만 보이고,
+     창 밖으로 잘리는 묶음은 통째로 숨김(pfSkyFit — 반쯤 잘린 블록을 두지 않음) */
+  var PF_SKY = [['brick', 'l', 32, 256, 1], ['qb', 'l', 96, 256, 1], ['qb', 'l', 320, 416, 2],
+                ['qb', 'r', 72, 384, 3], ['brick', 'r', 256, 192, 4], ['qb', 'r', 320, 192, 4], ['brick', 'r', 384, 192, 4]];
   function pfSky() {
-    if (!SKY || !SKY_SET[SKY]) return '';
-    return '<span class="pf-sky pf-sky--' + SKY + '" aria-hidden="true">' + SKY_SET[SKY].map(function (q, i) {
-      var h = (q[1] === 'l' ? 'right' : 'left') + ':calc(50% + 500px + ' + q[2] + 'px)', v = q[3] === 'top' ? 'top:' + q[4] + 'px' : 'bottom:' + (128 + q[4]) + 'px';
-      return '<i class="pf-s s-' + q[0] + '" style="' + h + ';' + v + ';--k:' + i + '"></i>';
+    return '<span class="pf-sky" aria-hidden="true">' + PF_SKY.map(function (q) {
+      return '<i class="pf-s s-' + q[0] + '" data-g="' + q[4] + '" style="' + (q[1] === 'l' ? 'right' : 'left') + ':calc(50% + 500px + ' + q[2] + 'px);bottom:' + (128 + q[3]) + 'px"></i>';
     }).join('') + '</span>';
+  }
+  function pfSkyFit() {
+    var W = document.documentElement.clientWidth, cut = {}, it = document.querySelectorAll('.pf-sky i');
+    it.forEach(function (e) { e.style.visibility = ''; var r = e.getBoundingClientRect(); if (r.width && (r.left < 0 || r.right > W)) cut[e.dataset.g] = 1; });
+    it.forEach(function (e) { if (cut[e.dataset.g]) e.style.visibility = 'hidden'; });
   }
   function pfHead(o) {
     return '<section class="pf-ph" data-pf-sec="' + o.w + '" data-pf-nm="' + o.nm + '">' + pfSky() + '<i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:16px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +

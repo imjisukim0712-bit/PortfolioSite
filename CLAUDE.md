@@ -29,7 +29,9 @@
 - **가독성 · 화면 틀**(사용자: "아래 화면들이 검정색이라 가독성이 떨어짐" · "화면 전체가 하늘색이라 눈 아픔, 좌우는 다른 걸로"): 지하 바탕은 검정이 아니라 짙은 남색 `--ug`,
   글이 든 창(이력 메시지 블록 `.swl-c__box` · `.pf-win` · 보유 기술 칸)은 **크림 판 + 남색 글**(강조 `--acc` 벽돌색 — 주황 글자는 크림 위에서 안 읽힘). 게임기 화면 · 진열판 · NO SIGNAL · 휴대폰 개요 창만 어둡게.
   1180px 이상은 월드 전체(`.pf`)를 가운데 화면 한 장(창 폭 − 112px, 최대 1440px — "화면이 너무 좁아 보임" 뒤)에 담고 좌우는 고스트 모노그램(아래) — 구름은 1400px 이상에서 기둥 바깥(기둥 왼쪽 − 140px). 규칙은 `flow.css` 맨 아래 '가독성 · 화면 틀' 절.
-  양옆 바탕 = **고스트 모노그램**(사용자: "사이드 띠가 불편" → 시안 다섯 중 "모노그램 유령으로만 · 화면과 사이의 줄 없애고 · 바깥은 선명, 안쪽은 화면에 흡수되듯 그라데이션"): 96px 칸에 고스트 둘(`#26355f` on `#121b33`) + 위에 가로 그라데이션(바깥 투명 → 화면 가장자리에서 `--ug`). 화면 둘레의 검정 · 회색 테 줄은 없앰 — 다시 넣지 마세요. 하늘 · 땅은 양옆까지 그대로 이어지고 모노그램은 땅 아래 지하부터("윗부분 하늘색 있는 곳은 사이드 모노그램 없애고 땅으로 내려갈 때부터만") — 머리 띠 · 하늘(`.pf-hero` · `.pf-ph` 의 `::before`) · 땅 블록 · `.pf-fade` 를 좌우 1024px 씩 늘리고(땅 블록 16칸이라 무늬가 안 어긋남, `html, body { overflow-x: clip }`), 지하 첫머리 320px 은 `.pf-ug::before` 가 남색 → 투명으로 덮어 패턴이 서서히 나타남.
+  양옆 바탕 = **고스트 모노그램**(사용자: "사이드 띠가 불편" → 시안 다섯 중 "모노그램 유령으로만 · 화면과 사이의 줄 없애고 · 바깥은 선명, 안쪽은 화면에 흡수되듯 그라데이션"): 96px 칸에 고스트 둘(`#1b2745` on `#121b33`) + 위에 가로 그라데이션(바깥 투명 → 화면 가장자리에서 `--ug`). 화면 둘레의 검정 · 회색 테 줄은 없앰 — 다시 넣지 마세요. (유령 색은 "시선이 살짝 뺏긴다, 덜 보이게" 뒤 `#26355f` → `#1b2745`.) 하늘 · 땅은 양옆까지 그대로 이어지고 모노그램은 땅 아래 지하부터("윗부분 하늘색 있는 곳은 사이드 모노그램 없애고 땅으로 내려갈 때부터만") — 머리 띠 · 하늘(`.pf-hero` · `.pf-ph` 의 `::before`) · 땅 블록 · `.pf-fade` 를 좌우 1024px 씩 늘리고(땅 블록 16칸이라 무늬가 안 어긋남, `html, body { overflow-x: clip }`), 지하 첫머리 320px 은 `.pf-ug::before` 가 남색 → 투명으로 덮어 패턴이 서서히 나타남.
+  하늘 좌우 빈자리 = **떠 있는 벽돌 · 물음표 블록 몇 개만**(사용자: "구름은 늘리지 말고 블럭 몇개 정도만") — `flow.js` 의 `PF_SKY`(1000px 기둥 가장자리에서 떨어진 거리 · 땅 위 높이 · 묶음)를 `pfSky()` 가 홈 첫 화면 · 하위 페이지 머리에 넣고,
+  창 밖으로 잘리는 묶음은 `pfSkyFit()` 이 통째로 숨김(1180px 이상에서만). 구름 떼 · 언덕 · 관 · 깃대 시안은 고르지 않았음.
 - **이력 칸 더하기**: 경력은 `content.js` 의 `resume.career.items`(최근 것이 위)에 한 항목, 홈 1-2 목록(오래된 것 → 최근)은 `flow.js` 의 `WN` 에 한 줄(`c: car(/역할 글자/)` · 큰 숫자 `big`) — 지난 시안 섬 지도용 `SWN` · `SWORD` 에도 같은 id 좌표를 넣어야 시안 모음이 안 깨집니다(지난 시안 S 는 `ERAS` 다섯만 씀).
 - **홈 이력 카드(썸네일 판)**: `draftL3({ …, thumb: true })` → `lCard()` — 왼쪽 썸네일 칸(16:9 · `resume.career.items[].thumb`, 프로젝트 칸은 `projects.items[].thumb`, 비면 프로젝트 도트 그림 · 경력은 그 칸의 길 표식만 있는 빈 화면) | 기간(작게, 진행 중은 빨간 칩) → 이름(Galmuri11 굵게 · 휴대폰은 Pretendard) → 한 줄(보통 굵기) → 소속 · 인원 | 오른쪽 큰 숫자(900px 이하는 아래 줄). 사용자: "이력 카드들 가독성이 떨어져" — 본문을 이름보다 굵게 · 기간 · 숫자 · 소속을 한 줄에 섞던 예전 배치로 되돌리지 마세요. 꽂힌 카트리지를 다시 누르면 꺼냅니다(`pfInsert` 의 같은 칸 = `pfEject`).
 - **테마 일관성(검수)**: 절 머리는 어느 페이지든 한 가지 — 큰 도트 이름표(`.pf-wc__w` · `.pf-sec__l` 모두 흰 32px · 760px 이하 24px) → 제목 → 한 줄, 왼쪽 정렬(홈 1-4 도 왼쪽). 크림 판 위 작은 이름표 · 강조는 `--acc`(벽돌 판 색 `#c84c0c` 는 판 재료에만),
@@ -363,13 +365,9 @@
 - 흐름: push → `.github/workflows/deploy-cloudflare.yml` → `wrangler deploy` (`wrangler.jsonc` 설정대로
   저장소를 통째로 정적 자산 삼아 업로드) → **https://portfoliosite.imjisukim0712.workers.dev**.
   같은 푸시가 기존 `deploy-pages.yml`(GitHub Pages)도 그대로 돌립니다 — 배포 대상은 두 곳 다 유지.
-- **지금은 공개 전이라 Cloudflare 쪽(jisu.kim · workers.dev)에는 준비중 화면만 올라갑니다.** `wrangler.jsonc` 의
-  `assets.directory` 가 `./coming-soon`(준비중 페이지 한 장)이고 `not_found_handling: "single-page-application"` 이라
-  어떤 경로로 들어와도 그 한 장만 200 으로 보입니다(사이트 파일·README 등은 아예 올라가지 않음). 작업 확인은
-  GitHub Pages(**https://imjisukim0712-bit.github.io/PortfolioSite/**)에서 합니다 — GitHub Pages 는 이 설정과 무관하게 전체 사이트를 올립니다.
-  **공개할 때**는 `directory` 를 `"./"` 로 되돌리고 `not_found_handling` 줄을 지우면 됩니다(그 뒤로는 아래 `.assetsignore` 가 다시 적용).
-  `.assetsignore` 는 assets 폴더 맨 위의 것만 읽히므로 준비중인 동안에는 쓰이지 않습니다.
-  준비중 화면의 연락 이메일(`coming-soon/index.html` 의 `mailto:`)은 `content.js` 를 못 읽어 따로 적혀 있으니, `meta.email` 을 바꾸면 여기도 같이 바꾸세요.
+- **공개 중(2026-11-17, 사용자: "jisu.kim 에도 올려")** — `wrangler.jsonc` 의 `assets.directory` 가 `"./"` 라 jisu.kim · workers.dev 에도 GitHub Pages 와 같은 전체 사이트가 올라갑니다
+  (내부 파일은 아래 `.assetsignore` 가 거름). 준비중 화면(`coming-soon/`)은 걸러진 채 남아 있으니, 다시 닫으려면 `directory` 를 `"./coming-soon"` 으로 바꾸고
+  `"not_found_handling": "single-page-application"` 을 넣으면 됩니다. 준비중 화면의 연락 이메일(`coming-soon/index.html` 의 `mailto:`)은 `content.js` 를 못 읽어 따로 적혀 있으니, `meta.email` 을 바꾸면 여기도 같이 바꾸세요.
 - 인증은 저장소 Secrets `CLOUDFLARE_API_TOKEN` · `CLOUDFLARE_ACCOUNT_ID` 두 개뿐입니다
   (Cloudflare 대시보드 → API Tokens 에서 발급). 토큰을 새로 만들면 이 값만 갱신하면 됩니다.
 - **새 최상위 파일·폴더를 추가할 때, 사이트 화면이 아니면 `.assetsignore` 에도 추가하세요.**
@@ -379,7 +377,7 @@
 - `wrangler.jsonc` 는 `main`(서버 코드) 없이 `assets.directory` 만 있는 게 정상입니다(순수 정적 사이트).
   Wrangler 는 반드시 4 이상이어야 합니다(`deploy-cloudflare.yml` 의 `wranglerVersion: "4"`) — 3 이하에서는
   `main` 없는 배포 자체가 안 됩니다.
-- 실제 공개 주소는 **`https://jisu.kim`**(+ `www.jisu.kim`, 지금은 준비중 화면)입니다 — Cloudflare Registrar 로 산 도메인을 위 Worker 에
+- 실제 공개 주소는 **`https://jisu.kim`**(+ `www.jisu.kim`)입니다 — Cloudflare Registrar 로 산 도메인을 위 Worker 에
   Custom Domain 으로 연결해 뒀고, `workers.dev` 주소도 그대로 계속 살아 있습니다. `content.js` 의 `meta.email`
   (`contact@jisu.kim`)은 Cloudflare **Email Routing** 이 지메일로 전달하는 주소라 코드에는 진짜 받는 편지함이 없습니다 —
   전달 대상을 바꾸려면 Cloudflare 대시보드 Email Routing 쪽에서 바꿔야 합니다.
