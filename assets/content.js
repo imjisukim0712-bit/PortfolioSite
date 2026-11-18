@@ -133,7 +133,8 @@ window.PORTFOLIO_CONTENT = {
       // kind: "project"(프로젝트) · "activity"(대외활동) — 홈 이력 목록 · 이력서가 이 둘로 나눠 최신 것부터 보여 줌(출시한 프로젝트 리그 오브 디펜스 · 컴스톡은 projects 에서 프로젝트 쪽에 함께).
       groups: {
         project:  { title: { ko: "프로젝트", en: "Projects" }, lead: { ko: "직접 만들고 출시한 게임 · 플랫폼", en: "Games and platforms I made and shipped" } },
-        activity: { title: { ko: "대외활동", en: "Activities" }, lead: { ko: "교육 · 커뮤니티 · 글쓰기 · 스터디", en: "Courses, communities, writing and study groups" } }
+        activity: { title: { ko: "대외활동", en: "Activities" }, lead: { ko: "교육 · 커뮤니티 · 글쓰기 · 스터디", en: "Courses, communities, writing and study groups" } },
+        next:     { title: { ko: "앞으로의 목표", en: "Where I am headed" }, lead: { ko: "길의 끝에 꽂을 다음 깃발", en: "The next flag at the end of the road" } }
       },
       // thumb: 홈 이력 카드 왼쪽 썸네일(16:9, 예: "assets/img/career/popgon.jpg"). 비우면 빈 칸(프로젝트 칸은 그 프로젝트 그림).
       items: [

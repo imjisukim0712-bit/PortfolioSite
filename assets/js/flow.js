@@ -986,10 +986,21 @@
     }
     var list;
     if (opt && opt.group) {               /* 다음 목표(깃발) → 프로젝트 → 대외활동, 무리마다 최신 것부터 */
-      var gi = WN.map(function (n, i) { return n.k === 'flag' ? i : -1; }).filter(function (i) { return i >= 0; });
-      list = gi.map(function (i) { return one(WN[i], i); }).join('') + wGroups().map(function (g) {
-        return '<li class="swl-g"><p class="ps swl-g__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p><h3 class="swl-g__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' +
-          (g.lead ? '<p class="swl-g__s">' + esc(t(g.lead)) + '</p>' : '') + '</li>' + g.list.map(function (i) { return one(WN[i], i); }).join('');
+      /* 프로젝트 → 대외활동(무리마다 최신 것부터) → 맨 밑에 따로 '앞으로의 목표'(사용자: "PD 는 맨 밑에 따로 · 테두리 점점으로 · 앞으로의 목표라는 걸 티 나게") —
+         길의 끝에 놓인 점선 칸(.swl-c--goal): 아직 안 간 길이라 테두리도 점선, 판은 비어 있는 지하 그대로(크림 판을 깔지 않음) */
+      var GN = (C.resume && C.resume.career && C.resume.career.groups && C.resume.career.groups.next) || {};
+      function head(l, ti, n, lead, cls) {
+        return '<li class="swl-g' + (cls || '') + '"><p class="ps swl-g__l">' + l + '</p><h3 class="swl-g__t">' + esc(t(ti)) + (n ? '<small>' + n + '</small>' : '') + '</h3>' + (lead ? '<p class="swl-g__s">' + esc(t(lead)) + '</p>' : '') + '</li>';
+      }
+      list = wGroups().map(function (g) {
+        return head(g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES', g.title, g.list.length, g.lead) + g.list.map(function (i) { return one(WN[i], i); }).join('');
+      }).join('') + WN.map(function (n, i) {
+        if (n.k !== 'flag') return '';
+        var cs = wCourse();
+        return head('NEXT GOAL', GN.title || { ko: '앞으로의 목표', en: 'Where I am headed' }, '', GN.lead, ' swl-g--next') +
+          '<li class="swl-c swl-c--flag swl-c--goal" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s sw-pip--flag"></i></span><div class="swl-goal">' +
+          '<span class="swl-goal__fl" aria-hidden="true"><i class="sw-s sw-pip--flag"></i></span><div class="swl-goal__m"><p class="swl-goal__k"><b class="ps">NEXT</b>' + T('아직 가지 않은 길', 'Not travelled yet') + '</p>' +
+          '<h3 class="swl-goal__t">PD</h3><p class="swl-goal__s">' + esc(t(WGOAL)) + '</p>' + (cs ? '<p class="l-facts">' + lCourse(cs) + '</p>' : '') + '</div></div></li>';
       }).join('');
     } else list = WN.map(one).join('');
     return '<section class="sw swl" data-swl aria-label="' + T('모래 길을 따라 코스 목록 — 10년 이력', 'Courses along the sand road — ten years') + '">' +
