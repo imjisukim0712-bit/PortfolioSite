@@ -1665,29 +1665,28 @@
 }
 @media (prefers-reduced-motion: reduce) { .swl-me.is-idle, .swl-me.is-idle::before { animation: none; } .swl-me.is-idle::before { box-shadow: -32px -20px #fcfcfc, 32px 8px #fcfcfc; } }
 
-/* ── 이력 맨 밑 '앞으로의 목표'(flow.js draftL3 group 의 .swl-c--goal) — 아직 안 간 길: 크림 판 없이 지하 위에 점선 테(8px 칸 · 4px 두께), 깃발 · NEXT ── */
+/* ── 이력 맨 밑 '앞으로의 목표'(flow.js draftL3 group 의 .swl-c--goal) — 판은 다른 이력과 같은 크림, 테두리만 점선(벽돌색 12px 칸 · 4px 두께 — 사용자: "배경까지 없애는 게 아니고 테두리만") ── */
 .pf .swl-g--next .swl-g__l { color: #fce0a8; }
 .pf .swl-c--goal .swl-c__node { opacity: 1; }
-.pf .swl-goal { grid-column: 2; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 28px; min-width: 0; padding: 28px 32px;
+.pf .swl-goal { grid-column: 2; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 28px; min-width: 0; padding: 24px 28px; color: var(--ink);
+  border: 4px solid transparent;
   background:
-    repeating-linear-gradient(90deg, #fce0a8 0 12px, transparent 12px 24px) 0 0 / 100% 4px no-repeat,
-    repeating-linear-gradient(90deg, #fce0a8 0 12px, transparent 12px 24px) 0 100% / 100% 4px no-repeat,
-    repeating-linear-gradient(180deg, #fce0a8 0 12px, transparent 12px 24px) 0 0 / 4px 100% no-repeat,
-    repeating-linear-gradient(180deg, #fce0a8 0 12px, transparent 12px 24px) 100% 0 / 4px 100% no-repeat,
-    rgb(252 224 168 / .04); }
-.pf .swl-goal__fl { display: grid; place-items: center; width: 112px; height: 112px;
-  background: repeating-linear-gradient(90deg, rgb(252 224 168 / .5) 0 4px, transparent 4px 8px) 0 0 / 100% 4px no-repeat, repeating-linear-gradient(90deg, rgb(252 224 168 / .5) 0 4px, transparent 4px 8px) 0 100% / 100% 4px no-repeat,
-    repeating-linear-gradient(180deg, rgb(252 224 168 / .5) 0 4px, transparent 4px 8px) 0 0 / 4px 100% no-repeat, repeating-linear-gradient(180deg, rgb(252 224 168 / .5) 0 4px, transparent 4px 8px) 100% 0 / 4px 100% no-repeat; }
+    linear-gradient(var(--cream), var(--cream)) padding-box,
+    repeating-linear-gradient(90deg, var(--acc) 0 12px, transparent 12px 24px) 0 0 / 100% 4px no-repeat border-box,
+    repeating-linear-gradient(90deg, var(--acc) 0 12px, transparent 12px 24px) 0 100% / 100% 4px no-repeat border-box,
+    repeating-linear-gradient(180deg, var(--acc) 0 12px, transparent 12px 24px) 0 0 / 4px 100% no-repeat border-box,
+    repeating-linear-gradient(180deg, var(--acc) 0 12px, transparent 12px 24px) 100% 0 / 4px 100% no-repeat border-box; }
+.pf .swl-goal__fl { display: grid; place-items: center; width: 112px; height: 112px; background: #0c0a0c repeating-linear-gradient(0deg, transparent 0 4px, rgb(255 255 255 / .03) 4px 8px); box-shadow: inset 0 0 0 4px #2a2026; }
 .pf .swl-goal__fl .sw-s { display: block; width: 56px; height: 56px; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; animation: pf-goal-wave 1.2s steps(1) infinite; }
 @keyframes pf-goal-wave { 50% { transform: translateY(-4px); } }
 .pf .swl-goal__m { display: grid; gap: 8px; min-width: 0; }
-.pf .swl-goal__k { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: #c8d2ec; }
-.pf .swl-goal__k b { padding: 6px 8px 4px; font-size: 8px; line-height: 1; color: #121b33; background: #fce0a8; animation: pf-goal-blink 1.2s steps(1) infinite; }
-@keyframes pf-goal-blink { 50% { background: transparent; color: #fce0a8; box-shadow: inset 0 0 0 2px #fce0a8; } }
-.pf .swl-goal__t { font: 400 28px/1.2 'Galmuri14', 'Galmuri11', monospace; color: #fff6dd; }
-.pf .swl-goal__s { font-size: 17px; font-weight: 600; line-height: 1.6; color: #fff6dd; }
-.pf .swl-goal .l-facts { color: #c8d2ec; font-size: 15px; }
-.pf .swl-goal .l-bar { border-color: #fce0a8; }
+.pf .swl-goal__k { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: var(--ink-mu); }
+.pf .swl-goal__k b { padding: 6px 8px 4px; font-size: 8px; line-height: 1; color: var(--cream); background: var(--acc); animation: pf-goal-blink 1.2s steps(1) infinite; }
+@keyframes pf-goal-blink { 50% { background: transparent; color: var(--acc); box-shadow: inset 0 0 0 2px var(--acc); } }
+.pf .swl-goal__t { font: 400 28px/1.2 'Galmuri14', 'Galmuri11', monospace; color: var(--navy); }
+.pf .swl-goal__s { font-size: 17px; font-weight: 600; line-height: 1.6; color: var(--ink); }
+.pf .swl-goal .l-facts { color: var(--ink-mu); font-size: 15px; }
+.pf .swl-goal .l-bar { border-color: #102346; }
 @media (max-width: 640px) {
   .pf .swl-goal { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 20px; }
   .pf .swl-goal__fl { width: 72px; height: 72px; }
