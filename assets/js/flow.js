@@ -2015,12 +2015,99 @@
       '<small>' + T('1 · 2차', 'rounds 1–2') + '</small></summary><div>' + CV_OLD.map(cvDraft).join('') + '</div></details>';
   }
 
+  /* ── PART 04 구조 시안 — 사용자: "이력서 · 자기소개서 · 포트폴리오로 넘어가는 뎁스가 명확치 않음" ·
+        "이력이 과하게 나열 방식이라 매력을 부각하지 못함, 그룹으로 묶어서 병렬로" ──
+     뎁스 D-가 월드 선택(홈 = 갈림길, 문 셋) · D-나 코스 지도 띠(지금 자리 + 빵부스러기) · D-다 절 끝의 관(요약 → 전체로 내려가는 문)
+     이력 C-가 두 무리 나란히 · C-나 강점 세 갈래(같은 이력을 '무엇을 해낸 사람인가'로 묶음) · C-다 대표 셋 + 나머지 타일. 글 · 숫자는 content.js · WN 그대로 */
+  var IA_STR = [
+    { k: 'SHIP', ti: { ko: '끝까지 출시한다', en: 'I ship it' }, big: ['300K', { ko: '출시작 누적 다운로드', en: 'downloads across releases' }], ids: ['com', 'lod', 'solo'],
+      s: { ko: '혼자서도, 팀으로도 — 기획을 실제 스토어 · 스팀 출시까지 끌고 갔습니다.', en: 'Solo or with a team, I have taken designs all the way to the store and Steam.' } },
+    { k: 'LEAD', ti: { ko: '팀을 굴린다', en: 'I run teams' }, big: ['PM', { ko: '부팀장 · PM · 스터디 리더', en: 'vice lead, PM, study lead' }], ids: ['popgon', 'dwh', 'study'],
+      s: { ko: '일정과 우선순위를 잡고, 매주 문서로 팀을 한 방향으로 묶었습니다.', en: 'Setting schedules and priorities, and keeping a team aligned with a weekly doc.' } },
+    { k: 'TELL', ti: { ko: '말과 글로 전한다', en: 'I explain it' }, big: ['60K', { ko: '운영에 참여한 커뮤니티 회원', en: 'community members' }], ids: ['comm', 'blog', 'course'],
+      s: { ko: '강좌 · 평론 · 발표로, 기획을 남이 이해하는 말로 바꿔 왔습니다.', en: 'Courses, criticism and talks — turning design into words other people get.' } }
+  ];
+  function iaIdx(id) { for (var i = 0; i < WN.length; i++) if (WN[i].id === id) return i; return -1; }
+  function iaRow(i, big) {                       /* 작은 줄 — 기간 · 이름 · (큰 숫자) */
+    var it = lItem(i), n = WN[i];
+    return '<li class="iad-row"><span class="iad-row__d">' + String(it.when || '').replace(/ · (진행 중|ongoing)$/, '') + '</span><b class="iad-row__t">' + it.title + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</b>' +
+      (big && n.big ? '<span class="iad-row__n"><b class="ps">' + esc(n.big[0]) + '</b>' + esc(t(n.big[1])) + '</span>' : '') + '</li>';
+  }
+  function iaWorlds() {
+    var r = C.resume || {}, cl = C.coverLetter || {}, ng = PROJ.filter(function (p) { return p.category === 'game'; }).length, np = PROJ.length - ng;
+    return [
+      { w: '2', h: '#/resume', nm: pfNm('resume'), d: T('경력 · 활동 ' + ((r.career && r.career.items) || []).length + ' · 핵심역량 ' + ((r.skills && r.skills.cards) || []).length + ' · PDF', ((r.career && r.career.items) || []).length + ' roles · ' + ((r.skills && r.skills.cards) || []).length + ' skill sets · PDF'), s: T('무엇을 해 왔는가', 'What I have done') },
+      { w: '3', h: '#/cover', nm: pfNm('cover'), d: T('강점 ' + ((cl.summary && cl.summary.items) || []).length + ' · 글 ' + (cl.blocks || []).length + '편', ((cl.summary && cl.summary.items) || []).length + ' strengths · ' + (cl.blocks || []).length + ' pieces'), s: T('어떻게 일하는가', 'How I work') },
+      { w: '4', h: '#/projects', nm: T('포트폴리오', 'Portfolio'), d: T('게임 ' + ng + ' · 기획서 ' + np, ng + ' games · ' + np + ' design docs'), s: T('무엇을 만들었는가', 'What I have made') }
+    ];
+  }
+  function iaDraft(k, name, desc, body) {
+    return '<article class="cvd iad" id="ia-' + k + '"><header class="cvd__head"><span class="cvd__k">' + k + '</span><b>' + name + '</b><p>' + desc + '</p></header><div class="pf iad__stage">' + body + '</div></article>';
+  }
+  function renderIaDrafts() {
+    var box = document.getElementById('iadrafts'); if (!box) return;
+    if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();
+    var W = iaWorlds(), G = wGroups(), GN = (C.resume && C.resume.career && C.resume.career.groups && C.resume.career.groups.next) || {};
+    var h = '';
+    /* D-가 월드 선택 */
+    h += iaDraft('D-가', T('월드 선택 — 홈은 갈림길', 'World select — home as the crossroads'),
+      T('첫 화면 바로 아래(땅 위)에 문 셋. 홈이 요약이고 이력서 · 자기소개서 · 포트폴리오가 한 단계 아래 월드라는 걸 처음부터 보여 줍니다. 제목 판 메뉴도 이 셋으로 맞춥니다.', 'Three doors right under the first screen. It shows from the start that the home is a summary and the résumé, about-me and portfolio are one level down. The title-card menu uses the same three.'),
+      '<p class="ps iad-sel__h">SELECT WORLD</p><div class="iad-sel">' + W.map(function (w) {
+        return '<a class="iad-door" href="' + w.h + '"><i class="pf-rv" aria-hidden="true"></i><span class="iad-door__in"><span class="ps iad-door__w">WORLD ' + w.w + '</span><b class="iad-door__t">' + esc(w.nm) + '</b><span class="iad-door__s">' + w.s + '</span><span class="iad-door__d">' + w.d + '</span><span class="ps iad-door__go">▶ START</span></span></a>';
+      }).join('') + '</div>');
+    /* D-나 코스 지도 띠 */
+    function bar(cur, sub) {
+      var nodes = [{ w: '1', nm: pfNm('home') }].concat(W.map(function (w) { return { w: w.w, nm: w.nm }; })).concat([{ w: '5', nm: pfNm('play') }]);
+      return '<div class="iad-map"><ol>' + nodes.map(function (n) {
+        var c = n.w === cur ? ' is-cur' : +n.w < +cur ? ' is-done' : '';
+        return '<li class="iad-map__n' + c + '"><span class="iad-map__dot">' + (n.w === cur ? '<i class="iad-me" aria-hidden="true"></i>' : '') + '</span><span class="ps">W' + n.w + '</span><b>' + esc(n.nm) + '</b></li>';
+      }).join('') + '</ol>' + (sub ? '<p class="iad-crumb"><span>' + esc(pfNm('home')) + '</span>›<span>' + T('포트폴리오', 'Portfolio') + '</span>›<b>' + sub + '</b></p>' : '') + '</div>';
+    }
+    h += iaDraft('D-나', T('코스 지도 띠 — 지금 어디인지', 'Course strip — where you are'),
+      T('머리 띠 바로 아래에 붙는 진행 지도. 고스트가 지금 월드 위에 서고, 지나온 월드는 켜져 있습니다. 자세히 페이지에서는 아래에 빵부스러기(홈 › 포트폴리오 › 컴스톡)가 한 줄 더 붙어 몇 단계 들어왔는지 보입니다.', 'A progress map pinned under the top bar. The ghost stands on the current world and the worlds already visited stay lit. On a detail page a breadcrumb (Home › Portfolio › Comstock) shows how deep you are.'),
+      '<p class="iad-cap">' + T('홈에서', 'On the home') + '</p>' + bar('1') + '<p class="iad-cap">' + T('포트폴리오 › 자세히(컴스톡)에서', 'On Portfolio › detail (Comstock)') + '</p>' + bar('4', esc(t((PROJ.filter(function (p) { return p.id === 'comstock'; })[0] || PROJ[0]).title))));
+    /* D-다 절 끝의 관 */
+    h += iaDraft('D-다', T('절 끝의 관 — 요약에서 전체로 내려가는 문', 'A pipe at the end of each section — down from summary to the full page'),
+      T('홈의 각 절(이력 · 보유 기술 · 프로젝트)은 요약만 두고, 끝에 큰 관 하나: "여기까지는 요약 — 전체는 WORLD 2 이력서". 지금의 작은 \'이력서 전체 보기 →\' 글자 링크를 대신합니다. 관으로 들어간다 = 한 단계 깊어진다는 문법을 홈 → 하위 페이지에 그대로 씁니다.', 'Each home section (career, skills, projects) keeps only a summary and ends with one big pipe: "That was the summary — the whole thing is in WORLD 2, the résumé." It replaces today\'s small text link. Going down a pipe = going one level deeper, the same grammar from home to sub-pages.'),
+      W.map(function (w, j) {
+        var what = [T('이력 요약', 'Career summary'), T('강점 셋', 'Three strengths'), T('프로젝트 진열판', 'Project tray')][j];
+        return '<a class="iad-pipe" href="' + w.h + '"><i class="iad-pipe__ic" aria-hidden="true"></i><span class="iad-pipe__m"><span class="iad-pipe__k">' + what + T(' — 여기까지는 요약', ' — that was the summary') + '</span><b>' + T('전체는 ', 'The whole thing: ') + '<span class="ps">WORLD ' + w.w + '</span> ' + esc(w.nm) + '</b><span class="iad-pipe__d">' + w.d + '</span></span><span class="ps iad-pipe__go">▼ ENTER</span></a>';
+      }).join(''));
+    /* C-가 두 무리 나란히 */
+    h += iaDraft('C-가', T('두 무리 나란히 — 프로젝트 | 대외활동', 'Two groups side by side — projects | activities'),
+      T('지금의 긴 목록을 두 창으로 접어 나란히 둡니다. 창마다 머리에 무리의 대표 숫자, 안은 한 줄짜리(기간 · 이름 · 숫자). 눌러서 펼치거나 이력서로 갑니다. 앞으로의 목표는 두 창 아래 한 줄 전체.', 'The long list folds into two windows side by side. Each window leads with the group\'s headline number; inside, one line per entry (when · name · number). The next goal spans the full width below.'),
+      '<div class="iad-two">' + G.map(function (g) {
+        var head = g.g === 'project' ? [(stats[0] && stats[0].num) || '300K', T('누적 다운로드 · 출시 ' + ((stats[1] && stats[1].num) || 7) + '종', 'downloads · ' + ((stats[1] && stats[1].num) || 7) + ' titles out')] : ['60K', T('커뮤니티 회원 · 2019년부터', 'community members · since 2019')];
+        return '<section class="pf-win iad-grp"><header><p class="ps iad-grp__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p><h3>' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3><p class="iad-grp__big"><b class="ps">' + head[0] + '</b>' + head[1] + '</p></header><ol>' + g.list.map(function (i) { return iaRow(i); }).join('') + '</ol></section>';
+      }).join('') + '</div><div class="iad-goal"><span class="ps">NEXT GOAL</span><b>PD</b><span>' + esc(t(WGOAL)) + '</span></div>');
+    /* C-나 강점 세 갈래 */
+    h += iaDraft('C-나', T('강점 세 갈래 — "무엇을 해낸 사람인가"로 묶기', 'Three strengths — grouped by what I deliver'),
+      T('같은 이력을 시간이 아니라 강점으로 묶어 세 칸을 나란히 둡니다: 끝까지 출시한다 · 팀을 굴린다 · 말과 글로 전한다. 칸마다 한 줄 주장 → 큰 숫자 → 근거 이력 셋. 읽는 사람이 3초 안에 "이 사람은 이런 사람"을 가져갑니다. 자기소개서의 강점 셋과 같은 말로 맞출 수 있습니다.', 'The same career grouped by strength rather than time, three columns side by side: I ship it · I run teams · I explain it. Each column: one claim → a big number → three entries as evidence. A reader gets "this is who they are" in three seconds. The wording can match the three strengths in the about-me.'),
+      '<div class="iad-three">' + IA_STR.map(function (g) {
+        return '<section class="pf-win iad-str"><p class="ps iad-grp__l">' + g.k + '</p><h3>' + esc(t(g.ti)) + '</h3><p class="iad-str__s">' + esc(t(g.s)) + '</p><p class="iad-grp__big"><b class="ps">' + g.big[0] + '</b>' + esc(t(g.big[1])) + '</p><ol>' +
+          g.ids.map(iaIdx).filter(function (i) { return i >= 0; }).map(function (i) { return iaRow(i); }).join('') + '</ol></section>';
+      }).join('') + '</div>');
+    /* C-다 대표 셋 + 나머지 타일 */
+    var top = ['com', 'lod', 'comm'].map(iaIdx).filter(function (i) { return i >= 0; }), rest = [];
+    G.forEach(function (g) { g.list.forEach(function (i) { if (top.indexOf(i) < 0) rest.push(i); }); });
+    h += iaDraft('C-다', T('대표 셋 + 나머지 타일', 'Top three + the rest as tiles'),
+      T('가장 센 셋(스팀 출시 · 10만 다운로드 · 6만 커뮤니티)만 크게, 나머지는 작은 타일로 한 판에. 길게 내려가지 않고 한 화면에 전부 들어옵니다. 타일은 무리 색(프로젝트 = 벽돌 · 활동 = 남색) 띠로만 나눕니다.', 'Only the strongest three (Steam launch, 100K downloads, 60K community) are big; the rest are small tiles on one board — everything fits on one screen without a long scroll. Tiles are told apart only by a group band (projects = brick, activities = navy).'),
+      '<div class="iad-top">' + top.map(function (i) {
+        var it = lItem(i), n = WN[i];
+        return '<section class="pf-win iad-hi">' + lThumb(it, 'sw-dotY') + '<p class="iad-hi__n"><b class="ps">' + esc(n.big ? n.big[0] : '') + '</b>' + esc(n.big ? t(n.big[1]) : '') + '</p><h3>' + it.title + '</h3><p class="iad-row__d">' + String(it.when).replace(/ · (진행 중|ongoing)$/, '') + '</p></section>';
+      }).join('') + '</div><ul class="iad-tiles">' + rest.map(function (i) {
+        var it = lItem(i), g = wGroup(WN[i]);
+        return '<li class="pf-win iad-tile is-' + g + '"><span class="ps">' + (g === 'project' ? 'PROJECT' : 'ACTIVITY') + '</span><b>' + it.title + '</b><span class="iad-row__d">' + String(it.when).replace(/ · (진행 중|ongoing)$/, '') + '</span></li>';
+      }).join('') + '</ul>');
+    box.innerHTML = h;
+  }
+
   function applyLang() {
     document.documentElement.setAttribute('lang', L);
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); } }
+  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); } }, 150); });
