@@ -322,6 +322,10 @@
 
 ## 프로젝트 문서 보기 (상세 페이지)
 
+- **새 사이트(`index.html`)의 자세히 페이지**는 `flow.js` 의 `pfDocs()` 가 같은 `docs[]` 를 '문서 보기 · DOCUMENT' 절로 그립니다 — 크림 창 안 검은 화면 테 + 큰 슬라이드 + 아래 늘 펼쳐진 쪽 줄,
+  ◀ ▶ · ← → · 휴대폰 밀기(`pfSv()`), PDF 원본 열기 링크. 아래 render.js · main.js 쪽은 예전 화면(`home.html` 계열)용입니다.
+- 프로젝트 스크린샷 `projects.items[].thumb` 는 새 사이트에서도 그림 칸(진열판 카트리지 라벨 · 게임기 화면 개요 · 자세히 머리 · 홈 이력 썸네일)을 채웁니다(`flow.js` 의 `pfShot()`, 디스켓은 그림 칸이 없어 그대로).
+
 - `projects.items[].docs[]` 가 상세 정보 아래 '문서 보기'를 그립니다 (`render.js` 의 `docViewer()` · `slideViewer()`).
   필드: `title`·`note`(`{ko,en}`) · `slides`·`pages` · `file` · `url` · `shape`.
 - **기본은 슬라이드 보기**: 큰 그림 + 늘 펼쳐진 쪽 목록(넓으면 오른쪽 세로줄, 좁으면 아래 가로줄) · ‹ › · 방향키 · 휴대폰 밀기.

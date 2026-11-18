@@ -1139,8 +1139,13 @@
   /* 생성 도트 그림(Codex 원화 → tools/pixel-art/pixelize.py · assets/img/cart/<이름>-64.png)이 있는 그림 — 큰 그림 칸은 이것을, 작은 진열판 카드는 손으로 찍은 12칸 그림을 씀
      (사용자: "추천대로 하자" — 큰 칸에만 생성 그림). 칸 크기에 맞춰 1 · 2 · 3배(64 · 128 · 192px)로만 — flow.css 의 @container */
   var PF_GEN = { tower: 1, pick: 1, dice: 1, sword: 1, coin: 1 };
-  function pfArt(p, big) {                    /* 그림 칸 = 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬 · 생성 도트 그림) */
-    var h = pfSeed(p.id), c = pfCC(p), gen = big && PF_GEN[c.art];
+  function pfShot(p) {                        /* 프로젝트 스크린샷(content.js 의 projects.items[].thumb) — 있으면 그림 칸을 사진이 채움(사진에는 필터 · 픽셀화 없음) */
+    var src = String(p.thumb || '').trim();
+    return src ? '<img class="pf-shot" src="' + esc(IMG(src)) + '" alt="' + esc(t(p.title)) + '" loading="lazy" decoding="async">' : '';
+  }
+  function pfArt(p, big) {                    /* 그림 칸 = 스크린샷, 없으면 그 프로젝트의 옅은 색 + 도트 그림(큰 칸은 뒤에 id 로 늘 같은 무늬 · 생성 도트 그림) */
+    var h = pfSeed(p.id), c = pfCC(p), gen = big && PF_GEN[c.art], shot = pfShot(p);
+    if (shot) return '<span class="pf-art has-shot' + (big ? ' is-big' : '') + '" style="' + c.st + '">' + shot + '</span>';
     return '<span class="pf-art' + (big ? ' is-big' : '') + '" style="' + c.st + '" aria-hidden="true">' + (big ? '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">' + pfGen(h) + '</svg>' : '') +
       '<i class="pf-art__ic' + (gen ? ' pf-art__ic--gen" style="background-image:url(' + IMG('assets/img/cart/' + c.art + '-64.png') + ')' : '') + '"></i></span>';
   }
@@ -1219,7 +1224,7 @@
   function pfCartIn(p) {                       /* 작은 카트리지 · 디스켓의 속(시안 라-5 의 .cv 규칙 그대로) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
     return c.disk ? '<span class="cv__body"><i class="cv__shut"></i><span class="cv__lab"><span class="cv__top">' + ic + no + grade + '</span>' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i></span></span></span>' :
-      '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art">' + no + ic + '</span></span>';
+      '<span class="cv__lab">' + title + '<span class="cv__meta"><i>' + esc(pfCat(p)) + '</i>' + grade + '</span><span class="cv__art' + (pfShot(p) ? ' has-shot' : '') + '">' + no + (pfShot(p) || ic) + '</span></span>';
   }
   function pfCart(p, i) {                     /* 진열판 칸(.pf-slot) 위의 카트리지 — 꽂으러 떠나면 빈 칸이 남음. 모양 · 색은 시안 라-5 의 .cv 규칙 그대로(게임 = 카트리지 · 기획서 = 디스켓) */
     var c = pfCC(p);
@@ -1593,6 +1598,7 @@
     var secs = pfSec('', '', T('한눈에', 'At a glance'), '', '<div class="pf-win" data-pf-rv>' + glance + '</div>', 'STATUS') +
       pfSec('', '', T('플레이 화면', 'Gameplay'), '', '<div class="pf-screen' + (emb ? '' : ' pf-screen--empty') + '" data-pf-rv>' + (emb ? '<iframe src="' + esc(emb) + '" title="' + nm + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe>' :
         '<b class="ps">NO SIGNAL</b><p>' + esc(t(md.note) || (L === 'en' ? 'Space for gameplay video and images.' : '게임 영상·이미지가 들어갈 자리입니다.')) + '</p>') + '</div>', 'SCREEN');
+    secs += pfDocs(p);
     if (p.learned && p.learned.length) secs += pfSec('', '', T('배운 것', 'What I learned'), '', '<div class="pf-paper" data-pf-rv><ul class="pf-notes">' + p.learned.map(function (x) { return '<li>' + esc(t(x)) + '</li>'; }).join('') + '</ul></div>', 'NOTES');
     var bl = [['문제', 'The problem', 'PROBLEM', d.problem], ['접근', 'The approach', 'APPROACH', d.approach], ['다시 한다면', 'Retrospective', 'RETRO', d.retrospective]].filter(function (b) { return t(b[3]); });
     if (bl.length) secs += pfSec('', '', T('만든 과정', 'How it was made'), '', '<div class="pf-paper pf-blk" data-pf-rv>' + bl.map(function (b) { return '<section><h3>' + T(b[0], b[1]) + '<small>' + b[2] + '</small></h3>' + pfParas(b[3]) + '</section>'; }).join('') + '</div>', 'LOG');
@@ -1601,6 +1607,52 @@
       nx ? [esc(pfDetail(nx)), 'WORLD 4-' + (i + 2), esc(t(nx.title)) + ' ▶'] : ['#/play', 'WORLD 5', esc(pfNm('play')) + ' ▶']) + '</div></section>';
     return head + pfUnder(secs);
   }
+
+  /* 문서 보기 — projects.items[].docs[]{ title, note, slides, pages, file, url }. 슬라이드 그림(tools/pdf-slides.py 가 만든 slides/NN.jpg · thumb/NN.jpg)이 있으면
+     게임기 화면 같은 검은 테 안 큰 그림 + 아래 늘 펼쳐진 쪽 줄(‹ › · ← → · 휴대폰 밀기 — pfSv). 없으면 PDF · 드라이브 링크만 */
+  function pfDocs(p) {
+    var docs = (p.docs || []).filter(function (d) { return String(d.slides || '').trim() && +d.pages > 0 || String(d.file || d.url || '').trim(); });
+    if (!docs.length) return '';
+    function nn(k) { return (k < 9 ? '0' : '') + (k + 1) + '.jpg'; }
+    return pfSec('', '', T('문서 보기', 'Documents'), '', docs.map(function (d) {
+      var ti = t(d.title), file = String(d.file || '').trim(), url = String(d.url || '').trim(), open = file ? IMG(file) : url, dir = String(d.slides || '').trim().replace(/\/+$/, ''), n = +d.pages || 0, sv = '';
+      if (dir && n) {
+        var list = '';
+        for (var k = 0; k < n; k++) list += '<button type="button" class="pf-sv__th' + (k ? '' : ' is-on') + '" data-sv-go="' + k + '" aria-label="' + (L === 'en' ? 'Slide ' + (k + 1) : (k + 1) + '쪽') + '"><img src="' + esc(IMG(dir + '/thumb/' + nn(k))) + '" alt="" loading="lazy" decoding="async"><span class="ps">' + (k + 1) + '</span></button>';
+        sv = '<div class="pf-sv" data-sv="' + esc(dir) + '" data-sv-n="' + n + '" data-sv-i="0" tabindex="0" role="group" aria-label="' + esc(ti) + '">' +
+          '<div class="pf-sv__stage"><img class="pf-sv__img" src="' + esc(IMG(dir + '/' + nn(0))) + '" alt="' + esc(ti) + ' 1 / ' + n + '">' +
+          '<button type="button" class="pf-sv__nav is-prev" data-sv-step="-1" aria-label="' + T('이전 쪽', 'Previous slide') + '" disabled>◀</button><button type="button" class="pf-sv__nav is-next" data-sv-step="1" aria-label="' + T('다음 쪽', 'Next slide') + '">▶</button>' +
+          '<span class="ps pf-sv__count" aria-live="polite"><b>1</b> / ' + n + '</span></div><div class="pf-sv__list">' + list + '</div></div>';
+      }
+      return '<div class="pf-win pf-doc" data-pf-rv><div class="pf-doc__bar"><p class="ps pf-doc__k">DOC</p><h3>' + esc(ti) + '</h3>' + (open ? '<a class="pf-doc__open" href="' + esc(open) + '" target="_blank" rel="noopener noreferrer">' + (file ? T('PDF 원본 열기', 'Open the PDF') : T('새 창에서 열기', 'Open in a new tab')) + ' ↗</a>' : '') + '</div>' +
+        (t(d.note) ? '<p class="pf-doc__note">' + esc(t(d.note)) + '</p>' : '') + sv + '</div>';
+    }).join(''), 'DOCUMENT');
+  }
+  function pfSv(sv, i) {
+    var n = +sv.getAttribute('data-sv-n'), dir = sv.getAttribute('data-sv'); i = Math.max(0, Math.min(n - 1, i));
+    function nn(k) { return (k < 9 ? '0' : '') + (k + 1) + '.jpg'; }
+    var img = sv.querySelector('.pf-sv__img'); img.src = IMG(dir + '/' + nn(i)); img.alt = img.alt.replace(/\d+ \/ \d+$/, (i + 1) + ' / ' + n);
+    if (i + 1 < n) new Image().src = IMG(dir + '/' + nn(i + 1));
+    sv.setAttribute('data-sv-i', i); sv.querySelector('.pf-sv__count b').textContent = i + 1;
+    sv.querySelector('[data-sv-step="-1"]').disabled = i === 0; sv.querySelector('[data-sv-step="1"]').disabled = i === n - 1;
+    var list = sv.querySelector('.pf-sv__list'), on = null;
+    [].forEach.call(sv.querySelectorAll('.pf-sv__th'), function (b, k) { b.classList.toggle('is-on', k === i); if (k === i) { on = b; b.setAttribute('aria-current', 'true'); } else b.removeAttribute('aria-current'); });
+    if (on) list.scrollLeft += on.getBoundingClientRect().left - list.getBoundingClientRect().left - (list.clientWidth - on.offsetWidth) / 2;
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-sv-go],[data-sv-step]'), sv = b && b.closest('.pf-sv'); if (!sv) return;
+    pfSv(sv, b.hasAttribute('data-sv-go') ? +b.getAttribute('data-sv-go') : +sv.getAttribute('data-sv-i') + +b.getAttribute('data-sv-step'));
+  });
+  document.addEventListener('keydown', function (e) {
+    var sv = e.target.closest && e.target.closest('.pf-sv'); if (!sv || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    e.preventDefault(); e.stopPropagation(); pfSv(sv, +sv.getAttribute('data-sv-i') + (e.key === 'ArrowRight' ? 1 : -1));
+  }, true);
+  var SVT = null;
+  document.addEventListener('touchstart', function (e) { var st = e.target.closest && e.target.closest('.pf-sv__stage'); SVT = st ? { sv: st.closest('.pf-sv'), x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!SVT) return; var dx = e.changedTouches[0].clientX - SVT.x, dy = e.changedTouches[0].clientY - SVT.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) pfSv(SVT.sv, +SVT.sv.getAttribute('data-sv-i') + (dx < 0 ? 1 : -1)); SVT = null;
+  }, { passive: true });
 
   /* WORLD 5 게임플레이 — 장르별 플레이 시간(스팀 · 계열 하나라 강조색 하나 · 범례 없음 · 제곱근 눈금 · 같은 값을 표로 한 번 더) → 저장 슬롯(기획서를 바꾼 게임) */
   function pfSteam() {
