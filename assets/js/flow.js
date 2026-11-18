@@ -398,6 +398,20 @@
     var m = /(\d{4})\.(\d{2})\s*$/.exec(c.date.ko || ''); if (!m) return !!c.now;
     var d = new Date(); return +m[1] * 12 + +m[2] >= d.getFullYear() * 12 + d.getMonth() + 1;
   }
+  /* 프로젝트 · 대외활동 나누기 + 최신 것부터(사용자: "이력은 최신 것이 위로 · 프로젝트, 대외활동 나누어서 정렬해").
+     무리는 content.js 경력 항목의 kind(project · activity), 프로젝트(p)만 있는 칸은 프로젝트. 순서는 시작 해 · 달(같으면 WN 에서 뒤에 있는 것이 위) */
+  function wStart(n) {
+    var c = n.c && n.c(), p = n.p && n.p(), d = (c && c.date && c.date.ko) || (p && p.period && p.period.ko) || '', m = /(\d{4})(?:\.(\d{1,2}))?/.exec(d);
+    return m ? +m[1] * 12 + (+m[2] || 1) : 0;
+  }
+  function wGroup(n) { if (n.k === 'start' || n.k === 'flag') return ''; var c = n.c && n.c(); return c && c.kind ? c.kind : n.p ? 'project' : 'activity'; }
+  function wGroups() {
+    var G = (C.resume && C.resume.career && C.resume.career.groups) || {};
+    return ['project', 'activity'].map(function (g) {
+      var list = WN.map(function (n, i) { return i; }).filter(function (i) { return wGroup(WN[i]) === g; }).sort(function (a, b) { return wStart(WN[b]) - wStart(WN[a]) || b - a; });
+      return { g: g, title: G[g] && G[g].title || (g === 'project' ? { ko: '프로젝트', en: 'Projects' } : { ko: '대외활동', en: 'Activities' }), lead: G[g] && G[g].lead, list: list };
+    }).filter(function (x) { return x.list.length; });
+  }
   function wSprite(n) {
     if (n.k === 'panel') return 'p' + n.d + (wNow(n) ? '' : 'c');
     return n.k;
@@ -962,14 +976,22 @@
 
   function draftL3(opt) {                /* opt.skipStart — 전체 흐름(플레이어블)에서는 첫 화면이 '나'를 맡아 START 칸을 뺌 */
     if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();          /* 점 · 성 · 깃발 그림(--sw-*)은 나′ 것을 그대로 */
-    var list = WN.map(function (n, i) {
+    function one(n, i) {
       if (opt && opt.skipStart && n.k === 'start') return '';
       var node = n.k === 'castle' ? 'wm-castle' : n.k === 'flag' ? 'sw-pip--flag' : 'sw-dot' + (n.k === 'house' ? 'B' : n.k === 'start' ? 'R' : 'Y'), it = lItem(i);
       if (opt && opt.thumb) return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span>' + lCard(it, node) + '</li>';
       return '<li class="swl-c swl-c--' + n.k + '" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s ' + node + '"></i></span><div class="swl-c__box">' +
         '<p class="swl-c__head"><span class="swl-c__t">' + it.title + (it.sub ? '<small>' + it.sub + '</small>' : '') + '</span><em>' + it.when + '</em></p>' +
         '<p class="swl-c__line">' + it.line + '</p>' + lFacts(it) + '</div></li>';
-    }).join('');
+    }
+    var list;
+    if (opt && opt.group) {               /* 다음 목표(깃발) → 프로젝트 → 대외활동, 무리마다 최신 것부터 */
+      var gi = WN.map(function (n, i) { return n.k === 'flag' ? i : -1; }).filter(function (i) { return i >= 0; });
+      list = gi.map(function (i) { return one(WN[i], i); }).join('') + wGroups().map(function (g) {
+        return '<li class="swl-g"><p class="ps swl-g__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p><h3 class="swl-g__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' +
+          (g.lead ? '<p class="swl-g__s">' + esc(t(g.lead)) + '</p>' : '') + '</li>' + g.list.map(function (i) { return one(WN[i], i); }).join('');
+      }).join('');
+    } else list = WN.map(one).join('');
     return '<section class="sw swl" data-swl aria-label="' + T('모래 길을 따라 코스 목록 — 10년 이력', 'Courses along the sand road — ten years') + '">' +
       '<ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i>' + (opt && opt.pipe ? '<i class="swl-pipe"></i>' : '') + '</li>' + list + '</ol></section>';
   }
@@ -981,6 +1003,7 @@
       /* 길은 레일 기준 — 레일이 위로 늘어나 관을 품으면(전체 흐름) 관 입구 아래(rail.__r0)부터 그림 */
       var vh = innerHeight, rr = rail.getBoundingClientRect(), r0 = rail.__r0 || 0, gy = Math.max(0, Math.min(rr.height - 56, vh * .45 - rr.top)), line = vh * .45 + 28;
       road.style.height = Math.max(0, Math.round((gy + 28 - r0) / 4) * 4) + 'px';
+      if (r0) pfSink(me, gy);
       me.style.transform = Math.floor(gy / 12) % 2 && gy > r0 && gy < rr.height - 56 ? 'translateY(-4px)' : '';
       items.forEach(function (el, i) {
         var node = el.querySelector('.swl-c__node'), reached = el.getBoundingClientRect().top + 34 < line;
@@ -1159,7 +1182,7 @@
   function pfWorld(code, h, p, left) { return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + '"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>'; }
   function pfCareer() {
     return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('2016 → 지금 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', '2016 → now · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true }) +
+      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true, group: true }) +
       '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
@@ -1427,11 +1450,35 @@
     PFD = { dv: dv, me: dv.querySelector('.pf-dive__me'), road: dv.querySelector('.pf-dive__road'), r0: 56 + Math.round((mouth - lip) / 4) * 4, h: h, y0: Math.round(top) + ugr.top + scrollY };
     pfDiveTick();
   }
+  /* 관 타기(사용자: "토관 타기 전에 유령 주변에 이펙트 · 마리오처럼 타고 내려가게") — 관 머리 위에서 기다리는 동안은 고스트 둘레에 반짝이(.is-idle),
+     내리기 시작하면(스크롤 24px 넘음 · 고스트가 화면 45% 줄에 닿음) 반짝 터지고 관 속으로 4px 씩 천천히 가라앉음(관이 고스트보다 위 칸이라 몸이 관에 가려짐) —
+     스크롤과 따로 도는 0.56초 연출이고, 가라앉은 뒤에는 스크롤만큼 관 속을 지나 아래 입구로 나옴. 맨 위로 돌아오면 거꾸로 올라옴. gy = 관 머리 위 선 자리에서 내려온 거리 */
+  function pfSink(me, gy) {
+    var S = me.__sk || (me.__sk = { s: 0, to: -1, gy: 0, id: 0 }), want = scrollY > 24 || gy > 0 ? 1 : 0;
+    S.gy = gy;
+    function put() { me.style.translate = '0 ' + Math.round(S.s * Math.max(0, 56 - S.gy) / 4) * 4 + 'px'; me.classList.toggle('is-idle', !S.s && !want); }
+    if (want !== S.to) {
+      var first = S.to < 0; S.to = want;
+      if (want && !first && !RM) { me.classList.remove('is-dive'); void me.offsetWidth; me.classList.add('is-dive'); }
+      if (RM || first) S.s = want;
+      else {
+        var id = ++S.id, s0 = S.s, t0 = 0;
+        (function step(now) {
+          if (id !== S.id) return;
+          t0 = t0 || now; var k = Math.min(1, (now - t0) / 560);
+          S.s = s0 + (want - s0) * k; put();
+          if (k < 1) requestAnimationFrame(step);
+        })(performance.now());
+      }
+    }
+    put();
+  }
   function pfDiveTick() {                        /* 1P 는 처음 선 자리(화면 45% 보다 위면 그 자리)에 붙은 채, 관 · 길이 그 밑으로 지나감 */
     if (!PFD || !PFD.dv.isConnected) return;
     var line = Math.min(innerHeight * .45, PFD.y0), gy = Math.max(0, Math.min(PFD.h - 56, scrollY + line - PFD.y0));
     gy = Math.round(gy / 4) * 4;
     PFD.me.style.top = gy + 'px';                 /* transform 은 모션 최소화 규칙이 지우므로 top 으로 */
+    pfSink(PFD.me, gy);
     PFD.road.style.top = PFD.r0 + 'px'; PFD.road.style.height = Math.max(0, gy + 28 - PFD.r0) + 'px';
   }
   function pfSec(w, nm, h, p, body, label) {         /* w = 월드 칸(위 띠에 뜸) · label = 칸 번호 대신 쓰는 영어 이름표(자세히 페이지) */
@@ -1465,12 +1512,17 @@
     var st = stats.length ? pfSec('2-1', T('숫자', 'Numbers'), T('숫자로 보는 ' + YRS + '년', YRS + ' years in numbers'), T('출시작 · 다운로드 · 커뮤니티 · 해', 'Titles, downloads, community and years'),
       '<div class="pf-win" data-pf-count data-pf-rv><div class="pf-stats">' + stats.map(function (s) {
         return '<p><span class="pf-stats__l">' + esc(t(s.label)) + '</span><b class="ps"><span data-l-count="' + esc(s.num) + '">' + esc(s.num) + '</span><small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('') + '</div></div>') : '';
-    var tl = (ca.items || []).map(function (c) {
-      return '<div class="pf-tl__i' + (c.now ? ' is-now' : '') + '" data-pf-rv><p class="pf-tl__d"><span>' + esc(t(c.date)) + '</span>' + (c.now ? '<span class="pf-tl__now">' + T('진행 중', 'Ongoing') + '</span>' : '') + '</p>' +
-        '<div><h3 class="pf-tl__t">' + esc(t(c.role)) + '</h3><p class="pf-tl__o">' + esc(t(c.org)) + '</p><p class="pf-tl__b">' + esc(t(c.body)) + '</p>' + pfChips(c.tags) + '</div></div>';
+    function row(n) {                     /* 경력 항목이 있으면 그것, 프로젝트만 있는 칸(리그 오브 디펜스 · 컴스톡)은 프로젝트 값으로 */
+      var c = n.c && n.c(), p = n.p && n.p(), now = wNow(n);
+      var d = c && c.role ? t(c.date) : t(p.period), ti = c && c.role ? t(c.role) : t(p.title), org = c && c.role ? t(c.org) : [t(p.headcount), t(p.myRole), t(p.status)].filter(Boolean).join(' · ');
+      var body = c && c.role ? t(c.body) : t(p.sub), tags = c && c.role ? c.tags : p.genres;
+      return '<div class="pf-tl__i' + (now ? ' is-now' : '') + '" data-pf-rv><p class="pf-tl__d"><span>' + esc(d) + '</span>' + (now ? '<span class="pf-tl__now">' + T('진행 중', 'Ongoing') + '</span>' : '') + '</p>' +
+        '<div><h3 class="pf-tl__t">' + esc(ti) + '</h3><p class="pf-tl__o">' + esc(org) + '</p><p class="pf-tl__b">' + esc(body) + '</p>' + pfChips(tags) + '</div></div>';
+    }
+    var tl = wGroups().map(function (g, k) {
+      return pfSec('2-' + (3 + k), esc(t(g.title)), esc(t(g.title)), esc(t(g.lead)), '<div class="pf-win pf-tl">' + g.list.map(function (i) { return row(WN[i]); }).join('') + '</div>');
     }).join('');
-    return head + pfUnder(st + pfSec('2-2', esc(t(sk.title)), esc(t(sk.title)), esc(t(sk.lead)), pfSkills()) +
-      (tl ? pfSec('2-3', esc(t(ca.title)), esc(t(ca.title)), esc(t(ca.lead)), '<div class="pf-win pf-tl">' + tl + '</div>') : '') + pfWorldNav('resume'));
+    return head + pfUnder(st + pfSec('2-2', esc(t(sk.title)), esc(t(sk.title)), esc(t(sk.lead)), pfSkills()) + tl + pfWorldNav('resume'));
   }
 
   /* WORLD 3 자기소개서 — 머리(요약 제목) → 강점(업적 칸) → 글(크림 종이 한 장 = 한 편) */
