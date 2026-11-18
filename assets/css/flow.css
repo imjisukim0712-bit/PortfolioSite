@@ -1665,17 +1665,20 @@
 }
 @media (prefers-reduced-motion: reduce) { .swl-me.is-idle, .swl-me.is-idle::before { animation: none; } .swl-me.is-idle::before { box-shadow: -32px -20px #fcfcfc, 32px 8px #fcfcfc; } }
 
-/* ── 이력 맨 밑 '앞으로의 목표'(flow.js draftL3 group 의 .swl-c--goal) — 판은 다른 이력과 같은 크림, 테두리만 점선(벽돌색 12px 칸 · 4px 두께 — 사용자: "배경까지 없애는 게 아니고 테두리만") ── */
+/* ── 이력 맨 밑 '앞으로의 목표'(flow.js draftL3 group 의 .swl-c--goal) — 아직 안 채운 칸:
+   테두리 = 끊김 없이 보이는 점선(벽돌색 · 밝은 크림이 12px 씩 번갈아, 4px 두께 — 사이가 비면 테가 안 보임),
+   판 = 바랜 크림에 사선 빗금(공사 중 · 임시 칸 느낌) — 사용자: "배경까지 없애는 게 아니고 테두리만" → "테두리가 안 보이면 안 돼 · 배경색도 임시라는 게 보여야" ── */
 .pf .swl-g--next .swl-g__l { color: #fce0a8; }
 .pf .swl-c--goal .swl-c__node { opacity: 1; }
 .pf .swl-goal { grid-column: 2; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 28px; min-width: 0; padding: 24px 28px; color: var(--ink);
   border: 4px solid transparent;
   background:
-    linear-gradient(var(--cream), var(--cream)) padding-box,
-    repeating-linear-gradient(90deg, var(--acc) 0 12px, transparent 12px 24px) 0 0 / 100% 4px no-repeat border-box,
-    repeating-linear-gradient(90deg, var(--acc) 0 12px, transparent 12px 24px) 0 100% / 100% 4px no-repeat border-box,
-    repeating-linear-gradient(180deg, var(--acc) 0 12px, transparent 12px 24px) 0 0 / 4px 100% no-repeat border-box,
-    repeating-linear-gradient(180deg, var(--acc) 0 12px, transparent 12px 24px) 100% 0 / 4px 100% no-repeat border-box; }
+    repeating-linear-gradient(-45deg, #ece2c8 0 8px, #e2d5b4 8px 16px) padding-box,
+    repeating-linear-gradient(90deg, var(--acc) 0 12px, #fce0a8 12px 24px) 0 0 / 100% 4px no-repeat border-box,
+    repeating-linear-gradient(90deg, var(--acc) 0 12px, #fce0a8 12px 24px) 0 100% / 100% 4px no-repeat border-box,
+    repeating-linear-gradient(180deg, var(--acc) 0 12px, #fce0a8 12px 24px) 0 0 / 4px 100% no-repeat border-box,
+    repeating-linear-gradient(180deg, var(--acc) 0 12px, #fce0a8 12px 24px) 100% 0 / 4px 100% no-repeat border-box;
+  box-shadow: 0 0 0 4px #171c28; }
 .pf .swl-goal__fl { display: grid; place-items: center; width: 112px; height: 112px; background: #0c0a0c repeating-linear-gradient(0deg, transparent 0 4px, rgb(255 255 255 / .03) 4px 8px); box-shadow: inset 0 0 0 4px #2a2026; }
 .pf .swl-goal__fl .sw-s { display: block; width: 56px; height: 56px; background-size: 100% 100%; background-repeat: no-repeat; image-rendering: pixelated; animation: pf-goal-wave 1.2s steps(1) infinite; }
 @keyframes pf-goal-wave { 50% { transform: translateY(-4px); } }
