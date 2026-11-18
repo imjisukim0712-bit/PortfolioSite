@@ -287,8 +287,56 @@
     });
   }
 
+  /* ---------- 문서 슬라이드 보기 (render.js 의 slideViewer) ---------- */
+  function svShow(sv, i) {
+    var n = +sv.getAttribute('data-sv-n');
+    i = Math.max(0, Math.min(n - 1, i));
+    var dir = sv.getAttribute('data-sv'), file = function (k) { return (k < 9 ? '0' : '') + (k + 1) + '.jpg'; };
+    var img = $('.sv__img', sv);
+    img.src = dir + '/' + file(i);
+    img.alt = img.getAttribute('data-sv-title') + ' ' + (i + 1) + ' / ' + n;
+    if (i + 1 < n) new Image().src = dir + '/' + file(i + 1);       /* 다음 장 미리 받아 두기 */
+    sv.setAttribute('data-sv-i', i);
+    $('.sv__count b', sv).textContent = i + 1;
+    $('[data-sv-step="-1"]', sv).disabled = i === 0;
+    $('[data-sv-step="1"]', sv).disabled = i === n - 1;
+    var list = $('.sv__list', sv), on;
+    $$('.sv__thumb', sv).forEach(function (b, k) {
+      b.classList.toggle('is-on', k === i);
+      if (k === i) { b.setAttribute('aria-current', 'true'); on = b; } else b.removeAttribute('aria-current');
+    });
+    if (on && list) {                                                /* 목록 안에서만 스크롤 (페이지는 그대로) */
+      var lr = list.getBoundingClientRect(), br = on.getBoundingClientRect();
+      if (list.scrollHeight > list.clientHeight + 1) list.scrollTop += (br.top - lr.top) - (lr.height - br.height) / 2;
+      else list.scrollLeft += (br.left - lr.left) - (lr.width - br.width) / 2;
+    }
+  }
+  document.addEventListener('keydown', function (e) {
+    var sv = e.target.closest && e.target.closest('[data-sv]');
+    if (!sv || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    e.preventDefault();
+    svShow(sv, +sv.getAttribute('data-sv-i') + (e.key === 'ArrowRight' ? 1 : -1));
+  });
+  var svTouch = null;                                                /* 휴대폰: 큰 그림을 옆으로 밀어 넘기기 */
+  document.addEventListener('touchstart', function (e) {
+    var st = e.target.closest && e.target.closest('.sv__stage');
+    svTouch = st ? { sv: st.closest('[data-sv]'), x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!svTouch) return;
+    var dx = e.changedTouches[0].clientX - svTouch.x, dy = e.changedTouches[0].clientY - svTouch.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) svShow(svTouch.sv, +svTouch.sv.getAttribute('data-sv-i') + (dx < 0 ? 1 : -1));
+    svTouch = null;
+  }, { passive: true });
+
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-quip-more]')) { cycleQuip(); return; }
+    var svBtn = e.target.closest('[data-sv-go],[data-sv-step]');
+    if (svBtn) {
+      var sv = svBtn.closest('[data-sv]');
+      svShow(sv, svBtn.hasAttribute('data-sv-go') ? +svBtn.getAttribute('data-sv-go') : +sv.getAttribute('data-sv-i') + +svBtn.getAttribute('data-sv-step'));
+      return;
+    }
     var mail = e.target.closest('a[href^="mailto:"]');
     if (mail) {                                        /* 링크는 그대로 두고(메일 앱), 주소는 복사 */
       var addr = mail.getAttribute('href').slice(7).split('?')[0];
