@@ -2070,6 +2070,83 @@
   function iaDraft(k, name, desc, body) {
     return '<article class="cvd iad" id="ia-' + k + '"><header class="cvd__head"><span class="cvd__k">' + k + '</span><b>' + name + '</b><p>' + desc + '</p></header><div class="pf iad__stage">' + body + '</div></article>';
   }
+  /* ── PART 04 이력 가로 나열 시안(R) — 사용자: "이렇게 병렬 하라는 게 아니라 프로젝트면 가로로 프로젝트 카드 쭉 나열, 대외활동이면 가로로 대외활동 카드 쭉 나열 · 아니면 각각 슬라이드 쇼도 · 여러 가지 시안".
+     무리(프로젝트 · 대외활동)마다 한 줄 = 카드가 옆으로 늘어선 줄. R-가 가로 띠(옆으로 밀기 · ◀ ▶) · R-나 격자 줄(한눈에 다) · R-다 슬라이드 쇼(큰 카드 하나 + 쪽 점) ·
+     R-라 사이드 스크롤(내리면 카드 줄이 옆으로 흘러가고 고스트가 땅 위를 달림 — 스크롤만으로) · R-마 접힌 카드(좁은 등판이 늘어서 있고 고른 것만 펼쳐짐) */
+  function rowHead(g) {
+    var b = g.g === 'project' ? [(stats[0] && stats[0].num) || '300K', T('누적 다운로드', 'downloads')] : [(stats[2] && stats[2].num) || '60K', T('커뮤니티 회원', 'community')];
+    return '<header class="rw-h"><p class="ps rw-h__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p><h3>' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' +
+      '<p class="rw-h__big"><b class="ps">' + esc(b[0]) + '</b>' + b[1] + '</p></header>';
+  }
+  function rowCard(i, cls) {
+    var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
+    return '<article class="pf-win rc' + (cls || '') + '">' + lThumb(it, node) + '<div class="rc__m"><p class="rc__d">' + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</p>' +
+      '<h4 class="rc__t">' + it.title + '</h4>' + (it.line ? '<p class="rc__s">' + it.line + '</p>' : '') + (it.team ? '<p class="rc__o">' + esc(it.team) + '</p>' : '') +
+      (n.big ? '<p class="rc__n"><b class="ps">' + esc(n.big[0]) + '</b>' + esc(t(n.big[1])) + '</p>' : '') + '</div></article>';
+  }
+  function rowDrafts() {
+    var G = wGroups(), h = '';
+    h += iaDraft('R-가', T('가로 띠 — 옆으로 밀어 보기', 'Horizontal strip — swipe sideways'),
+      T('무리마다 카드가 한 줄로 늘어서고, 넘치는 카드는 옆으로 밀어서(트랙패드 · 손가락 · ◀ ▶) 봅니다. 칸에 딱 맞게 멈추고, 오른쪽 끝이 흐려져 더 있다는 게 보입니다. 카드 모양 · 크기는 모두 같습니다.', 'Each group is one row of cards; the overflow is swiped sideways (trackpad, finger or ◀ ▶). It snaps to each card, and the faded right edge shows there is more. Every card has the same size.'),
+      G.map(function (g) { return '<section class="rw rw--strip">' + rowHead(g) + '<div class="rw-strip"><button type="button" class="rw-nav is-prev" data-rw-step="-1" aria-label="' + T('이전', 'Previous') + '">◀</button><div class="rw-track">' + g.list.map(function (i) { return rowCard(i); }).join('') + '</div><button type="button" class="rw-nav is-next" data-rw-step="1" aria-label="' + T('다음', 'Next') + '">▶</button></div></section>'; }).join(''));
+    h += iaDraft('R-나', T('격자 줄 — 한눈에 다', 'Grid rows — everything at a glance'),
+      T('밀지 않고 한 줄에 셋씩 다 보여 줍니다(넘치면 다음 줄). 누르는 것 없이 무리 둘을 위아래로 훑으면 끝. 카드는 R-가 와 같은 모양입니다.', 'No swiping — three per row, wrapping to the next line. Scan the two groups top to bottom and you are done. Same cards as R-가.'),
+      G.map(function (g) { return '<section class="rw rw--grid">' + rowHead(g) + '<div class="rw-grid">' + g.list.map(function (i) { return rowCard(i); }).join('') + '</div></section>'; }).join(''));
+    h += iaDraft('R-다', T('슬라이드 쇼 — 무리마다 큰 카드 하나', 'Slideshow — one big card per group'),
+      T('무리마다 큰 카드 한 장(썸네일 크게 | 내용)이 있고, 아래 작은 칸 줄 · ◀ ▶ · ← → 로 넘깁니다. 가만두면 5초마다 다음 장으로(마우스를 올리면 멈춤 · 모션 최소화면 자동 넘김 없음). 한 번에 하나만 보여 주니 가장 크게 보입니다.', 'One big card per group (large thumbnail | details), changed with the small strip below, ◀ ▶ or ← →. Left alone it moves on every 5 seconds (pauses on hover; no autoplay with reduced motion). Showing one at a time lets each card be biggest.'),
+      G.map(function (g) {
+        return '<section class="rw rw--show" data-rw-show tabindex="0">' + rowHead(g) + '<div class="rw-show"><button type="button" class="rw-nav is-prev" data-rw-go="-1" aria-label="' + T('이전', 'Previous') + '">◀</button><div class="rw-stage">' +
+          g.list.map(function (i, k) { return rowCard(i, ' rc--big' + (k ? '' : ' is-on')); }).join('') + '</div><button type="button" class="rw-nav is-next" data-rw-go="1" aria-label="' + T('다음', 'Next') + '">▶</button></div>' +
+          '<ol class="rw-dots">' + g.list.map(function (i, k) { return '<li><button type="button" class="' + (k ? '' : 'is-on') + '" data-rw-to="' + k + '">' + lItem(i).title + '</button></li>'; }).join('') + '</ol></section>';
+      }).join(''));
+    h += iaDraft('R-라', T('사이드 스크롤 — 내리면 옆으로 흘러감', 'Side-scroller — scroll down, it moves sideways'),
+      T('무리 줄이 화면에 붙고, 아래로 내리는 만큼 카드 줄이 왼쪽으로 흘러가며 고스트가 땅 위를 오른쪽으로 달립니다(마리오 1-1 처럼 옆으로 가는 코스). 누를 것 없이 스크롤만으로 다 지나가고, 줄 끝에서 다음 무리로 넘어갑니다.', 'Each group row pins to the screen; scrolling down slides the cards left while the ghost runs right along the ground — a side-scrolling course. Scrolling alone carries you through, then on to the next group.'),
+      G.map(function (g) {
+        return '<section class="rw rw--side" data-rw-side style="--n:' + g.list.length + '"><div class="rw-side__stick">' + rowHead(g) + '<div class="rw-side__view"><div class="rw-track rw-side__track">' + g.list.map(function (i) { return rowCard(i); }).join('') + '</div></div>' +
+          '<div class="rw-side__ground"><i class="rw-side__me" aria-hidden="true"></i></div></div></section>';
+      }).join(''));
+    h += iaDraft('R-마', T('접힌 카드 — 등판이 늘어선 진열장', 'Folded cards — a shelf of spines'),
+      T('무리마다 좁은 등판(이름 · 기간 · 큰 숫자)이 한 줄로 늘어서 있고, 마우스를 올리거나 누른 것 하나만 옆으로 펼쳐져 내용이 보입니다. 처음엔 가장 최근 것이 펼쳐져 있습니다. 카트리지 진열장 느낌.', 'Narrow spines (name, period, big number) stand in a row; hovering or tapping one unfolds it sideways. The newest starts open. Like a shelf of cartridges.'),
+      G.map(function (g) {
+        return '<section class="rw rw--fold">' + rowHead(g) + '<div class="rw-fold">' + g.list.map(function (i, k) {
+          var it = lItem(i), n = WN[i];
+          return '<button type="button" class="pf-win rf' + (k ? '' : ' is-on') + '" data-rw-fold><span class="rf__spine"><b class="ps">' + esc(n.big ? n.big[0] : '★') + '</b><span class="rf__t">' + it.title + '</span><span class="rf__d">' + String(it.when || '').replace(/ · (진행 중|ongoing)$/, '') + '</span></span><span class="rf__body">' + rowCard(i).replace(/^<article class="pf-win rc/, '<span class="rc rc--in').replace(/<\/article>$/, '</span>').replace(/<(\/?)(h4|p|div)( |>)/g, '<$1span$3') + '</span></button>';
+        }).join('') + '</div></section>';
+      }).join(''));
+    return h;
+  }
+  function wireRowDrafts(box) {
+    [].forEach.call(box.querySelectorAll('.rw--strip'), function (sec) {
+      var tr = sec.querySelector('.rw-track');
+      sec.addEventListener('click', function (e) { var b = e.target.closest('[data-rw-step]'); if (b) tr.scrollBy({ left: +b.getAttribute('data-rw-step') * (tr.firstElementChild.offsetWidth + 16), behavior: RM ? 'auto' : 'smooth' }); });
+    });
+    [].forEach.call(box.querySelectorAll('[data-rw-show]'), function (sec) {
+      var cards = sec.querySelectorAll('.rc--big'), dots = sec.querySelectorAll('[data-rw-to]'), cur = 0, hold = 0, n = cards.length;
+      function go(k) { cur = (k + n) % n; [].forEach.call(cards, function (c, j) { c.classList.toggle('is-on', j === cur); }); [].forEach.call(dots, function (d, j) { d.classList.toggle('is-on', j === cur); }); }
+      sec.addEventListener('click', function (e) { var b = e.target.closest('[data-rw-go],[data-rw-to]'); if (!b) return; hold = 1; go(b.hasAttribute('data-rw-to') ? +b.getAttribute('data-rw-to') : cur + +b.getAttribute('data-rw-go')); });
+      sec.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); hold = 1; go(cur + (e.key === 'ArrowRight' ? 1 : -1)); } });
+      sec.addEventListener('mouseenter', function () { hold = 1; }); sec.addEventListener('mouseleave', function () { hold = 0; });
+      if (!RM) setInterval(function () { if (!hold && sec.isConnected && sec.getBoundingClientRect().top < innerHeight && sec.getBoundingClientRect().bottom > 0) go(cur + 1); }, 5000);
+    });
+    [].forEach.call(box.querySelectorAll('.rw-fold'), function (row) {
+      function on(b) { [].forEach.call(row.children, function (x) { x.classList.toggle('is-on', x === b); }); }
+      row.addEventListener('click', function (e) { var b = e.target.closest('[data-rw-fold]'); if (b) on(b); });
+      row.addEventListener('mouseover', function (e) { var b = e.target.closest('[data-rw-fold]'); if (b && matchMedia('(hover: hover)').matches) on(b); });
+    });
+    var sides = [].slice.call(box.querySelectorAll('[data-rw-side]'));
+    function side() {
+      sides.forEach(function (sec) {
+        var r = sec.getBoundingClientRect(), stick = sec.querySelector('.rw-side__stick'), tr = sec.querySelector('.rw-side__track'), me = sec.querySelector('.rw-side__me'), view = sec.querySelector('.rw-side__view');
+        var run = Math.max(1, sec.offsetHeight - stick.offsetHeight), p = Math.max(0, Math.min(1, -r.top / run)), max = Math.max(0, tr.scrollWidth - view.clientWidth);
+        tr.style.transform = 'translateX(' + (-Math.round(p * max / 4) * 4) + 'px)';
+        me.style.left = 'calc(' + (p * 100).toFixed(2) + '% - ' + Math.round(p * 48) + 'px)';
+        me.style.transform = !RM && p > 0 && p < 1 && Math.floor(p * 60) % 2 ? 'translateY(-4px)' : '';
+      });
+    }
+    if (sides.length && !box.__side) { box.__side = 1; addEventListener('scroll', function () { requestAnimationFrame(side); }, { passive: true }); addEventListener('resize', side); }
+    side();
+  }
+
   function renderIaDrafts() {
     var box = document.getElementById('iadrafts'); if (!box) return;
     if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();
@@ -2099,6 +2176,7 @@
         var what = [T('이력 요약', 'Career summary'), T('강점 셋', 'Three strengths'), T('프로젝트 진열판', 'Project tray')][j];
         return '<a class="iad-pipe" href="' + w.h + '"><i class="iad-pipe__ic" aria-hidden="true"></i><span class="iad-pipe__m"><span class="iad-pipe__k">' + what + T(' — 여기까지는 요약', ' — that was the summary') + '</span><b>' + T('전체는 ', 'The whole thing: ') + '<span class="ps">WORLD ' + w.w + '</span> ' + esc(w.nm) + '</b><span class="iad-pipe__d">' + w.d + '</span></span><span class="ps iad-pipe__go">▼ ENTER</span></a>';
       }).join(''));
+    var hOld = h; h = '';
     /* C-가 두 무리 나란히 */
     h += iaDraft('C-가', T('두 무리 나란히 — 프로젝트 | 대외활동', 'Two groups side by side — projects | activities'),
       T('지금의 긴 목록을 두 창으로 접어 나란히 둡니다. 창마다 머리에 무리의 대표 숫자, 안은 한 줄짜리(기간 · 이름 · 숫자). 눌러서 펼치거나 이력서로 갑니다. 앞으로의 목표는 두 창 아래 한 줄 전체.', 'The long list folds into two windows side by side. Each window leads with the group\'s headline number; inside, one line per entry (when · name · number). The next goal spans the full width below.'),
@@ -2125,7 +2203,9 @@
         var it = lItem(i), g = wGroup(WN[i]);
         return '<li class="pf-win iad-tile is-' + g + '"><span class="ps">' + (g === 'project' ? 'PROJECT' : 'ACTIVITY') + '</span><b>' + it.title + '</b><span class="iad-row__d">' + String(it.when).replace(/ · (진행 중|ongoing)$/, '') + '</span></li>';
       }).join('') + '</ul>');
-    box.innerHTML = h;
+    var hC = h, open = box.querySelector('details.older') && box.querySelector('details.older').open;
+    box.innerHTML = rowDrafts() + hOld + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — C-가 두 무리 나란히 · C-나 강점 세 갈래 · C-다 대표 셋 + 타일', 'Earlier — C-가 two groups side by side · C-나 three strengths · C-다 top three + tiles') + '</summary><div>' + hC + '</div></details>';
+    wireRowDrafts(box);
   }
 
   function applyLang() {
