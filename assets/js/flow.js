@@ -1245,11 +1245,11 @@
       return '<li class="pf-it" style="--k:' + j + '"><span class="pf-it__box"><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="34" height="34"></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
     }).join('') + '</ul>';
   }
-  function pfSkills(me) {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
+  function pfSkills() {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
                                                    (사용자: "저걸 어떻게 써봤는지는 나와야 해" · "레이아웃이 개판" — 표 대신 같은 높이 칸막이, 위 줄 셋 · 남는 칸은 넓게) */
     var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, N = cards.length, cols = N % 3 && N % 2 === 0 ? 2 : 3, rem = cols === 3 ? N % 3 : 0;   /* 넷 · 둘이면 두 칸씩, 아니면 세 칸씩(남는 칸은 넓게) */
     cards.forEach(function (c) { n += (c.tools || []).length; });
-    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p>' + (me ? '<i class="pf-sk-me" aria-hidden="true"></i>' : '') + '<div class="pf-sk"' + (me ? ' data-pf-skme' : '') + '>' + cards.map(function (c, i) {
+    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p><div class="pf-sk">' + cards.map(function (c, i) {
       var w = cols === 2 ? ' is-w3' : rem && i >= N - rem ? (rem === 2 ? ' is-w3' : ' is-w6') : '';
       return '<section class="pf-sk__c' + w + '" data-pf-rv><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
     }).join('') + '</div></div>';
@@ -1257,7 +1257,8 @@
   function pfSkillSec() {
     var sk = (C.resume && C.resume.skills) || {};
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
-      '<div class="pf-col">' + pfSkills(1) + '</div></div></section>';
+      /* 이력과 같은 모래 길이 이어짐(같은 x · 같은 고스트 문법) — 창은 길 오른쪽(이력 카드와 같은 왼쪽 선) */
+      '<section class="sw swl pf-skl" data-pf-skl><ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li><li class="pfc-wrap">' + pfSkills() + '</li></ol></section></div></section>';
   }
   function pfCartIn(p) {                       /* 작은 카트리지 · 디스켓의 속(시안 라-5 의 .cv 규칙 그대로) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
@@ -1454,25 +1455,25 @@
   }
   function pfRvTick() {                         /* 화면에 들어온 창 · 줄 · 카트리지는 한 번 올라옴(인벤토리 줄은 블록이 튀고 도구가 나옴) · 숫자는 0 → 값 */
     var vh = innerHeight;
-    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.parentNode.hasAttribute('data-pf-skme')) return; if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.closest('[data-pf-skl]')) return; if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
     [].forEach.call(document.querySelectorAll('.pf [data-pf-count]'), function (el) { lCount(el, vh); });
   }
-  /* 1-3 보유 기술의 고스트(사용자: "보유기술 내려갈 때도 유령이 뭔가 했으면") — 내리는 만큼 칸에서 칸으로 뛰어 옮겨 가고(칸 윗변 오른쪽에 섬),
-     닿는 칸은 블록처럼 한 번 튀며 그 칸의 로고가 떨어져 채워짐. 위로 올리면 거꾸로 돌아감. 이력 길의 고스트는 그동안 숨김(1P 가 둘로 보이지 않게). 홈에서만 */
+  /* 1-3 보유 기술의 고스트(사용자: "보유기술 내려갈 때도 유령이 뭔가 했으면" → "너무 랜덤하게 다님") — 칸 사이를 뛰어다니지 않고,
+     이력과 같은 x 의 모래 길을 따라 곧게 내려감(화면 45% 줄에 붙음). 고스트가 칸 줄의 윗변에 닿는 순간 반짝 · 그 줄의 칸이 블록처럼 한 번 튀며 로고가 떨어져 채워짐.
+     이 길에 들어서면 이력 길의 고스트는 숨김(1P 가 둘로 보이지 않게). 홈에서만 */
   function pfSkTick() {
-    var sk = document.querySelector('.pf [data-pf-skme]'); if (!sk || !sk.offsetParent) return;
-    var win = sk.parentNode, me = win.querySelector('.pf-sk-me'), cells = [].slice.call(sk.children), N = cells.length, vh = innerHeight;
-    var r = sk.getBoundingClientRect(), p = (vh * .62 - r.top) / Math.max(1, r.height), cur = p < 0 ? -1 : Math.min(N - 1, Math.floor(p * N));
-    var cm = document.querySelector('.pf-career .swl-me'); if (cm) cm.classList.toggle('is-off', cur >= 0 && r.bottom > 0);
-    me.classList.toggle('is-on', cur >= 0);
-    if (cur < 0) { me.__cur = -1; return; }
-    var wr = win.getBoundingClientRect(), cr = cells[cur].getBoundingClientRect();
-    me.style.left = Math.round(cr.right - wr.left - 48 - 16) + 'px'; me.style.top = Math.round(cr.top - wr.top - 52) + 'px';   /* 칸 윗변에 발을 딛고 섬(글 위를 덮지 않게) */
-    if (cur === me.__cur) return;
-    var first = me.__cur == null || me.__cur < 0; me.__cur = cur;
-    cells.forEach(function (c, i) { if (i <= cur) c.classList.add('is-in'); });
-    if (first) me.style.transition = 'none', void me.offsetWidth, me.style.transition = '';
-    [me, cells[cur]].forEach(function (x, j) { x.classList.remove(j ? 'is-hit' : 'is-hop'); void x.offsetWidth; x.classList.add(j ? 'is-hit' : 'is-hop'); });
+    var root = document.querySelector('.pf [data-pf-skl]'); if (!root || !root.offsetParent) return;
+    var rail = root.querySelector('.swl__rail'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), vh = innerHeight, rr = rail.getBoundingClientRect();
+    var gy = Math.max(0, Math.min(rr.height - 56, vh * .45 - rr.top)), act = rr.top < vh * .45 && rr.bottom > 0, line = vh * .45 + 28;
+    road.style.height = (act ? Math.round((gy + 28) / 4) * 4 : 0) + 'px';
+    me.classList.toggle('is-act', act);
+    me.style.transform = act && Math.floor(gy / 12) % 2 && gy < rr.height - 56 ? 'translateY(-4px)' : '';
+    var cm = document.querySelector('.pf-career .swl-me'); if (cm) cm.classList.toggle('is-off', act);
+    [].forEach.call(root.querySelectorAll('.pf-sk__c'), function (c) {
+      var reached = c.getBoundingClientRect().top < line;
+      if (reached && !c.__hit) { c.__hit = 1; c.classList.add('is-in'); if (!RM) [me, c].forEach(function (x) { x.classList.remove('is-hit'); void x.offsetWidth; x.classList.add('is-hit'); }); }
+      else if (!reached) c.__hit = 0;
+    });
   }
   /* ════ 하위 페이지 — 같은 테마 ════
      사용자: "다른 페이지들도 비슷한 테마로 맞춰야할듯 자세하게 보러가는 페이지들".

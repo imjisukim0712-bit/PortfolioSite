@@ -2091,17 +2091,19 @@
 .pf .pfc-feats { padding: 0 0 52px 128px; list-style: none; }
 .pf .pfc-feats .pf-feats { max-width: none; margin: 0; }
 @media (max-width: 760px) { .pf .pfc-feats { padding: 0 0 36px 60px; } }
-/* ══ 1-3 보유 기술의 고스트(flow.js pfSkTick) — 칸에서 칸으로 뛰어 옮겨 가고, 닿은 칸은 한 번 튀며 로고가 떨어짐. 이력 길 고스트는 그동안 숨김 ══ */
+/* ══ 1-3 보유 기술의 고스트(flow.js pfSkTick) — 이력과 같은 x 의 모래 길을 곧게 내려감("너무 랜덤하게 다님" 뒤 — 칸 사이를 뛰어다니지 않음).
+   고스트가 칸 줄 윗변에 닿으면 반짝 · 그 칸이 한 번 튀며 로고가 떨어짐. 이 길에 들어서면 이력 길 고스트는 숨김 ══ */
 .pf .swl-me { transition: opacity .2s steps(2); }
 .pf .swl-me.is-off { opacity: 0; }
-.pf-sk-me { position: absolute; z-index: 3; left: 0; top: 0; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; pointer-events: none;
-  opacity: 0; transition: left .36s steps(6), top .36s steps(6), opacity .2s steps(2); }
-.pf-sk-me.is-on { opacity: 1; }
-.pf-sk-me::after { content: ''; position: absolute; left: 22px; top: 26px; width: 4px; height: 4px; }
-.pf-sk-me.is-hop { animation: pf-sk-hop .4s steps(4); }
-.pf-sk-me.is-hop::after { animation: sw-burst .48s steps(4) .32s both; }
-@keyframes pf-sk-hop { 50% { transform: translateY(-24px); } }
-.pf-sk__c.is-hit { animation: pf-sk-hit .3s steps(3) .3s; }
+.pf .pf-skl .swl-me:not(.is-act) { opacity: 0; }
+.pf .pf-skl .pfc-wrap { gap: 0; }
+.pf .pf-skl .swl__list { padding: 0; }
+.swl-me.is-hit::after { animation: sw-burst .48s steps(4) both; }
+.pf-sk__c.is-hit { animation: pf-sk-hit .3s steps(3); }
 @keyframes pf-sk-hit { 50% { transform: translateY(-8px); } }
-.pf [data-pf-skme] { margin-top: 48px !important; row-gap: 56px; }   /* 고스트가 윗변에 설 자리 */
-@media (prefers-reduced-motion: reduce) { .pf-sk-me { transition: none; } .pf-sk-me.is-hop, .pf-sk-me.is-hop::after, .pf-sk__c.is-hit { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .swl-me.is-hit::after, .pf-sk__c.is-hit { animation: none; } }
+/* 길 오른쪽으로 들어가 창이 128px 좁아진 만큼 — 두 칸일 때 로고 줄(최대 다섯)이 꺾이지 않게 안쪽 여백 · 로고 사이를 줄이고, 1099px 이하는 한 칸씩 */
+.pf .pf-skl .pf-win { padding-left: 24px; padding-right: 24px; }
+.pf .pf-skl .pf-sk__c { padding-left: 16px; padding-right: 16px; }
+.pf .pf-skl .pf-its { column-gap: 8px; }
+@media (max-width: 1099px) { .pf .pf-skl .pf-sk { grid-template-columns: minmax(0, 1fr); } .pf .pf-skl .pf-sk > .pf-sk__c { grid-column: 1 / -1; } }
