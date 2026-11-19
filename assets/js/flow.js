@@ -2287,14 +2287,14 @@
     return h;
   }
   function skdFly(root, from, to, done) {            /* from 의 가운데에서 to(.pf-it__box) 자리로 로고 복제본이 날아감 → done */
-    if (RM) { done(); return; }
+    if (RM || root.__end) { done(); return; }
     var st = root.querySelector('.skd-stick'), sr = st.getBoundingClientRect(), fr = from.getBoundingClientRect(), tr = to.getBoundingClientRect(), img = to.querySelector('img') || from.querySelector('img');
     var f = document.createElement('img'); f.className = 'skd-fly'; f.src = img.getAttribute('src'); f.alt = '';
     var x0 = fr.left + fr.width / 2 - 17 - sr.left, y0 = fr.top + fr.height / 2 - 17 - sr.top;
     f.style.left = x0 + 'px'; f.style.top = y0 + 'px'; st.appendChild(f); (root.__fl = root.__fl || []).push(f);
     void f.offsetWidth;
     f.style.transform = 'translate(' + Math.round(tr.left + tr.width / 2 - 17 - sr.left - x0) + 'px,' + Math.round(tr.top + tr.height / 2 - 17 - sr.top - y0) + 'px)';
-    setTimeout(function () { if (f.parentNode) { f.remove(); done(); } }, 520);
+    setTimeout(function () { if (f.parentNode) { f.remove(); done(); } }, 380);
   }
   function wireSkd(box) {
     [].forEach.call(box.querySelectorAll('[data-skd]'), function (root) {
@@ -2323,18 +2323,23 @@
         var pr2 = props[i];
         if (yes) {
           pr2.classList.add('is-hit'); cur(i); if (kind === 'q') hop(pr2);
-          its[i].forEach(function (li, j) { setTimeout(function () { if (!on[i]) return; skdFly(root, pr2.querySelector('i'), li.querySelector('.pf-it__box'), function () { if (on[i]) { li.classList.add('got'); count(); } }); }, j * 90); });
+          its[i].forEach(function (li, j) { setTimeout(function () { if (!on[i]) return; skdFly(root, pr2.querySelector('i'), li.querySelector('.pf-it__box'), function () { if (on[i]) { li.classList.add('got'); count(); } }); }, j * 60); });
         } else { pr2.classList.remove('is-hit'); its[i].forEach(function (li) { li.classList.remove('got'); }); count(); }
       }
+      function done() {                                /* 끝 무렵(진행 7할)부터는 날아가는 중인 것까지 모두 제자리 — 스크롤이 끝나기 전에 배치를 마침 */
+        root.__end = 1; (root.__fl || []).forEach(function (f) { f.remove(); }); root.__fl = [];
+        flat.forEach(function (li) { li.classList.add('got'); }); slots.forEach(function (sl) { sl.classList.remove('got'); }); count();
+      }
       function prog(p) {
+        if (p >= .7) done(); else root.__end = 0;
         if (kind === 'eq') {
-          var m = flat.length, q = Math.max(0, Math.min(1, (p - .05) / .88));
+          var m = flat.length, q = Math.max(0, Math.min(1, (p - .03) / .64));
           for (var j = 0; j < m; j++) fire(j, q * m >= j + .5);
           var last = -1; for (var j2 = 0; j2 < m; j2++) if (on[j2]) last = j2;
           if (last < 0) cur(0);
           return;
         }
-        var W = track.offsetWidth, LW = lane.offsetWidth, a = Math.max(0, Math.min(1, (p - .04) / .9)), x, y = 0, N = props.length;
+        var W = track.offsetWidth, LW = lane.offsetWidth, a = Math.max(0, Math.min(1, (p - .03) / .64)), x, y = 0, N = props.length;
         if (kind === 'run') {
           x = a * (W - 48);
           props.forEach(function (pr, i) { fire(i, x + 24 >= pr.offsetLeft + pr.offsetWidth / 2); });

@@ -2138,7 +2138,7 @@
 @keyframes skd-bob { 50% { transform: translateY(-4px); } }
 .skd-me.is-hop::before { animation: skd-jump .36s steps(3); }
 @keyframes skd-jump { 50% { transform: translateY(-16px); } }
-.skd-fly { position: absolute; z-index: 20; width: 34px; height: 34px; object-fit: contain; pointer-events: none; transition: transform .48s cubic-bezier(.4, -.4, .6, 1); }
+.skd-fly { position: absolute; z-index: 20; width: 34px; height: 34px; object-fit: contain; pointer-events: none; transition: transform .34s cubic-bezier(.4, -.4, .6, 1); }
 .pf .skd-win { padding: 20px 24px 24px; }
 .skd .pf-sk { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px !important; }
 .skd .pf-sk__c { grid-column: auto !important; padding: 16px 16px 14px; }
