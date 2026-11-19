@@ -2152,3 +2152,29 @@
   .pf-nav a { flex: none; padding: 9px 0 9px 20px; font-size: 14px; white-space: nowrap; }
 }
 @media (prefers-reduced-motion: reduce) { .pf-nav__me { transition: none; } }
+
+/* ══ 절 머리 줄이기 · 바로가기 상자 · 가로 스크롤바 없음 — 사용자: "섹션마다 위에 글이 너무 많고 너무 눈에 띄어서 섹션이 오히려 묻혀" ·
+   "이런 스크롤바 만들지 마" · "이력서 전체 보기와 같은 섹션별 바로가기는 이력 맨 위 글 옆에 오른쪽에 크게 박스로".
+   머리 = 작은 WORLD 이름표(16px) + 제목 한 줄, 설명 줄 없음(홈) · 바로가기는 머리 오른쪽의 큰 크림 상자(.pf-go) · 작은 카드 줄은 옆으로 밀지 않고 줄을 바꿈 ══ */
+.pf .pf-wc__w, .pf .pf-sec__l { font-size: 16px; line-height: 1; color: var(--or); }
+.pf .pf-wc { gap: 10px; padding-bottom: 32px; }
+.pf .pf-wc__m { display: grid; gap: 10px; justify-items: inherit; }
+.pf .pf-wc.has-go { grid-template-columns: minmax(0, 1fr) auto; align-items: end; justify-items: start; text-align: left; column-gap: 24px; }
+.pf .pf-wc.has-go:not(.pf-wc--l) { max-width: 1000px; margin-left: auto; margin-right: auto; }
+.pf-go { display: inline-flex; align-items: center; gap: 16px; min-width: 260px; padding: 18px 24px; font: 800 18px/1.3 'Pretendard Variable', Pretendard, sans-serif; color: var(--navy) !important; text-decoration: none;
+  background: var(--cream); border: 4px solid #171c28; box-shadow: inset 0 0 0 4px #e2d1a8, 4px 4px 0 #000; transition: translate .12s steps(2); }
+.pf-go span { flex: 1; }
+.pf-go b { font: 400 16px/1 'Press Start 2P', monospace; color: var(--acc); }
+.pf-go:hover, .pf-go:focus-visible { translate: 0 -4px; box-shadow: inset 0 0 0 4px var(--acc), 4px 8px 0 #000; }
+.pf .pfc-h__t { font-size: 24px; }
+.pf .pfc-h__l { font-size: 12px; }
+.pfc-course { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 52px 16px; overflow: visible; }
+.pfc-slot { min-width: 0; }
+.pf-sv__list { scrollbar-width: none; } .pf-sv__list::-webkit-scrollbar { display: none; }
+@media (max-width: 760px) {
+  .pf .pf-wc.has-go { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+  .pf-go { min-width: 0; width: 100%; padding: 16px 18px; font-size: 17px; }
+  .pfc-course { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 48px 12px; margin-right: 0; padding-right: 0; }
+  .pfc-slot { width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .pf-go { transition: none; } }

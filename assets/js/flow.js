@@ -994,16 +994,12 @@
       }
       /* 사용자: "이력이 과하게 나열 방식 · 그룹으로 묶어서 병렬로" → "아직 병렬적이지 않음": 두 무리를 한 줄에 나란히(.swl-par) — 무리마다 크림 창 한 장,
          머리(이름표 · 이름 · 개수 · 한 줄 · 대표 숫자) + 한 줄짜리 항목(썸네일 | 기간 · 이름 · 한 줄 · 소속 · 큰 숫자). 고스트 길은 그 옆을 지나 맨 밑 목표 깃발까지 */
-      var GB = { project: [(stats[0] && stats[0].num) || '300K', T('누적 다운로드 · 출시 ' + ((stats[1] && stats[1].num) || 7) + '종', 'downloads · ' + ((stats[1] && stats[1].num) || 7) + ' titles out')],
-                 activity: [(stats[2] && stats[2].num) || '60K', T('커뮤니티 회원 · 2019년부터', 'community members · since 2019')] };
       /* → R · S 시안 뒤 "S-가, S-바가 베스트 · 아직 정보의 나열 느낌": 무리마다 S-바 의 큰 대표 칸(고른 것 하나만 다 보여 줌) + 그 아래 작은 카드 줄
          (썸네일 · 기간 · 이름 · 큰 숫자만 — 관 받침 · 땅 블록은 "왜 토관에 올려놔" · "땅에 그냥 얹지 말고" 뒤 뺐음). 처음엔 최신 것이 대표, 카드를 누르면 그게 대표로 올라오고 그 카드 위에 ▼ */
       /* 핵심 성과 판도 목록 안(레일 오른쪽)에 — 밖에 두면 641 ~ 999px 에서 고스트 길이 판 위를 지나감("이거 위에 덮이면 어뜩하니") */
       list = (opt.feats ? '<li class="pfc-feats">' + opt.feats + '</li>' : '') + '<li class="pfc-wrap">' + wGroups().map(function (g) {
-        var b = GB[g.g] || ['', ''];
         return '<section class="pfc is-' + g.g + '" data-pfc data-pf-count><header class="pfc-h"><p class="ps pfc-h__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' +
-          '<h3 class="pfc-h__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' + (g.lead ? '<p class="pfc-h__s">' + esc(t(g.lead)) + '</p>' : '') +
-          '<p class="pfc-h__big"><b class="ps" data-l-count="' + esc(b[0]) + '">' + esc(b[0]) + '</b><span>' + b[1] + '</span></p></header>' +
+          '<h3 class="pfc-h__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3></header>' +   /* 한 줄 · 대표 숫자는 뺐음(위 핵심 성과 판과 겹침 · "글이 너무 많아") */
           '<div class="pfc-lead" aria-live="polite">' + g.list.map(function (i, k) {
             var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
             var go = it.p && it.p.id ? '<a class="pfc-l__go" href="#/p/' + esc(it.p.id) + '">' + T('자세히 보기', 'See details') + ' ▶</a>' : '';
@@ -1020,7 +1016,7 @@
       }).join('') + '</li>' + WN.map(function (n, i) {
         if (n.k !== 'flag') return '';
         var cs = wCourse();
-        return head('NEXT GOAL', GN.title || { ko: '앞으로의 목표', en: 'Where I am headed' }, '', GN.lead, ' swl-g--next') +
+        return head('NEXT GOAL', GN.title || { ko: '앞으로의 목표', en: 'Where I am headed' }, '', '', ' swl-g--next') +
           '<li class="swl-c swl-c--flag swl-c--goal" data-swl-i="' + i + '"><span class="swl-c__node" aria-hidden="true"><i class="sw-s sw-pip--flag"></i></span><div class="swl-goal">' +
           '<span class="swl-goal__fl" aria-hidden="true"><i class="sw-s sw-pip--flag"></i></span><div class="swl-goal__m"><p class="swl-goal__k"><b class="ps">NEXT</b>' + T('아직 가지 않은 길', 'Not travelled yet') + '</p>' +
           '<h3 class="swl-goal__t">PD</h3><p class="swl-goal__s">' + esc(t(WGOAL)) + '</p>' + (cs ? '<p class="l-facts">' + lCourse(cs) + '</p>' : '') + '</div></div></li>';
@@ -1242,7 +1238,12 @@
       }).join('') + '</ul>' + (contact.length ? '<dl class="pf-contact">' + contact.map(function (c) { return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>'; }).join('') + '</dl>' : '') + '</div></div></div></div></div></div>' +
       '<i class="pf-s s-bush" style="left:38%"></i><i class="pf-s s-hill pf-hide-s" style="right:20%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
-  function pfWorld(code, h, p, left) { return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + '"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>'; }
+  /* 절 머리 — 작은 WORLD 이름표 + 제목 한 줄(사용자: "섹션마다 위에 글이 너무 많고 너무 눈에 띄어서 섹션이 오히려 묻혀" — 설명 줄은 홈에서 뺐고 이름표를 줄임).
+     go = [주소, 글] 이면 오른쪽에 큰 바로가기 상자("이력서 전체 보기와 같은 섹션별 바로가기는 맨 위 글 옆 오른쪽에 크게 박스로") */
+  function pfWorld(code, h, p, left, go) {
+    return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + (go ? ' has-go' : '') + '"><div class="pf-wc__m"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</div>' +
+      (go ? '<a class="pf-go" href="' + go[0] + '"><span>' + go[1] + '</span><b aria-hidden="true">▶</b></a>' : '') + '</header>';
+  }
   /* 핵심 성과 — 사용자: "이게 내 핵심 성과인데 잘 안 보이고 너무 구석진 곳에 있는 느낌 · 이력 최상단에 잘 보이게 포장해서".
      첫 화면 점수판(하늘 위 작은 글자)을 빼고 이력 맨 위에 벽돌 테 + 크림 판 한 장: HIGH SCORE 이름표 · 숫자 넷(큰 도트 숫자가 화면에 들어오면 0 → 값) · 숫자마다 근거 한 줄(resume.stats[].note) */
   function pfFeats() {
@@ -1254,8 +1255,8 @@
   }
   function pfCareer() {
     return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true, group: true, feats: pfFeats() }) +
-      '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
+      pfWorld('1-2', T('이력', 'Career'), '', 0, ['#/resume', T('이력서 전체 보기', 'Full résumé')]) + draftL3({ skipStart: true, pipe: true, thumb: true, group: true, feats: pfFeats() }) +
+      '</div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
   function pfIts(tl) {                          /* 로고 줄 — 흰 판에 실제 로고, 판 아래 도구 이름 */
@@ -1276,7 +1277,7 @@
   }
   function pfSkillSec() {
     var sk = (C.resume && C.resume.skills) || {};
-    return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
+    return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), '', 1) +
       /* 사용자가 고른 시안 G-다 엿보기 — 길 · 날아오기 없이 다 보여 주고, 유령은 지금 칸 뒤에서 고개만 내밂 */
       '<div class="skg skg--peek pf-skp" data-pf-skp>' + pfSkills(1) + '</div></div></section>';
   }
@@ -1298,11 +1299,11 @@
       (m.email ? pfKey('pf-key--m', 'href="mailto:' + esc(m.email) + '"', T('메일', 'Mail'), 'rubber') : '');
     var lbls = [['lDpad', T('◀ ▶ 고르기', '◀ ▶ SELECT')], ['lRubber', T('메일', 'MAIL')], ['lB', T('B 꺼내기', 'B EJECT')], ['lA', T('A 자세히', 'A OPEN')]].map(function (l) { return '<span class="pf-lbl" data-pf-k="' + l[0] + '">' + l[1] + '</span>'; }).join('');
     return '<section class="pf-ug pf-proj" id="pf-proj" data-pf-sec="1-4" data-pf-nm="' + T('프로젝트', 'Projects') + '"><div class="pf-in">' +
-      pfWorld('1-4', T('프로젝트', 'Projects'), T('카트리지 ' + PROJ.length + '개', PROJ.length + ' cartridges'), 1) + '</div>' +
+      pfWorld('1-4', T('프로젝트', 'Projects'), '', 1, ['#/projects', T('프로젝트 전체 보기', 'All projects')]) + '</div>' +
       '<div class="pf-run" data-pf-run><div class="pf-stick"><div class="pf-dev"><canvas class="pf-art-cv" role="img" aria-label="' + T('벽돌 휴대기', 'Brick handheld') + '"></canvas>' +
       '<div class="pf-scr" data-pf-scr aria-live="polite"></div>' + keys + lbls + '</div><p class="pf-gap" aria-hidden="true"><span class="pf-insert">▲</span></p>' +
       '<div class="pf-tray">' + PROJ.map(pfCart).join('') + '</div></div></div>' +
-      '<div class="pf-in"><div class="pf-col">' + pfMore('#/projects', T('프로젝트 전체 보기', 'All projects')) + '</div></div></section>';
+      '</section>';
   }
   function pfFoot() {
     var m = C.meta || {};
