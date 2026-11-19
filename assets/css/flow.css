@@ -2108,64 +2108,44 @@
 .pf .pf-skl .pf-its { column-gap: 8px; }
 @media (max-width: 1099px) { .pf .pf-skl .pf-sk { grid-template-columns: minmax(0, 1fr); } .pf .pf-skl .pf-sk > .pf-sk__c { grid-column: 1 / -1; } }
 
-/* ══ PART 05 보유 기술 연출 시안(K — flow.js skdDrafts · wireSkd) ══ */
-.skd { position: relative; }
-.skd-stick { position: sticky; top: 72px; display: grid; gap: 0; }
-.skd-lane { position: relative; height: 248px; overflow: hidden; background: var(--lv-uground) 0 100% / 64px 64px repeat-x; image-rendering: pixelated; }
-.skd-track { position: relative; display: flex; justify-content: space-around; height: 100%; will-change: transform; }
-.skd-track.is-wide { width: max(100%, 960px); }
-.skd-prop { position: relative; flex: none; width: 128px; height: 100%; }
-.skd-prop__n { position: absolute; left: 50%; bottom: 20px; translate: -50% 0; padding: 2px 8px; white-space: nowrap; font: 700 13px/1.4 'Pretendard Variable', Pretendard, sans-serif; color: #fff6dd; background: #121b33; box-shadow: 0 0 0 2px #171c28; }
-.skd-qb { position: absolute; left: 32px; top: 16px; width: 64px; height: 64px; background: var(--lv-qblock) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-.skd-prop.is-hit .skd-qb { background-image: var(--sk-used); }
-.skd-qb::after { content: ''; position: absolute; left: 20px; top: -44px; width: 24px; height: 40px; background: var(--lv-coin) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; opacity: 0; }
-.skd-prop.is-hit .skd-qb::after { animation: skd-coin .5s steps(5); }
-@keyframes skd-coin { 0% { opacity: 1; transform: translateY(36px); } 70% { opacity: 1; transform: translateY(-24px); } 100% { opacity: 0; transform: translateY(-8px); } }
-.skd-prop.is-hop .skd-qb { animation: skd-bump .24s steps(3); }
-@keyframes skd-bump { 50% { transform: translateY(-12px); } }
-.skd-chest { position: absolute; left: 32px; bottom: 64px; width: 64px; height: 52px; background: var(--sk-chest) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-.skd-prop.is-hit .skd-chest { background-image: var(--sk-chesto); }
-.skd-chest::after, .skd-coin::after { content: ''; position: absolute; left: 30px; top: 18px; width: 4px; height: 4px; }
-.skd-prop.is-hit .skd-chest::after { animation: sw-burst .48s steps(4) both; }
-.skd-coin { width: 60px; }
-.skd-coin img { position: absolute; left: 10px; bottom: 76px; width: 40px; height: 40px; padding: 6px; background: #fff; box-shadow: 0 0 0 4px #171c28; image-rendering: auto; transition: opacity .16s steps(2); }
-.skd-coin.is-hit img { opacity: 0; }
-.skd-coin::after { left: 28px; top: auto; bottom: 94px; }
-.skd-coin.is-hit::after { animation: sw-burst .48s steps(4) both; }
-.skd-me { position: absolute; z-index: 3; left: 0; bottom: 64px; width: 48px; height: 56px; will-change: transform; }
-.skd-me::before { content: ''; position: absolute; inset: 0; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
-.skd-me.is-walk::before { animation: skd-bob .36s steps(1) infinite; }
-@keyframes skd-bob { 50% { transform: translateY(-4px); } }
-.skd-me.is-hop::before { animation: skd-jump .36s steps(3); }
-@keyframes skd-jump { 50% { transform: translateY(-16px); } }
-.skd-fly { position: absolute; z-index: 20; width: 34px; height: 34px; object-fit: contain; pointer-events: none; transition: transform .34s cubic-bezier(.4, -.4, .6, 1); }
-.pf .skd-win { padding: 20px 24px 24px; }
-.skd .pf-sk { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px !important; }
-.skd .pf-sk__c { grid-column: auto !important; padding: 16px 16px 14px; }
-.pf .skd .pf-sk__c h3 { font-size: 20px; }
-.pf .skd .pf-sk__c p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 4px !important; font-size: 15px; line-height: 1.6; }
-.skd .pf-its { column-gap: 8px; padding-top: 12px; }
-.skd .pf-it:not(.got) img { opacity: 0; }
-.skd .pf-it.got .pf-it__box { animation: skd-land .2s steps(2); }
-@keyframes skd-land { 50% { transform: translateY(4px); } }
-.skd .pf-win__h b[data-skd-n] { font-size: 16px; color: var(--acc); }
-/* K-다 장비 */
-.skd-eqgrid { display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: 20px; align-items: start; }
-.skd-eq { display: grid; justify-items: center; gap: 14px; padding: 18px 16px 20px; background: #0e1018; border: 4px solid #fcfcfc; box-shadow: inset 0 0 0 4px #000, inset 0 0 0 8px #7c7c7c; }
-.skd-eq__h { font-size: 12px; color: #f8b800; }
-.skd-me--big { position: relative; left: auto; bottom: auto; }
-.skd-slots { display: grid; grid-template-columns: repeat(5, 40px); gap: 8px; }
-.skd-slot { display: grid; place-items: center; width: 40px; height: 40px; background: #232838; box-shadow: inset 0 0 0 2px #3a4258; }
-.skd-slot.got { background: #fff; box-shadow: 0 0 0 2px #fcfcfc; }
-.skd-slot:not(.got) img { display: none; }
-.skd-slot img { width: 26px; height: 26px; object-fit: contain; }
-.skd-eq__n { font-size: 10px; color: #fcfcfc; }
-.skd-eq__n b[data-skd-n] { color: #f8b800; }
+/* ══ PART 05 보유 기술 시안(G — flow.js skgDrafts · wireSkg): 다 보여 주고 유령은 시선만 이끔 ══ */
+.skg .pf-win { position: relative; padding: 24px 24px 28px; }
+.skg .skg-sk { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.skg .pf-sk__c { position: relative; grid-column: auto !important; padding: 20px 18px 18px; transition: box-shadow .2s steps(2), background-color .2s steps(2); }
+.skg .pf-sk__c.is-last { grid-column: 1 / -1 !important; }
+.skg .pf-its { column-gap: 8px; }
+.pf .skg .pf-sk__c.is-sel { background: #fffaf0; box-shadow: inset 0 0 0 4px var(--acc), 0 4px 0 #171c28; }
+.pf .skg .pf-sk__c.is-sel h3 { color: var(--acc); }
+/* G-가 메뉴 커서 — 칸 왼쪽 56px 자리를 비우고 유령이 그 자리로 미끄러짐 */
+.skg--cur .skg-sk { padding-left: 56px; column-gap: 72px; }
+.skg-me { position: absolute; z-index: 3; left: 0; top: 0; width: 48px; height: 56px; pointer-events: none; will-change: transform; }
+.skg-me::before { content: ''; position: absolute; inset: 0; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; animation: skg-bob .6s steps(1) infinite; }
+@keyframes skg-bob { 50% { transform: translateX(4px); } }
+/* G-나 해설 — 창 맨 위에 붙어 따라 내려오는 유령 + 말풍선 */
+.skg-say { position: sticky; top: 72px; z-index: 4; display: flex; align-items: center; gap: 16px; margin: 16px -16px 0; padding: 12px 16px; background: var(--cream); box-shadow: 0 4px 0 var(--line); }   /* 창 안쪽 테(8px)까지만 덮는 크림 띠 — 지나가는 칸이 비쳐 보이지 않게 */
+.skg-say__me { flex: none; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+.skg-say__b { position: relative; flex: 1; min-height: 56px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; padding: 12px 16px; font-size: 16px; font-weight: 700; line-height: 1.5; color: #102346; background: #fff; border: 4px solid #171c28; box-shadow: 4px 4px 0 #171c28; }
+.skg-say__b::before { content: ''; position: absolute; left: -16px; top: 16px; width: 12px; height: 16px; background: #171c28; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+.skg-say__b::after { content: ''; position: absolute; left: -8px; top: 20px; width: 6px; height: 8px; background: #fff; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+.skg-say__b .ps { font-size: 12px; color: var(--acc); }
+.skg-say__me.is-hop { animation: skg-hop .3s steps(3); }
+@keyframes skg-hop { 50% { transform: translateY(-12px); } }
+.skg-say__b.is-hop { animation: skg-pop .2s steps(2); }
+@keyframes skg-pop { 0% { transform: scale(.96); } }
+.skg--say .skg-sk { margin-top: 16px !important; }
+/* G-다 엿보기 — 지금 칸 오른쪽 위 모서리 뒤에서 고개를 내밂(줄 사이를 넓혀 자리를 둠) */
+.skg--peek .skg-sk { margin-top: 64px !important; row-gap: 72px; }
+.skg-peek { position: absolute; right: 20px; bottom: 100%; width: 88px; height: 60px; overflow: hidden; pointer-events: none; }
+.skg-peek i { position: absolute; right: 0; bottom: 0; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; transform: translateY(100%); transition: transform .28s cubic-bezier(.3, 1.5, .6, 1); }
+.skg-peek b { position: absolute; left: 8px; top: 4px; display: grid; place-items: center; width: 28px; height: 28px; font-size: 16px; color: #102346; background: #f8b800; box-shadow: 0 0 0 4px #171c28; opacity: 0; transform: translateY(8px); transition: opacity .12s steps(2) .2s, transform .12s steps(2) .2s; }
+.is-sel > .skg-peek i { transform: translateY(4px); }
+.is-sel > .skg-peek b { opacity: 1; transform: none; }
+@media (max-width: 1099px) { .skg .skg-sk { grid-template-columns: minmax(0, 1fr); } .skg--cur .skg-sk { column-gap: 0; } }
 @media (max-width: 760px) {
-  .skd .pf-sk { grid-template-columns: minmax(0, 1fr); }
-  .skd .skd-c:not(.is-cur) { display: none; }
-  .skd-eqgrid { grid-template-columns: minmax(0, 1fr); }
-  .skd-prop { width: 84px; } .skd-qb, .skd-chest { left: 10px; } .skd-prop__n { font-size: 11px; }
+  .skg .pf-win { padding: 18px 14px 20px; }
+  .skg--cur .skg-sk { padding-left: 32px; }
+  .skg-me { width: 24px; height: 28px; }   /* 좁은 화면은 칸 하나 = 2px 의 작은 커서(로고 줄 자리를 남김) */
+  .skg-say { gap: 12px; margin-inline: -6px; padding-inline: 6px; } .skg-say__b { font-size: 15px; padding: 10px 12px; }
+  .skg-peek { right: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .skd-me::before, .skd-qb, .skd-qb::after, .skd-chest::after, .skd-coin::after, .skd .pf-it__box, .skd-slot { animation: none !important; } }
-.skd-prop.is-hit .skd-chest { height: 68px; }
+@media (prefers-reduced-motion: reduce) { .skg-me::before, .skg-say__me, .skg-say__b { animation: none !important; } .skg .pf-sk__c, .skg-peek i, .skg-peek b { transition: none; } }

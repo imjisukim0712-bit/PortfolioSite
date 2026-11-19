@@ -2239,143 +2239,81 @@
     });
   }
 
-  /* ── PART 05 보유 기술 연출 시안(K) — 사용자: "보유기술 내려갈 때도 유령이 뭔가" → 칸 사이 뛰기("너무 랜덤") → 같은 길("같은 방식 말고, 다른 아이디어") → "시안 뽑아봐".
-     넷 다 스크롤만으로(틀이 화면에 붙고 내리는 만큼 진행): K-가 물음표 블록 치기 · K-나 달리며 줍기 · K-다 가방 풀기(유령 → ITEMS) · K-라 상자 열기.
-     유령은 늘 왼쪽 → 오른쪽 한 방향으로만 움직임. 로고는 날아가 아래 칸의 빈 판에 박힘(skdFly). 760px 이하는 지금 칸 하나만 보여 줌 */
-  var SK_USED = grid(16, 16, function (x, y) { return x === 0 || y === 0 || x === 15 || y === 15 || ((x === 2 || x === 13) && (y === 2 || y === 13)) ? 'K' : 'm'; });
-  var SK_CHEST = grid(16, 13, function (x, y) {
-    if (x === 0 || x === 15 || y === 0 || y === 12 || y === 5) return 'K';
-    if ((x === 7 || x === 8) && y >= 4 && y <= 7) return y === 4 || y === 7 ? 'K' : 'w';
-    if (y < 5) return y === 1 ? 'n' : 'o';
-    return x === 3 || x === 12 ? 'K' : 'm';
-  });
-  var SK_CHESTO = grid(16, 17, function (x, y) {        /* 열린 상자 — 뚜껑이 뒤로 젖혀져 서 있고(위 6줄), 속은 검정 */
-    if (y < 6) { if (x === 0 || x === 15 || y === 0) return 'K'; return y === 1 ? 'n' : y === 5 ? 'K' : 'o'; }
-    if (y === 6 || y === 7) return x === 0 || x === 15 || y === 6 ? 'K' : 'K';
-    if (x === 0 || x === 15 || y === 16 || y === 9) return 'K';
-    if (y === 8) return 'o';
-    return x === 3 || x === 12 ? 'K' : 'm';
-  });
-  [['--sk-used', SK_USED], ['--sk-chest', SK_CHEST], ['--sk-chesto', SK_CHESTO]].forEach(function (q) { document.documentElement.style.setProperty(q[0], spr(q[1])); });
-  function skdCells(cards) {
-    return '<div class="pf-sk">' + cards.map(function (c, i) {
-      return '<section class="pf-sk__c skd-c' + (i ? '' : ' is-cur') + '" data-c="' + i + '"><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p><ul class="pf-its">' + (c.tools || []).map(function (k) {
-        return '<li class="pf-it"><span class="pf-it__box"><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="34" height="34"></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
-      }).join('') + '</ul></section>';
-    }).join('') + '</div>';
-  }
-  function skdDrafts() {
-    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, all = [];
-    cards.forEach(function (c, i) { (c.tools || []).forEach(function (k) { all.push([i, k]); }); });
-    n = all.length;
-    function win(lab) { return '<div class="pf-win skd-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span><b class="ps" data-skd-n>0</b> / ' + n + ' ' + lab + '</span></p>' + skdCells(cards) + '</div>'; }
-    function lane(props, wide) { return '<div class="skd-lane"><div class="skd-track' + (wide ? ' is-wide' : '') + '">' + props + '<i class="skd-me" aria-hidden="true"></i></div></div>'; }
+  /* ── PART 05 보유 기술 시안(G) — 사용자: 연출 시안 K 넷 뒤 "걍 별로다, 그냥 보여주는 게 나을 듯. 다만 유령이 이걸 잘 보도록 이끌어 주는 느낌은 있어야".
+     그래서 로고 · 글은 처음부터 다 보이고(날아오기 · 화면에 붙이기 없음) 유령은 시선만 이끕니다 — 읽는 줄(화면 45%)을 지나는 칸이 '지금 칸'(is-sel).
+     한 줄에 칸이 둘이면 그 줄 높이를 반씩 나눠 왼쪽 → 오른쪽 차례로(읽는 순서 그대로, 건너뛰지 않음).
+     G-가 메뉴 커서(칸 왼쪽의 유령이 지금 칸으로 미끄러짐) · G-나 해설(창 위에 붙은 유령 말풍선이 지금 칸을 짚어 줌) · G-다 엿보기(지금 칸 뒤에서 유령이 고개를 내밂) */
+  function skgDrafts() {
+    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], N = cards.length, n = 0;
+    cards.forEach(function (c) { n += (c.tools || []).length; });
+    function win(kind, extra) {
+      return '<div class="skg skg--' + kind + '" data-skg="' + kind + '"><div class="pf-win skg-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p>' + (extra || '') +
+        '<div class="pf-sk skg-sk">' + cards.map(function (c, i) {
+          return '<section class="pf-sk__c skg-c' + (N % 2 && i === N - 1 ? ' is-last' : '') + '" data-c="' + i + '">' + (kind === 'peek' ? '<span class="skg-peek" aria-hidden="true"><b class="ps">!</b><i></i></span>' : '') +
+            '<h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
+        }).join('') + '</div>' + (kind === 'cur' ? '<i class="skg-me" aria-hidden="true"></i>' : '') + '</div></div>';
+    }
     var h = '';
-    h += iaDraft('K-가', T('물음표 블록 치기', 'Hit the ? blocks'),
-      T('창 위에 물음표 블록이 분류 수만큼 떠 있습니다. 내리는 만큼 유령이 왼쪽에서 오른쪽으로 걸어가 블록 아래에서 뛰어올라 머리로 치고, 맞은 블록은 다 쓴 블록이 되며 그 분류의 도구 로고가 튀어나와 아래 칸의 빈 판에 하나씩 박힙니다. "기술 = 블록에서 나온 아이템".', 'A row of ? blocks, one per category, floats above the window. As you scroll the ghost walks left to right, jumps and bumps each block from below; the block turns used and that category\'s tool logos pop out and drop into the empty slots below. "Skills = items out of a block".'),
-      '<div class="skd skd--q" data-skd="q"><div class="skd-stick">' + lane(cards.map(function (c, i) { return '<span class="skd-prop" data-c="' + i + '"><i class="skd-qb"></i><b class="skd-prop__n">' + esc(t(c.title)) + '</b></span>'; }).join('')) + win(T('획득', 'collected')) + '</div></div>');
-    h += iaDraft('K-나', T('달리며 줍기', 'Run and collect'),
-      T('창 위 한 줄에 도구 로고 ' + n + '개가 동전처럼 떠 있습니다. 내리는 만큼 유령이 오른쪽으로 달리며 하나씩 먹고, 먹은 로고는 아래 해당 칸으로 날아가 박힙니다. 창 머리 숫자가 0 → ' + n + '. 좁은 화면에서는 줄이 유령을 따라 옆으로 흐릅니다.', n + ' tool logos float in a row above the window like coins. As you scroll the ghost runs right and eats them one by one; each eaten logo flies down into its category. The counter in the window header goes 0 → ' + n + '. On narrow screens the row scrolls along with the ghost.'),
-      '<div class="skd skd--run" data-skd="run"><div class="skd-stick">' + lane(all.map(function (a, j) { return '<span class="skd-prop skd-coin" data-c="' + a[0] + '" data-j="' + j + '"><img src="' + esc(IMG(toolSrc(a[1]))) + '" alt="" width="28" height="28"></span>'; }).join(''), 1) + win(T('획득', 'collected')) + '</div></div>');
-    var slots = all.map(function (a, j) { return '<span class="skd-slot got" data-j="' + j + '"><img src="' + esc(IMG(toolSrc(a[1]))) + '" alt="" width="26" height="26"></span>'; }).join('');
-    h += iaDraft('K-다', T('가방 풀기 — 유령이 가진 도구가 ITEMS 로 퍼짐', 'Unpack — the ghost\'s tools spread into ITEMS'),
-      T('"장비 장착은 역으로 ITEMS 에 퍼지는 게" 뒤 — 왼쪽 유령의 가방(도구 ' + n + '개가 꽉 찬 칸)에서, 내리는 만큼 도구가 하나씩 튀어나와 오른쪽 ITEMS 의 제 분류 칸으로 날아가 박힙니다. 유령은 하나 꺼낼 때마다 콩 뛰고, 가방 숫자는 ' + n + ' → 0, ITEMS 숫자는 0 → ' + n + '.', 'After "the equip one would be better reversed, spreading into ITEMS": the ghost\'s bag on the left starts full (' + n + ' tools); as you scroll each tool pops out and flies into its category in ITEMS on the right. The ghost hops with each one; the bag counts ' + n + ' → 0 and ITEMS 0 → ' + n + '.'),
-      '<div class="skd skd--eq" data-skd="eq"><div class="skd-stick"><div class="skd-eqgrid"><div class="skd-eq"><p class="ps skd-eq__h">1P BAG</p><i class="skd-me skd-me--big" aria-hidden="true"></i><div class="skd-slots">' + slots + '</div><p class="skd-eq__n"><b class="ps">LEFT</b> <b class="ps" data-skd-left>' + n + '</b> / ' + n + '</p></div>' + win(T('획득', 'collected')) + '</div></div></div>');
-    h += iaDraft('K-라', T('상자 열기', 'Open the chests'),
-      T('창 위 바닥에 분류 수만큼 닫힌 상자가 놓여 있습니다. 내리는 만큼 유령이 오른쪽으로 걸어가 상자 앞에 멈추면 뚜껑이 열리며 반짝 · 그 분류의 로고가 솟아올라 아래 칸에 박힙니다. 뛰지 않고 걸어서 열기만 하는, K-가 보다 조용한 판.', 'Closed chests, one per category, sit on the floor above the window. As you scroll the ghost walks right and stops at each chest; the lid opens with a sparkle and that category\'s logos rise out and drop into the slots below. Walking instead of jumping — a quieter K-가.'),
-      '<div class="skd skd--chest" data-skd="chest"><div class="skd-stick">' + lane(cards.map(function (c, i) { return '<span class="skd-prop" data-c="' + i + '"><i class="skd-chest"></i><b class="skd-prop__n">' + esc(t(c.title)) + '</b></span>'; }).join('')) + win(T('획득', 'collected')) + '</div></div>');
+    h += iaDraft('G-가', T('메뉴 커서', 'Menu cursor'),
+      T('게임 메뉴의 ▶ 커서처럼, 칸 왼쪽에 선 유령이 지금 읽는 칸 옆으로 미끄러져 가고 그 칸에 벽돌색 테가 켜집니다. 내리는 만큼 위 → 아래, 같은 줄이면 왼쪽 → 오른쪽 차례로만 움직여요. 로고와 글은 처음부터 다 보입니다.', 'Like the ▶ cursor in a game menu, the ghost glides beside the box you are reading and that box lights up with a brick frame. It only moves in reading order as you scroll — top to bottom, left to right within a row. Logos and text are all visible from the start.'),
+      win('cur'));
+    h += iaDraft('G-나', T('해설 말풍선', 'Narrator bubble'),
+      T('창 맨 위에 유령과 말풍선이 붙어 따라 내려오며 지금 칸을 짚어 줍니다 — 처음엔 "도구 ' + n + '개를 ' + N + '칸에 담았어요", 칸마다 "1/' + N + ' 〈문서 도구〉 · 3개", 끝에서 "여기까지예요". 말이 바뀔 때 유령이 콩 뛰고, 그 칸에 테가 켜집니다.', 'A ghost with a speech bubble sticks to the top of the window and points out the current box — first "' + n + ' tools in ' + N + ' groups", then "1/' + N + ' Document tools · 3" for each box, and "That\'s all" at the end. The ghost hops whenever the line changes, and that box lights up.'),
+      win('say', '<div class="skg-say" aria-live="polite"><i class="skg-say__me" aria-hidden="true"></i><p class="skg-say__b" data-skg-say></p></div>'));
+    h += iaDraft('G-다', T('엿보기', 'Peek'),
+      T('유령이 돌아다니지 않습니다. 지금 칸의 오른쪽 위 모서리 뒤에서 유령이 고개를 쏙 내밀고 "!" — 다음 칸으로 넘어가면 앞 칸의 유령은 도로 숨습니다. 가장 조용한 안.', 'The ghost does not travel. It pops its head out from behind the top-right corner of the current box with a "!" — when you move on, the previous one ducks back down. The quietest option.'),
+      win('peek'));
     return h;
   }
-  function skdFly(root, from, to, done) {            /* from 의 가운데에서 to(.pf-it__box) 자리로 로고 복제본이 날아감 → done */
-    if (RM || root.__end) { done(); return; }
-    var st = root.querySelector('.skd-stick'), sr = st.getBoundingClientRect(), fr = from.getBoundingClientRect(), tr = to.getBoundingClientRect(), img = to.querySelector('img') || from.querySelector('img');
-    var f = document.createElement('img'); f.className = 'skd-fly'; f.src = img.getAttribute('src'); f.alt = '';
-    var x0 = fr.left + fr.width / 2 - 17 - sr.left, y0 = fr.top + fr.height / 2 - 17 - sr.top;
-    f.style.left = x0 + 'px'; f.style.top = y0 + 'px'; st.appendChild(f); (root.__fl = root.__fl || []).push(f);
-    void f.offsetWidth;
-    f.style.transform = 'translate(' + Math.round(tr.left + tr.width / 2 - 17 - sr.left - x0) + 'px,' + Math.round(tr.top + tr.height / 2 - 17 - sr.top - y0) + 'px)';
-    setTimeout(function () { if (f.parentNode) { f.remove(); done(); } }, 380);
-  }
-  function wireSkd(box) {
-    [].forEach.call(box.querySelectorAll('[data-skd]'), function (root) {
-      var kind = root.getAttribute('data-skd'), stick = root.querySelector('.skd-stick'), me = root.querySelector('.skd-me'), track = root.querySelector('.skd-track'), lane = root.querySelector('.skd-lane');
-      var cells = [].slice.call(root.querySelectorAll('.skd-c')), props = [].slice.call(root.querySelectorAll('.skd-prop')), nEl = [].slice.call(root.querySelectorAll('[data-skd-n]'));
-      var its = cells.map(function (c) { return [].slice.call(c.querySelectorAll('.pf-it')); }), flat = []; its.forEach(function (a) { flat = flat.concat(a); });
-      var slots = [].slice.call(root.querySelectorAll('.skd-slot')), on = {}, cnt = 0;
-      var leftEl = root.querySelector('[data-skd-left]');
-      function count() { cnt = root.querySelectorAll('.skd-c .pf-it.got').length; nEl.forEach(function (e) { e.textContent = cnt; }); if (leftEl) leftEl.textContent = root.querySelectorAll('.skd-slot.got').length; }
-      function cur(i) { cells.forEach(function (c, j) { c.classList.toggle('is-cur', j === i); }); }
-      function hop(el) { el.classList.remove('is-hop'); void el.offsetWidth; el.classList.add('is-hop'); }
-      function fire(i, yes) {
-        if (!!on[i] === yes) return; on[i] = yes;
-        if (kind === 'eq') {
-          var li = flat[i], sl = slots[i];
-          if (yes) { var c = +li.closest('.skd-c').getAttribute('data-c'); cur(c); hop(me); sl.classList.remove('got'); count(); skdFly(root, sl, li.querySelector('.pf-it__box'), function () { if (on[i]) { li.classList.add('got'); count(); } }); }
-          else { li.classList.remove('got'); sl.classList.add('got'); count(); }
-          return;
-        }
-        if (kind === 'run') {
-          var pr = props[i], ci = +pr.getAttribute('data-c'), k = +pr.getAttribute('data-j'), tgt = flat[k];
-          if (yes) { pr.classList.add('is-hit'); cur(ci); skdFly(root, pr, tgt.querySelector('.pf-it__box'), function () { if (on[i]) { tgt.classList.add('got'); count(); } }); }
-          else { pr.classList.remove('is-hit'); tgt.classList.remove('got'); count(); }
-          return;
-        }
-        var pr2 = props[i];
-        if (yes) {
-          pr2.classList.add('is-hit'); cur(i); if (kind === 'q') hop(pr2);
-          its[i].forEach(function (li, j) { setTimeout(function () { if (!on[i]) return; skdFly(root, pr2.querySelector('i'), li.querySelector('.pf-it__box'), function () { if (on[i]) { li.classList.add('got'); count(); } }); }, j * 60); });
-        } else { pr2.classList.remove('is-hit'); its[i].forEach(function (li) { li.classList.remove('got'); }); count(); }
+  function wireSkg(box) {
+    [].forEach.call(box.querySelectorAll('[data-skg]'), function (root) {
+      var kind = root.getAttribute('data-skg'), cells = [].slice.call(root.querySelectorAll('.skg-c')), me = root.querySelector('.skg-me'), say = root.querySelector('[data-skg-say]'), sayMe = root.querySelector('.skg-say__me');
+      var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], N = cards.length, n = 0, cur = null, endS = null;
+      cards.forEach(function (c) { n += (c.tools || []).length; });
+      function hop(el) { if (!el || RM) return; el.classList.remove('is-hop'); void el.offsetWidth; el.classList.add('is-hop'); }
+      function line(i, end) {
+        if (i < 0) return T('도구 ' + n + '개를 ' + N + '칸에 나눠 담았어요. 위에서부터 같이 봐요 ▼', n + ' tools in ' + N + ' groups. Let\'s go through them from the top ▼');
+        if (end) return T('여기까지예요! 아래는 프로젝트 ▼', 'That\'s all — projects are next ▼');
+        var c = cards[i], k = (c.tools || []).length;
+        return '<b class="ps">' + (i + 1) + '/' + N + '</b> ' + T('〈' + esc(t(c.title)) + '〉 — 도구 ' + k + '개, 어떻게 썼는지 읽어 보세요', esc(t(c.title)) + ' — ' + k + ' tools, and how I used them');
       }
-      function done() {                                /* 끝 무렵(진행 7할)부터는 날아가는 중인 것까지 모두 제자리 — 스크롤이 끝나기 전에 배치를 마침 */
-        root.__end = 1; (root.__fl || []).forEach(function (f) { f.remove(); }); root.__fl = [];
-        flat.forEach(function (li) { li.classList.add('got'); }); slots.forEach(function (sl) { sl.classList.remove('got'); }); count();
+      /* 지금 칸: 칸마다 '켜지는 줄' — 같은 줄의 칸이 k 개면 그 줄 높이를 k 로 나눠 왼쪽부터 */
+      function pick() {
+        var L = innerHeight * .45, sel = -1, rows = {};
+        cells.forEach(function (c) { (rows[c.offsetTop] = rows[c.offsetTop] || []).push(c); });
+        cells.forEach(function (c, i) {
+          var r = c.getBoundingClientRect(), row = rows[c.offsetTop], j = row.indexOf(c);
+          if (r.top + r.height * j / row.length < L) sel = i;
+        });
+        return sel;
       }
-      function prog(p) {
-        if (p >= .7) done(); else root.__end = 0;
-        if (kind === 'eq') {
-          var m = flat.length, q = Math.max(0, Math.min(1, (p - .03) / .64));
-          for (var j = 0; j < m; j++) fire(j, q * m >= j + .5);
-          var last = -1; for (var j2 = 0; j2 < m; j2++) if (on[j2]) last = j2;
-          if (last < 0) cur(0);
-          return;
-        }
-        var W = track.offsetWidth, LW = lane.offsetWidth, a = Math.max(0, Math.min(1, (p - .03) / .64)), x, y = 0, N = props.length;
-        if (kind === 'run') {
-          x = a * (W - 48);
-          props.forEach(function (pr, i) { fire(i, x + 24 >= pr.offsetLeft + pr.offsetWidth / 2); });
-          tg.tx = W > LW ? -Math.max(0, Math.min(W - LW, x + 24 - LW / 2)) : 0;
-        } else {
-          /* 멈췄다 달리기 없이 한결같은 속도 — 블록 · 상자를 지나가는 순간에 치고(점프 호) · 연다 */
-          x = a * (W - 48);
-          props.forEach(function (pr, j) {
-            var c = pr.offsetLeft + pr.offsetWidth / 2, dx = x + 24 - c;
-            if (kind === 'q' && Math.abs(dx) < 56) y = Math.min(y, -48 * (1 - (dx / 56) * (dx / 56)));
-            fire(j, dx >= (kind === 'q' ? 0 : -40));
-          });
-        }
-        tg.x = x; tg.y = y; anim();
-        me.classList.toggle('is-walk', a > 0 && a < 1);
-        var lastC = -1; Object.keys(on).forEach(function (k) { if (on[k]) lastC = Math.max(lastC, kind === 'run' ? +props[k].getAttribute('data-c') : +k); }); if (lastC < 0) cur(0);
-      }
-      /* 끊김 없이 — 유령 · 줄은 스크롤 진행을 바로 따라가되 살짝 늦게 미끄러짐(칸 단위로 끊어 옮기지 않음) */
-      var tg = { x: -8, y: 0, tx: 0 }, cu = { x: -8, y: 0, tx: 0 }, raf = 0;
-      function paint() { me.style.transform = 'translate3d(' + cu.x.toFixed(1) + 'px,' + cu.y.toFixed(1) + 'px,0)'; if (track) track.style.transform = cu.tx ? 'translate3d(' + cu.tx.toFixed(1) + 'px,0,0)' : ''; }
+      /* 커서는 끊지 않고 미끄러짐(살짝 늦게 따라감) */
+      var tg = { x: 0, y: 0 }, cu = null, raf = 0;
+      function paint() { me.style.transform = 'translate3d(' + cu.x.toFixed(1) + 'px,' + cu.y.toFixed(1) + 'px,0)'; }
       function anim() {
-        if (RM) { cu.x = tg.x; cu.y = tg.y; cu.tx = tg.tx; paint(); return; }
+        if (!cu || RM) { cu = { x: tg.x, y: tg.y }; paint(); return; }
         if (raf) return;
         (function step() {
-          var d = 0; ['x', 'y', 'tx'].forEach(function (k) { cu[k] += (tg[k] - cu[k]) * .35; if (Math.abs(tg[k] - cu[k]) < .3) cu[k] = tg[k]; d += Math.abs(tg[k] - cu[k]); });
+          var d = 0; ['x', 'y'].forEach(function (k) { cu[k] += (tg[k] - cu[k]) * .2; if (Math.abs(tg[k] - cu[k]) < .3) cu[k] = tg[k]; d += Math.abs(tg[k] - cu[k]); });
           paint(); raf = d ? requestAnimationFrame(step) : 0;
         })();
       }
-      function size() { root.style.height = (stick.offsetHeight + innerHeight * .9) + 'px'; }
-      size(); root.__size = size;
-      SCROLLERS.push({ box: root, stick: stick, prog: prog });
+      function tick() {
+        if (!root.offsetParent) return;
+        var s = pick(), on = Math.max(0, s), end = s === N - 1 && root.getBoundingClientRect().bottom < innerHeight * .45;
+        if (kind === 'cur') { var c = cells[on], h3 = c.querySelector('h3'); tg.x = c.offsetLeft - me.offsetWidth - 8; tg.y = c.offsetTop + h3.offsetTop + Math.round((h3.offsetHeight - me.offsetHeight) / 2); anim(); }
+        if (kind === 'say' && (s !== cur || end !== endS)) { say.innerHTML = line(s, end); hop(sayMe); hop(say); }
+        if (s === cur && end === endS) return;
+        cells.forEach(function (c, i) { c.classList.toggle('is-sel', kind === 'say' ? i === s : i === on); });
+        cur = s; endS = end;
+      }
+      root.__fix = function () { cu = null; cur = null; tick(); };
+      LTICKS.push(tick); tick();
     });
   }
   function renderSkDrafts() {
     var box = document.getElementById('skdrafts'); if (!box) return;
-    box.innerHTML = skdDrafts(); wireSkd(box); scrollTick();
+    box.innerHTML = skgDrafts(); wireSkg(box);
   }
   function renderIaDrafts() {
     var box = document.getElementById('iadrafts'); if (!box) return;
@@ -2443,10 +2381,11 @@
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); renderSkDrafts(); } }
+  var ONLY = document.documentElement.getAttribute('data-only');   /* drafts.html?only=skd — 그 시안만 그림(숨긴 다른 시안은 그리지 않음) */
+  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else if (ONLY === 'skd') renderSkDrafts(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); renderSkDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); [].forEach.call(document.querySelectorAll('[data-skd]'), function (r) { if (r.__size) r.__size(); }); } }, 150); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else if (ONLY) [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); else { fit(); renderConsoles(); [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); } }, 150); });
   if (document.querySelector('[data-lang]')) document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   if (document.querySelector('[data-dark]')) document.querySelector('[data-dark]').addEventListener('click', function () {
     var d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
