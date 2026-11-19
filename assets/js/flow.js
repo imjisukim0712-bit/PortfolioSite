@@ -998,7 +998,8 @@
                  activity: [(stats[2] && stats[2].num) || '60K', T('커뮤니티 회원 · 2019년부터', 'community members · since 2019')] };
       /* → R · S 시안 뒤 "S-가, S-바가 베스트 · 아직 정보의 나열 느낌": 무리마다 S-바 의 큰 대표 칸(고른 것 하나만 다 보여 줌) + 그 아래 작은 카드 줄
          (썸네일 · 기간 · 이름 · 큰 숫자만 — 관 받침 · 땅 블록은 "왜 토관에 올려놔" · "땅에 그냥 얹지 말고" 뒤 뺐음). 처음엔 최신 것이 대표, 카드를 누르면 그게 대표로 올라오고 그 카드 위에 ▼ */
-      list = '<li class="pfc-wrap">' + wGroups().map(function (g) {
+      /* 핵심 성과 판도 목록 안(레일 오른쪽)에 — 밖에 두면 641 ~ 999px 에서 고스트 길이 판 위를 지나감("이거 위에 덮이면 어뜩하니") */
+      list = (opt.feats ? '<li class="pfc-feats">' + opt.feats + '</li>' : '') + '<li class="pfc-wrap">' + wGroups().map(function (g) {
         var b = GB[g.g] || ['', ''];
         return '<section class="pfc is-' + g.g + '" data-pfc data-pf-count><header class="pfc-h"><p class="ps pfc-h__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' +
           '<h3 class="pfc-h__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' + (g.lead ? '<p class="pfc-h__s">' + esc(t(g.lead)) + '</p>' : '') +
@@ -1235,7 +1236,7 @@
   }
   function pfCareer() {
     return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + pfFeats() + draftL3({ skipStart: true, pipe: true, thumb: true, group: true }) +
+      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true, group: true, feats: pfFeats() }) +
       '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */
@@ -1244,11 +1245,11 @@
       return '<li class="pf-it" style="--k:' + j + '"><span class="pf-it__box"><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="34" height="34"></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
     }).join('') + '</ul>';
   }
-  function pfSkills() {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
+  function pfSkills(me) {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
                                                    (사용자: "저걸 어떻게 써봤는지는 나와야 해" · "레이아웃이 개판" — 표 대신 같은 높이 칸막이, 위 줄 셋 · 남는 칸은 넓게) */
     var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, N = cards.length, cols = N % 3 && N % 2 === 0 ? 2 : 3, rem = cols === 3 ? N % 3 : 0;   /* 넷 · 둘이면 두 칸씩, 아니면 세 칸씩(남는 칸은 넓게) */
     cards.forEach(function (c) { n += (c.tools || []).length; });
-    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p><div class="pf-sk">' + cards.map(function (c, i) {
+    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p>' + (me ? '<i class="pf-sk-me" aria-hidden="true"></i>' : '') + '<div class="pf-sk"' + (me ? ' data-pf-skme' : '') + '>' + cards.map(function (c, i) {
       var w = cols === 2 ? ' is-w3' : rem && i >= N - rem ? (rem === 2 ? ' is-w3' : ' is-w6') : '';
       return '<section class="pf-sk__c' + w + '" data-pf-rv><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
     }).join('') + '</div></div>';
@@ -1256,7 +1257,7 @@
   function pfSkillSec() {
     var sk = (C.resume && C.resume.skills) || {};
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
-      '<div class="pf-col">' + pfSkills() + '</div></div></section>';
+      '<div class="pf-col">' + pfSkills(1) + '</div></div></section>';
   }
   function pfCartIn(p) {                       /* 작은 카트리지 · 디스켓의 속(시안 라-5 의 .cv 규칙 그대로) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
@@ -1453,8 +1454,25 @@
   }
   function pfRvTick() {                         /* 화면에 들어온 창 · 줄 · 카트리지는 한 번 올라옴(인벤토리 줄은 블록이 튀고 도구가 나옴) · 숫자는 0 → 값 */
     var vh = innerHeight;
-    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.parentNode.hasAttribute('data-pf-skme')) return; if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
     [].forEach.call(document.querySelectorAll('.pf [data-pf-count]'), function (el) { lCount(el, vh); });
+  }
+  /* 1-3 보유 기술의 고스트(사용자: "보유기술 내려갈 때도 유령이 뭔가 했으면") — 내리는 만큼 칸에서 칸으로 뛰어 옮겨 가고(칸 윗변 오른쪽에 섬),
+     닿는 칸은 블록처럼 한 번 튀며 그 칸의 로고가 떨어져 채워짐. 위로 올리면 거꾸로 돌아감. 이력 길의 고스트는 그동안 숨김(1P 가 둘로 보이지 않게). 홈에서만 */
+  function pfSkTick() {
+    var sk = document.querySelector('.pf [data-pf-skme]'); if (!sk || !sk.offsetParent) return;
+    var win = sk.parentNode, me = win.querySelector('.pf-sk-me'), cells = [].slice.call(sk.children), N = cells.length, vh = innerHeight;
+    var r = sk.getBoundingClientRect(), p = (vh * .62 - r.top) / Math.max(1, r.height), cur = p < 0 ? -1 : Math.min(N - 1, Math.floor(p * N));
+    var cm = document.querySelector('.pf-career .swl-me'); if (cm) cm.classList.toggle('is-off', cur >= 0 && r.bottom > 0);
+    me.classList.toggle('is-on', cur >= 0);
+    if (cur < 0) { me.__cur = -1; return; }
+    var wr = win.getBoundingClientRect(), cr = cells[cur].getBoundingClientRect();
+    me.style.left = Math.round(cr.right - wr.left - 48 - 16) + 'px'; me.style.top = Math.round(cr.top - wr.top - 52) + 'px';   /* 칸 윗변에 발을 딛고 섬(글 위를 덮지 않게) */
+    if (cur === me.__cur) return;
+    var first = me.__cur == null || me.__cur < 0; me.__cur = cur;
+    cells.forEach(function (c, i) { if (i <= cur) c.classList.add('is-in'); });
+    if (first) me.style.transition = 'none', void me.offsetWidth, me.style.transition = '';
+    [me, cells[cur]].forEach(function (x, j) { x.classList.remove(j ? 'is-hit' : 'is-hop'); void x.offsetWidth; x.classList.add(j ? 'is-hit' : 'is-hop'); });
   }
   /* ════ 하위 페이지 — 같은 테마 ════
      사용자: "다른 페이지들도 비슷한 테마로 맞춰야할듯 자세하게 보러가는 페이지들".
@@ -1767,7 +1785,7 @@
     pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
     var top = pf.querySelector('.pf-top'), mb = pf.querySelector('[data-pf-mbtn]');
     mb.addEventListener('click', function () { var o = !top.classList.contains('is-open'); top.classList.toggle('is-open', o); mb.setAttribute('aria-expanded', String(o)); });
-    LTICKS.push(pfWorldTick, pfRvTick, pfDiveTick);
+    LTICKS.push(pfWorldTick, pfRvTick, pfDiveTick, pfSkTick);
     if (r.pg === 'play') LTICKS.push(pfSteamTick);
     var menu = pf.querySelector('[data-pf-menu]');
     if (menu) {
