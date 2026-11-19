@@ -2239,6 +2239,125 @@
     });
   }
 
+  /* ── PART 05 보유 기술 연출 시안(K) — 사용자: "보유기술 내려갈 때도 유령이 뭔가" → 칸 사이 뛰기("너무 랜덤") → 같은 길("같은 방식 말고, 다른 아이디어") → "시안 뽑아봐".
+     넷 다 스크롤만으로(틀이 화면에 붙고 내리는 만큼 진행): K-가 물음표 블록 치기 · K-나 달리며 줍기 · K-다 장비 장착 · K-라 상자 열기.
+     유령은 늘 왼쪽 → 오른쪽 한 방향으로만 움직임. 로고는 날아가 아래 칸의 빈 판에 박힘(skdFly). 760px 이하는 지금 칸 하나만 보여 줌 */
+  var SK_USED = grid(16, 16, function (x, y) { return x === 0 || y === 0 || x === 15 || y === 15 || ((x === 2 || x === 13) && (y === 2 || y === 13)) ? 'K' : 'm'; });
+  var SK_CHEST = grid(16, 13, function (x, y) {
+    if (x === 0 || x === 15 || y === 0 || y === 12 || y === 5) return 'K';
+    if ((x === 7 || x === 8) && y >= 4 && y <= 7) return y === 4 || y === 7 ? 'K' : 'w';
+    if (y < 5) return y === 1 ? 'n' : 'o';
+    return x === 3 || x === 12 ? 'K' : 'm';
+  });
+  var SK_CHESTO = grid(16, 17, function (x, y) {        /* 열린 상자 — 뚜껑이 뒤로 젖혀져 서 있고(위 6줄), 속은 검정 */
+    if (y < 6) { if (x === 0 || x === 15 || y === 0) return 'K'; return y === 1 ? 'n' : y === 5 ? 'K' : 'o'; }
+    if (y === 6 || y === 7) return x === 0 || x === 15 || y === 6 ? 'K' : 'K';
+    if (x === 0 || x === 15 || y === 16 || y === 9) return 'K';
+    if (y === 8) return 'o';
+    return x === 3 || x === 12 ? 'K' : 'm';
+  });
+  [['--sk-used', SK_USED], ['--sk-chest', SK_CHEST], ['--sk-chesto', SK_CHESTO]].forEach(function (q) { document.documentElement.style.setProperty(q[0], spr(q[1])); });
+  function skdCells(cards) {
+    return '<div class="pf-sk">' + cards.map(function (c, i) {
+      return '<section class="pf-sk__c skd-c' + (i ? '' : ' is-cur') + '" data-c="' + i + '"><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p><ul class="pf-its">' + (c.tools || []).map(function (k) {
+        return '<li class="pf-it"><span class="pf-it__box"><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="34" height="34"></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
+      }).join('') + '</ul></section>';
+    }).join('') + '</div>';
+  }
+  function skdDrafts() {
+    var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, all = [];
+    cards.forEach(function (c, i) { (c.tools || []).forEach(function (k) { all.push([i, k]); }); });
+    n = all.length;
+    function win(lab) { return '<div class="pf-win skd-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span><b class="ps" data-skd-n>0</b> / ' + n + ' ' + lab + '</span></p>' + skdCells(cards) + '</div>'; }
+    function lane(props, wide) { return '<div class="skd-lane"><div class="skd-track' + (wide ? ' is-wide' : '') + '">' + props + '<i class="skd-me" aria-hidden="true"></i></div></div>'; }
+    var h = '';
+    h += iaDraft('K-가', T('물음표 블록 치기', 'Hit the ? blocks'),
+      T('창 위에 물음표 블록이 분류 수만큼 떠 있습니다. 내리는 만큼 유령이 왼쪽에서 오른쪽으로 걸어가 블록 아래에서 뛰어올라 머리로 치고, 맞은 블록은 다 쓴 블록이 되며 그 분류의 도구 로고가 튀어나와 아래 칸의 빈 판에 하나씩 박힙니다. "기술 = 블록에서 나온 아이템".', 'A row of ? blocks, one per category, floats above the window. As you scroll the ghost walks left to right, jumps and bumps each block from below; the block turns used and that category\'s tool logos pop out and drop into the empty slots below. "Skills = items out of a block".'),
+      '<div class="skd skd--q" data-skd="q"><div class="skd-stick">' + lane(cards.map(function (c, i) { return '<span class="skd-prop" data-c="' + i + '"><i class="skd-qb"></i><b class="skd-prop__n">' + esc(t(c.title)) + '</b></span>'; }).join('')) + win(T('획득', 'collected')) + '</div></div>');
+    h += iaDraft('K-나', T('달리며 줍기', 'Run and collect'),
+      T('창 위 한 줄에 도구 로고 ' + n + '개가 동전처럼 떠 있습니다. 내리는 만큼 유령이 오른쪽으로 달리며 하나씩 먹고, 먹은 로고는 아래 해당 칸으로 날아가 박힙니다. 창 머리 숫자가 0 → ' + n + '. 좁은 화면에서는 줄이 유령을 따라 옆으로 흐릅니다.', n + ' tool logos float in a row above the window like coins. As you scroll the ghost runs right and eats them one by one; each eaten logo flies down into its category. The counter in the window header goes 0 → ' + n + '. On narrow screens the row scrolls along with the ghost.'),
+      '<div class="skd skd--run" data-skd="run"><div class="skd-stick">' + lane(all.map(function (a, j) { return '<span class="skd-prop skd-coin" data-c="' + a[0] + '" data-j="' + j + '"><img src="' + esc(IMG(toolSrc(a[1]))) + '" alt="" width="28" height="28"></span>'; }).join(''), 1) + win(T('획득', 'collected')) + '</div></div>');
+    var slots = ''; for (var j = 0; j < n; j++) slots += '<span class="skd-slot" data-j="' + j + '"></span>';
+    h += iaDraft('K-다', T('장비 장착', 'Equip'),
+      T('왼쪽에 유령의 장비 창(빈 칸 ' + n + '개), 오른쪽에 분류 칸. 내리는 만큼 분류 칸의 도구가 하나씩 유령 쪽으로 날아가 장비 칸에 꽂히고, 유령이 한 번씩 콩 뜁니다. 다 내리면 EQUIPPED ' + n + '. RPG 장비 화면.', 'The ghost\'s equipment panel (' + n + ' empty slots) on the left, the categories on the right. As you scroll each tool flies from its category into an equipment slot and the ghost hops. At the end: EQUIPPED ' + n + '. An RPG equipment screen.'),
+      '<div class="skd skd--eq" data-skd="eq"><div class="skd-stick"><div class="skd-eqgrid"><div class="skd-eq"><p class="ps skd-eq__h">1P EQUIP</p><i class="skd-me skd-me--big" aria-hidden="true"></i><div class="skd-slots">' + slots + '</div><p class="skd-eq__n"><b class="ps">EQUIPPED</b> <b class="ps" data-skd-n>0</b> / ' + n + '</p></div>' + win(T('장착', 'equipped')).replace('<b class="ps" data-skd-n>0</b> / ' + n + ' ' + T('장착', 'equipped'), T('분류 ' + cards.length + ' · 도구 ' + n + '개', cards.length + ' kinds · ' + n + ' tools')) + '</div></div></div>');
+    h += iaDraft('K-라', T('상자 열기', 'Open the chests'),
+      T('창 위 바닥에 분류 수만큼 닫힌 상자가 놓여 있습니다. 내리는 만큼 유령이 오른쪽으로 걸어가 상자 앞에 멈추면 뚜껑이 열리며 반짝 · 그 분류의 로고가 솟아올라 아래 칸에 박힙니다. 뛰지 않고 걸어서 열기만 하는, K-가 보다 조용한 판.', 'Closed chests, one per category, sit on the floor above the window. As you scroll the ghost walks right and stops at each chest; the lid opens with a sparkle and that category\'s logos rise out and drop into the slots below. Walking instead of jumping — a quieter K-가.'),
+      '<div class="skd skd--chest" data-skd="chest"><div class="skd-stick">' + lane(cards.map(function (c, i) { return '<span class="skd-prop" data-c="' + i + '"><i class="skd-chest"></i><b class="skd-prop__n">' + esc(t(c.title)) + '</b></span>'; }).join('')) + win(T('획득', 'collected')) + '</div></div>');
+    return h;
+  }
+  function skdFly(root, from, to, done) {            /* from 의 가운데에서 to(.pf-it__box) 자리로 로고 복제본이 날아감 → done */
+    if (RM) { done(); return; }
+    var st = root.querySelector('.skd-stick'), sr = st.getBoundingClientRect(), fr = from.getBoundingClientRect(), tr = to.getBoundingClientRect(), img = to.querySelector('img') || from.querySelector('img');
+    var f = document.createElement('img'); f.className = 'skd-fly'; f.src = img.getAttribute('src'); f.alt = '';
+    var x0 = fr.left + fr.width / 2 - 17 - sr.left, y0 = fr.top + fr.height / 2 - 17 - sr.top;
+    f.style.left = x0 + 'px'; f.style.top = y0 + 'px'; st.appendChild(f); (root.__fl = root.__fl || []).push(f);
+    void f.offsetWidth;
+    f.style.transform = 'translate(' + Math.round(tr.left + tr.width / 2 - 17 - sr.left - x0) + 'px,' + Math.round(tr.top + tr.height / 2 - 17 - sr.top - y0) + 'px)';
+    setTimeout(function () { if (f.parentNode) { f.remove(); done(); } }, 520);
+  }
+  function wireSkd(box) {
+    [].forEach.call(box.querySelectorAll('[data-skd]'), function (root) {
+      var kind = root.getAttribute('data-skd'), stick = root.querySelector('.skd-stick'), me = root.querySelector('.skd-me'), track = root.querySelector('.skd-track'), lane = root.querySelector('.skd-lane');
+      var cells = [].slice.call(root.querySelectorAll('.skd-c')), props = [].slice.call(root.querySelectorAll('.skd-prop')), nEl = [].slice.call(root.querySelectorAll('[data-skd-n]'));
+      var its = cells.map(function (c) { return [].slice.call(c.querySelectorAll('.pf-it')); }), flat = []; its.forEach(function (a) { flat = flat.concat(a); });
+      var slots = [].slice.call(root.querySelectorAll('.skd-slot')), on = {}, cnt = 0;
+      function count() { cnt = kind === 'eq' ? root.querySelectorAll('.skd-slot.got').length : root.querySelectorAll('.skd-c .pf-it.got').length; nEl.forEach(function (e) { e.textContent = cnt; }); }
+      function cur(i) { cells.forEach(function (c, j) { c.classList.toggle('is-cur', j === i); }); }
+      function hop(el) { el.classList.remove('is-hop'); void el.offsetWidth; el.classList.add('is-hop'); }
+      function fire(i, yes) {
+        if (!!on[i] === yes) return; on[i] = yes;
+        if (kind === 'eq') {
+          var li = flat[i], sl = slots[i];
+          if (yes) { var c = +li.closest('.skd-c').getAttribute('data-c'); cur(c); li.classList.add('gone'); hop(me); skdFly(root, li.querySelector('.pf-it__box'), sl, function () { if (on[i]) { sl.classList.add('got'); sl.innerHTML = li.querySelector('.pf-it__box').innerHTML; count(); } }); }
+          else { li.classList.remove('gone'); sl.classList.remove('got'); sl.innerHTML = ''; count(); }
+          return;
+        }
+        if (kind === 'run') {
+          var pr = props[i], ci = +pr.getAttribute('data-c'), k = +pr.getAttribute('data-j'), tgt = flat[k];
+          if (yes) { pr.classList.add('is-hit'); cur(ci); skdFly(root, pr, tgt.querySelector('.pf-it__box'), function () { if (on[i]) { tgt.classList.add('got'); count(); } }); }
+          else { pr.classList.remove('is-hit'); tgt.classList.remove('got'); count(); }
+          return;
+        }
+        var pr2 = props[i];
+        if (yes) {
+          pr2.classList.add('is-hit'); cur(i); if (kind === 'q') hop(pr2);
+          its[i].forEach(function (li, j) { setTimeout(function () { if (!on[i]) return; skdFly(root, pr2.querySelector('i'), li.querySelector('.pf-it__box'), function () { if (on[i]) { li.classList.add('got'); count(); } }); }, j * 90); });
+        } else { pr2.classList.remove('is-hit'); its[i].forEach(function (li) { li.classList.remove('got'); }); count(); }
+      }
+      function prog(p) {
+        if (kind === 'eq') {
+          var m = flat.length, q = Math.max(0, Math.min(1, (p - .05) / .88));
+          for (var j = 0; j < m; j++) fire(j, q * m >= j + .5);
+          var last = -1; for (var j2 = 0; j2 < m; j2++) if (on[j2]) last = j2;
+          if (last < 0) cur(0);
+          return;
+        }
+        var W = track.offsetWidth, LW = lane.offsetWidth, a = Math.max(0, Math.min(1, (p - .04) / .9)), x, y = 0, N = props.length;
+        if (kind === 'run') {
+          x = a * (W - 48);
+          props.forEach(function (pr, i) { fire(i, x + 24 >= pr.offsetLeft + pr.offsetWidth / 2); });
+          track.style.transform = W > LW ? 'translateX(' + (-Math.round(Math.max(0, Math.min(W - LW, x + 24 - LW / 2)))) + 'px)' : '';
+        } else {
+          var seg = a * N, i = Math.min(N - 1, Math.floor(seg)), f = seg - i, stops = props.map(function (pr) { var c = pr.offsetLeft + pr.offsetWidth / 2; return kind === 'q' ? c - 24 : pr.offsetLeft - 52; });
+          var x0 = i ? stops[i - 1] : -8; x = f < .55 ? x0 + (stops[i] - x0) * (f / .55) : stops[i];
+          if (kind === 'q' && f >= .55) y = -Math.round(Math.sin(Math.min(1, (f - .55) / .3) * Math.PI) * 48 / 4) * 4;
+          props.forEach(function (pr, j) { fire(j, j < i || (j === i && f >= .7)); });
+          if (a <= 0) props.forEach(function (pr, j) { fire(j, false); });
+        }
+        me.style.transform = 'translate(' + Math.round(x / 4) * 4 + 'px,' + y + 'px)';
+        me.classList.toggle('is-walk', a > 0 && a < 1);
+        var lastC = -1; Object.keys(on).forEach(function (k) { if (on[k]) lastC = Math.max(lastC, kind === 'run' ? +props[k].getAttribute('data-c') : +k); }); if (lastC < 0) cur(0);
+      }
+      function size() { root.style.height = (stick.offsetHeight + innerHeight * 1.3) + 'px'; }
+      size(); root.__size = size;
+      SCROLLERS.push({ box: root, stick: stick, prog: prog });
+    });
+  }
+  function renderSkDrafts() {
+    var box = document.getElementById('skdrafts'); if (!box) return;
+    box.innerHTML = skdDrafts(); wireSkd(box); scrollTick();
+  }
   function renderIaDrafts() {
     var box = document.getElementById('iadrafts'); if (!box) return;
     if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();
@@ -2305,10 +2424,10 @@
     var st = document.getElementById('i18n-style') || document.head.appendChild(Object.assign(document.createElement('style'), { id: 'i18n-style' }));
     st.textContent = L === 'en' ? '.i18n-ko{display:none}' : '.i18n-en{display:none}';
   }
-  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); } }
+  function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); renderSkDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); } }, 150); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else { fit(); renderConsoles(); [].forEach.call(document.querySelectorAll('[data-skd]'), function (r) { if (r.__size) r.__size(); }); } }, 150); });
   if (document.querySelector('[data-lang]')) document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   if (document.querySelector('[data-dark]')) document.querySelector('[data-dark]').addEventListener('click', function () {
     var d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
