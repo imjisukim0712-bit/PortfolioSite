@@ -1176,7 +1176,6 @@
   }
   function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 1000px 한 기둥에 점수판 · 제목 판(벽돌 테 + 크림 판: 큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) — 그 판 왼쪽 아래 땅 위에 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
-    var hud = stats.map(function (s) { return '<p><span>' + esc(t(s.label)) + '</span><b class="ps">' + esc(s.num) + '<small>' + esc(t(s.unit)) + '</small></b></p>'; }).join('');
     /* 사진이 판의 주인공("사진이 너무 작으면 안 돼") · 글은 크림 판 위 남색("가독성 · 시인성") */
     var menu = [['#pf-career', T('이력 보기', 'Career')], ['#pf-proj', T('프로젝트 보기', 'Projects')]];
     if (SITE && m.resumeUrl) menu.push([m.resumeUrl, T('이력서 PDF', 'Résumé PDF'), 1]);
@@ -1185,7 +1184,7 @@
     if (m.email) contact.push([T('이메일', 'Email'), '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>']);
     if (m.github) contact.push(['GitHub', '<a href="' + esc(m.github) + '" target="_blank" rel="noopener">' + esc(m.github.replace(/^https?:\/\/(www\.)?github\.com\//, '')) + '</a>']);
     return '<section class="pf-hero" id="pf-hero" data-pf-sec="1-1" data-pf-nm="' + T('나', 'Me') + '">' + pfSky() + '<i class="pf-s s-cloud pf-hero__cloud" style="left:calc(50% - 640px);top:20px"></i><i class="pf-s s-cloud pf-hero__cloud" style="right:calc(50% - 640px);top:28px"></i>' +
-      '<div class="pf-in"><div class="pf-ts"><div class="pf-hud">' + hud + '</div>' +
+      '<div class="pf-in"><div class="pf-ts">' +
       '<div class="pf-plaque"><i class="pf-rv" aria-hidden="true"></i><div class="pf-plaque__in">' +
       (ph && ph.photo ? '<figure class="pf-photo"><img src="' + esc(IMG(ph.photo)) + '" alt="' + esc(t(ph.photoAlt) || NAME) + '"></figure>' : '') +
       '<div class="pf-plaque__txt"><div class="pf-id"><p class="pf-role">' + esc(t(m.role)) + '<span class="ps">PLAYER 1</span></p><h1 class="pf-name">' + esc(NAME) + '</h1><p class="pf-line">' + pfTitleHtml().replace('<br>', ' ') + '</p></div>' +
@@ -1196,9 +1195,18 @@
       '<i class="pf-s s-bush" style="left:38%"></i><i class="pf-s s-hill pf-hide-s" style="right:20%"></i><i class="pf-s s-bush" style="right:3%"></i><i class="pf-ground"></i></section>';
   }
   function pfWorld(code, h, p, left) { return '<header class="pf-wc' + (left ? ' pf-wc--l' : '') + '"><p class="ps pf-wc__w">WORLD ' + code + '</p><h2>' + h + '</h2>' + (p ? '<p class="pf-wc__s">' + p + '</p>' : '') + '</header>'; }
+  /* 핵심 성과 — 사용자: "이게 내 핵심 성과인데 잘 안 보이고 너무 구석진 곳에 있는 느낌 · 이력 최상단에 잘 보이게 포장해서".
+     첫 화면 점수판(하늘 위 작은 글자)을 빼고 이력 맨 위에 벽돌 테 + 크림 판 한 장: HIGH SCORE 이름표 · 숫자 넷(큰 도트 숫자가 화면에 들어오면 0 → 값) · 숫자마다 근거 한 줄(resume.stats[].note) */
+  function pfFeats() {
+    if (!stats.length) return '';
+    return '<div class="pf-feats" data-pf-count data-pf-rv><i class="pf-rv" aria-hidden="true"></i><div class="pf-feats__in"><p class="pf-feats__h"><span class="ps">HIGH SCORE</span><b>' + T('핵심 성과', 'Key results') + '</b></p><ul class="pf-feats__list">' +
+      stats.map(function (st) {
+        return '<li class="pf-feat"><span class="pf-feat__l">' + esc(t(st.label)) + '</span><b class="ps pf-feat__n"><span data-l-count="' + esc(st.num) + '">' + esc(st.num) + '</span><small>' + esc(t(st.unit)) + '</small></b>' + (t(st.note) ? '<span class="pf-feat__s">' + esc(t(st.note)) + '</span>' : '') + '</li>';
+      }).join('') + '</ul></div></div>';
+  }
   function pfCareer() {
     return '<section class="pf-ug pf-career" id="pf-career" data-pf-sec="1-2" data-pf-nm="' + T('이력', 'Career') + '"><i class="pf-fade" aria-hidden="true"></i><div class="pf-in">' +
-      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + draftL3({ skipStart: true, pipe: true, thumb: true, group: true }) +
+      pfWorld('1-2', T('이력', 'Career'), T('프로젝트 · 대외활동, 최근 것부터 · 관을 나온 고스트가 모래 길을 따라 내려갑니다', 'Projects and activities, newest first · out of the pipe, the ghost follows the sand road down')) + pfFeats() + draftL3({ skipStart: true, pipe: true, thumb: true, group: true }) +
       '<div class="pf-col">' + pfMore('#/resume', T('이력서 전체 보기', 'See the full résumé')) + '</div></div></section>';
   }
   /* 1-3 보유 기술 — 이력과 프로젝트 사이(사용자: "보유기술 이력과 프로젝트 카드 사이에 추가하자"). 인벤토리 창 한 장: 분류마다 물음표 블록 · 이름 ×도구 수 · 한 줄 · 실제 로고(판은 흰색) */

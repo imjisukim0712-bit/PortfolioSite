@@ -96,10 +96,15 @@ window.PORTFOLIO_CONTENT = {
     },
 
     stats: [
-      { num: "300K", unit: { ko: "+",  en: "+" },      label: { ko: "출시작 누적 다운로드",   en: "Total downloads" } },
-      { num: "7",    unit: { ko: "종", en: "titles" }, label: { ko: "스토어 · 스팀 출시작",   en: "Titles released" } },
-      { num: "60K",  unit: { ko: "+",  en: "+" },      label: { ko: "운영 참여 커뮤니티 회원", en: "Community members" } },
-      { num: "10",   unit: { ko: "년", en: "yrs" },    label: { ko: "게임을 만들어 온 기간",   en: "Making games since 2016" } }
+      // note: 홈 이력 맨 위 '핵심 성과' 판에서 숫자 밑에 붙는 근거 한 줄
+      { num: "300K", unit: { ko: "+",  en: "+" },      label: { ko: "출시작 누적 다운로드",   en: "Total downloads" },
+        note: { ko: "1인 개발 5종 200K + 리그 오브 디펜스 100K", en: "5 solo titles 200K + League of Defense 100K" } },
+      { num: "7",    unit: { ko: "종", en: "titles" }, label: { ko: "스토어 · 스팀 출시작",   en: "Titles released" },
+        note: { ko: "플레이스토어 6종 · 스팀 1종(컴스톡)", en: "6 on Google Play · 1 on Steam (Comstock)" } },
+      { num: "60K",  unit: { ko: "+",  en: "+" },      label: { ko: "운영 참여 커뮤니티 회원", en: "Community members" },
+        note: { ko: "인디게임 개발 카페 KGMC 스탭 · 2019년부터", en: "Staff at the KGMC indie dev community since 2019" } },
+      { num: "10",   unit: { ko: "년", en: "yrs" },    label: { ko: "게임을 만들어 온 기간",   en: "Making games since 2016" },
+        note: { ko: "2016년 첫 출시부터 지금까지", en: "From my first release in 2016 to now" } }
     ],
 
     skills: {
