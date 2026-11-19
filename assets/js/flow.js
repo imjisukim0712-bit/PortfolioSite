@@ -1200,9 +1200,27 @@
     var nav = PF_PAGES.map(function (n) {
       return '<a href="#/' + n[0] + '"' + (pg === n[0] || (pg === 'detail' && n[0] === 'projects') ? ' aria-current="page"' : '') + '>' + esc(pfNm(n[0])) + '</a>'; }).join('');
     return '<header class="pf-top"><div class="pf-top__in"><a class="pf-logo" href="#/"><i aria-hidden="true"></i><b>' + esc(NAME) + '</b><small>' + esc(t(C.meta && C.meta.role)) + '</small></a>' +
-      '<nav class="pf-nav" id="pf-nav"><a href="#/"' + (pg === 'home' ? ' aria-current="page"' : '') + '>' + esc(pfNm('home')) + '</a>' + nav + (SITE && !LIVE ? '<a class="pf-nav__drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world></b><span data-pf-wname></span></p>' +
+      '<nav class="pf-nav" id="pf-nav"><i class="pf-nav__me" aria-hidden="true"></i><a href="#/"' + (pg === 'home' ? ' aria-current="page"' : '') + '>' + esc(pfNm('home')) + '</a>' + nav + (SITE && !LIVE ? '<a class="pf-nav__drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</nav><span class="pf-sp"></span><p class="pf-world"><b class="ps" data-pf-world></b><span data-pf-wname></span></p>' +
       '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' +
-      '<button type="button" class="pf-tbtn pf-mbtn" data-pf-mbtn aria-expanded="false" aria-controls="pf-nav">MENU</button>' + (SITE && !LIVE ? '<a class="pf-tbtn pf-tbtn--drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
+      (SITE && !LIVE ? '<a class="pf-tbtn pf-tbtn--drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
+  }
+  /* 머리 띠 메뉴 = 유령 커서(사용자: "사이트 윗쪽에 유령이랑 함께 메뉴 표시해 주자") — 지금 페이지 이름 왼쪽에 유령이 서 있고,
+     올리거나 초점이 가면 그 이름 옆으로 미끄러졌다가 떠나면 지금 페이지로 돌아옴. 좁은 화면도 MENU 단추 없이 늘 보임(760px 이하는 띠 아래 둘째 줄) */
+  function pfNavMe(pf) {
+    var nav = pf.querySelector('.pf-nav'), me = nav && nav.querySelector('.pf-nav__me'); if (!me) return;
+    function at(a) {
+      if (!a) { me.style.opacity = '0'; return; }
+      me.style.opacity = '';
+      me.style.transform = 'translate(' + (a.offsetLeft) + 'px,' + Math.round(a.offsetTop + (a.offsetHeight - me.offsetHeight) / 2) + 'px)';
+    }
+    function home() { at(nav.querySelector('a[aria-current="page"]')); }
+    nav.addEventListener('mouseover', function (e) { var a = e.target.closest('a'); if (a) at(a); });
+    nav.addEventListener('focusin', function (e) { var a = e.target.closest('a'); if (a) at(a); });
+    nav.addEventListener('mouseleave', home);
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) home(); });
+    me.classList.add('is-still'); home(); requestAnimationFrame(function () { me.classList.remove('is-still'); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(home);
+    pf.__nav = home;
   }
   function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 1000px 한 기둥에 점수판 · 제목 판(벽돌 테 + 크림 판: 큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) — 그 판 왼쪽 아래 땅 위에 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
@@ -1245,20 +1263,22 @@
       return '<li class="pf-it" style="--k:' + j + '"><span class="pf-it__box"><img src="' + esc(IMG(toolSrc(k))) + '" alt="" width="34" height="34"></span><span class="pf-it__n">' + esc((TOOLS[k] || [k])[0]) + '</span></li>';
     }).join('') + '</ul>';
   }
-  function pfSkills() {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
+  function pfSkills(peek) {                         /* 아이템 창 — 한 분류 = 한 칸(이름 · 어떻게 썼는지 resume.skills.cards[].body · 로고 줄). 홈 · 이력서 같은 창
                                                    (사용자: "저걸 어떻게 써봤는지는 나와야 해" · "레이아웃이 개판" — 표 대신 같은 높이 칸막이, 위 줄 셋 · 남는 칸은 넓게) */
     var cards = (C.resume && C.resume.skills && C.resume.skills.cards) || [], n = 0, N = cards.length, cols = N % 3 && N % 2 === 0 ? 2 : 3, rem = cols === 3 ? N % 3 : 0;   /* 넷 · 둘이면 두 칸씩, 아니면 세 칸씩(남는 칸은 넓게) */
     cards.forEach(function (c) { n += (c.tools || []).length; });
-    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p><div class="pf-sk">' + cards.map(function (c, i) {
+    return '<div class="pf-win"><p class="pf-win__h"><b class="ps">ITEMS</b><span>' + T('분류 ' + N + ' · 도구 ' + n + '개', N + ' kinds · ' + n + ' tools') + '</span></p><div class="pf-sk' + (peek ? ' skg-sk' : '') + '">' + cards.map(function (c, i) {
       var w = cols === 2 ? ' is-w3' : rem && i >= N - rem ? (rem === 2 ? ' is-w3' : ' is-w6') : '';
+      /* 홈 1-3 = 시안 G-다 엿보기: 로고 · 글은 처음부터 다 보이고, 지금 읽는 칸의 오른쪽 위 모서리 뒤에서 유령이 고개를 내밂(pfPeekTick) */
+      if (peek) return '<section class="pf-sk__c skg-c is-in' + (N % 2 && i === N - 1 ? ' is-last' : '') + '"><span class="skg-peek" aria-hidden="true"><b class="ps">!</b><i></i></span><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
       return '<section class="pf-sk__c' + w + '" data-pf-rv><h3>' + esc(t(c.title)) + '</h3><p>' + esc(t(c.body)) + '</p>' + pfIts(c.tools || []) + '</section>';
     }).join('') + '</div></div>';
   }
   function pfSkillSec() {
     var sk = (C.resume && C.resume.skills) || {};
     return '<section class="pf-ug pf-skill" id="pf-skill" data-pf-sec="1-3" data-pf-nm="' + T('보유 기술', 'Skills') + '"><div class="pf-in">' + pfWorld('1-3', T('보유 기술', 'Skills'), esc(t(sk.lead)), 1) +
-      /* 이력과 같은 모래 길이 이어짐(같은 x · 같은 고스트 문법) — 창은 길 오른쪽(이력 카드와 같은 왼쪽 선) */
-      '<section class="sw swl pf-skl" data-pf-skl><ol class="swl__list"><li class="swl__rail" aria-hidden="true"><i class="swl__road"></i><i class="swl-me"></i></li><li class="pfc-wrap">' + pfSkills() + '</li></ol></section></div></section>';
+      /* 사용자가 고른 시안 G-다 엿보기 — 길 · 날아오기 없이 다 보여 주고, 유령은 지금 칸 뒤에서 고개만 내밂 */
+      '<div class="skg skg--peek pf-skp" data-pf-skp>' + pfSkills(1) + '</div></div></section>';
   }
   function pfCartIn(p) {                       /* 작은 카트리지 · 디스켓의 속(시안 라-5 의 .cv 규칙 그대로) */
     var c = pfCC(p), g = pfGrade(p), grade = '<em class="ps" data-g="' + g + '">' + g + '</em>', title = '<b class="cv__t">' + esc(t(p.title)) + '</b>', ic = '<i class="cv__ic"></i>', no = '<small class="ps cv__no">' + c.no + '</small>';
@@ -1455,25 +1475,15 @@
   }
   function pfRvTick() {                         /* 화면에 들어온 창 · 줄 · 카트리지는 한 번 올라옴(인벤토리 줄은 블록이 튀고 도구가 나옴) · 숫자는 0 → 값 */
     var vh = innerHeight;
-    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.closest('[data-pf-skl]')) return; if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
+    [].forEach.call(document.querySelectorAll('.pf [data-pf-rv]:not(.is-in)'), function (el) { if (el.getBoundingClientRect().top < vh * (el.classList.contains('pf-sk__c') ? .85 : .92)) el.classList.add('is-in'); });
     [].forEach.call(document.querySelectorAll('.pf [data-pf-count]'), function (el) { lCount(el, vh); });
   }
-  /* 1-3 보유 기술의 고스트(사용자: "보유기술 내려갈 때도 유령이 뭔가 했으면" → "너무 랜덤하게 다님") — 칸 사이를 뛰어다니지 않고,
-     이력과 같은 x 의 모래 길을 따라 곧게 내려감(화면 45% 줄에 붙음). 고스트가 칸 줄의 윗변에 닿는 순간 반짝 · 그 줄의 칸이 블록처럼 한 번 튀며 로고가 떨어져 채워짐.
-     이 길에 들어서면 이력 길의 고스트는 숨김(1P 가 둘로 보이지 않게). 홈에서만 */
-  function pfSkTick() {
-    var root = document.querySelector('.pf [data-pf-skl]'); if (!root || !root.offsetParent) return;
-    var rail = root.querySelector('.swl__rail'), road = root.querySelector('.swl__road'), me = root.querySelector('.swl-me'), vh = innerHeight, rr = rail.getBoundingClientRect();
-    var gy = Math.max(0, Math.min(rr.height - 56, vh * .45 - rr.top)), act = rr.top < vh * .45 && rr.bottom > 0, line = vh * .45 + 28;
-    road.style.height = (act ? Math.round((gy + 28) / 4) * 4 : 0) + 'px';
-    me.classList.toggle('is-act', act);
-    me.style.transform = act && Math.floor(gy / 12) % 2 && gy < rr.height - 56 ? 'translateY(-4px)' : '';
-    var cm = document.querySelector('.pf-career .swl-me'); if (cm) cm.classList.toggle('is-off', act);
-    [].forEach.call(root.querySelectorAll('.pf-sk__c'), function (c) {
-      var reached = c.getBoundingClientRect().top < line;
-      if (reached && !c.__hit) { c.__hit = 1; c.classList.add('is-in'); if (!RM) [me, c].forEach(function (x) { x.classList.remove('is-hit'); void x.offsetWidth; x.classList.add('is-hit'); }); }
-      else if (!reached) c.__hit = 0;
-    });
+  /* 1-3 보유 기술 = 시안 G-다 엿보기 — 읽는 줄(화면 45%)을 지나는 칸이 지금 칸(is-sel), 그 칸 모서리 뒤에서 유령이 고개를 내밂. 홈에서만 */
+  function pfPeekTick() {
+    var root = document.querySelector('.pf [data-pf-skp]'); if (!root || !root.offsetParent) return;
+    var cells = [].slice.call(root.querySelectorAll('.skg-c')), s = Math.max(0, skgPick(cells));
+    if (root.__s === s) return; root.__s = s;
+    cells.forEach(function (c, i) { c.classList.toggle('is-sel', i === s); });
   }
   /* ════ 하위 페이지 — 같은 테마 ════
      사용자: "다른 페이지들도 비슷한 테마로 맞춰야할듯 자세하게 보러가는 페이지들".
@@ -1784,9 +1794,8 @@
     SCROLLERS = []; SCRUBS = []; LTICKS = []; PF = null; PFS = { cur: -1, ph: '', busy: 0 }; PFA++;
     var pf = root.querySelector('[data-pf]');
     pf.querySelector('[data-pf-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} var y = scrollY; render(); window.scrollTo(0, y); });
-    var top = pf.querySelector('.pf-top'), mb = pf.querySelector('[data-pf-mbtn]');
-    mb.addEventListener('click', function () { var o = !top.classList.contains('is-open'); top.classList.toggle('is-open', o); mb.setAttribute('aria-expanded', String(o)); });
-    LTICKS.push(pfWorldTick, pfRvTick, pfDiveTick, pfSkTick);
+    pfNavMe(pf);
+    LTICKS.push(pfWorldTick, pfRvTick, pfDiveTick, pfPeekTick);
     if (r.pg === 'play') LTICKS.push(pfSteamTick);
     var menu = pf.querySelector('[data-pf-menu]');
     if (menu) {
@@ -2265,6 +2274,16 @@
       win('peek'));
     return h;
   }
+  /* 지금 칸: 칸마다 '켜지는 줄' — 같은 줄의 칸이 k 개면 그 줄 높이를 k 로 나눠 왼쪽부터(읽는 순서 그대로). 시안 G · 홈 1-3 이 함께 씀 */
+  function skgPick(cells) {
+    var L = innerHeight * .45, sel = -1, rows = {};
+    cells.forEach(function (c) { (rows[c.offsetTop] = rows[c.offsetTop] || []).push(c); });
+    cells.forEach(function (c, i) {
+      var r = c.getBoundingClientRect(), row = rows[c.offsetTop], j = row.indexOf(c);
+      if (r.top + r.height * j / row.length < L) sel = i;
+    });
+    return sel;
+  }
   function wireSkg(box) {
     [].forEach.call(box.querySelectorAll('[data-skg]'), function (root) {
       var kind = root.getAttribute('data-skg'), cells = [].slice.call(root.querySelectorAll('.skg-c')), me = root.querySelector('.skg-me'), say = root.querySelector('[data-skg-say]'), sayMe = root.querySelector('.skg-say__me');
@@ -2277,16 +2296,7 @@
         var c = cards[i], k = (c.tools || []).length;
         return '<b class="ps">' + (i + 1) + '/' + N + '</b> ' + T('〈' + esc(t(c.title)) + '〉 — 도구 ' + k + '개, 어떻게 썼는지 읽어 보세요', esc(t(c.title)) + ' — ' + k + ' tools, and how I used them');
       }
-      /* 지금 칸: 칸마다 '켜지는 줄' — 같은 줄의 칸이 k 개면 그 줄 높이를 k 로 나눠 왼쪽부터 */
-      function pick() {
-        var L = innerHeight * .45, sel = -1, rows = {};
-        cells.forEach(function (c) { (rows[c.offsetTop] = rows[c.offsetTop] || []).push(c); });
-        cells.forEach(function (c, i) {
-          var r = c.getBoundingClientRect(), row = rows[c.offsetTop], j = row.indexOf(c);
-          if (r.top + r.height * j / row.length < L) sel = i;
-        });
-        return sel;
-      }
+      function pick() { return skgPick(cells); }
       /* 커서는 끊지 않고 미끄러짐(살짝 늦게 따라감) */
       var tg = { x: 0, y: 0 }, cu = null, raf = 0;
       function paint() { me.style.transform = 'translate3d(' + cu.x.toFixed(1) + 'px,' + cu.y.toFixed(1) + 'px,0)'; }
@@ -2385,7 +2395,7 @@
   function render() { NAME = nameNow(); applyLang(); if (PLAY) renderPlay(); else if (ONLY === 'skd') renderSkDrafts(); else { renderDrafts(); renderConsoles(); renderCartDrafts(); renderIaDrafts(); renderSkDrafts(); } }
   render();
   var older = document.getElementById('older'); if (older) older.addEventListener('toggle', fit);
-  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); } else if (ONLY) [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); else { fit(); renderConsoles(); [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); } }, 150); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (PLAY) { pfLayout(); scrollTick(); var pf = document.querySelector('[data-pf]'); if (pf && pf.__nav) pf.__nav(); } else if (ONLY) [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); else { fit(); renderConsoles(); [].forEach.call(document.querySelectorAll('[data-skg]'), function (r) { if (r.__fix) r.__fix(); }); } }, 150); });
   if (document.querySelector('[data-lang]')) document.querySelector('[data-lang]').addEventListener('click', function () { L = L === 'en' ? 'ko' : 'en'; try { localStorage.setItem('portfolio:lang', L); } catch (e) {} render(); });
   if (document.querySelector('[data-dark]')) document.querySelector('[data-dark]').addEventListener('click', function () {
     var d = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
