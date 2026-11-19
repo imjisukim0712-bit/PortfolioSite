@@ -2147,6 +2147,63 @@
     side();
   }
 
+  /* ── PART 04 이력 가로 나열 2차(S) — "다른 시안": 같은 카드를 옆으로 미는 것 말고 다른 형태 여섯.
+     S-가 레벨 코스(땅 위 관 받침에 카드가 오르내리며 늘어선 코스) · S-나 카트리지 선반(카트리지 줄 + 고른 것의 내용판) · S-다 탭 전환(무리 하나씩 한 줄) ·
+     S-라 시간 막대(두 줄 간트 — 같은 해 축 위에 프로젝트 · 대외활동이 나란히) · S-마 카드 패(부채꼴로 겹친 카드, 올리면 뽑혀 나옴) · S-바 대표 + 작은 칸(무리마다 최신 하나 크게 + 나머지 바둑판) */
+  function wSpan(n) {                            /* 기간 → [시작 달, 끝 달](해 × 12 + 달 − 1) */
+    var c = n.c && n.c(), p = n.p && n.p(), d = (c && c.role ? c.date && c.date.ko : p && p.period && p.period.ko) || '', now = new Date(), z = now.getFullYear() * 12 + now.getMonth();
+    var m = /(\d{4})(?:\.(\d{1,2}))?(?:\s*[~–-]\s*(?:(\d{4})(?:\.(\d{1,2}))?|(현재)))?/.exec(d); if (!m) return null;
+    var a = +m[1] * 12 + (m[2] ? +m[2] - 1 : 0), b = m[5] ? z : m[3] ? +m[3] * 12 + (m[4] ? +m[4] - 1 : 11) : m[2] ? a : +m[1] * 12 + 11;
+    return [a, Math.max(a, b)];
+  }
+  function s2Cart(i, k) {                         /* 카트리지 모양 한 장(셸 · 단자 · 크림 라벨 · 윗띠) — 경력 · 활동에도 씀 */
+    var it = lItem(i), n = WN[i], g = wGroup(n);
+    return '<button type="button" class="s2c is-' + g + (k ? '' : ' is-on') + '" data-sc="' + k + '"><span class="s2c__lab"><b class="ps s2c__n">' + esc(n.big ? n.big[0] : '★') + '</b><span class="s2c__t">' + it.title + '</span><span class="s2c__d">' + String(it.when || '').replace(/ · (진행 중|ongoing)$/, '') + '</span></span></button>';
+  }
+  function rowDrafts2() {
+    var G = wGroups(), h = '';
+    h += iaDraft('S-가', T('레벨 코스 — 관 받침 위에 오르내리는 카드', 'Level course — cards up and down on pipe stands'),
+      T('무리마다 옆으로 긴 코스 한 줄: 땅 블록 위에 높이가 다른 관 받침이 서 있고 그 위에 카드가 올라앉습니다(넘치면 옆으로 밀기). 고스트가 코스 첫머리에 서 있어 \'왼쪽에서 오른쪽으로 가는 길\'이 한눈에 읽힙니다.', 'One long course per group: pipe stands of different heights on the ground blocks, a card on top of each (swipe for more). The ghost at the start makes it read as a left-to-right course.'),
+      G.map(function (g) { return '<section class="rw s2v">' + rowHead(g) + '<div class="s2v-course"><i class="s2v-me" aria-hidden="true"></i>' + g.list.map(function (i, k) { return '<div class="s2v-slot" style="--h:' + [2, 5, 3, 6, 4][k % 5] + '">' + rowCard(i) + '<i class="s2v-pipe" aria-hidden="true"></i></div>'; }).join('') + '</div></section>'; }).join(''));
+    h += iaDraft('S-나', T('카트리지 선반 — 꽂힌 것만 펼쳐짐', 'Cartridge shelf — the picked one opens'),
+      T('무리마다 선반 위에 카트리지가 한 줄로 서 있고(라벨 = 큰 숫자 · 이름 · 기간), 누른 카트리지가 쑥 올라오며 아래 내용판에 그 이력이 펼쳐집니다. 홈 아래 게임기에 카트리지를 꽂는 문법과 같은 재료.', 'Each group is a row of cartridges on a shelf (label = big number, name, period); the one you press pops up and its details open in the panel below. Same material as the console\'s cartridges further down the home.'),
+      G.map(function (g) { return '<section class="rw s2s" data-ss>' + rowHead(g) + '<div class="s2s-shelf">' + g.list.map(function (i, k) { return s2Cart(i, k); }).join('') + '</div><div class="s2s-panel">' + g.list.map(function (i, k) { return rowCard(i, ' rc--big' + (k ? '' : ' is-on')); }).join('') + '</div></section>'; }).join(''));
+    h += iaDraft('S-다', T('탭 전환 — 무리 하나씩 한 줄로', 'Tabs — one group, one row at a time'),
+      T('게임 메뉴 탭(PROJECTS 5 · ACTIVITIES 4)으로 무리를 고르면 그 무리의 카드가 한 줄(넘치면 둘째 줄)로 깔립니다. 화면에 늘 한 줄만 있어 이력 절이 가장 짧아집니다.', 'Game-menu tabs (PROJECTS 5 · ACTIVITIES 4) choose a group, and its cards lay out in one row (wrapping if needed). Only one row is ever on screen, so the career section is shortest.'),
+      '<section class="rw s2t" data-st><div class="s2t-tabs" role="tablist">' + G.map(function (g, k) { return '<button type="button" role="tab" class="' + (k ? '' : 'is-on') + '" data-st="' + k + '"><span class="ps">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</span>' + esc(t(g.title)) + '<small>' + g.list.length + '</small></button>'; }).join('') + '</div>' +
+        G.map(function (g, k) { return '<div class="s2t-row' + (k ? '' : ' is-on') + '">' + g.list.map(function (i) { return rowCard(i, ' rc--s'); }).join('') + '</div>'; }).join('') + '</section>');
+    var all = [], y0 = 2016 * 12, now = new Date(), y1 = (now.getFullYear() + 1) * 12, W = y1 - y0, yrs = '';
+    for (var y = 2016; y <= now.getFullYear(); y++) yrs += '<span style="left:' + ((y * 12 - y0) / W * 100).toFixed(2) + '%">' + (y % 100 ? "'" + String(y).slice(2) : y) + '</span>';
+    h += iaDraft('S-라', T('시간 막대 — 두 줄을 같은 해 위에 나란히', 'Time bars — both rows on the same years'),
+      T('가로가 2016 → 지금인 한 장의 표. 위 줄 = 프로젝트, 아래 줄 = 대외활동이 같은 해 눈금을 나눠 써서, 어느 해에 무엇을 겹쳐 했는지(스탭 활동이 7년째 이어지는 동안 출시 · 팀 프로젝트가 이어짐)가 한 번에 보입니다.', 'One chart from 2016 to now: the top lane is projects and the bottom lane activities on the same year scale, so what overlapped is visible at once (the staff role running for years under the launches and team projects).'),
+      '<div class="s2g"><div class="s2g-axis">' + yrs + '</div>' + G.map(function (g) {
+        return '<div class="s2g-lane"><p class="ps s2g-lane__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' + g.list.slice().reverse().map(function (i) {
+          var sp = wSpan(WN[i]); if (!sp) return ''; var it = lItem(i), l = (sp[0] - y0) / W * 100, w = Math.max(1.2, (sp[1] - sp[0] + 1) / W * 100);
+          return '<div class="s2g-row' + (l + w > 70 ? ' is-r' : '') + '" style="--l:' + l.toFixed(2) + '%;--w:' + w.toFixed(2) + '%" tabindex="0"><span class="s2g-bar is-' + g.g + '"></span><span class="s2g-bar__t">' + it.title + (WN[i].big ? ' <b class="ps">' + esc(WN[i].big[0]) + '</b>' : '') + '</span></div>';
+        }).join('') + '</div>';
+      }).join('') + '</div>');
+    h += iaDraft('S-마', T('카드 패 — 부채꼴로 쥔 카드', 'A hand of cards — fanned out'),
+      T('무리마다 카드가 손에 쥔 패처럼 부채꼴로 겹쳐 있고, 마우스를 올리거나 누른 카드가 위로 뽑혀 나와 똑바로 섭니다. 겹쳐 있어 가로 폭을 덜 먹고, 카드 게임 같은 재미가 있습니다.', 'Each group is held like a hand of cards; hovering or tapping one pulls it up and straightens it. The overlap saves width and feels like a card game.'),
+      G.map(function (g) { var n = g.list.length; return '<section class="rw s2f">' + rowHead(g) + '<div class="s2f-hand">' + g.list.map(function (i, k) { return '<div class="s2f-card" style="--r:' + ((k - (n - 1) / 2) * 5).toFixed(1) + 'deg;--y:' + (Math.abs(k - (n - 1) / 2) * 10).toFixed(0) + 'px;--z:' + (k + 1) + '" tabindex="0">' + rowCard(i) + '</div>'; }).join('') + '</div></section>'; }).join(''));
+    h += iaDraft('S-바', T('대표 + 작은 칸 — 무리마다 최신 하나 크게', 'Lead + small tiles — the newest one big'),
+      T('무리마다 가장 최근 것 하나를 크게(왼쪽 두 칸), 나머지는 오른쪽에 작은 칸으로 바둑판처럼 붙입니다. 한 줄 안에 "지금 하는 것"과 "그동안 한 것"이 같이 보입니다.', 'In each group the newest item is large (two cells on the left) and the rest sit as small tiles on the right. One row shows "what I am on now" next to "what I have done".'),
+      G.map(function (g) { return '<section class="rw s2b">' + rowHead(g) + '<div class="s2b-grid">' + g.list.map(function (i, k) { return rowCard(i, k ? ' rc--s' : ' rc--lead'); }).join('') + '</div></section>'; }).join(''));
+    return h;
+  }
+  function wireRowDrafts2(box) {
+    [].forEach.call(box.querySelectorAll('[data-ss]'), function (sec) {
+      sec.addEventListener('click', function (e) { var b = e.target.closest('[data-sc]'); if (!b) return; var k = +b.getAttribute('data-sc');
+        [].forEach.call(sec.querySelectorAll('.s2c'), function (x, j) { x.classList.toggle('is-on', j === k); });
+        [].forEach.call(sec.querySelectorAll('.s2s-panel .rc'), function (x, j) { x.classList.toggle('is-on', j === k); }); });
+    });
+    [].forEach.call(box.querySelectorAll('[data-st]'), function (sec) {
+      if (sec.tagName !== 'SECTION') return;
+      sec.addEventListener('click', function (e) { var b = e.target.closest('button[data-st]'); if (!b) return; var k = +b.getAttribute('data-st');
+        [].forEach.call(sec.querySelectorAll('button[data-st]'), function (x, j) { x.classList.toggle('is-on', j === k); x.setAttribute('aria-selected', String(j === k)); });
+        [].forEach.call(sec.querySelectorAll('.s2t-row'), function (x, j) { x.classList.toggle('is-on', j === k); }); });
+    });
+  }
+
   function renderIaDrafts() {
     var box = document.getElementById('iadrafts'); if (!box) return;
     if (!document.documentElement.style.getPropertyValue('--sw-map')) draftE3();
@@ -2204,8 +2261,8 @@
         return '<li class="pf-win iad-tile is-' + g + '"><span class="ps">' + (g === 'project' ? 'PROJECT' : 'ACTIVITY') + '</span><b>' + it.title + '</b><span class="iad-row__d">' + String(it.when).replace(/ · (진행 중|ongoing)$/, '') + '</span></li>';
       }).join('') + '</ul>');
     var hC = h, open = box.querySelector('details.older') && box.querySelector('details.older').open;
-    box.innerHTML = rowDrafts() + hOld + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — C-가 두 무리 나란히 · C-나 강점 세 갈래 · C-다 대표 셋 + 타일', 'Earlier — C-가 two groups side by side · C-나 three strengths · C-다 top three + tiles') + '</summary><div>' + hC + '</div></details>';
-    wireRowDrafts(box);
+    box.innerHTML = rowDrafts2() + hOld + '<details class="older"' + (open ? ' open' : '') + '><summary>' + T('지난 안 — R 가로 나열 다섯 · C 이력 묶음 셋', 'Earlier — five R horizontal rows · three C groupings') + '</summary><div>' + rowDrafts() + hC + '</div></details>';
+    wireRowDrafts(box); wireRowDrafts2(box);
   }
 
   function applyLang() {

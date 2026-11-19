@@ -1957,3 +1957,74 @@
   .rw-fold { flex-direction: column; min-height: 0; } .pf .rf { flex: none; } .rf__spine { flex-direction: row; flex: none; } .rf__t, .rf__d { writing-mode: horizontal-tb; } .rf__d { margin: 0 0 0 auto; } .pf .rf { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { .pf .rc--big, .pf .rf { transition: none; } }
+
+/* ══ PART 04 이력 가로 나열 2차(S — flow.js rowDrafts2) ══ */
+.rc--s .rc__s { -webkit-line-clamp: 2; }
+/* S-가 레벨 코스 */
+.s2v-course { position: relative; display: flex; align-items: flex-end; gap: 28px; overflow-x: auto; padding: 24px 24px 0 88px; border-bottom: 64px solid transparent;
+  background: linear-gradient(#000, #000) 0 calc(100% - 0px) / 100% 4px no-repeat, repeating-linear-gradient(90deg, #c84c0c 0 60px, #000 60px 64px) 0 100% / 100% 64px no-repeat; background-origin: border-box; scrollbar-width: thin; }
+.s2v-me { position: absolute; left: 24px; bottom: -4px; width: 48px; height: 56px; background: var(--d-ghost) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; }
+.s2v-slot { flex: none; display: grid; justify-items: center; width: 256px; }
+.s2v-pipe { display: block; width: 96px; height: calc(var(--h) * 16px); background: linear-gradient(90deg, #000 0 4px, #8ad84a 4px 12px, #2e8a2e 12px 84px, #1a5a1a 84px 92px, #000 92px); box-shadow: 0 -4px 0 #000; }
+.s2v-slot .rc { width: 100%; }
+/* S-나 카트리지 선반 */
+.s2s-shelf { display: flex; align-items: flex-end; gap: 14px; overflow-x: auto; padding: 28px 16px 0; border-bottom: 20px solid #7c2c08; box-shadow: 0 4px 0 #000; background: linear-gradient(transparent calc(100% - 4px), #fc9838 0); }
+.s2c { position: relative; flex: none; display: grid; width: 132px; height: 176px; padding: 18px 10px 10px; text-align: left; font: inherit; color: inherit; cursor: pointer; background: #30323c; border: 4px solid #000; box-shadow: inset 4px 4px 0 #4a4c58, inset -4px -4px 0 #24262e; transition: translate .2s steps(3); }
+.s2c::before { content: ''; position: absolute; left: 24px; right: 24px; top: -12px; height: 8px; background: repeating-linear-gradient(90deg, #d4a23e 0 4px, transparent 4px 8px); }
+.s2c__lab { display: grid; align-content: start; gap: 6px; padding: 12px 8px 8px; background: #fff6dd; box-shadow: inset 0 6px 0 var(--acc); overflow: hidden; }
+.s2c.is-activity .s2c__lab { box-shadow: inset 0 6px 0 #17345f; }
+.s2c__n { font-size: 12px; color: var(--acc); }
+.s2c__t { font: 700 13px/1.3 'Pretendard Variable', Pretendard, sans-serif; color: var(--navy); }
+.s2c__d { font-size: 11px; font-weight: 700; color: var(--ink-mu); }
+.s2c:hover { translate: 0 -8px; }
+.s2c.is-on { translate: 0 -24px; }
+.s2s-panel { display: grid; margin-top: 18px; }
+/* S-다 탭 */
+.s2t-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 4px solid #fce0a8; }
+.s2t-tabs button { display: flex; align-items: baseline; gap: 10px; padding: 12px 18px 10px; font: 400 22px/1.2 'Galmuri14', 'Galmuri11', monospace; color: #8ea0c8; background: #17345f; border: 4px solid #3a5180; border-bottom: 0; cursor: pointer; }
+.s2t-tabs button .ps { font-size: 8px; }
+.s2t-tabs button small { font: 700 13px/1 'Pretendard Variable', Pretendard, sans-serif; }
+.s2t-tabs button.is-on { color: #121b33; background: #fce0a8; border-color: #fce0a8; }
+.s2t-row { display: none; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 14px; padding-top: 18px; }
+.s2t-row.is-on { display: grid; }
+/* S-라 시간 막대 */
+.s2g { position: relative; display: grid; gap: 18px; padding: 36px 16px 16px 120px; background: #fff6dd; border: 4px solid #171c28; box-shadow: inset 0 0 0 4px #fff6dd, inset 0 0 0 8px #e2d1a8; color: var(--ink); }
+.s2g-axis { position: absolute; left: 120px; right: 16px; top: 12px; bottom: 12px; pointer-events: none; }
+.s2g-axis span { position: absolute; top: 0; bottom: 0; padding-left: 4px; font: 400 8px/1 'Press Start 2P', monospace; color: var(--ink-mu); border-left: 1px dashed #d8c69c; }
+.s2g-lane { position: relative; display: grid; gap: 6px; padding-top: 18px; }
+.s2g-lane + .s2g-lane { border-top: 2px solid #e2d1a8; }
+.s2g-lane__l { position: absolute; left: -108px; top: 22px; font-size: 8px; color: var(--acc); }
+.s2g-lane:nth-of-type(3) .s2g-lane__l { color: #17345f; }
+.s2g-row { position: relative; height: 30px; outline: none; }
+.s2g-bar { position: absolute; top: 0; left: var(--l); width: var(--w); height: 26px; min-width: 8px; background: var(--acc); box-shadow: inset 0 -4px 0 rgb(0 0 0 / .25); }
+.s2g-bar.is-activity { background: #17345f; }
+.s2g-bar__t { position: absolute; left: calc(var(--l) + var(--w) + 8px); top: 4px; white-space: nowrap; font-size: 13px; font-weight: 800; color: var(--navy); }
+.s2g-bar__t b { font-size: 10px; color: var(--acc); }
+.s2g-row.is-r .s2g-bar__t { left: auto; right: calc(100% - var(--l) + 8px); }
+.s2g-row:hover .s2g-bar, .s2g-row:focus .s2g-bar { filter: brightness(1.25); }
+/* S-마 카드 패 */
+.s2f-hand { display: flex; justify-content: center; padding: 40px 0 24px; }
+.s2f-card { position: relative; z-index: var(--z); width: 248px; margin: 0 -64px; transform: translateY(var(--y)) rotate(var(--r)); transform-origin: 50% 120%; transition: transform .2s steps(4); outline: none; }
+.s2f-card:first-child { margin-left: 0; } .s2f-card:last-child { margin-right: 0; }
+.s2f-card:hover, .s2f-card:focus { z-index: 20; transform: translateY(-28px) rotate(0); }
+.s2f-card .rc { box-shadow: 8px 8px 0 rgb(0 0 0 / .35); }
+/* S-바 대표 + 작은 칸 */
+.s2b-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: auto; gap: 14px; }
+.pf .rc--lead { grid-column: span 2; grid-row: span 2; }
+.rc--lead .rc__t { font-size: 24px; }
+.rc--lead .rc__s { -webkit-line-clamp: 4; font-size: 16px; }
+.rc--lead .rc__n b { font-size: 28px; }
+.s2b-grid .rc--s .swl-c__th { display: none; }
+@media (max-width: 900px) {
+  .s2b-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .s2f-card { width: 200px; margin: 0 -80px; }
+  .s2g { padding-left: 16px; } .s2g-axis { left: 16px; } .s2g-lane__l { position: static; }
+}
+@media (max-width: 600px) {
+  .s2b-grid { grid-template-columns: minmax(0, 1fr); } .pf .rc--lead { grid-column: auto; grid-row: auto; }
+  .s2f-hand { overflow-x: auto; justify-content: flex-start; padding-left: 8px; } .s2f-card { margin: 0 -60px 0 0; flex: none; }
+  .s2v-slot { width: 220px; } .s2t-tabs button { flex: 1 1 0; min-width: 0; flex-wrap: wrap; font-size: 16px; padding: 10px 10px 8px; }
+  .s2g-row { display: grid; height: auto; gap: 2px; } .s2g-bar { position: relative; height: 18px; }
+  .s2g-row .s2g-bar__t, .s2g-row.is-r .s2g-bar__t { position: static; order: -1; font-size: 12px; white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) { .s2c, .s2f-card { transition: none; } }
