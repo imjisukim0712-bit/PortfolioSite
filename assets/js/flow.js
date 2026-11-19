@@ -996,8 +996,8 @@
          머리(이름표 · 이름 · 개수 · 한 줄 · 대표 숫자) + 한 줄짜리 항목(썸네일 | 기간 · 이름 · 한 줄 · 소속 · 큰 숫자). 고스트 길은 그 옆을 지나 맨 밑 목표 깃발까지 */
       var GB = { project: [(stats[0] && stats[0].num) || '300K', T('누적 다운로드 · 출시 ' + ((stats[1] && stats[1].num) || 7) + '종', 'downloads · ' + ((stats[1] && stats[1].num) || 7) + ' titles out')],
                  activity: [(stats[2] && stats[2].num) || '60K', T('커뮤니티 회원 · 2019년부터', 'community members · since 2019')] };
-      /* → R · S 시안 뒤 "S-가, S-바가 베스트 · 아직 정보의 나열 느낌": 무리마다 S-바 의 큰 대표 칸(고른 것 하나만 다 보여 줌) + S-가 의 레벨 코스
-         (땅 블록 위 높이가 다른 관 받침에 작은 카드 — 썸네일 · 기간 · 이름 · 큰 숫자만). 처음엔 최신 것이 대표, 코스의 카드를 누르면 그게 대표로 올라오고 고스트가 그 카드 위로 */
+      /* → R · S 시안 뒤 "S-가, S-바가 베스트 · 아직 정보의 나열 느낌": 무리마다 S-바 의 큰 대표 칸(고른 것 하나만 다 보여 줌) + 그 아래 작은 카드 줄
+         (썸네일 · 기간 · 이름 · 큰 숫자만 — 관 받침 · 땅 블록은 "왜 토관에 올려놔" · "땅에 그냥 얹지 말고" 뒤 뺐음). 처음엔 최신 것이 대표, 카드를 누르면 그게 대표로 올라오고 그 카드 위에 ▼ */
       list = '<li class="pfc-wrap">' + wGroups().map(function (g) {
         var b = GB[g.g] || ['', ''];
         return '<section class="pfc is-' + g.g + '" data-pfc data-pf-count><header class="pfc-h"><p class="ps pfc-h__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' +
