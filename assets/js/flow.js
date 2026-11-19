@@ -992,9 +992,22 @@
       function head(l, ti, n, lead, cls) {
         return '<li class="swl-g' + (cls || '') + '"><p class="ps swl-g__l">' + l + '</p><h3 class="swl-g__t">' + esc(t(ti)) + (n ? '<small>' + n + '</small>' : '') + '</h3>' + (lead ? '<p class="swl-g__s">' + esc(t(lead)) + '</p>' : '') + '</li>';
       }
-      list = wGroups().map(function (g) {
-        return head(g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES', g.title, g.list.length, g.lead) + g.list.map(function (i) { return one(WN[i], i); }).join('');
-      }).join('') + WN.map(function (n, i) {
+      /* 사용자: "이력이 과하게 나열 방식 · 그룹으로 묶어서 병렬로" → "아직 병렬적이지 않음": 두 무리를 한 줄에 나란히(.swl-par) — 무리마다 크림 창 한 장,
+         머리(이름표 · 이름 · 개수 · 한 줄 · 대표 숫자) + 한 줄짜리 항목(썸네일 | 기간 · 이름 · 한 줄 · 소속 · 큰 숫자). 고스트 길은 그 옆을 지나 맨 밑 목표 깃발까지 */
+      var GB = { project: [(stats[0] && stats[0].num) || '300K', T('누적 다운로드 · 출시 ' + ((stats[1] && stats[1].num) || 7) + '종', 'downloads · ' + ((stats[1] && stats[1].num) || 7) + ' titles out')],
+                 activity: [(stats[2] && stats[2].num) || '60K', T('커뮤니티 회원 · 2019년부터', 'community members · since 2019')] };
+      list = '<li class="swl-par">' + wGroups().map(function (g) {
+        var b = GB[g.g] || ['', ''];
+        return '<section class="pf-win swl-grp is-' + g.g + '" data-pf-count><header class="swl-grp__h"><p class="ps swl-grp__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' +
+          '<h3 class="swl-grp__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3>' + (g.lead ? '<p class="swl-grp__s">' + esc(t(g.lead)) + '</p>' : '') +
+          '<p class="swl-grp__big"><b class="ps" data-l-count="' + esc(b[0]) + '">' + esc(b[0]) + '</b><span>' + b[1] + '</span></p></header><ol class="swl-grp__list">' +
+          g.list.map(function (i) {
+            var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
+            return '<li class="swl-gi">' + lThumb(it, node) + '<div class="swl-gi__m"><p class="swl-gi__d">' + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</p><h4 class="swl-gi__t">' + it.title + '</h4>' +
+              (it.line ? '<p class="swl-gi__s">' + it.line + '</p>' : '') + '<p class="swl-gi__f">' + (it.team ? '<span>' + esc(it.team) + '</span>' : '') +
+              (n.big ? '<span class="swl-gi__n"><b class="ps" data-l-count="' + esc(n.big[0]) + '">' + esc(n.big[0]) + '</b>' + esc(t(n.big[1])) + '</span>' : '') + (it.rest || []).filter(function () { return n.k === 'house'; }).join('') + '</p></div></li>';
+          }).join('') + '</ol></section>';
+      }).join('') + '</li>' + WN.map(function (n, i) {
         if (n.k !== 'flag') return '';
         var cs = wCourse();
         return head('NEXT GOAL', GN.title || { ko: '앞으로의 목표', en: 'Where I am headed' }, '', GN.lead, ' swl-g--next') +
@@ -1478,7 +1491,12 @@
      내리기 시작하면(스크롤 24px 넘음 · 고스트가 화면 45% 줄에 닿음) 반짝 터지고 관 속으로 4px 씩 천천히 가라앉음(관이 고스트보다 위 칸이라 몸이 관에 가려짐) —
      스크롤과 따로 도는 0.56초 연출이고, 가라앉은 뒤에는 스크롤만큼 관 속을 지나 아래 입구로 나옴. 맨 위로 돌아오면 거꾸로 올라옴. gy = 관 머리 위 선 자리에서 내려온 거리 */
   function pfSink(me, gy) {
-    var S = me.__sk || (me.__sk = { s: 0, to: -1, gy: 0, id: 0 }), want = scrollY > 24 || gy > 0 ? 1 : 0;
+    var S = me.__sk || (me.__sk = { s: 0, to: -1, gy: 0, id: 0, ly: null }), y = scrollY, dir = S.ly == null ? 0 : y - S.ly, want;
+    S.ly = y;
+    /* 들어가기: 고스트가 화면 45% 줄에 닿았거나(gy > 0) 아래로 내리는 중(24px 넘음) · 나오기: 관 입구가 다시 그 줄 아래로 내려왔고 위로 올리는 중이거나 맨 위
+       ("내려갔다가 왜 안 올라와, 다시 올려도" — 예전에는 맨 위 24px 안까지 올려야만 나왔음) */
+    if (S.to === 1) want = gy > 0 || (y > 24 && dir >= 0) ? 1 : 0;
+    else want = gy > 0 || (y > 24 && (dir > 0 || S.to < 0)) ? 1 : 0;
     S.gy = gy;
     function put() { me.style.translate = '0 ' + Math.round(S.s * Math.max(0, 56 - S.gy) / 4) * 4 + 'px'; me.classList.toggle('is-idle', !S.s && !want); }
     if (want !== S.to) {
