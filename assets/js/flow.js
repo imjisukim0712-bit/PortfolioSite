@@ -1204,23 +1204,42 @@
       '<button type="button" class="pf-tbtn" data-pf-lang>' + (L === 'en' ? 'KR' : 'EN') + '</button>' +
       (SITE && !LIVE ? '<a class="pf-tbtn pf-tbtn--drafts" href="drafts.html#play-part">' + T('시안 모음', 'Drafts') + '</a>' : '') + '</div></header>';
   }
-  /* 머리 띠 메뉴 = 유령 커서(사용자: "사이트 윗쪽에 유령이랑 함께 메뉴 표시해 주자") — 지금 페이지 이름 왼쪽에 유령이 서 있고,
-     올리거나 초점이 가면 그 이름 옆으로 미끄러졌다가 떠나면 지금 페이지로 돌아옴. 좁은 화면도 MENU 단추 없이 늘 보임(760px 이하는 띠 아래 둘째 줄) */
+  /* 머리 띠 메뉴 = 유령 커서(사용자: "사이트 윗쪽에 유령이랑 함께 메뉴 표시해 주자" → "항상 동적으로 스크롤할 때 같이 움직이게").
+     유령은 스크롤에 묶여 늘 움직임: 내리는 동안 16px 마다 한 칸(4px · 작은 유령은 2px) 콩콩 걷고, 홈에서는 읽는 자리의 절을 따라 메뉴를 옮겨 감
+     (1-1 → 홈 · 1-2 이력 · 1-3 기술 → 이력서 · 1-4 → 프로젝트 — 다음 절 머리가 읽는 줄(화면 45%) 한 화면 앞에 오면 그만큼 걸어가 닿음). 유령 곁의 이름이 밝게.
+     올리거나 초점이 가면 그 이름으로 미끄러졌다가 떠나면 스크롤 자리로 돌아옴. 좁은 화면도 MENU 단추 없이 늘 보임(760px 이하는 띠 아래 둘째 줄) */
+  var PF_SPY = [['pf-hero', '#/'], ['pf-career', '#/resume'], ['pf-proj', '#/projects']];
   function pfNavMe(pf) {
     var nav = pf.querySelector('.pf-nav'), me = nav && nav.querySelector('.pf-nav__me'); if (!me) return;
-    function at(a) {
-      if (!a) { me.style.opacity = '0'; return; }
-      me.style.opacity = '';
-      me.style.transform = 'translate(' + (a.offsetLeft) + 'px,' + Math.round(a.offsetTop + (a.offsetHeight - me.offsetHeight) / 2) + 'px)';
+    var cur = nav.querySelector('a[aria-current="page"]'), spy = pf.getAttribute('data-pg') === 'home', hov = null, on = null, gt = 0;
+    nav.classList.add('is-js');
+    function pos(a) { return [a.offsetLeft, Math.round(a.offsetTop + (a.offsetHeight - me.offsetHeight) / 2)]; }
+    function spot() {                                  /* 스크롤 자리 → [x, y, 곁의 이름] */
+      if (!spy) return cur ? pos(cur).concat([cur]) : null;
+      var line = innerHeight * .45, ks = [];
+      PF_SPY.forEach(function (q) { var sc = document.getElementById(q[0]), a = nav.querySelector('a[href="' + q[1] + '"]'); if (sc && a) ks.push([sc.getBoundingClientRect().top - line, a]); });
+      if (!ks.length) return null;
+      var i = 0; while (i + 1 < ks.length && ks[i + 1][0] <= 0) i++;
+      var A = pos(ks[i][1]); if (i + 1 >= ks.length) return A.concat([ks[i][1]]);
+      var f = Math.max(0, Math.min(1, 1 - ks[i + 1][0] / innerHeight)), B = pos(ks[i + 1][1]);
+      return [Math.round(A[0] + (B[0] - A[0]) * f), Math.round(A[1] + (B[1] - A[1]) * f), f < .5 ? ks[i][1] : ks[i + 1][1]];
     }
-    function home() { at(nav.querySelector('a[aria-current="page"]')); }
-    nav.addEventListener('mouseover', function (e) { var a = e.target.closest('a'); if (a) at(a); });
-    nav.addEventListener('focusin', function (e) { var a = e.target.closest('a'); if (a) at(a); });
-    nav.addEventListener('mouseleave', home);
-    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) home(); });
-    me.classList.add('is-still'); home(); requestAnimationFrame(function () { me.classList.remove('is-still'); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(home);
-    pf.__nav = home;
+    function upd() {
+      var p = hov ? pos(hov).concat([hov]) : spot();
+      if (!p) { me.style.opacity = '0'; return; }
+      me.style.opacity = '';
+      var bob = !RM && Math.floor(scrollY / 16) % 2 ? (me.offsetWidth > 20 ? 4 : 2) : 0;
+      me.style.transform = 'translate(' + p[0] + 'px,' + (p[1] - bob) + 'px)';
+      if (on !== p[2]) { if (on) on.classList.remove('is-me'); on = p[2]; on.classList.add('is-me'); }
+    }
+    function glide() { me.classList.add('is-glide'); clearTimeout(gt); gt = setTimeout(function () { me.classList.remove('is-glide'); }, 260); }
+    nav.addEventListener('mouseover', function (e) { var a = e.target.closest('a'); if (a && a !== hov) { hov = a; glide(); upd(); } });
+    nav.addEventListener('focusin', function (e) { var a = e.target.closest('a'); if (a) { hov = a; glide(); upd(); } });
+    nav.addEventListener('mouseleave', function () { hov = null; glide(); upd(); });
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) { hov = null; glide(); upd(); } });
+    upd();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(upd);
+    LTICKS.push(upd); pf.__nav = upd;
   }
   function pfHero() {                          /* WORLD 1-1 = 타이틀 화면: 1000px 한 기둥에 점수판 · 제목 판(벽돌 테 + 크림 판: 큰 사진 | 직무 · 이름 · 한 줄 / 메뉴 · 연락처) — 그 판 왼쪽 아래 땅 위에 관과 1P */
     var m = C.meta || {}, ph = C.home && C.home.player;
@@ -1482,6 +1501,7 @@
   function pfPeekTick() {
     var root = document.querySelector('.pf [data-pf-skp]'); if (!root || !root.offsetParent) return;
     var cells = [].slice.call(root.querySelectorAll('.skg-c')), s = Math.max(0, skgPick(cells));
+    root.classList.toggle('is-step', !RM && Math.floor(scrollY / 16) % 2 === 1);   /* 고개 내민 유령도 스크롤에 맞춰 콩콩 */
     if (root.__s === s) return; root.__s = s;
     cells.forEach(function (c, i) { c.classList.toggle('is-sel', i === s); });
   }
@@ -2310,6 +2330,7 @@
       }
       function tick() {
         if (!root.offsetParent) return;
+        root.classList.toggle('is-step', !RM && Math.floor(scrollY / 16) % 2 === 1);
         var s = pick(), on = Math.max(0, s), end = s === N - 1 && root.getBoundingClientRect().bottom < innerHeight * .45;
         if (kind === 'cur') { var c = cells[on], h3 = c.querySelector('h3'); tg.x = c.offsetLeft - me.offsetWidth - 8; tg.y = c.offsetTop + h3.offsetTop + Math.round((h3.offsetHeight - me.offsetHeight) / 2); anim(); }
         if (kind === 'say' && (s !== cur || end !== endS)) { say.innerHTML = line(s, end); hop(sayMe); hop(say); }

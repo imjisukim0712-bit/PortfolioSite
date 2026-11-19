@@ -2135,8 +2135,11 @@
    이름마다 왼쪽에 커서 자리(36px)를 두고, 유령은 지금 페이지 자리에 서 있다가 올린 이름으로 미끄러짐. 좁은 화면도 MENU 단추 없이 늘 보임 ══ */
 .pf-nav { position: relative; gap: 12px; }
 .pf-nav a { position: relative; padding: 8px 0 8px 32px; }
-.pf-nav__me { position: absolute; left: 0; top: 0; width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; pointer-events: none; transition: transform .22s cubic-bezier(.3, 1.3, .6, 1), opacity .15s steps(2); }
-.pf-nav__me.is-still { transition: none; }
+.pf-nav__me { position: absolute; left: 0; top: 0; width: 28px; height: 32px; background: var(--mb-mini) 0 0 / 100% 100% no-repeat; image-rendering: pixelated; pointer-events: none; transition: opacity .15s steps(2); }
+.pf-nav__me.is-glide { transition: transform .22s cubic-bezier(.3, 1.3, .6, 1), opacity .15s steps(2); }   /* 올림 · 떠남만 미끄러짐 — 스크롤 중에는 바로 따라감 */
+.pf .pf-nav.is-js a { z-index: 1; color: var(--cream); text-shadow: 2px 2px 0 #17345f; }   /* 걸어가는 중에 이름 위를 지나도 글자가 위(유령은 뒤) */
+.pf .pf-nav.is-js a.is-me, .pf .pf-nav.is-js a:hover { color: var(--or); }
+.skg.is-step .is-sel > .skg-peek i { translate: 0 -4px; }   /* 스크롤 16px 마다 한 칸 콩콩(transform 전환과 따로 — 바로 바뀜) */
 .pf-nav__me::after { content: ''; position: absolute; inset: 0; }
 @media (max-width: 1100px) {
   .pf-world, .pf-logo small { display: none; }
