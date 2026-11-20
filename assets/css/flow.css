@@ -2178,3 +2178,7 @@
   .pfc-slot { width: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .pf-go { transition: none; } }
+/* 작은 카드의 큰 숫자 + 무슨 숫자인지(대표 칸과 같은 글 — WN 의 big[1]) — 사용자: "여기서도 무슨 숫자인지 써 줘야" */
+.pfc-k__nb { align-self: end; display: grid; gap: 2px; }
+.pfc-k__nb .pfc-k__n { align-self: auto; }
+.pfc-k__u { font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--ink-mu); }

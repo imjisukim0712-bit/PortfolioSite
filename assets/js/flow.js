@@ -1011,7 +1011,7 @@
             var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
             return '<div class="pfc-slot"><button type="button" class="pfc-k' + (k ? '' : ' is-on') + '" data-pfc-k="' + k + '" aria-pressed="' + (k ? 'false' : 'true') + '"><i class="pfc-me" aria-hidden="true"></i>' + lThumb(it, node) +
               '<span class="pfc-k__d">' + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</span><span class="pfc-k__t">' + it.title + '</span>' +
-              (n.big ? '<b class="ps pfc-k__n">' + esc(n.big[0]) + '</b>' : '') + '</button></div>';
+              (n.big ? '<span class="pfc-k__nb"><b class="ps pfc-k__n">' + esc(n.big[0]) + '</b><small class="pfc-k__u">' + esc(t(n.big[1])) + '</small></span>' : '') + '</button></div>';
           }).join('') + '</div></section>';
       }).join('') + '</li>' + WN.map(function (n, i) {
         if (n.k !== 'flag') return '';
