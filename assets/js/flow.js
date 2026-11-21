@@ -928,6 +928,18 @@
     if (it.p && it.p.id) return '<span class="swl-c__th">' + pfArt(it.p, 1) + '</span>';
     return '<span class="swl-c__th is-empty" aria-hidden="true"><i class="sw-s ' + node + '"></i></span>';
   }
+  /* 홈 1-2 참여 프로젝트 — 사용자: "참여 프로젝트는 그냥 크게 썸네일 박고 가로로는 카드 한 장씩 가자, 실적 잘 보이게 띄우고".
+     대표 칸 + 작은 카드 줄 대신 한 줄에 카드 한 장(.pfc-p): 큰 썸네일 | 기간 · 이름 · 한 줄 · 소속 · 자세히 보기 + 실적 판(남색 점수판 — RESULT · 큰 숫자 · 무슨 숫자인지). 대외활동은 그대로 */
+  function pfcRows(g) {
+    return '<div class="pfc-rows">' + g.list.map(function (i) {
+      var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
+      var go = it.p && it.p.id ? '<a class="pfc-l__go" href="#/p/' + esc(it.p.id) + '">' + T('자세히 보기', 'See details') + ' ▶</a>' : '';
+      return '<article class="pf-win pfc-p">' + lThumb(it, node) + '<div class="pfc-p__m"><p class="pfc-l__d">' + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</p>' +
+        '<h4 class="pfc-p__t">' + it.title + '</h4>' + (it.line ? '<p class="pfc-l__s">' + it.line + '</p>' : '') +
+        (it.team ? '<p class="l-facts"><span>' + esc(it.team) + '</span></p>' : '') +
+        (n.big ? '<p class="pfc-p__sc"><span class="ps pfc-p__k">RESULT</span><b class="ps" data-l-count="' + esc(n.big[0]) + '">' + esc(n.big[0]) + '</b><span class="pfc-p__u">' + esc(t(n.big[1])) + '</span></p>' : '') + go + '</div></article>';
+    }).join('') + '</div>';
+  }
   function lCard(it, node) {
     var big = it.big ? '<p class="swl-c__big"><b class="ps" data-l-count="' + esc(it.big[0]) + '">' + esc(it.big[0]) + '</b><span>' + esc(t(it.big[1])) + '</span></p>' : '';
     var when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
@@ -1000,6 +1012,7 @@
       list = (opt.feats ? '<li class="pfc-feats">' + opt.feats + '</li>' : '') + '<li class="pfc-wrap">' + wGroups().map(function (g) {
         return '<section class="pfc is-' + g.g + '" data-pfc data-pf-count><header class="pfc-h"><p class="ps pfc-h__l">' + (g.g === 'project' ? 'PROJECTS' : 'ACTIVITIES') + '</p>' +
           '<h3 class="pfc-h__t">' + esc(t(g.title)) + '<small>' + g.list.length + '</small></h3></header>' +   /* 한 줄 · 대표 숫자는 뺐음(위 핵심 성과 판과 겹침 · "글이 너무 많아") */
+          (g.g === 'project' ? pfcRows(g) + '</section>' :
           '<div class="pfc-lead" aria-live="polite">' + g.list.map(function (i, k) {
             var it = lItem(i), n = WN[i], node = n.k === 'castle' ? 'wm-castle' : 'sw-dot' + (n.k === 'house' ? 'B' : 'Y'), when = String(it.when || '').replace(/ · (진행 중|ongoing)$/, '');
             var go = it.p && it.p.id ? '<a class="pfc-l__go" href="#/p/' + esc(it.p.id) + '">' + T('자세히 보기', 'See details') + ' ▶</a>' : '';
@@ -1012,7 +1025,7 @@
             return '<div class="pfc-slot"><button type="button" class="pfc-k' + (k ? '' : ' is-on') + '" data-pfc-k="' + k + '" aria-pressed="' + (k ? 'false' : 'true') + '"><i class="pfc-me" aria-hidden="true"></i>' + lThumb(it, node) +
               '<span class="pfc-k__d">' + when + (it.now ? '<i>' + T('진행 중', 'Ongoing') + '</i>' : '') + '</span><span class="pfc-k__t">' + it.title + '</span>' +
               (n.big ? '<span class="pfc-k__nb"><b class="ps pfc-k__n">' + esc(n.big[0]) + '</b><small class="pfc-k__u">' + esc(t(n.big[1])) + '</small></span>' : '') + '</button></div>';
-          }).join('') + '</div></section>';
+          }).join('') + '</div></section>');
       }).join('') + '</li>' + WN.map(function (n, i) {
         if (n.k !== 'flag') return '';
         var cs = wCourse();

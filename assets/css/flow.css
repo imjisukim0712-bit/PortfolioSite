@@ -2182,3 +2182,26 @@
 .pfc-k__nb { align-self: end; display: grid; gap: 2px; }
 .pfc-k__nb .pfc-k__n { align-self: auto; }
 .pfc-k__u { font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--ink-mu); }
+
+/* ══ 홈 1-2 참여 프로젝트 = 한 줄에 카드 한 장(flow.js pfcRows) — "그냥 크게 썸네일 박고 가로로는 카드 한 장씩, 실적 잘 보이게 띄우고".
+   큰 썸네일(왼쪽 반 남짓) | 글 + 실적 판(남색 점수판 · 금색 큰 숫자). 대외활동 무리는 대표 칸 + 작은 카드 그대로 ══ */
+.pfc-rows { display: grid; gap: 24px; margin-top: 18px; }
+.pf .pfc-p { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; gap: 28px; padding: 20px; }
+.pf .pfc-p .swl-c__th { width: 100%; height: 100%; min-height: 0; margin: 0; align-self: start; }
+.pfc-p__m { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.pf .pfc-p__t { margin: 0; font: 700 26px/1.3 'Galmuri11', monospace; color: var(--navy); }
+.pf .pfc-p .l-facts { font-size: 14px; font-weight: 600; color: var(--ink-mu); }
+.pfc-p__sc { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 14px; margin-top: 6px; padding: 14px 18px; color: #fff6dd; background: #102346; border: 4px solid #171c28; box-shadow: inset 0 0 0 2px #2a4a7c, 4px 4px 0 #000; }
+.pfc-p__k { grid-column: 1 / -1; font-size: 8px; line-height: 1; color: #8ec8ff; }
+.pfc-p__sc b { font-size: 40px; line-height: 1.1; color: #f8b800; text-shadow: 4px 4px 0 #000; }
+.pfc-p__u { font-size: 15px; font-weight: 700; line-height: 1.4; color: #fff6dd; }
+.pf .pfc-p .pfc-l__go { margin-top: 4px; }
+@media (max-width: 900px) {
+  .pf .pfc-p { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+@media (max-width: 760px) {
+  .pf .pfc-p { padding: 14px; }
+  .pf .pfc-p__t { font-size: 21px; }
+  .pfc-p__sc { padding: 12px 14px; } .pfc-p__sc b { font-size: 32px; }
+}
+@media (max-width: 480px) { .pfc-p__sc { grid-template-columns: minmax(0, 1fr); } }   /* 좁으면 무슨 숫자인지를 숫자 아래로(STEAM 옆에서 세 줄로 꺾이지 않게) */
